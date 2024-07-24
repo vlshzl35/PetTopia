@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: pettopia
+
+logging:
+  level:
+    root: info
+    com.sh: debug
