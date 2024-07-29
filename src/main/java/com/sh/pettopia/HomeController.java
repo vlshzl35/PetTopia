@@ -16,6 +16,19 @@ public class HomeController {
 
     @GetMapping(path = "/", produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity<?> home(){
-        return ResponseEntity.ok("<h1>⚽️Hello PetTopia! App's profile is <mark>%s</mark> \uD83C\uDFB1</h1>".formatted(value));
+        return ResponseEntity.ok(("<h1>⚽️Hello PetTopia! App's profile is <mark>%s</mark> \uD83C\uDFB1</h1>" +
+                "<h1>펫토피아입니다</h1>\n" +
+                "<div>\n" +
+                "    <ul>서버에서 되는지 확인\n" +
+                "        <li>http://223.130.146.203:8080/menus/1</li>\n" +
+                "        <li>http://223.130.146.203:8080/menus/all</li>\n" +
+                "    </ul>\n" +
+                "\n" +
+                "    <ul>로컬(인텔리제이)에서 되는지 확인\n" +
+                "        <li>http://localhost:8080/menus/20</li>\n" +
+                "        <li>http://localhost:8080/menus/all</li>\n" +
+                "    </ul>\n" +
+                "</div>").formatted(value));// 이 값은 application.yml에서 #profile관리에 있는 내용이다
+        // 관리할 때는 test로 하고 cicd로 돌아갈때는 prod = 서버 db로 돌아간다
     }
 }
