@@ -17,5 +17,6 @@ public class MenuController {
     @GetMapping("/{menuCode}")
     public ResponseEntity<?> findByMenuCode(@PathVariable("menuCode") Long menuCode){
         return menuService.findById(menuCode);
+
     }
 }
