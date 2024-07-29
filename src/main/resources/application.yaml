@@ -1,8 +1,19 @@
 spring:
-  application:
-    name: PetTopia
+  profiles:
+    default: test
 
 logging:
   level:
     root: info
     com.sh: debug
+
+  # 공통 jpa 설정
+  jpa:
+    generate-ddl: true
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        hbm2ddl:
+          auto: none
+
