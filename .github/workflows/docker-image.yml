@@ -1,14 +1,16 @@
 name: Docker Image CI
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+  pull_request_target:
+    branches:
+      - master
+    types:
+      - closed
 
 jobs:
   # 1. CI - 통합(build) 
   build:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
     # 저장소의 커밋된 master브랜치 내려받기
@@ -56,5 +58,11 @@ jobs:
           sudo docker stop $(sudo docker ps -a -q)
           sudo docker rm -f $(sudo docker ps -a -q)
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
-          sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
+          sudo docker run -d -p 8080:8080 \
+          -e "SPRING_PROFILES_ACTIVE=prod" \
+          -e "PROD_DB_URL=${{ secrets.PROD_DB_URL }}" \
+          -e "PROD_DB_USERNAME=${{ secrets.PROD_DB_USERNAME }}" \
+          -e "PROD_DB_PASSWORD=${{ secrets.PROD_DB_PASSWORD }}" \
+          --name ${{ vars.APP_NAME }} \
+          ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
           sudo docker image prune -f
