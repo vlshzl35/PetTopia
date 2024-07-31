@@ -65,7 +65,7 @@
                                         <span class="fa fa-phone"></span>
                                     </div>
                                     <div class="text">
-                                        <p><span>연락처:</span> <a href="tel://1234567920">010 1234 5678</a></p>
+                                        <p><span>연락처:</span> <a href="tel://1234567920">010 8973 9943</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +75,8 @@
                                         <span class="fa fa-paper-plane"></span>
                                     </div>
                                     <div class="text">
-                                        <p><span>이메일:</span> <a href="mailto:info@yoursite.com">shqkel@gmail.com</a></p>
+                                        <p><span>이메일:</span> <a href="mailto:info@yoursite.com">shqkel@gmail.com</a>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -109,7 +110,32 @@
                         <!-- 섹션 추가 영역 -->
                         <div id="editProfileSection" style="display:none;">
                             <h3>회원정보 수정</h3>
-                            <p>여기에 회원정보 수정 내용을 추가하세요.</p>
+                            <form>
+                                <div class="form-group">
+                                    <label for="address">주소:</label>
+                                    <input type="text" class="form-control" id="address" placeholder="주소를 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">연락처:</label>
+                                    <input type="text" class="form-control" id="phone" placeholder="연락처를 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">이메일:</label>
+                                    <input type="email" class="form-control" id="email" placeholder="이메일을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="birthday">생년월일:</label>
+                                    <input type="date" class="form-control" id="birthday" placeholder="생년월일을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="gender">성별:</label>
+                                    <select class="form-control" id="gender">
+                                        <option>남</option>
+                                        <option>여</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">수정하기</button>
+                            </form>
                         </div>
                         <div id="petProfileSection" style="display:none;">
                             <h3>펫 프로필</h3>
@@ -120,8 +146,48 @@
                             <p>여기에 이용내역 내용을 추가하세요.</p>
                         </div>
                         <div id="petSitterSection" style="display:none;">
-                            <h3>펫시터</h3>
-                            <p>여기에 펫시터 내용을 추가하세요.</p>
+                            <h3>펫시터 등록</h3>
+                            <form>
+                                <div class="form-group">
+                                    <label for="name">이름:</label>
+                                    <input type="text" class="form-control" id="name" placeholder="이름을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ssn">주민등록번호 앞 7자리:</label>
+                                    <input type="text" class="form-control" id="ssn" placeholder="주민등록번호 앞 7자리를 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">연락처:</label>
+                                    <input type="text" class="form-control" id="phone" placeholder="연락처를 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="smoking">흡연 여부:</label>
+                                    <select class="form-control" id="smoking">
+                                        <option>예</option>
+                                        <option>아니오</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">거주지 주소:</label>
+                                    <input type="text" class="form-control" id="address" placeholder="거주지 주소를 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="currentJob">현재 하는 일:</label>
+                                    <input type="text" class="form-control" id="currentJob" placeholder="현재 하는 일을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="petExperience">반려 경험 유무:</label>
+                                    <select class="form-control" id="petExperience">
+                                        <option>예</option>
+                                        <option>아니오</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="certification">자격증:</label>
+                                    <input type="text" class="form-control" id="certification" placeholder="자격증을 입력하세요">
+                                </div>
+                                <button type="submit" class="btn btn-primary">등록하기</button>
+                            </form>
                         </div>
                         <!-- 섹션 추가 영역 끝 -->
                     </div>
