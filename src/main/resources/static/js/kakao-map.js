@@ -1,5 +1,5 @@
-
-function initMap() {
+// function initMap() {
+window.onload = function() {
 // 마커를 담을 배열입니다
     var markers = [];
 
@@ -18,13 +18,18 @@ function initMap() {
 // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
     var infowindow = new kakao.maps.InfoWindow({zIndex: 1});
 
-// 키워드로 장소를 검색합니다
-    searchPlaces();
+// // 키워드로 장소를 검색합니다
+//     searchPlaces();
+
+    document.querySelector("#searchForm").addEventListener('submit',(e) => {
+        e.preventDefault(); // 폼 제출에 의한 페이지 새로고침 방지
+        searchPlaces();
+    });
 
 // 키워드 검색을 요청하는 함수입니다
     function searchPlaces() {
-
         var keyword = document.getElementById('keyword').value;
+        console.log("키워드 입력" ,keyword);
 
         if (!keyword.replace(/^\s+|\s+$/g, '')) {
             alert('키워드를 입력해주세요!');
