@@ -1,4 +1,4 @@
-package com.sh.pettopia.test;
+package com.sh.pettopia.ncpTest;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

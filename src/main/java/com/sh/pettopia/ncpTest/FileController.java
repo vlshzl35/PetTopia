@@ -1,4 +1,4 @@
-package com.sh.pettopia.test;
+package com.sh.pettopia.ncpTest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,14 +17,14 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/fileUpload")
+//@RequestMapping("/fileUpload")
 public class FileController {
     private final FileService fileService;
 
     // 파일 업로드
     @GetMapping("/upload")
     public String getUpload(){
-        return "fileUpload/upload";
+        return "upload";
     }
 
     // 파일 업로드
@@ -46,6 +46,6 @@ public class FileController {
     public String listFiles(Model model) {
         List<FileDto> files = fileService.listFiles("sample-folder");
         model.addAttribute("files", files);
-        return "fileUpload/list";
+        return "list";
     }
 }

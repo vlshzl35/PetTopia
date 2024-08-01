@@ -1,4 +1,4 @@
-package com.sh.pettopia.test;
+package com.sh.pettopia.ncpTest;
 
 import lombok.Builder;
 import lombok.Getter;
