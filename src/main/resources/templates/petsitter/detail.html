@@ -1,0 +1,111 @@
+<!doctype html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/default}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>펫시터의 이름</title>
+</head>
+<body>
+
+<main layout:fragment="main" class="page-body">
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('/images/bg_2.jpg');"
+             data-stellar-background-ratio="0.5"> <!--여기에 사용자가 등록한 사진을 넣으면 되겠다-->
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-end">
+                <div class="col-md-9 ftco-animate pb-5">
+                    <p class="breadcrumbs mb-2"><span class="mr-2"><a th:href="@{/}">Home <i
+                            class="ion-ios-arrow-forward"></i></a></span>
+                        <span>펫시터
+							<i class="ion-ios-arrow-forward"></i>
+						</span>
+                    </p>
+                    <h1 class="mb-0 bread">여기에 펫시터 이름을 출력</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <div style="display: flex;">
+            <div style="padding-right: 30px">
+                <h2>여기는 포트폴리오를 작성하는 공간입니다</h2>
+                <div style="display: flex">
+                    <h4>여기는 사용자의 사진이나 반려동물의 사진이 들어옵니다</h4>
+                    <h4>여기는 사용자의 이름이 들어옵니다</h4>
+                </div>
+                <div style="padding: 5px">
+                    <h4>여기는 자신의 자격증이나 기타 증명이 들어옵니다(대부분 자격증)</h4>
+                    <div>
+                        <img src="/images/License.PNG" alt="증명서">
+                    </div>
+                    <div>
+                        <h4>여기는 펫시터가 가능한 기능들을 보여줍니다 아마 이것도 db로 관리해야 될 거 같습니다</h4>
+                        <img src="/images/petsitterfunc.PNG" alt="가능한 기능">
+                    </div>
+                </div>
+                <div style="padding: 5px">
+                    <h4>여기는 사용자들의 리뷰가 들어옵니다</h4>
+                    <img src="/images/review.PNG" alt="리뷰">
+                </div>
+
+            </div>
+
+            <div style="padding: 5px">
+                <h2>여기는 예약하기 위한 공간입니다</h2>
+                <div style="padding: 5px">
+                    <p>여기는 예약하기 위한 날짜가 들어옵니다</p>
+                    <div>
+                        <div style="border: #0b0b0b 1px solid; margin: 10px;" class="align-content-end">
+                            <form action="">
+                            <div class="bo_w_tit write_div">
+                                <div><span>언제 시터가 필요하신가요??</span></div>
+                                <input style="align-content: flex-end" type="text" name="wr_2" value="" id="wr_2" required class="frm_input full_input required datepicker" placeholder="시작날짜" readonly>
+                                <input type="text" name="wr_3" value="" id="wr_3" required class="frm_input full_input required datepicker" placeholder="종료 날짜" readonly>
+
+                            </div>
+                                <div><button>예약 요청</button></div>
+                            </form>
+                        </div>
+                        <div>
+                            <p>가능한 애견</p>
+                            <img src="/images/pay.PNG" alt="요금">
+                        </div>
+                        <div>
+                            <p>가능한 날짜</p>
+                            <img src="/images/possibledate.PNG" alt="">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            jQuery(function ($) {
+                $.datepicker.regional["ko"] = {
+                    closeText: "닫기",
+                    prevText: "이전달",
+                    nextText: "다음달",
+                    currentText: "오늘",
+                    monthNames: ["1월(JAN)", "2월(FEB)", "3월(MAR)", "4월(APR)", "5월(MAY)", "6월(JUN)", "7월(JUL)", "8월(AUG)", "9월(SEP)", "10월(OCT)", "11월(NOV)", "12월(DEC)"],
+                    monthNamesShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+                    dayNames: ["일", "월", "화", "수", "목", "금", "토"],
+                    dayNamesShort: ["일", "월", "화", "수", "목", "금", "토"],
+                    dayNamesMin: ["일", "월", "화", "수", "목", "금", "토"],
+                    weekHeader: "Wk",
+                    dateFormat: "yy-mm-dd",
+                    firstDay: 0,
+                    isRTL: false,
+                    showMonthAfterYear: true,
+                    yearSuffix: ""
+                };
+                $.datepicker.setDefaults($.datepicker.regional["ko"]);
+                $("#wr_2").datepicker();
+                $("#wr_3").datepicker();
+            });
+        </script>
+</main>
+</body>
+</html>
