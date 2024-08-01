@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700,800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="css/animate.css">
+
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+
+
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css/jquery.timepicker.css">
+
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/style.css">
+
+
+
+</head>
+<body>
+
+
+<div layout:fragment="main" class="container">
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center mb-5">
+                    <h1 class="heading-section"><strong>로그인</strong></h1>
+                </div>
+            </div>
+
+
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="wrapper">
+
+                        <div class="row no-gutters">
+                            <div class="col-md">
+                                <div class="contact-wrap w-100 p-md-5 p-4">
+                                    <form method="POST" id="contactForm" name="contactForm" class="contactForm">
+                                        <!-- 아이디 -->
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label"><h2>아이디</h2>
+                                            </label>
+                                            <input type="email" class="form-control" id="exampleFormControlInput1"
+                                                   placeholder="아이디를 입력해주세요">
+                                        </div>
+
+                                        <!-- 비밀번호 -->
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label"><h2>비밀번호</h2>
+                                            </label>
+                                            <input type="email" class="form-control" id="exampleFormControlInput1"
+                                                   placeholder="비밀번호를 입력해주세요">
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+
+                                            <div class="">
+                                                <input type="checkbox" name="remember"> 아이디 저장
+                                            </div>
+
+                                            <div class="">
+                                                <label class="label">아이디 찾기 | 비밀번호 찾기</label>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <input type="submit" value="로그인" class="btn btn-primary">
+                                                    <div class="submitting"></div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <div>
+                                        <a th:href="@{/member/signup1}">
+                                        <input type="button" style="color : black" value="회원 가입"
+                                               class="btn btn-light" >
+                                        <div class="submitting"></div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+    </section>
+</div>
+
+
+<!-- loader -->
+<div id="ftco-loader" class="show fullscreen">
+    <svg class="circular" width="48px" height="48px">
+        <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+        <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                stroke="#F96D00"/>
+    </svg>
+</div>
+
+
+<!--  <script src="js/jquery.min.js"></script>-->
+<!--  <script src="js/jquery-migrate-3.0.1.min.js"></script>-->
+<!--  <script src="js/popper.min.js"></script>-->
+<!--  <script src="js/bootstrap.min.js"></script>-->
+<!--  <script src="js/jquery.easing.1.3.js"></script>-->
+<!--  <script src="js/jquery.waypoints.min.js"></script>-->
+<!--  <script src="js/jquery.stellar.min.js"></script>-->
+<!--  <script src="js/jquery.animateNumber.min.js"></script>-->
+<!--  <script src="js/bootstrap-datepicker.js"></script>-->
+<!--  <script src="js/jquery.timepicker.min.js"></script>-->
+<!--  <script src="js/owl.carousel.min.js"></script>-->
+<!--  <script src="js/jquery.magnific-popup.min.js"></script>-->
+<!--  <script src="js/scrollax.min.js"></script>-->
+<!--  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>-->
+<!--  <script src="js/google-map.js"></script>-->
+<!--  <script src="js/main.js"></script>-->
+
+
+</body>
+</html>
