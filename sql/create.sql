@@ -1,9 +1,9 @@
 create user 'pettopia-db'@'%' identified by '@Pettopia06';
 
-create database menudb;
+create database pettopiadb;
 
-grant all privileges on menudb.* to 'pettopia-db'@'%';
+grant all privileges on `pettopiadb`.* to 'sh'@'%';
 
 select user, host from mysql.user;
 
-show grants for 'pettopia-db'@'%';
+show grants for 'sh'@'%';
