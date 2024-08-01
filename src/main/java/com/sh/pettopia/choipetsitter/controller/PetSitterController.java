@@ -22,4 +22,9 @@ public class PetSitterController {
     public void register() {
         // 펫시터 홍보글 작성
     }
+
+    @GetMapping("/petsittingmain")
+    public void petsittingmain(){
+        // 펫시터 찾기, 펫시터 검색 선택 페이지
+    }
 }
