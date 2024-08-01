@@ -1,6 +1,7 @@
 package com.sh.pettopia.Hojji.member.entity;
 
 
+import com.sh.pettopia.Hojji.pet.entity.Pet;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,7 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberEntity {
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_code")
@@ -74,9 +76,14 @@ public class MemberEntity {
     // 회원 역할 - 최대 2개를 가질 수 있음.
     private Set<Role> role;
 
+    // 펫시터 요청 상태를 나타냄(요청 X, 승인 대기, 승인 완료)
+    private SitterStatus sitterStatus;
 
-    // 펫시터 Vo
-//    private PetSitter petSitter;
-
+    // 펫 Vo
+    @OneToMany(
+            mappedBy = "pet",
+            fetch = FetchType.LAZY
+    )
+    private Set<Pet> pets = new HashSet<>();
 
 }
