@@ -28,8 +28,8 @@ logging:
 cloud:
   aws:
     credentials:
-      access-key: ${SPRING_ACCESS_KEY}
-      secret-key: ${SPRING_SECRET_KEY}
+      access-key: ${NCP_ACCESS_KEY}
+      secret-key: ${NCP_SECRET_KEY}
     region:
       static: kr-standard
     stack:

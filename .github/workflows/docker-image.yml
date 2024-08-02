@@ -64,8 +64,8 @@ jobs:
           -e "PROD_DB_USERNAME=${{ secrets.PROD_DB_USERNAME }}" \
           -e "PROD_DB_PASSWORD=${{ secrets.PROD_DB_PASSWORD }}" \
           
-          -e "SPRING_ACCESS_KEY=${{ secrets.SPRING_ACCESS_KEY}}" \
-          -e "SPRING_SECRET_KEY=${{ secrets.SPRING_SECRET_KEY }}" \
+          -e "NCP_ACCESS_KEY=${{ secrets.NCP_ACCESS_KEY}}" \
+          -e "NCP_SECRET_KEY=${{ secrets.NCP_SECRET_KEY }}" \
           
           --name ${{ vars.APP_NAME }} \
           ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
