@@ -35,4 +35,8 @@ public class PetSitter {
         this.petsitterPost = petsitterPost;
     }
 
+    public void updatePetSitterPost(PetSitterPost petsitterPost) {
+        this.petsitterPost = petsitterPost;
+    }
+
 }
