@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.util.Set;
 
@@ -67,7 +68,7 @@ public class Member {
     private DateTime birth;
 
     @Column(name = "member_create_at", nullable = false)
-    @CreationTimestamp
+    @CreatedDate
     // 가입 일자
     private LocalDateTime createdAt;
 
@@ -80,7 +81,6 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private SitterStatus sitterStatus;
 
-
     // 펫
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
@@ -88,5 +88,7 @@ public class Member {
             joinColumns = @JoinColumn(name = "ref_member_id", referencedColumnName = "code")
     )
     private Set<Pet> pets;
+
+    // 게시글, 병원, 미용실에 달리는 영수증 리뷰, 펫 돌바달라는 게시글....은 어찌 관리를 해야할까.....진짜,,,너무 어ㅓ렵다 애그리것이 뭔..까...
 
 }
