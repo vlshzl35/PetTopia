@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/default}">
+<head>
+    <title>vet 제목 써</title>
+
+    <!--
+  - 타임 리프 문법을 써야 하니 href에 th:꼭 붙여서 사용하세요
+  - 헤더에서 각 페이지로 넘어가는 링크가 되어있고, HomeController 클래스에서 GetMapping 메소드로 이동을 합니다
+  - 나중에 각 페이지를 쓰게 되면, 디렉토리를 만들어서 이동하고 MVC패턴을 쓰면됩니다
+  - JavaScript, CSS는 fragments -> header에 다 있습니다 (메인 기준 CSS위에, js는 아래에 있어야 작동이 되는거 같습니다)
+
+  단축키
+  1. 컨트롤+알트+쉬프트+L = 현재 페이지 코드 자동정렬입니다
+  2. 컨트롤+R = 현재페이지 찾아바꾸기 입니다
+
+  -->
+
+</head>
+<body>
+<div layout:fragment="main" class="page-body">
+    <h1>상세페이지입니다.</h1>
+</div>
+</body>
+</html>
