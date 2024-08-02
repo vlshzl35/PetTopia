@@ -34,7 +34,7 @@ cloud:
       static: kr-standard
     stack:
       auto: false
-  endpoint: https://kr.object.ncloudstorage.com
+    endpoint: https://kr.object.ncloudstorage.com
 
 application:
   bucket:
