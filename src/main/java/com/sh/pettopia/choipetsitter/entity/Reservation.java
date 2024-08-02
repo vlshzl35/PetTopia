@@ -27,12 +27,11 @@ public class Reservation {
     @Column(name = "end_dated")
     private LocalDate endDate; // 예약 종료시간
 
-//    @ManyToOne
-//    @Column(name = "petsitter_id") // tbl_review.restaurant_id컬럼(FK)으로 tbl_restaurant.id컬럼(PK)을 참조한다.
-//    private PetSitterPost petSitterPost;
 
     @Column(name = "reservation_status")
     @Enumerated(EnumType.STRING)
     private ReservationStatus reservationStatus; // 예약 상태(요청대기, 요청수락, 요청취소, 돌봄중, 돌봄 완료)
+
+    // 누구에 대한 예약인지 확인해라
 
 }

@@ -19,9 +19,6 @@ import java.time.LocalDateTime;
 @Embeddable
 public class PetSitterPost {
     // 펫시터가 홍보글을 올렸을 때
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)// db가 auto_increment해줌
-    private Long id;
 
     @Column(name = "created_at")
     @CreationTimestamp
