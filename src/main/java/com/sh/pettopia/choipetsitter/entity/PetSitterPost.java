@@ -10,13 +10,13 @@ import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
 
 
-@Entity(name = "petsitter_post")
-@Table(name = "tbl_petsitter_post")
+
 @Data
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Embeddable
 public class PetSitterPost {
     // 펫시터가 홍보글을 올렸을 때
     @Id
@@ -40,11 +40,6 @@ public class PetSitterPost {
     @Column(name = "available_service")
     @Enumerated(EnumType.STRING)
     private AvailableService availableService;
-
-    @OneToOne
-    // FK = persitter_id, PK = petsitter의 id컬럽
-    @JoinColumn(name = "petsitter_id")
-    private PetSitter petSitter;
 
 
 }
