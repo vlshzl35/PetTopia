@@ -1,10 +1,7 @@
-package com.sh.pettopia.choipetsitter.entity;
+package com.sh.petsitter;
 
-import com.sh.pettopia.Hojji.member.entity.MemberEntity;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.List;
 
 @Entity(name = "petsitter")
 @Table(name = "tbl_petsitter")
@@ -18,6 +15,9 @@ public class PetSitter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "post_url")
+    private String postUrl;
 
     @Column(name = "introduce")
     private String introduce;

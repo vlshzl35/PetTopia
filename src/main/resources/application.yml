@@ -1,7 +1,7 @@
 # profile관리
 spring:
   profiles:
-    default: prod
+    default: test
 #    active: prod
   servlet:
     multipart:
@@ -30,11 +30,7 @@ cloud:
     credentials:
       access-key: ${NCP_ACCESS_KEY}
       secret-key: ${NCP_SECRET_KEY}
-    region:
-      static: kr-standard
-    stack:
-      auto: false
-    endpoint: https://kr.object.ncloudstorage.com
+
 
 application:
   bucket:

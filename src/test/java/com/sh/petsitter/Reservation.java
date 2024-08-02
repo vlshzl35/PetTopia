@@ -1,10 +1,7 @@
-package com.sh.pettopia.choipetsitter.entity;
+package com.sh.petsitter;
 
-import com.sh.pettopia.Hojji.member.entity.MemberEntity;
 import jakarta.persistence.*;
-import jdk.jfr.Enabled;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
 
@@ -17,9 +14,6 @@ import java.time.LocalDate;
 @Setter(AccessLevel.PRIVATE)
 public class Reservation {
     // 예약 요청이 들어왓을 때
-    // 어떤 회원이 어떤 펫시터에게
-    // 언제부터 언제까지, 어떤 참고사항을 추가하여 펫시터 서비스를 예약을 할 것인가??
-    // 예약 상태는 기본값 : 요청대기
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,8 +24,6 @@ public class Reservation {
     @Column(name = "end_dated")
     private LocalDate endDate; // 예약 종료시간
 
-    @Column(name = "note")
-    private String note; // 참고사항
 
     @Column(name = "reservation_status")
     @Enumerated(EnumType.STRING)
@@ -40,9 +32,5 @@ public class Reservation {
     // 어떤 펫시터에 대한 예약인가
     @Column(name="petsitter_id")
     private Long petsitterId;
-
-    // 어떤 회원이 예약을 신청 했는가
-    @Column(name="memeber_id")
-    private Long memberId;
 
 }
