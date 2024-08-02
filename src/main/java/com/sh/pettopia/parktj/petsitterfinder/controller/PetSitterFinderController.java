@@ -7,12 +7,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/petsitterfinder")
 @Slf4j
 public class PetSitterFinderController {
 
-    @GetMapping("/petsitterfinder")
-    public void petsitterFinder(){
+    @GetMapping("/petsitterfinderdetail")
+    public void petsitterFinderDetail(){
+
+    }
+
+    @GetMapping("petsitterfinderlist")
+    public void petsitterFinderList(){
+
+    }
+
+    @GetMapping("/petsitterfinderfrm")
+    public void petsitterFinderFrm(){
 
     }
 }
