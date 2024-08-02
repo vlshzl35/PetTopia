@@ -1,6 +1,8 @@
 package com.sh.pettopia.Hojji.member.entity;
 
 
+import com.sh.pettopia.choipetsitter.entity.PetSitter;
+import com.sh.pettopia.choipetsitter.entity.PetSitterPost;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

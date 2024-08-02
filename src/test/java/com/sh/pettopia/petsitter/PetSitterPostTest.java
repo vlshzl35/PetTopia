@@ -8,7 +8,7 @@ import org.junit.jupiter.api.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class PetSitterTest {
+public class PetSitterPostTest {
     private static EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
 
