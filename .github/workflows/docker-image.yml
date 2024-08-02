@@ -63,7 +63,6 @@ jobs:
           -e "PROD_DB_URL=${{ secrets.PROD_DB_URL }}" \
           -e "PROD_DB_USERNAME=${{ secrets.PROD_DB_USERNAME }}" \
           -e "PROD_DB_PASSWORD=${{ secrets.PROD_DB_PASSWORD }}" \
-          
           -e "NCP_ACCESS_KEY=${{ secrets.NCP_ACCESS_KEY}}" \
           -e "NCP_SECRET_KEY=${{ secrets.NCP_SECRET_KEY }}" \
           
