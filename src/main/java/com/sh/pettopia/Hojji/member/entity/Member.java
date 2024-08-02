@@ -1,6 +1,7 @@
 package com.sh.pettopia.Hojji.member.entity;
 
 
+import com.sh.pettopia.Hojji.common.Gender;
 import com.sh.pettopia.Hojji.pet.entity.Pet;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -77,13 +77,16 @@ public class Member {
     private Set<Role> role;
 
     // 펫시터 요청 상태를 나타냄(요청 X, 승인 대기, 승인 완료)
+    @Enumerated(EnumType.STRING)
     private SitterStatus sitterStatus;
 
-    // 펫 Vo
-    @OneToMany(
-            mappedBy = "pet",
-            fetch = FetchType.LAZY
+
+    // 펫
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+            name = "tbl_pet_pet",
+            joinColumns = @JoinColumn(name = "ref_member_id", referencedColumnName = "code")
     )
-    private Set<Pet> pets = new HashSet<>();
+    private Set<Pet> pets;
 
 }
