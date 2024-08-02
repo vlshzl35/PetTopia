@@ -1,7 +1,7 @@
 # profile관리
 spring:
   profiles:
-    default: test
+    default: prod
 #    active: prod
   servlet:
     multipart:
