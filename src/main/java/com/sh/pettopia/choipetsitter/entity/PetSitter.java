@@ -1,12 +1,10 @@
 package com.sh.pettopia.choipetsitter.entity;
 
+import com.sh.pettopia.Hojji.member.entity.MemberEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity(name = "petsitter")
 @Table(name = "tbl_petsitter")
@@ -16,27 +14,23 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class PetSitter {
-    // 펫시터가 홍보글을 올렸을 때
-
+    // 펫 시터의 대한 프로필
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)// db가 auto_increment해줌
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @Column(name = "post_url")
+    private String postUrl;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updateAt;
+    @Column(name = "introduce")
+    private String introduce;
 
-    @Column(name = "post_url") // String이 저장될 컬럼명 // 홍보글은 단 한개만 등록할 수 있기 때문에 이렇게 썼다
-    private String  url;
+    @Column(name = "image_url") // 대표사진
+    private String  imageUrl;
 
-    // 시터는 예약내역을 가질 수도, 안가질 수도 있다,비식별 관계, (펫시터 : 예약내역 = 1 : N 이다)
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "petsitter_id") // tbl_reservation.survey_id컬럼(FK)이 tbl_petsitter.id컬럼(PK)을 참조
-    @OrderColumn(name = "reservation_id")
-    @Builder.Default
-    private List<Reservation> reservations = new ArrayList<>();
+    // tbl_petsitter 테이블에는 member_id(FK)이고 PK는 memberEntitny의 @id붙은 컬럼이다
+    @OneToOne
+    @JoinColumn(name = "member_id")
+    private MemberEntity member;
 
-    // 본인회원 Id; = 그래야 홍보글을 올릴 때 본인의
 }

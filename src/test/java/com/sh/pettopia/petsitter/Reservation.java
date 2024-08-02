@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 @Setter(AccessLevel.PRIVATE)
+
 public class Reservation {
     // 예약 요청이 들어왓을 때
     @Id
@@ -25,7 +26,7 @@ public class Reservation {
     @Column(name = "end_dated")
     private LocalDate endDate; // 예약 종료시간
 
-    @ManyToOne
+    @Embedded
     @JoinColumn(name = "petsitter_id") // tbl_review.restaurant_id컬럼(FK)으로 tbl_restaurant.id컬럼(PK)을 참조한다.
     private PetSitterPost petSitterPost;
 

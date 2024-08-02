@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Embeddable
 public class PetSitterPost {
     // 펫시터가 홍보글을 올렸을 때
 
