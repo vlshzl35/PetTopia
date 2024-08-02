@@ -29,7 +29,7 @@
         <div class="container">
             <div class="row no-gutters slider-text align-items-end">
                 <div class="col-md-9 ftco-animate pb-5">
-                    <p class="breadcrumbs mb-2"><span class="mr-2"><a href="index.html">Home <i
+                    <p class="breadcrumbs mb-2"><span class="mr-2"><a href="../index.html">Home <i
                             class="ion-ios-arrow-forward"></i></a></span> <span>MyPage <i
                             class="ion-ios-arrow-forward"></i></span></p>
                     <h1 class="mb-0 bread">MyPage</h1>
@@ -83,7 +83,7 @@
                             <div class="col-md-3">
                                 <div class="dbox w-100 text-center">
                                     <div class="icon d-flex align-items-center justify-content-center">
-                                        <span class="fa fa-globe"></span>
+                                        <span class="fa fa-venus-mars"></span>
                                     </div>
                                     <div class="text">
                                         <p><span>성별:</span> <a href="#">남</a></p>
@@ -139,18 +139,100 @@
                         </div>
                         <div id="petProfileSection" style="display:none;">
                             <h3>펫 프로필</h3>
-                            <p>여기에 펫 프로필 내용을 추가하세요.</p>
+                            <form>
+                                <div class="form-group">
+                                    <label for="petPhoto">펫 사진:</label>
+                                    <input type="file" class="form-control-file" id="petPhoto">
+                                </div>
+                                <div class="form-group">
+                                    <label for="petName">펫 이름:</label>
+                                    <input type="text" class="form-control" id="petName" placeholder="펫 이름을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="species">종:</label>
+                                    <input type="text" class="form-control" id="species" placeholder="종을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="petGender">성별:</label>
+                                    <select class="form-control" id="petGender">
+                                        <option>남</option>
+                                        <option>여</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="petBirthday">생일:</label>
+                                    <input type="date" class="form-control" id="petBirthday">
+                                </div>
+                                <div class="form-group">
+                                    <label for="weight">몸무게:</label>
+                                    <input type="number" class="form-control" id="weight" placeholder="몸무게를 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="character">성향:</label>
+                                    <textarea class="form-control" id="character" rows="3" placeholder="성향을 입력하세요"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">저장하기</button>
+                            </form>
                         </div>
                         <div id="usageHistorySection" style="display:none;">
                             <h3>이용내역</h3>
-                            <p>여기에 이용내역 내용을 추가하세요.</p>
+                            <!-- 현재 진행중인 내역 -->
+                            <div id="currentUsageSection">
+                                <h4>현재 진행중인 내역</h4>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">예약번호</th>
+                                        <th scope="col">날짜</th>
+                                        <th scope="col">서비스</th>
+                                        <th scope="col">상태</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>2024-08-01</td>
+                                        <td>펫 산책</td>
+                                        <td>진행중</td>
+                                    </tr>
+                                    <!-- 다른 진행중인 내역 추가 -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- 완료된 내역 -->
+                            <div id="completedUsageSection">
+                                <h4>완료된 내역</h4>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">예약번호</th>
+                                        <th scope="col">날짜</th>
+                                        <th scope="col">서비스</th>
+                                        <th scope="col">상태</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>2024-07-01</td>
+                                        <td>펫 미용</td>
+                                        <td>완료</td>
+                                    </tr>
+                                    <!-- 다른 완료된 내역 추가 -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <div id="petSitterSection" style="display:none;">
-                            <h3>펫시터 등록</h3>
+                            <h3>펫시터</h3>
                             <form>
                                 <div class="form-group">
                                     <label for="name">이름:</label>
                                     <input type="text" class="form-control" id="name" placeholder="이름을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="birthday">생년월일:</label>
+                                    <input type="date" class="form-control" id="birthday" placeholder="생년월일을 입력하세요">
                                 </div>
                                 <div class="form-group">
                                     <label for="ssn">주민등록번호 앞 7자리:</label>

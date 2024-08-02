@@ -1,3 +1,5 @@
+// function initMap() {
+window.onload = function() {
 // 마커를 담을 배열입니다
     var markers = [];
 
@@ -17,17 +19,18 @@
     // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
     var infowindow = new kakao.maps.InfoWindow({zIndex: 1});
 
-    // 키워드로 장소를 검색합니다
-    // searchPlaces();
-    document.querySelector("#searchBtn").addEventListener('click',(e) => {
-        e.preventDefault();
+// // 키워드로 장소를 검색합니다
+//     searchPlaces();
+
+    document.querySelector("#searchForm").addEventListener('submit',(e) => {
+        e.preventDefault(); // 폼 제출에 의한 페이지 새로고침 방지
         searchPlaces();
     });
 
-// 폼 제출에 의한 페이지 새로고침 방지
-
-        // 키워드 검색을 요청하는 함수입니다
-        function searchPlaces() {
+// 키워드 검색을 요청하는 함수입니다
+    function searchPlaces() {
+        var keyword = document.getElementById('keyword').value;
+        console.log("키워드 입력" ,keyword);
 
 
             var keyword = document.getElementById('keyword').value;
@@ -232,31 +235,6 @@
                 }
 
 
-                // var data = [
-                //     [37.57366022871447, 126.97417536971453, '<div style="padding:3px;">미트러스 <br><a href="https://map.naver.com/v5/entry/place/37611389?c=14134693.5474278,4519373.8385667,16,0,0,0,dh&placePath=%2Fhome%3Fentry=pll" >정보</a></div>'],
-                //     [37.57332696962825, 126.9730787981214, '<div style="padding:3px;">형제네고기마을<br> <a href="https://map.naver.com/v5/search/%EC%A2%85%EB%A1%9C%20%ED%98%95%EC%A0%9C%EB%84%A4%EA%B3%A0%EA%B8%B0%EB%A7%88%EC%9D%84/place/31390893?c=14134433.1053673,4519343.4775110,16,0,0,0,dh" >정보</a></div>'], //맞춰 주는건 굵은 글씨
-                //     [37.57844158822745, 126.98222879812157, '<div style="padding:3px;">닭칼 <br><a href="https://map.naver.com/v5/search/%EC%A2%85%EB%A1%9C%20%EB%8B%AD%EC%B9%BC/place/1644588906?c=14135476.9485348,4520081.5725654,16,0,0,0,dh&placePath=%3F%2526" >정보</a></div>']
-                // ]
-                //
-                // for (var i = 0; i < data.length; i++) {     // 마커를 생성합니다
-                //     var marker = new kakao.maps.Marker({
-                //         map: map, // 마커를 표시할 지도
-                //         position: new kakao.maps.LatLng(data[i][0], data[i][1]), // 마커를 표시할 위치
-                //         title: data[i][2], // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-                //         image: markerImage // 마커 이미지
-                //     });
-                //     // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
-                //     var iwContent = data[i][2],
-                //         iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-                //     // 인포윈도우를 생성합니다
-                //     var infowindow = new kakao.maps.InfoWindow({
-                //         content: iwContent,
-                //         removable: iwRemoveable
-                //     });
-                // 마커에 클릭이벤트를 등록합니다
-
-                // }
-
-
             }
         }
+    }
