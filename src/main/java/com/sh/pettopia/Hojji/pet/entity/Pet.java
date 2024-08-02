@@ -1,16 +1,13 @@
 package com.sh.pettopia.Hojji.pet.entity;
 
+import com.sh.pettopia.Hojji.common.Gender;
 import com.sh.pettopia.Hojji.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.HashMap;
-
-@Entity
-@Table(name = "tbl_pet")
+@Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -25,11 +22,14 @@ public class Pet {
     @Column(name = "pet_age", nullable = false)
     private String petAge;
 
+    @Column(name = "pet_gender")
+    private Gender gender;
+
     @Column(name = "pet_birth", nullable = false)
     private String petBirth;
 
     @Column(name = "pet_weight", nullable = false)
-    private String pet_weight;
+    private int pet_weight;
 
     @Column(name = "pet_profile", nullable = false)
     private String petProfile;
@@ -39,15 +39,6 @@ public class Pet {
 
     @Column(name = "is_vaccinated", nullable = false)
     private VaccinationType vaccinationType;
-
-//    @ElementCollection
-//    @CollectionTable(
-//            name = "pet_vaccinations",
-//            joinColumns = @JoinColumn(name = "pet_id")
-//    )
-//    @MapKeyColumn(name = "vaccination_type")
-//    @Column(name = "vaccinated")
-//    private Map<ParasitePrevention, boolean> parasitePrevention = new HashMap<>();
 
     @Column(name = "pet_socialization", nullable = false)
     private String socialization;
