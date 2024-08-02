@@ -28,9 +28,11 @@ public class PetSitter {
     @Column(name = "image_url") // 대표사진
     private String  imageUrl;
 
-    // tbl_petsitter 테이블에는 member_id(FK)이고 PK는 memberEntitny의 @id붙은 컬럼이다
-    @OneToOne
-    @JoinColumn(name = "member_id")
-    private MemberEntity member;
+    @Embedded
+    private PetSitterPost petsitterPost;
+
+    public void registerPetSitterPost(PetSitterPost petsitterPost) {
+        this.petsitterPost = petsitterPost;
+    }
 
 }
