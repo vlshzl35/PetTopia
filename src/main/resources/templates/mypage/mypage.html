@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <title>MyPage</title>
+    <script>
+        function showSection(sectionId) {
+            // 모든 섹션을 숨기기
+            document.getElementById('editProfileSection').style.display = 'none';
+            document.getElementById('petProfileSection').style.display = 'none';
+            document.getElementById('usageHistorySection').style.display = 'none';
+            document.getElementById('petSitterSection').style.display = 'none';
+
+            // 선택된 섹션만 보이기
+            var section = document.getElementById(sectionId);
+            section.style.display = 'block';
+
+            // 선택된 섹션으로 스크롤 이동
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</head>
+<body>
+<div layout:fragment="main" class="page-body">
+
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('/images/bg_2.jpg');"
+             data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-end">
+                <div class="col-md-9 ftco-animate pb-5">
+                    <p class="breadcrumbs mb-2"><span class="mr-2"><a href="../index.html">Home <i
+                            class="ion-ios-arrow-forward"></i></a></span> <span>MyPage <i
+                            class="ion-ios-arrow-forward"></i></span></p>
+                    <h1 class="mb-0 bread">MyPage</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ftco-section bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center mb-5">
+                    <h2 class="heading-section">마이페이지</h2>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="wrapper">
+                        <div class="row mb-5">
+                            <div class="col-md-3">
+                                <div class="dbox w-100 text-center">
+                                    <div class="icon d-flex align-items-center justify-content-center">
+                                        <span class="fa fa-map-marker"></span>
+                                    </div>
+                                    <div class="text">
+                                        <p><span>주소:</span> 서울특별시 동작구 대방동 500-1</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="dbox w-100 text-center">
+                                    <div class="icon d-flex align-items-center justify-content-center">
+                                        <span class="fa fa-phone"></span>
+                                    </div>
+                                    <div class="text">
+                                        <p><span>연락처:</span> <a href="tel://1234567920">010 8973 9943</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="dbox w-100 text-center">
+                                    <div class="icon d-flex align-items-center justify-content-center">
+                                        <span class="fa fa-paper-plane"></span>
+                                    </div>
+                                    <div class="text">
+                                        <p><span>이메일:</span> <a href="mailto:info@yoursite.com">shqkel@gmail.com</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="dbox w-100 text-center">
+                                    <div class="icon d-flex align-items-center justify-content-center">
+                                        <span class="fa fa-venus-mars"></span>
+                                    </div>
+                                    <div class="text">
+                                        <p><span>성별:</span> <a href="#">남</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 버튼 추가 영역 -->
+                        <div class="row mb-5 justify-content-center">
+                            <div class="col-md-3">
+                                <button class="btn btn-primary w-100" onclick="showSection('editProfileSection')">회원정보 수정</button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-primary w-100" onclick="showSection('petProfileSection')">펫 프로필</button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-primary w-100" onclick="showSection('usageHistorySection')">이용내역</button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-primary w-100" onclick="showSection('petSitterSection')">펫시터</button>
+                            </div>
+                        </div>
+                        <!-- 버튼 추가 영역 끝 -->
+                        <!-- 섹션 추가 영역 -->
+                        <div id="editProfileSection" style="display:none;">
+                            <h3>회원정보 수정</h3>
+                            <form>
+                                <div class="form-group">
+                                    <label for="address">주소:</label>
+                                    <input type="text" class="form-control" id="address" placeholder="주소를 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">연락처:</label>
+                                    <input type="text" class="form-control" id="phone" placeholder="연락처를 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">이메일:</label>
+                                    <input type="email" class="form-control" id="email" placeholder="이메일을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="birthday">생년월일:</label>
+                                    <input type="date" class="form-control" id="birthday" placeholder="생년월일을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="gender">성별:</label>
+                                    <select class="form-control" id="gender">
+                                        <option>남</option>
+                                        <option>여</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">수정하기</button>
+                            </form>
+                        </div>
+                        <div id="petProfileSection" style="display:none;">
+                            <h3>펫 프로필</h3>
+                            <form>
+                                <div class="form-group">
+                                    <label for="petPhoto">펫 사진:</label>
+                                    <input type="file" class="form-control-file" id="petPhoto">
+                                </div>
+                                <div class="form-group">
+                                    <label for="petName">펫 이름:</label>
+                                    <input type="text" class="form-control" id="petName" placeholder="펫 이름을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="species">종:</label>
+                                    <input type="text" class="form-control" id="species" placeholder="종을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="petGender">성별:</label>
+                                    <select class="form-control" id="petGender">
+                                        <option>남</option>
+                                        <option>여</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="petBirthday">생일:</label>
+                                    <input type="date" class="form-control" id="petBirthday">
+                                </div>
+                                <div class="form-group">
+                                    <label for="weight">몸무게:</label>
+                                    <input type="number" class="form-control" id="weight" placeholder="몸무게를 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="character">성향:</label>
+                                    <textarea class="form-control" id="character" rows="3" placeholder="성향을 입력하세요"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">저장하기</button>
+                            </form>
+                        </div>
+                        <div id="usageHistorySection" style="display:none;">
+                            <h3>이용내역</h3>
+                            <!-- 현재 진행중인 내역 -->
+                            <div id="currentUsageSection">
+                                <h4>현재 진행중인 내역</h4>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">예약번호</th>
+                                        <th scope="col">날짜</th>
+                                        <th scope="col">서비스</th>
+                                        <th scope="col">상태</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>2024-08-01</td>
+                                        <td>펫 산책</td>
+                                        <td>진행중</td>
+                                    </tr>
+                                    <!-- 다른 진행중인 내역 추가 -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- 완료된 내역 -->
+                            <div id="completedUsageSection">
+                                <h4>완료된 내역</h4>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">예약번호</th>
+                                        <th scope="col">날짜</th>
+                                        <th scope="col">서비스</th>
+                                        <th scope="col">상태</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>2024-07-01</td>
+                                        <td>펫 미용</td>
+                                        <td>완료</td>
+                                    </tr>
+                                    <!-- 다른 완료된 내역 추가 -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="petSitterSection" style="display:none;">
+                            <h3>펫시터</h3>
+                            <form>
+                                <div class="form-group">
+                                    <label for="name">이름:</label>
+                                    <input type="text" class="form-control" id="name" placeholder="이름을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="birthday">생년월일:</label>
+                                    <input type="date" class="form-control" id="birthday" placeholder="생년월일을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ssn">주민등록번호 앞 7자리:</label>
+                                    <input type="text" class="form-control" id="ssn" placeholder="주민등록번호 앞 7자리를 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">연락처:</label>
+                                    <input type="text" class="form-control" id="phone" placeholder="연락처를 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="smoking">흡연 여부:</label>
+                                    <select class="form-control" id="smoking">
+                                        <option>예</option>
+                                        <option>아니오</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">거주지 주소:</label>
+                                    <input type="text" class="form-control" id="address" placeholder="거주지 주소를 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="currentJob">현재 하는 일:</label>
+                                    <input type="text" class="form-control" id="currentJob" placeholder="현재 하는 일을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="petExperience">반려 경험 유무:</label>
+                                    <select class="form-control" id="petExperience">
+                                        <option>예</option>
+                                        <option>아니오</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="certification">자격증:</label>
+                                    <input type="text" class="form-control" id="certification" placeholder="자격증을 입력하세요">
+                                </div>
+                                <button type="submit" class="btn btn-primary">등록하기</button>
+                            </form>
+                        </div>
+                        <!-- 섹션 추가 영역 끝 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen">
+        <svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                    stroke="#F96D00"/>
+        </svg>
+    </div>
+</div>
+</body>
+</html>
