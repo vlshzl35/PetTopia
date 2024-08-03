@@ -1,11 +1,10 @@
 name: Docker Image CI
 
 on:
-  pull_request_target:
-    branches:
-      - master
-    types:
-      - closed
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
 
 jobs:
   # 1. CI - 통합(build) 
@@ -63,6 +62,8 @@ jobs:
           -e "PROD_DB_URL=${{ secrets.PROD_DB_URL }}" \
           -e "PROD_DB_USERNAME=${{ secrets.PROD_DB_USERNAME }}" \
           -e "PROD_DB_PASSWORD=${{ secrets.PROD_DB_PASSWORD }}" \
+          -e "NCP_ACCESS_KEY=${{ secrets.NCP_ACCESS_KEY }}" \
+          -e "NCP_SECRET_KEY=${{ secrets.NCP_SECRET_KEY }}" \
           
           --name ${{ vars.APP_NAME }} \
           ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
