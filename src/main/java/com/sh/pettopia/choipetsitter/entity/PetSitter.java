@@ -1,6 +1,5 @@
 package com.sh.pettopia.choipetsitter.entity;
 
-import com.sh.pettopia.Hojji.member.entity.MemberEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,5 +34,6 @@ public class PetSitter {
     public void updatePetSitterPost(PetSitterPost petsitterPost) {
         this.petsitterPost = petsitterPost;
     }
+
 
 }
