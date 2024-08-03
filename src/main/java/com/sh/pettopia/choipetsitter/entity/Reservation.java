@@ -1,6 +1,6 @@
 package com.sh.pettopia.choipetsitter.entity;
 
-import com.sh.pettopia.Hojji.member.entity.MemberEntity;
+
 import jakarta.persistence.*;
 import jdk.jfr.Enabled;
 import lombok.*;
