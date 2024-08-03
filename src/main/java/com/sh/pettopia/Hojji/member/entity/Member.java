@@ -3,14 +3,14 @@ package com.sh.pettopia.Hojji.member.entity;
 
 import com.sh.pettopia.Hojji.common.Gender;
 import com.sh.pettopia.Hojji.pet.entity.Pet;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
+
 
 import java.util.Set;
 
