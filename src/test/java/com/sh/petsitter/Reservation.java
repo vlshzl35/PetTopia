@@ -1,8 +1,7 @@
-package com.sh.pettopia.petsitter;
+package com.sh.petsitter;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
 
@@ -25,14 +24,13 @@ public class Reservation {
     @Column(name = "end_dated")
     private LocalDate endDate; // 예약 종료시간
 
-    @ManyToOne
-    @JoinColumn(name = "petsitter_id") // tbl_review.restaurant_id컬럼(FK)으로 tbl_restaurant.id컬럼(PK)을 참조한다.
-    private PetSitterPost petSitterPost;
 
     @Column(name = "reservation_status")
     @Enumerated(EnumType.STRING)
     private ReservationStatus reservationStatus; // 예약 상태(요청대기, 요청수락, 요청취소, 돌봄중, 돌봄 완료)
 
-    // 회원 ID;
-    // 펫 ID;
+    // 어떤 펫시터에 대한 예약인가
+    @Column(name="petsitter_id")
+    private Long petsitterId;
+
 }

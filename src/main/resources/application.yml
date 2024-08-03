@@ -24,21 +24,17 @@ logging:
         hbm2ddl:
           auto: none
 
-# NCP 클라우드 설정
+  # NCP 클라우드 설정
 cloud:
   aws:
     credentials:
-      access-key: ${SPRING_ACCESS_KEY}
-      secret-key: ${SPRING_SECRET_KEY}
-    region:
-      static: kr-standard
-    stack:
-      auto: false
-    endpoint: https://kr.object.ncloudstorage.com
+      access-key: ${NCP_ACCESS_KEY}
+      secret-key: ${NCP_SECRET_KEY}
+
 
 application:
   bucket:
     name: pettopia-bucket
-#  user-id: ssgback3-3
+  #  user-id: ssgback3-3
 file:
   upload-dir: /path/to/upload/directory

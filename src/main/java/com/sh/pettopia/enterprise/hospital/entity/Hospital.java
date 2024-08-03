@@ -1,33 +1,22 @@
 package com.sh.pettopia.enterprise.hospital.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import com.sh.pettopia.enterprise.entity.Enterprise;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 
 @Entity
 @Table(name = "tbl_hospital")
 @Data
-@Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor
-@AllArgsConstructor
-public class Hospital {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "hospital_id")
-    private Long hospitalId;
-    @Column(name = "name")
-    private String name;
-    @Column(name = "phone")
-    private String phone;
-    @Column(name = "address")
-    private String address;
-    @Column(name = "office_hours")
-    private String officeHours;
-    @Column(name = "detail")
-    private String detail;
+@ToString
+public class Hospital extends Enterprise {
+    // 고유 pk없음
 
-    @Column(name = "review_id")
-    private Long reviewId;
-
-    private Hospital hospital;
+    public Hospital(int id, String name, String phone, String address, String officeHours) {
+        super(id, name, phone, address, officeHours);
+    }
 }

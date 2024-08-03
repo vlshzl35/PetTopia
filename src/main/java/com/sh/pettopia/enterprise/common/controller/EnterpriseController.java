@@ -1,4 +1,4 @@
-package com.sh.pettopia.enterprise.hospital.controller;
+package com.sh.pettopia.enterprise.common.controller;
 
 import groovy.util.logging.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @Slf4j
 @RequestMapping("/enterprise")
-public class HospitalController {
+public class EnterpriseController {
     @GetMapping("/hospitalreview")
     public void hospitalReview() {
 
