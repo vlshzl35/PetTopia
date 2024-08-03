@@ -53,9 +53,10 @@ public class Post {
     // 신고 횟수
     private int reportCount;
 
+    //Comment 클래스 안에 createAt = 현재 클래스 40번 줄과 컬럼값이 겹침
 //    private Long memberId;
-    @Embedded
-    private Comment comment;
+//    @Embedded
+//    private Comment comment;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
