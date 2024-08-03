@@ -7,45 +7,61 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-@Embeddable
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Set;
+
+@Entity
+@Table(name = "tbl_pet")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String petId;
+    @Column(name = "pet_id")
+    // auto_increment로 관리되는 petId
+    private Long petId;
 
-    @Column(name = "pet_name", nullable = false)
-    private String petName;
+    @Column(nullable = false)
+    // pet 이름
+    private String name;
 
-    @Column(name = "pet_age", nullable = false)
-    private String petAge;
+    @Column(nullable = false)
+    // pet age
+    private int age;
 
-    @Column(name = "pet_gender")
-    private Gender gender;
+    @Column(nullable = false)
+    private int weight;
 
-    @Column(name = "pet_birth", nullable = false)
-    private String petBirth;
+    @Column(name = "pet_gender", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PetGender petGender;
 
-    @Column(name = "pet_weight", nullable = false)
-    private int pet_weight;
+    @Column(nullable = false)
+    private LocalDate birth;
 
-    @Column(name = "pet_profile", nullable = false)
-    private String petProfile;
+    @Column(nullable = false)
+    private String profile;
 
     @Column(name = "is_neutered", nullable = false)
-    private boolean isNeutered;
+    private boolean neutered;
 
-    @Column(name = "is_vaccinated", nullable = false)
-    private VaccinationType vaccinationType;
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "tbl_pet_vaccination", joinColumns = @JoinColumn(name = "pet_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<VaccinationType> vaccinationType;
 
-    @Column(name = "pet_socialization", nullable = false)
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "tbl_pet_parsite_prevention", joinColumns = @JoinColumn(name = "pet_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<ParasitePrevention> parasitePrevention;
+
     private String socialization;
 
-    @Column(name = "pet_status", nullable = false)
+    @Column(nullable = false)
+    // 실종 상태를 변경하기 위함
     private PetStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
 }
