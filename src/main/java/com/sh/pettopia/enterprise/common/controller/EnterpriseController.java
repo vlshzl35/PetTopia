@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Slf4j
 @RequestMapping("/enterprise")
 public class EnterpriseController {
+
+    @GetMapping("/location")
+    public void location() {
+
+    }
     @GetMapping("/hospitalreview")
     public void hospitalReview() {
 

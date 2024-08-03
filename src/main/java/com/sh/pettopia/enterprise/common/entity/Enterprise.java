@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class Enterprise {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private int id; // 사업자 등록번호 (하지만 우리는 auto_increment)
     @Column(nullable = false)
     private String name; // 업체명
