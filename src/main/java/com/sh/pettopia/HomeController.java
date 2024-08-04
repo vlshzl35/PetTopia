@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class HomeController {
 
-    @Value("${profile.value}")
-    private String value;
 
 //    @GetMapping(path = "/", produces = MediaType.TEXT_HTML_VALUE)
 //    public ResponseEntity<?> home(){

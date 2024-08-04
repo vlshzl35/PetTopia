@@ -1,5 +1,8 @@
 # profile관리
 spring:
+  application:
+    name: pettopia
+
   profiles:
     default: test
 #    active: prod
@@ -23,6 +26,10 @@ logging:
         show_sql: true
         hbm2ddl:
           auto: none
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
 
   # NCP 클라우드 설정
 cloud:
