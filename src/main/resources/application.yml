@@ -46,6 +46,5 @@ application:
 file:
   upload-dir: /path/to/upload/directory
 
-kakaopay:
-  admin-key: 16091a7548fa162364eaec609653de3e
-  cid: TC0ONETIME
+my:
+  admin: 16091a7548fa162364eaec609653de3e

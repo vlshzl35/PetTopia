@@ -65,7 +65,8 @@ public class PayController {
 
         //KakaoCancelResponse kakaoCancelResponse = kakaoPayService.kakaoCancel();
 
-        return new ResponseEntity<>(kakaoCancelResponse, HttpStatus.OK);
+        //return new ResponseEntity<>(kakaoCancelResponse, HttpStatus.OK);
+        return null;
     }
 
 
