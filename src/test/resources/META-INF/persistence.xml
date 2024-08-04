@@ -3,8 +3,9 @@
     <persistence-unit name="pettopia">
         <!-- entity클래스는 여기서 반드시 등록후 사용한다. -->
 
-        <class>com.sh.pettopia.petsitter.PetSitterPost</class>
-        <class>com.sh.pettopia.petsitter.Reservation</class>
+        <class>com.sh.pettopia.choipetsitter.entity.PetSitter</class>
+        <class>com.sh.pettopia.choipetsitter.entity.PetSitterPost</class>
+        <class>com.sh.pettopia.choipetsitter.entity.Reservation</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/pettopiadb"/>
