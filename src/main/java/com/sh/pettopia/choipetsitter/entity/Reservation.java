@@ -45,4 +45,9 @@ public class Reservation {
     @Column(name="memeber_id")
     private Long memberId;
 
+    public void changeReservationStatus(ReservationStatus reservationStatus)
+    {
+        this.reservationStatus=reservationStatus;
+    }
+
 }
