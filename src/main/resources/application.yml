@@ -1,5 +1,8 @@
 # profile관리
 spring:
+  application:
+    name: pettopia
+
   profiles:
     default: test
 #    active: prod
@@ -24,6 +27,10 @@ logging:
         hbm2ddl:
           auto: none
 
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+
   # NCP 클라우드 설정
 cloud:
   aws:
@@ -38,3 +45,6 @@ application:
   #  user-id: ssgback3-3
 file:
   upload-dir: /path/to/upload/directory
+
+my:
+  admin: 16091a7548fa162364eaec609653de3e
