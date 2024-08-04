@@ -21,7 +21,7 @@ public class MemberEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_code")
     // Auto_increment로 부여받는 memberCode
-    private Long code;
+    private Long cod        ;
 
     @Column(name = "member_id", nullable = false) // notnull을 의미
     // 회원가입할 때 사용자가 입력한 Id, 로그인할 때 사용
