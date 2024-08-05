@@ -1,34 +1,24 @@
 package com.sh.pettopia.enterprise.salon.entity;
 
+
+import com.sh.pettopia.enterprise.common.entity.Enterprise;
+import com.sh.pettopia.enterprise.common.entity.Review;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name="salon")
+@Table(name = "tbl_salon")
 @Data
-@Setter(AccessLevel.PRIVATE) // new로 객체생성해야함
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class Salon {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int salonId;
-    @Column(nullable = false)
-    private String salonName; // 업체명
-    @Column(nullable = false)
-    private String salonPhone; // 전화번호
-    @Column(nullable = false)
-    private String salonAddress; // 주소
-    private String officeHours; // 영업시간
-    private String detail; // 더보기
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(
-            name = "popol",
-            joinColumns = @JoinColumn(name = "popol_id")
-    )
-    private Set<Popol> popols; // 포트폴리오 ID
+@ToString
+public class Salon extends Enterprise {
+
+    public Salon(int id, String name, String phone, String address, String officeHours, List<Review> reviews) {
+        super(id, name, phone, address, officeHours, reviews);
+    }
 }
+
 
