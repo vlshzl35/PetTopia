@@ -91,8 +91,8 @@
 
 <div layout:fragment="main" class="page-body">
     <section class="hero-wrap hero-wrap-2" style="background-image: url('/images/KakaoTalk_20240527_201110282.jpg');" data-stellar-background-ratio="0.5"> </section>
-    <form>
-        <form class="form-container">
+    <form id="careRegistration">
+        <form class="form-container" id="carecare">
             <div class="left-column">
                 <div class="form-group">
                     <label for="pet-select">펫 선택:</label>
@@ -143,7 +143,6 @@
                     <label for="daycare">당일 돌봄</label>
                 </div>
             </div>
-            <div class="right-column">
                 <div class="form-group">
                     <label for="start-date">시작 날짜:</label>
                     <input type="date" id="start-date" name="start-date">
@@ -152,23 +151,20 @@
                     <label for="end-date">종료 날짜:</label>
                     <input type="date" id="end-date" name="end-date">
                 </div>
-            </div>
-        </form>
 
-
+            <div class="right-column">
                 <form id="addressForm">
+                    <div class="form-group">
+
                     <label for="addressInput">주소 입력: </label>
                     <input type="text" id="addressInput" placeholder="주소를 입력하세요">
                     <button type="submit" id="searchButton">검색</button>
                     <div id="map" style="width:100%;height:350px;"></div>
-
+                </div>
                 </form>
-
+            </div>
+        </form>
     </form>
-
-
-
-
                 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c2c4e06dc64e84c36fa8af04a0f00306&libraries=services"></script>
                 <script>
                     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
@@ -183,7 +179,7 @@
                     // 주소-좌표 변환 객체를 생성합니다
                     var geocoder = new kakao.maps.services.Geocoder();
 
-                    document.getElementById('addressForm').addEventListener('submit', function(event) {
+                    document.getElementById('carecare').addEventListener('submit', function(event) {
                         event.preventDefault();  // 폼 제출에 의한 페이지 새로고침 방지
 
                         var address = document.getElementById('addressInput').value; // 사용자 입력값 가져오기
