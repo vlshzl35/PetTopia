@@ -1,0 +1,218 @@
+<!doctype html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/default}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>프로필 등록</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        #showImage {
+            width: 400px;
+            height: 300px;
+            background-color: lightgray;
+            border-radius: 20px 20px / 20px 20px;
+            overflow: hidden;
+            margin: 0px 10px 10px 0px;
+        }
+
+        img {
+            width: 150px;
+            height: 70px;
+            margin: 3%;
+        }
+
+        .petsize {
+            width: 220px;
+            height: 70px;
+            margin: 3%;
+        }
+
+        #showImage {
+            width: 300px; /* Set the width of the container */
+            height: 200px; /* Set the height of the container */
+            overflow: hidden;
+            position: relative;
+        }
+
+        #showImage img {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transition: transform 0.5s ease;
+        }
+
+        .slider-container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+        }
+
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            width: 30px;
+            height: 30px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            font-size: 20px;
+            z-index: 100;
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+        textarea {
+            width: 100%;
+            height: 7em;
+            border: 1px solid black;
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container" layout:fragment="main">
+    <h3>여기는 펫시터의 프로필 등록입니다</h3>
+
+    <form id="registFrm" method="post" enctype="multipart/form-data" style="align-items: center">
+        <h3>이미지 미리보기</h3>
+        <div class="slider-container">
+            <div class="prev" onclick="moveSlide(-1)">&#10094;</div>
+            <div id="showImage"></div>
+            <div class="next" onclick="moveSlide(1)">&#10095;</div>
+        </div>
+        <input type="file" onchange="loadFile(this)" name="upFile" multiple>
+        <!--    name="upFile" 이걸로 controller에서 값을 찾음-->
+
+
+        <div class="form-group">
+            <h3>소개</h3>
+            <div class="input-group">
+                <label for="introduce">
+                </label>
+                <textarea name="introduce" id="introduce"
+                                  placeholder="소개글을 입력해주세요"></textarea>
+            </div>
+        </div>
+        <div class="container-fluid" id="avilableservice">
+            <div class="container" style="border: 1px solid black">
+                <div class="container-fluid">
+                    <img src="/images/availableService/everydaywalk.PNG" alt="매일산책">
+                    <input type="checkbox" name="everydaywalk" id="everydaywalk">
+                    <img src="/images/availableService/oldpetwalk.PNG" alt="노견산책">
+                    <input type="checkbox" name="oldpetwalk" id="oldpetwalk">
+                    <img src="/images/availableService/youngerpetwalk.PNG" alt="어린견산책">
+                    <input type="checkbox" name="youngerpetwalk" id="youngerpetwalk">
+                </div>
+                <div class="container-fluid">
+                    <img src="/images/availableService/play.PNG" alt="실내놀이">
+                    <input type="checkbox" name="play" id="play" alt="">
+                    <img src="/images/availableService/firstaid.PNG" alt="응급처치">
+                    <input type="checkbox" name="firstaid" id="firstaid">
+                    <img src="/images/availableService/pickup.PNG" alt="도보픽업">
+                    <input type="checkbox" name="pickup" id="walkpickup">
+                </div>
+                <div class="container-fluid">
+                    <img src="/images/availableService/brush.PNG" alt="모발관리">
+                    <input type="checkbox" name="brush" id="brush">
+                    <img src="/images/availableService/medicine.PNG" alt="약먹이기">
+                    <input type="checkbox" name="medicine" id="medicine">
+                    <img src="/images/availableService/longreservation.PNG" alt="장기예약">
+                    <input type="checkbox" name="longreservation" id="longreservation">
+                </div>
+
+            </div>
+            <div style="border: 1px solid black; display: block;" id="availablepetsize">
+                <img src="/images/availableService/smallpet.PNG" alt="" class="petsize">
+                <input type="checkbox" name="smallpet" id="smallpet">
+                <img src="/images/availableService/middlepet.PNG" alt="" class="petsize">
+                <input type="checkbox" name="middlepet" id="middlepet">
+                <img src="/images/availableService/largepet.PNG" alt="" class="petsize">
+                <input type="checkbox" name="largepet" id="largepet">
+            </div>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">제출</button>
+    </form>
+    <script>
+        let currentIndex = 0;
+        const images = [];
+
+        function loadFile(input) {
+            const files = input.files;
+            const showImageDiv = document.getElementById('showImage');
+
+            if (showImageDiv.querySelector('img')) {
+                showImageDiv.innerHTML = ''; // Clear existing images
+            }
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const newImage = document.createElement("img");
+                newImage.src = URL.createObjectURL(file);
+                newImage.style.transform = `translateX(${currentIndex * -100}%)`;
+                images.push(newImage);
+                showImageDiv.append(newImage);
+            }
+        }
+
+        function moveSlide(step) {
+            const showImageDiv = document.getElementById('showImage');
+            currentIndex = (currentIndex + step + images.length) % images.length;
+            images.forEach((img, index) => {
+                img.style.transform = `translateX(${(index - currentIndex) * 100}%)`;
+            });
+        }
+    </script>
+    <!--    <script>-->
+    <!--        function loadFile(input) {-->
+    <!--            const file = input.files[0]; // 선택된 파일 가져오기-->
+
+    <!--            const newImage = document.createElement("img"); //새 이미지 추가-->
+
+    <!--            //이미지 source 가져오기-->
+    <!--            newImage.src = URL.createObjectURL(file);-->
+    <!--            newImage.id = "img-id"-->
+    <!--            newImage.style.width = "100%";-->
+    <!--            newImage.style.height = "100%";-->
+    <!--            newImage.style.objectFit = "cover";-->
+
+    <!--            //이미지를 showImageDiv div에 추가-->
+    <!--            console.log(newImage.src, newImage.id);-->
+    <!--            const showImageDiv = document.getElementById('showImage');-->
+    <!--            if (showImageDiv.querySelector('img')) // 이미지를 출력하는 공간안에 img쿼리 셀렉터가 있는지 확인-->
+    <!--            {-->
+    <!--                showImageDiv.removeChild(showImageDiv.querySelector('img')); // 출력되는 div에 이미 올라가있는 이미지가 있으면 삭제를 한다-->
+    <!--            }-->
+    <!--            showImageDiv.append(newImage); // 출력되는 div 공간에 만들어진 image태그를 showImage에 append를 한다-->
+    <!--            // 이미지 태그를 새로 만들어, div태그에 append하기 때문에 if문에서 삭제를 안해주면 그 아래로 계속 append가 된다-->
+    <!--            //-->
+
+    <!--        }-->
+    <!--    </script>-->
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
+</div>
+
+</body>
+</html>

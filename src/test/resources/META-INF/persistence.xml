@@ -4,13 +4,12 @@
         <!-- entity클래스는 여기서 반드시 등록후 사용한다. -->
 
         <class>com.sh.pettopia.choipetsitter.entity.PetSitter</class>
-        <class>com.sh.pettopia.choipetsitter.entity.PetSitterPost</class>
         <class>com.sh.pettopia.choipetsitter.entity.Reservation</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/pettopiadb"/>
-            <property name="jakarta.persistence.jdbc.user" value="sh"/>
-            <property name="jakarta.persistence.jdbc.password" value="sh"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://ssg-java3.iptime.org:3306/pettopiadb_test"/>
+            <property name="jakarta.persistence.jdbc.user" value="pettopia-db"/>
+            <property name="jakarta.persistence.jdbc.password" value="pettopia-db"/>
             <!-- 실행하는 sql구문을 여러줄에 걸쳐 확인하기 위한 속성 -->
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>

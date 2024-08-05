@@ -5,13 +5,13 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import org.junit.jupiter.api.*;
 
-public class PetSitterTest {
+public class PetsitterTest {
     private static EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
 
     @BeforeAll
     static void beforeAll() {
-        entityManagerFactory = Persistence.createEntityManagerFactory("pettopia");
+        entityManagerFactory = Persistence.createEntityManagerFactory("jpatest");
     }
 
     @BeforeEach
@@ -30,10 +30,11 @@ public class PetSitterTest {
     static void afterAll() {
         entityManagerFactory.close();
     }
-    @Test
-    @DisplayName("ddl-auto=create 확인")
-    void test() {
-    }
 
+    @Test
+    @DisplayName("auto-create")
+    void test1() {
+
+    }
 
 }
