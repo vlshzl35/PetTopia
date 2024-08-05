@@ -4,6 +4,7 @@ package com.sh.pettopia.choipetsitter.entity;
 import jakarta.persistence.*;
 import jdk.jfr.Enabled;
 import lombok.*;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
@@ -38,12 +39,13 @@ public class Reservation {
     private ReservationStatus reservationStatus; // 예약 상태(요청대기, 요청수락, 요청취소, 돌봄중, 돌봄 완료)
 
     // 어떤 펫시터에 대한 예약인가
-    @Column(name="petsitter_id")
-    private Long petsitterId;
-
-    // 어떤 회원이 예약을 신청 했는가
-    @Column(name="memeber_id")
+    @Column(name="member_id")
     private Long memberId;
+
+    // 어떤
+    @Column(name = "petsitter_id")
+    private String petSitter_id;
+
 
     public void changeReservationStatus(ReservationStatus reservationStatus)
     {
