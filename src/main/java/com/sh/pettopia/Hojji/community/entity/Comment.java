@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Embeddable
 @Data
@@ -17,7 +18,7 @@ public class Comment {
     // 내용
     private String content;
     // 등록 일자
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
     // 수정 일자
     private Timestamp updatedAt;
 }

@@ -25,7 +25,8 @@ logging:
         format_sql: true
         show_sql: true
         hbm2ddl:
-          auto: none
+#          auto: none
+          auto: create # update, create, create-drp, validate 중 선택
 
   thymeleaf:
     prefix: classpath:/templates/
