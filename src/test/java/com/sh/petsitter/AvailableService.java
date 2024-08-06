@@ -1,5 +1,24 @@
 package com.sh.petsitter;
 
 public enum AvailableService {
-    퍼피산책케어, 노견산책케어, 매일산책, 약물복용, 도보픽업, 실내놀이, 응급처치, 장기예약, 모발관리
+
+    oldpetwalk("노견산책")
+    , youngerpetwalk("어린견산책")
+    , everydaywalk("매일산책")
+    , medicine("약먹이기")
+    , walkpickup("도보픽업")
+    , play("실내놀이")
+    , firstaid("응급처치")
+    , longreservation("장기예약")
+    , brush("모발관리");
+
+    private final String petService;
+
+    AvailableService(String petService){
+        this.petService=petService;
+    }
+
+    public String getPetService(){
+        return petService;
+    }
 }

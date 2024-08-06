@@ -15,10 +15,9 @@ import java.util.Set;
 @Builder
 public class PetSitter {
     // 펫 시터의 대한 프로필
-    // 회원과 1:1이므로 @OnetoOne를 써야 한다
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long petSitterId;
+    private Long petSitterId; // 회원의 아이디이다
 
     @Column(name = "introduce")
     private String introduce; // 가벼운 소개
@@ -42,6 +41,7 @@ public class PetSitter {
     @Enumerated(EnumType.STRING)
     @ElementCollection
     private Set<AvailableService> availableService;
+
     public void changeIntroduce(String introduce)
     {
         this.introduce=introduce;

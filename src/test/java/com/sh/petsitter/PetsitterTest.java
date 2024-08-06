@@ -11,7 +11,7 @@ public class PetsitterTest {
 
     @BeforeAll
     static void beforeAll() {
-        entityManagerFactory = Persistence.createEntityManagerFactory("jpatest");
+        entityManagerFactory = Persistence.createEntityManagerFactory("pettopia");
     }
 
     @BeforeEach

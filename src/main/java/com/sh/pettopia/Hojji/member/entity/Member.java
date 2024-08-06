@@ -24,7 +24,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_code")
     // Auto_increment로 부여받는 memberCode
-    private Long cod        ;
+    private Long code;
     @Column(name = "member_id")
     // Auto_increment로 부여받는 memberId
     private Long memberId;
