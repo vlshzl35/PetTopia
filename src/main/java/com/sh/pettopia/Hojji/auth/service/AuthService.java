@@ -2,7 +2,7 @@ package com.sh.pettopia.Hojji.auth.service;
 
 import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
-import com.sh.pettopia.Hojji.user.member.repositoory.MemberRepository;
+import com.sh.pettopia.Hojji.user.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
