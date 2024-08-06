@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "petsitter")
 @Table(name = "tbl_petsitter")
@@ -19,16 +20,59 @@ public class PetSitter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long petSitterId;
 
-    @Embedded
-    private PetSitterPost petsitterPost;
+    @Column(name = "introduce")
+    private String introduce; // 가벼운 소개
 
-    public void registerPetSitterPost(PetSitterPost petsitterPost) {
-        this.petsitterPost = petsitterPost;
+    @Column(name ="url")
+    private String url; // 홍보글 url
+
+    @Column(name = "images_url_list")
+    @ElementCollection
+    private List<String> images_url_list;
+
+    // 시터가능한 반려견 사이즈 (대,중,소)
+
+    @Column(name = "available_pet_size")
+    @Enumerated(EnumType.STRING)
+    @ElementCollection
+    private Set<AvailablePetSize> availablePetSize;
+    // 이용가능한 서비스 ( 빗질, 산책, 약 먹이기, 등등...)
+
+    @Column(name = "available_service")
+    @Enumerated(EnumType.STRING)
+    @ElementCollection
+    private Set<AvailableService> availableService;
+    public void changeIntroduce(String introduce)
+    {
+        this.introduce=introduce;
     }
 
-    public void updatePetSitterPost(PetSitterPost petsitterPost) {
-        this.petsitterPost = petsitterPost;
+    public void changeAvailablePetSize(AvailablePetSize availablePetSize)
+    {
+        this.availablePetSize.add(availablePetSize);
     }
 
-    // 회원과 1:1이므로 @OnetoOne를 써야 한다
+    public void removeAvailablePetSize(AvailablePetSize availablePetSize)
+    {
+        this.availablePetSize.remove(availablePetSize);
+    }
+
+    public void changeAvailableService(AvailableService availableService)
+    {
+        this.availableService.add(availableService);
+    }
+
+    public void removeAvailableService(AvailableService availableService)
+    {
+        this.availableService.remove(availableService);
+    }
+
+    public void dtoToEntity(String introduce, String url, List<String> images_url_list, Set<AvailablePetSize> availablePetSize, Set<AvailableService> availableService) {
+        this.introduce = introduce;
+        this.url = url;
+        this.images_url_list = images_url_list;
+        this.availablePetSize = availablePetSize;
+        this.availableService = availableService;
+    }
+
 }

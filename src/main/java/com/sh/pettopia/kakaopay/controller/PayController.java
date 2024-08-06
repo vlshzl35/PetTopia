@@ -26,19 +26,16 @@ public class PayController {
         log.info("quantity: " + params.get("quantity"));
         log.info("total_amount: " + params.get("total_amount"));
         log.info("tax_free_amount: " + params.get("tax_free_amount"));
-        // 서로 다른 견종을 여러마리 할 때를 생각해야 한다
 
         KakaoPayReadyResponse readyResponse = payService.kakaoPayReady(params); //kakaoPay 요청양식에 따라 요청객체 만들어 보내는 메서드(밑에서 구현)
         log.info(readyResponse.toString()); //kakaoPay가 준비요청 후 보내준 정보 확인
-        return readyResponse;
+        return readyResponse; // 결제 페이지를 준다
     }
 
     @GetMapping("/success")
     public String kakaoPayApprove(@RequestParam("pg_token") String pgToken) { //pgToken 알아서 들어온다
         KakaoApproveResponse approveResponse = payService.kakaoPayApprove(pgToken); //kakaoPay 요청양식에 따라 요청객체 만들어 보내는 메서드(밑에서 구현)
-        return "pay_completed.html";
-        //결제 승인 후 redirect 할 페이지 (알아서 구현)
-
+        return "/successpay"; //결제 승인 후 redirect 할 페이지 (알아서 구현)
     }
 
     // 결제 취소

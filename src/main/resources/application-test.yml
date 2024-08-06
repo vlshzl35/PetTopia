@@ -8,4 +8,17 @@ spring:
     username: ${TEST_DB_USERNAME}
     password: ${TEST_DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-
+  jpa:
+    show-sql: true
+    generate-ddl: false
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        format_sql: true
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type: trace
