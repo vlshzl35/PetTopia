@@ -1,5 +1,24 @@
 package com.sh.petsitter;
 
+import lombok.Getter;
+
+@Getter
 public enum AvailableService {
-    퍼피산책케어, 노견산책케어, 매일산책, 약물복용, 도보픽업, 실내놀이, 응급처치, 장기예약, 모발관리
+
+    노견산책("olderPetWalk")
+    , 어린견산책("youngerPetWalk")
+    , 매일산책("everydayWalk")
+    , 약먹이기("medicine")
+    , 도보픽업("walkPickup")
+    , 실내놀이("play")
+    , 응급처치("firstAid")
+    , 장기예약("longReservation")
+    , 모발관리("brush");
+
+    private final String petService;
+
+    AvailableService(String petService){
+        this.petService=petService;
+    }
+
 }
