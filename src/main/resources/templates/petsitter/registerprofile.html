@@ -79,6 +79,7 @@
         .next {
             right: 10px;
         }
+
         textarea {
             width: 100%;
             height: 7em;
@@ -90,17 +91,25 @@
 <body>
 <div class="container" layout:fragment="main">
     <h3>여기는 펫시터의 프로필 등록입니다</h3>
-
-    <form id="registFrm" method="post" enctype="multipart/form-data" style="align-items: center">
+    <form id="registFrm" method="post" enctype="multipart/form-data">
         <h3>이미지 미리보기</h3>
         <div class="slider-container">
             <div class="prev" onclick="moveSlide(-1)">&#10094;</div>
             <div id="showImage"></div>
             <div class="next" onclick="moveSlide(1)">&#10095;</div>
         </div>
-        <input type="file" onchange="loadFile(this)" name="upFile" multiple>
+        <input type="file" onchange="loadFile(this)" name="files" multiple>
         <!--    name="upFile" 이걸로 controller에서 값을 찾음-->
 
+
+        <div>
+<!--            주소 찾기, 등록-->
+            <input type="text" id="postcode" placeholder="우편번호" name="postcode" >
+            <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+            <input type="text" id="address" placeholder="주소" name="address"><br>
+            <input type="text" id="detailAddress" placeholder="상세주소" name="detailAddress" >
+            <input type="text" id="extraAddress" placeholder="참고항목" name="extraAddress" >
+        </div>
 
         <div class="form-group">
             <h3>소개</h3>
@@ -108,44 +117,44 @@
                 <label for="introduce">
                 </label>
                 <textarea name="introduce" id="introduce"
-                                  placeholder="소개글을 입력해주세요"></textarea>
+                          placeholder="소개글을 입력해주세요"></textarea>
             </div>
         </div>
-        <div class="container-fluid" id="avilableservice">
+        <div class="container-fluid" id="availableService">
             <div class="container" style="border: 1px solid black">
                 <div class="container-fluid">
                     <img src="/images/availableService/everydaywalk.PNG" alt="매일산책">
-                    <input type="checkbox" name="everydaywalk" id="everydaywalk">
-                    <img src="/images/availableService/oldpetwalk.PNG" alt="노견산책">
-                    <input type="checkbox" name="oldpetwalk" id="oldpetwalk">
+                    <input type="checkbox" name="availableService" value="매일산책">
+                    <img src="/images/availableService/oldpetwalk.PNG" alt="노견산책" >
+                    <input type="checkbox" name="availableService"  value="노견산책">
                     <img src="/images/availableService/youngerpetwalk.PNG" alt="어린견산책">
-                    <input type="checkbox" name="youngerpetwalk" id="youngerpetwalk">
+                    <input type="checkbox" name="availableService"  value="어린견산책">
                 </div>
                 <div class="container-fluid">
                     <img src="/images/availableService/play.PNG" alt="실내놀이">
-                    <input type="checkbox" name="play" id="play" alt="">
+                    <input type="checkbox" name="availableService"  alt="" value="실내놀이">
                     <img src="/images/availableService/firstaid.PNG" alt="응급처치">
-                    <input type="checkbox" name="firstaid" id="firstaid">
+                    <input type="checkbox" name="availableService"  value="응급처치">
                     <img src="/images/availableService/pickup.PNG" alt="도보픽업">
-                    <input type="checkbox" name="pickup" id="walkpickup">
+                    <input type="checkbox" name="availableService"  value="도보픽업">
                 </div>
                 <div class="container-fluid">
                     <img src="/images/availableService/brush.PNG" alt="모발관리">
-                    <input type="checkbox" name="brush" id="brush">
+                    <input type="checkbox" name="availableService" value="모발관리">
                     <img src="/images/availableService/medicine.PNG" alt="약먹이기">
-                    <input type="checkbox" name="medicine" id="medicine">
+                    <input type="checkbox" name="availableService" value="약먹이기">
                     <img src="/images/availableService/longreservation.PNG" alt="장기예약">
-                    <input type="checkbox" name="longreservation" id="longreservation">
+                    <input type="checkbox" name="availableService"  value="장기예약">
                 </div>
 
             </div>
-            <div style="border: 1px solid black; display: block;" id="availablepetsize">
+            <div style="border: 1px solid black; display: block;" id="availablePetSize">
                 <img src="/images/availableService/smallpet.PNG" alt="" class="petsize">
-                <input type="checkbox" name="smallpet" id="smallpet">
+                <input type="checkbox" name="availablePetSize" id="smallpet" value="소형견">
                 <img src="/images/availableService/middlepet.PNG" alt="" class="petsize">
-                <input type="checkbox" name="middlepet" id="middlepet">
+                <input type="checkbox" name="availablePetSize" id="middlepet" value="중형견">
                 <img src="/images/availableService/largepet.PNG" alt="" class="petsize">
-                <input type="checkbox" name="largepet" id="largepet">
+                <input type="checkbox" name="availablePetSize" id="largepet" value="대형견">
             </div>
         </div>
 
@@ -181,33 +190,60 @@
                 img.style.transform = `translateX(${(index - currentIndex) * 100}%)`;
             });
         }
+
     </script>
-    <!--    <script>-->
-    <!--        function loadFile(input) {-->
-    <!--            const file = input.files[0]; // 선택된 파일 가져오기-->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        function sample6_execDaumPostcode() {
+            new daum.Postcode({
+                oncomplete: function (data) {
+                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-    <!--            const newImage = document.createElement("img"); //새 이미지 추가-->
+                    // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                    var addr = ''; // 주소 변수
+                    var extraAddr = ''; // 참고항목 변수
 
-    <!--            //이미지 source 가져오기-->
-    <!--            newImage.src = URL.createObjectURL(file);-->
-    <!--            newImage.id = "img-id"-->
-    <!--            newImage.style.width = "100%";-->
-    <!--            newImage.style.height = "100%";-->
-    <!--            newImage.style.objectFit = "cover";-->
+                    //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        addr = data.roadAddress;
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        addr = data.jibunAddress;
+                    }
 
-    <!--            //이미지를 showImageDiv div에 추가-->
-    <!--            console.log(newImage.src, newImage.id);-->
-    <!--            const showImageDiv = document.getElementById('showImage');-->
-    <!--            if (showImageDiv.querySelector('img')) // 이미지를 출력하는 공간안에 img쿼리 셀렉터가 있는지 확인-->
-    <!--            {-->
-    <!--                showImageDiv.removeChild(showImageDiv.querySelector('img')); // 출력되는 div에 이미 올라가있는 이미지가 있으면 삭제를 한다-->
-    <!--            }-->
-    <!--            showImageDiv.append(newImage); // 출력되는 div 공간에 만들어진 image태그를 showImage에 append를 한다-->
-    <!--            // 이미지 태그를 새로 만들어, div태그에 append하기 때문에 if문에서 삭제를 안해주면 그 아래로 계속 append가 된다-->
-    <!--            //-->
+                    // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                    if (data.userSelectedType === 'R') {
+                        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                        if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                            extraAddr += data.bname;
+                        }
+                        // 건물명이 있고, 공동주택일 경우 추가한다.
+                        if (data.buildingName !== '' && data.apartment === 'Y') {
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                        if (extraAddr !== '') {
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                        // 조합된 참고항목을 해당 필드에 넣는다.
+                        document.getElementById("extraAddress").value = extraAddr;
 
-    <!--        }-->
-    <!--    </script>-->
+                    } else {
+                        document.getElementById("extraAddress").value = '';
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById('postcode').value = data.zonecode;
+                    document.getElementById("address").value = addr;
+                    // 커서를 상세주소 필드로 이동한다.
+                    document.getElementById("detailAddress").focus();
+                }
+            }).open();
+        }
+    </script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
     <script
             src="https://code.jquery.com/jquery-3.7.1.js"
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
