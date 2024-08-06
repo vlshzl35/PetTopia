@@ -18,8 +18,8 @@ import java.util.List;
 @ToString
 public class Salon extends Enterprise {
 
-    public Salon(int entId, String entName, String entPhone, String entAddress, String OfficeHours, List<Review> entReviews) {
-        super(entId, entName, entPhone, entAddress, OfficeHours, entReviews);
+    public Salon(Long entId, String entName, String entPhone, String entAddress, String officeHours) {
+        super(entId, entName, entPhone, entAddress, officeHours);
     }
 }
 
