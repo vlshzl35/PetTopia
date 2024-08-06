@@ -20,8 +20,7 @@ public class Hospital extends Enterprise {
     // 고유 pk없음
 
 
-    public Hospital(int entId, String entName, String entPhone, String entAddress, String OfficeHours, List<Review> entReviews) {
-        super(entId, entName, entPhone, entAddress, OfficeHours, entReviews);
+    public Hospital(Long entId, String entName, String entPhone, String entAddress, String officeHours) {
+        super(entId, entName, entPhone, entAddress, officeHours);
     }
-
 }

@@ -1,10 +1,12 @@
 package com.sh.pettopia.enterprise.repository;
 
-import com.sh.pettopia.enterprise.entity.Enterprise;
+
+import com.sh.pettopia.enterprise.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public  interface EnterpriseRepository extends JpaRepository<Enterprise, Long> {
-
+public interface ReviewRepository extends JpaRepository<Review, Long> {
+    // 추가적인 쿼리 메서드 정의
 }
+
