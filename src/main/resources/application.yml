@@ -11,6 +11,7 @@ spring:
       enabled: true
       max-file-size: 10MB
       max-request-size: 10MB
+      location: build/resources/main/static/ocr
 
 logging:
   level:
@@ -48,3 +49,10 @@ file:
 
 my:
   admin: 16091a7548fa162364eaec609653de3e
+
+  # OCR 관련 설정
+naver:
+  clova-ocr:
+    document:
+      url: https://ajyqmi57wp.apigw.ntruss.com/custom/v1/33275/1211f29f3558eeccd1846ebd1e703c05e37a8295a4fcbca282d3bf85a4c43902/document/receipt
+      secretKey: bmdZYXFQaXp1YnJQTk1FV0hNdXlRaHh3RFZ2alp5ZE8=
