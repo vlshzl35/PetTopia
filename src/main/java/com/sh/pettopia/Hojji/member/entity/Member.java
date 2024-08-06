@@ -22,9 +22,9 @@ import java.util.Set;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_code")
-    // Auto_increment로 부여받는 memberCode
-    private Long cod        ;
+//    @Column(name = "member_code")
+//    // Auto_increment로 부여받는 memberCode
+//    private Long cod        ;
     @Column(name = "member_id")
     // Auto_increment로 부여받는 memberId
     private Long memberId;
