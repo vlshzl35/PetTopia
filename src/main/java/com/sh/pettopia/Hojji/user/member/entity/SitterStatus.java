@@ -1,4 +1,4 @@
-package com.sh.pettopia.Hojji.member.entity;
+package com.sh.pettopia.Hojji.user.member.entity;
 
 public enum SitterStatus  {
     NONE,         // 역할 없음

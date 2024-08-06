@@ -11,18 +11,18 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="/css/animate.css">
 
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
-    <link rel="stylesheet" href="css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/css/magnific-popup.css">
 
 
-    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
-    <link rel="stylesheet" href="css/jquery.timepicker.css">
+    <link rel="stylesheet" href="/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="/css/jquery.timepicker.css">
 
-    <link rel="stylesheet" href="css/flaticon.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/flaticon.css">
+    <link rel="stylesheet" href="/css/style.css">
 
 
 
@@ -47,21 +47,21 @@
                         <div class="row no-gutters">
                             <div class="col-md">
                                 <div class="contact-wrap w-100 p-md-5 p-4">
-                                    <form method="POST" id="contactForm" name="contactForm" class="contactForm">
+                                    <form th:action = "@{/auth/login}" th:method="post" id="contactForm" name="contactForm" class="contactForm">
                                         <!-- 아이디 -->
                                         <div class="mb-3">
                                             <label for="exampleFormControlInput1" class="form-label"><h2>아이디</h2>
                                             </label>
-                                            <input type="email" class="form-control" id="exampleFormControlInput1"
-                                                   placeholder="아이디를 입력해주세요">
+                                            <input type="text" class="form-control" id="exampleFormControlInput1"
+                                                   placeholder="아이디를 입력해주세요" name = "username" required>
                                         </div>
 
                                         <!-- 비밀번호 -->
                                         <div class="mb-3">
-                                            <label for="exampleFormControlInput1" class="form-label"><h2>비밀번호</h2>
+                                            <label for="exampleFormControlInput2" class="form-label"><h2>비밀번호</h2>
                                             </label>
-                                            <input type="email" class="form-control" id="exampleFormControlInput1"
-                                                   placeholder="비밀번호를 입력해주세요">
+                                            <input type="password" class="form-control" id="exampleFormControlInput2"
+                                                   placeholder="비밀번호를 입력해주세요" name = "password" required>
                                         </div>
                                         <div class="d-flex justify-content-between">
 
@@ -73,7 +73,6 @@
                                                 <label class="label">아이디 찾기 | 비밀번호 찾기</label>
                                             </div>
                                         </div>
-
 
                                         <div class="row">
                                             <div class="col-md-12">
@@ -87,7 +86,7 @@
                                     </form>
 
                                     <div>
-                                        <a th:href="@{/member/signup1}">
+                                        <a th:href="@{/member/termsOfService}">
                                         <input type="button" style="color : black" value="회원 가입"
                                                class="btn btn-light" >
                                         <div class="submitting"></div>
