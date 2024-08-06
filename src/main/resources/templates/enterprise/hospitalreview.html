@@ -43,6 +43,55 @@
             <p>영업 시간 : </p>
             <p>병원 소개 : </p>
             <p>해당 병원 링크 ~~ </p>
+
+            <h1>Spring App w/ OCR API</h1>
+            <form name="fileUploadFrm" method="post">
+              <select name="type">
+                <option value="general">일반</option>
+                <option value="template">템플릿</option>
+              </select>
+              <input type="file" name="file" accept="image/*" required/>
+              <button type="submit">Upload</button>
+            </form>
+<!--            <h3>OCR 결과</h3>-->
+<!--            <div id="target"></div>-->
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <script>
+              document.fileUploadFrm.onsubmit = (e) => {
+                e.preventDefault();
+
+                // multipart/form-data 비동기 요청
+                const frmData = new FormData(e.target);
+                console.log('type = ', frmData.get('type'));
+                console.log('file = ', frmData.get('file'));
+
+                $.ajax({
+                  url : `[[@{/ocrUpload}]]`,
+                  method : 'post',
+                  data : frmData,
+                  contentType : false, // multipart/form-data 설정
+                  processData : false, // multipart/form-data 설정
+                  success(response) {
+                    console.log(response);
+                    const {message, data} = response;
+                    alert(message);
+                    const _data = JSON.parse(data);
+                    console.log(_data);
+
+                    // const {images : [{
+                    //   fields
+                    // }]} = _data;
+
+                  },
+                  error : console.log,
+                  complete() {
+                    e.target.reset(); // 폼 초기화
+                  }
+                })
+              };
+            </script>
+
             <h2 class="mb-3 mt-5">#2. 적어주세요</h2>
             <p>
               <img src="images/image_2.jpg" alt="" class="img-fluid">
