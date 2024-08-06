@@ -3,8 +3,12 @@ package com.sh.pettopia.Hojji.user.member.entity;
 
 import com.sh.pettopia.Hojji.user.User;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+
 import java.time.LocalDate;
 
 

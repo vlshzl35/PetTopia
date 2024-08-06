@@ -2,7 +2,8 @@ package com.sh.pettopia.Hojji.user.member.service;
 
 import com.sh.pettopia.Hojji.user.member.dto.MemberRegistRequestDto;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
-import com.sh.pettopia.Hojji.user.member.repositoory.MemberRepository;
+
+import com.sh.pettopia.Hojji.user.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

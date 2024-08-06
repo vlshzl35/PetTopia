@@ -3,8 +3,6 @@ package com.sh.pettopia.Hojji.user.member.dto;
 import com.sh.pettopia.Hojji.common.Gender;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import com.sh.pettopia.Hojji.user.member.entity.SitterStatus;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
