@@ -1,5 +1,6 @@
 package com.sh.pettopia.Hojji.community.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.GeneratedValue;
 import lombok.AllArgsConstructor;
@@ -16,9 +17,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Comment {
     // 내용
-    private String content;
+    @Column(name = "comment_content",nullable = false)
+    private String commentContent;
+
     // 등록 일자
-    private LocalDateTime createdAt;
+    @Column(name = "comment_created_at")
+    private Timestamp createdAt;
+
     // 수정 일자
+    @Column(name = "comment_updated_at")
     private Timestamp updatedAt;
 }
