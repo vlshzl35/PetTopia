@@ -17,7 +17,7 @@ public class PetSitter {
     // 펫 시터의 대한 프로필
 
     @Id
-    private Long petSitterId; // 회원의 아이디이다
+    private String  petSitterId; // 회원의 아이디이다
 
     @Column(name = "introduce")
     private String introduce; // 가벼운 소개
@@ -27,7 +27,7 @@ public class PetSitter {
 
     @Column(name = "images_url_list")
     @ElementCollection
-    private List<String> imagesUrlList;
+    private List<String> images_url_list;
 
     // 시터가능한 반려견 사이즈 (대,중,소)
 
@@ -41,6 +41,9 @@ public class PetSitter {
     @Enumerated(EnumType.STRING)
     @ElementCollection
     private Set<AvailableService> availableService;
+
+    @Embedded
+    private PetSitterAddress petSitterAddress;
 
     public void changeIntroduce(String introduce)
     {
@@ -67,12 +70,14 @@ public class PetSitter {
         this.availableService.remove(availableService);
     }
 
-    public void dtoToEntity(String introduce, String url, List<String> images_url_list, Set<AvailablePetSize> availablePetSize, Set<AvailableService> availableService) {
+    public void dtoToEntity(String introduce, String url, List<String> images_url_list, Set<AvailablePetSize> availablePetSize, Set<AvailableService> availableService,
+                            PetSitterAddress petSitterAddress) {
         this.introduce = introduce;
         this.url = url;
-        this.imagesUrlList = images_url_list;
+        this.images_url_list = images_url_list;
         this.availablePetSize = availablePetSize;
         this.availableService = availableService;
+        this.petSitterAddress=petSitterAddress;
     }
 
 }

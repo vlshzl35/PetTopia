@@ -1,17 +1,13 @@
 package com.sh.petsitter;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Enumerated;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 
-@Entity(name = "sitting")
-@Table(name = "tbl_sitting")
 public class Sitting {
-    @Id
-    @Column(name = "sitting_id")
-    private Long sittingId;
     @Column(name = "start_date")
     @CreationTimestamp
     private LocalDate startDate; //

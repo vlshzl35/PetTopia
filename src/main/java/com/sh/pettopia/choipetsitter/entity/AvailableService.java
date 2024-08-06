@@ -1,15 +1,18 @@
 package com.sh.pettopia.choipetsitter.entity;
 
+import lombok.Getter;
+
+@Getter
 public enum AvailableService {
 
-    oldpetwalk("노견산책")
-    , youngerpetwalk("어린견산책")
-    , everydaywalk("매일산책")
-    , medicine("약먹이기")
-    , walkpickup("도보픽업")
-    , play("실내놀이")
-    , firstaid("응급처치")
-    , longreservation("장기예약")
+    노견산책("olderPetWalk")
+    , 어린견산책("youngerPetWalk")
+    , 매일산책("everydayWalk")
+    , 약먹이기("medicine")
+    , 도보픽업("walkPickup")
+    , 실내놀이("play")
+    , 응급처치("firstAid")
+    , 장기예약("longReservation")
     , 모발관리("brush");
 
     private final String petService;
@@ -18,7 +21,4 @@ public enum AvailableService {
         this.petService=petService;
     }
 
-    public String getPetService(){
-        return petService;
-    }
 }

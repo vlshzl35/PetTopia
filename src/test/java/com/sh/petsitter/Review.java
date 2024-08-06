@@ -10,7 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "review")
+@Entity
 @Table(name = "tbl_review")
 @Data
 @AllArgsConstructor
@@ -40,8 +40,8 @@ public class Review {
     @Embedded
     private Reply reply;
 
-    @JoinColumn(name = "petsitter_id")
-    private String  petSitterId;
+    @Column(name = "petsitter_id")
+    private String petSitterId;
 
     public void changeReviewText(String reviewText)
     {

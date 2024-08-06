@@ -41,7 +41,7 @@ public class Reservation {
 
     // 어떤
     @Column(name = "petsitter_id")
-    private String petSitterId;
+    private String petSitter_id;
 
 
     public void changeReservationStatus(ReservationStatus reservationStatus)

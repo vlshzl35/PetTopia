@@ -40,9 +40,8 @@ public class Review {
     @Embedded
     private Reply reply;
 
-    @ManyToOne
-    @JoinColumn(name = "petsitter_id")
-    private PetSitter petSitter;
+    @Column(name = "petsitter_id")
+    private String petSitterId;
 
     public void changeReviewText(String reviewText)
     {

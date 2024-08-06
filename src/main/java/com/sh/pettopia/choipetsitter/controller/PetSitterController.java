@@ -1,9 +1,11 @@
 package com.sh.pettopia.choipetsitter.controller;
 
+import com.amazonaws.services.ec2.model.Address;
 import com.sh.pettopia.choipetsitter.dto.PetSitterRegisterDto;
 import com.sh.pettopia.choipetsitter.entity.AvailablePetSize;
 import com.sh.pettopia.choipetsitter.entity.AvailableService;
 import com.sh.pettopia.choipetsitter.entity.PetSitter;
+import com.sh.pettopia.choipetsitter.entity.PetSitterAddress;
 import com.sh.pettopia.ncpTest.FileDto;
 import com.sh.pettopia.ncpTest.FileService;
 import lombok.RequiredArgsConstructor;
@@ -33,12 +35,17 @@ public class PetSitterController {
     public String registprofile(
             @ModelAttribute PetSitterRegisterDto petSitterRegisterDto, RedirectAttributes redirectAttributes
             , @RequestParam("availableService") Set<AvailableService> service
-//            , @RequestParam("availablePetsize") Set<AvailablePetSize> petSize
+            , @RequestParam("availablePetSize") Set<AvailablePetSize> petSize
             , @RequestPart(value = "files", required = false) List<MultipartFile> multipartFiles) {
-        List<String> imageUrl=new ArrayList<>();
-        PetSitter petSitter=null;
+        List<String> imageUrl = new ArrayList<>();
+        PetSitter petSitter = null;
+        PetSitterAddress petSitterAddress=new PetSitterAddress(
+                petSitterRegisterDto.getPostcode()
+                ,petSitterRegisterDto.getAddress()
+        ,petSitterRegisterDto.getDetailAddress(),petSitterRegisterDto.getExtraAddress());
 
-        petSitterRegisterDto.setAvailable(service,null);
+        petSitterRegisterDto.setAvailable(service, petSize);
+
         // 파일 값이 존재한다면
 //        if (multipartFiles != null || !multipartFiles.isEmpty()) {
 //            //파일들의 url을 List로 담아서 Dto->Entity할 때 넣는다
@@ -50,12 +57,13 @@ public class PetSitterController {
 //            }
 //
 //        }
-        petSitter=petSitterRegisterDto.toEntity(imageUrl
-                ,petSitterRegisterDto.getIntroduce()
-                ,petSitterRegisterDto.getAvailableServices()
-                , petSitterRegisterDto.getAvailablePetSizes());
+        petSitter = petSitterRegisterDto.toEntity(imageUrl
+                , petSitterRegisterDto.getIntroduce()
+                , petSitterRegisterDto.getAvailableServices()
+                , petSitterRegisterDto.getAvailablePetSizes()
+                , petSitterAddress);
+        System.out.println("petSitterRegisterDto = " + petSitterRegisterDto);
         System.out.println("petSitter = " + petSitter);
-
 
         log.info("POST /petsitter/registerprofile");
 
@@ -64,9 +72,12 @@ public class PetSitterController {
         for (AvailableService serviceName : service)
             System.out.println("serviceName = " + serviceName);
 
-        System.out.println("petSitterRegisterDto = " + petSitterRegisterDto);
+        // 체크된 가능한 견종들
+        for (AvailablePetSize petsize : petSize)
+            System.out.println("petsize = " + petsize);
 
-//        PetSitter petSitter=petSitterRegisterDto.toPetSitterEntity();
+        System.out.println("petSitter = " + petSitter);
+
         redirectAttributes.addFlashAttribute("message", "프로필을 성공적으로 등록 했습니다");
 
         return "redirect:/petsitter/registerprofile";

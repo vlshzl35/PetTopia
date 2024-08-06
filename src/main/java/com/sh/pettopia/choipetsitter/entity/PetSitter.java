@@ -1,5 +1,6 @@
 package com.sh.pettopia.choipetsitter.entity;
 
+import com.amazonaws.services.ec2.model.Address;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,7 +18,7 @@ public class PetSitter {
     // 펫 시터의 대한 프로필
 
     @Id
-    private Long petSitterId; // 회원의 아이디이다
+    private String  petSitterId; // 회원의 아이디이다
 
     @Column(name = "introduce")
     private String introduce; // 가벼운 소개
@@ -41,6 +42,9 @@ public class PetSitter {
     @Enumerated(EnumType.STRING)
     @ElementCollection
     private Set<AvailableService> availableService;
+
+    @Embedded
+    private PetSitterAddress petSitterAddress;
 
     public void changeIntroduce(String introduce)
     {
@@ -67,12 +71,14 @@ public class PetSitter {
         this.availableService.remove(availableService);
     }
 
-    public void dtoToEntity(String introduce, String url, List<String> images_url_list, Set<AvailablePetSize> availablePetSize, Set<AvailableService> availableService) {
+    public void dtoToEntity(String introduce, String url, List<String> images_url_list, Set<AvailablePetSize> availablePetSize, Set<AvailableService> availableService,
+                           PetSitterAddress petSitterAddress) {
         this.introduce = introduce;
         this.url = url;
         this.images_url_list = images_url_list;
         this.availablePetSize = availablePetSize;
         this.availableService = availableService;
+        this.petSitterAddress=petSitterAddress;
     }
 
 }
