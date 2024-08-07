@@ -1,5 +1,6 @@
 package com.sh.pettopia.parktj.petsitterfinder.entity;
 
+import com.sh.pettopia.Hojji.pet.entity.Pet;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,7 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDate;
 
 @Entity(name = "careregistration")
-@Table(name = "tbl_careregistration")
+@Table(name = "tbl_care_registration")
 @Data
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor
@@ -22,8 +23,12 @@ public class CareRegistration {
     // jpql을 사용하여 pet의 정보를 가져오기 위해 petId 갖고있음
     //JPQL에서는 엔티티 이름을 사용합니다.
     // 객체지향적이고 JPA의 강점을 살리는 방식은 엔티티 간의 관계를 설정하여 Pet 엔티티 간의 직접적인 연관을 맺으라는데
-    @Column(name = "pet_id ", nullable = false)
-    private Long petId;
+
+    // 지연로딩, 관련 데이터를 필요할 때까지 미뤄서 가져옴
+    // 즉시로딩(EAGER): 설정된 연관관계는 엔티티가 로드될 때 즉시 관련 데이터를 함께 로딩함.
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pet_id", referencedColumnName = "pet_id", nullable = false)
+    private Pet pet;
     
     @Column(name = "member_id", nullable = false )
     private Long memberId;
