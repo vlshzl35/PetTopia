@@ -16,4 +16,3 @@ spring:
         hbm2ddl:
           auto: update
         format_sql: true
-

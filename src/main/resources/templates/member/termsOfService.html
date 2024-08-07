@@ -38,11 +38,22 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-8">
-                    <form id="signup-form">
+                    <form th:action = "@{/member/registMember}" id="signup-form" >
+                        <!-- 모두 동의 체크박스 추가 -->
+                        <div class="agreement-section">
+                            <h5>모든 약관에 동의합니다(필수)</h5>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" id="agree-all">
+                                <label class="form-check-label" for="agree-all">
+                                    모두 동의합니다
+                                </label>
+                            </div>
+                        </div>
+
                         <!-- 약관 동의 -->
                         <div class="agreement-section">
-                            <h5>네이버 이용약관 동의(필수)</h5>
-                            <textarea class="form-control" rows="3" readonly>네이버 이용약관 내용</textarea>
+                            <h5>이용약관 동의(필수)</h5>
+                            <textarea class="form-control" rows="3" readonly>이용약관 내용</textarea>
                             <div class="form-check mt-2">
                                 <input class="form-check-input" type="checkbox" id="agree-terms">
                                 <label class="form-check-label" for="agree-terms">
@@ -61,7 +72,7 @@
                             </div>
                         </div>
                         <div class="agreement-section">
-                            <h5>위치정보 이용약관 동의(선택)</h5>
+                            <h5>위치정보 이용약관 동의(필수)</h5>
                             <textarea class="form-control" rows="3" readonly>위치정보 이용약관 내용</textarea>
                             <div class="form-check mt-2">
                                 <input class="form-check-input" type="checkbox" id="agree-location">
@@ -72,12 +83,15 @@
                         </div>
 
                         <div class="d-flex justify-content-around">
-<!--                            <div class="p-2 flex-fill">-->
-                                <button type="button" th:onclick="|location.href='@{/member/login}'|" class="btn btn-secondary p-2 flex-fill">취소</button> <!-- button 타입에서는 onclick으로 링크를 걸어줘야 함 & type = button으로 해야 onclick으로 걸어둔 링크로 이동할 수 있음-->
-<!--                            </div>-->
-<!--                            <div class="p-2 flex-fill">-->
-                                <button type="button" th:onclick="|location.href='@{/member/signup2}'|" class="btn btn-success p-2 flex-fill">다음</button>
-<!--                            </div>-->
+                            <!--                            <div class="p-2 flex-fill">-->
+                            <button type="button" th:onclick="|location.href='@{/member/login}'|"
+                                    class="btn btn-secondary p-2 flex-fill">취소
+                            </button>
+                            <!-- button 타입에서는 onclick으로 링크를 걸어줘야 함 & type = button으로 해야 onclick으로 걸어둔 링크로 이동할 수 있음-->
+                            <!--                            </div>-->
+                            <!--                            <div class="p-2 flex-fill">-->
+
+                            <button type="submit" class="btn btn-success p-2 flex-fill">다음</button>
                         </div>
                     </form>
                 </div>
@@ -100,18 +114,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
-    document.getElementById('signup-form').addEventListener('submit', function (event) {
-        event.preventDefault();
-        if (!document.getElementById('agree-terms').checked) {
-            alert('이용약관에 동의해야 합니다.');
-            return;
-        }
-        if (!document.getElementById('agree-privacy').checked) {
-            alert('개인정보처리방침에 동의해야 합니다.');
-            return;
-        }
-        alert('회원가입이 완료되었습니다.');
-    });
 </script>
 </body>
 </html>
