@@ -35,7 +35,7 @@ public class WebSecurityConfig {
             registry.requestMatchers("/", "/index.html").permitAll() // 누구나 허용
                     .requestMatchers("/member/**", "/auth/login").anonymous()// 로그인 안 한 사용자에게 허용되는 페이지
                     .requestMatchers("/community/**", "/enterprise/**", "/mypage/**", "/petsitter/**", "/petsitterfinder/**").authenticated() // 인증된 사용자만 허용 - 로그인 한 사용자를 의미함
-                    .requestMatchers("/petsitter/registerpost").hasRole("PETSITTER") // ROLE_ADMIN 권한이 있는 사용자만 허용
+                    .requestMatchers("/petsitter/startjob").hasRole("SITTER") // ROLE_ADMIN 권한이 있는 사용자만 허용
                     .anyRequest().authenticated(); // 나머지들은 이렇게 해주세요~
         }); // 람다로 작성하게 되어있음
 
@@ -47,7 +47,7 @@ public class WebSecurityConfig {
             configurer
                     .loginPage("/auth/login") // GET 방식의 로그인 폼 요청
                     .loginProcessingUrl("/auth/login") // POST방식으로 로그인 처리
-                    .defaultSuccessUrl("/") // 로그인 성공 후 이동 페이지
+                    .defaultSuccessUrl("/", true) // 로그인 성공 후 이동 페이지
                     .usernameParameter("username") // login.html의 input태그의 name 속성을 입력합니다.
                     .passwordParameter("password") // login.html의 input태그의 name 속성을 입력합니다.
                     .permitAll(); //로그인 페이지는 인증 없이 접근 가능

@@ -22,7 +22,7 @@
             <!-- 운영시 -->
             <!-- validate : 생성/수정 DDL은 실행하지 않고, 유효성검사만 수행(테이블/컬럼 매핑에 문제 있는 경우 예외던짐)-->
             <!-- none : 아무것도 하지 않음. 기본값 -->
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
         </properties>
     </persistence-unit>
 </persistence>
