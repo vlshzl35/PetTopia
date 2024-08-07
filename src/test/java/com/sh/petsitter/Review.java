@@ -23,6 +23,9 @@ public class Review {
     @Column(name = "review_text") // 리뷰 내용
     private String reviewTest;
 
+    @Column(name = "user_email")
+    private String user_email;
+
     @Column(name = "image_url")
     private String imageUrl; // 한 줄에 전부가 오는지, 아니면 리스트로 만들어야 하는지 알아야 할 거 같다
 
@@ -37,9 +40,8 @@ public class Review {
     @Embedded
     private Reply reply;
 
-    @ManyToOne
-    @JoinColumn(name = "petsitter_id")
-    private PetSitter petSitter;
+    @Column(name = "petsitter_id")
+    private String petSitterId;
 
     public void changeReviewText(String reviewText)
     {

@@ -1,15 +1,12 @@
 package com.sh.pettopia.Hojji.pet.entity;
 
-import com.sh.pettopia.Hojji.common.Gender;
-import com.sh.pettopia.Hojji.member.entity.Member;
+import com.sh.pettopia.Hojji.user.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -64,4 +61,7 @@ public class Pet {
     // 실종 상태를 변경하기 위함
     private PetStatus status;
 
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 }
