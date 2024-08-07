@@ -33,7 +33,7 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests((registry) -> {
             // 특수한 경우부터 보편적인 경우 순으로 작성했습니다.
             registry.requestMatchers("/", "/index.html").permitAll() // 누구나 허용
-                    .requestMatchers("/member/**").anonymous()// 로그인 안 한 사용자에게 허용되는 페이지
+                    .requestMatchers("/member/**", "/auth/login").anonymous()// 로그인 안 한 사용자에게 허용되는 페이지
                     .requestMatchers("/community/**", "/enterprise/**", "/mypage/**", "/petsitter/**", "/petsitterfinder/**").authenticated() // 인증된 사용자만 허용 - 로그인 한 사용자를 의미함
                     .requestMatchers("/petsitter/registerpost").hasRole("PETSITTER") // ROLE_ADMIN 권한이 있는 사용자만 허용
                     .anyRequest().authenticated(); // 나머지들은 이렇게 해주세요~
