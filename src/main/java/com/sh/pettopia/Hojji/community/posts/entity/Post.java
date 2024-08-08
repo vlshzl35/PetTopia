@@ -1,4 +1,4 @@
-package com.sh.pettopia.Hojji.community.entity;
+package com.sh.pettopia.Hojji.community.posts.entity;
 
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import jakarta.persistence.*;
