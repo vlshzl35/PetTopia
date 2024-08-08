@@ -2,6 +2,7 @@ package com.sh.pettopia.Hojji.user.member.controller;
 
 
 import com.sh.pettopia.Hojji.user.member.dto.MemberRegistRequestDto;
+import com.sh.pettopia.Hojji.user.member.entity.Member;
 import com.sh.pettopia.Hojji.user.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -43,9 +44,9 @@ public class MemberController {
         String encryptedPassword = passwordEncoder.encode(dto.getPassword());
         dto.setPassword(encryptedPassword);
 
-
         // 2. 회원 등록 요청
         memberService.registMember(dto);
+        log.debug("Post / 회원 가입 완료");
         redirectAttributes.addFlashAttribute("message", "회원가입을 축하드립니다!✨");
         return "redirect:/";
     }
