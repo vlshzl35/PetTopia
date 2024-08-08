@@ -7,7 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.w3c.dom.ls.LSOutput;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Data
@@ -16,49 +18,50 @@ import java.time.LocalDate;
 @Builder
 public class MemberRegistRequestDto {
     // 회원 등록 폼 에 name과 정확하게 1 : 1 매칭되게 하기
+    // Ex) 프로필이미지가 html 상으로 name = "profileImage" 이면 Dto에서도 변수 명이 profileImage여야 한다.
 
+    // 프로필 이미지
     private String profileImage;
 
-
+    // 본명
     private String name;
 
-   private String email;
+    // 이메일
+    private String email;
 
-
+    // 닉네임
     private String nickName;
 
-
+    // 비밀번호
     private String password;
 
-
+    // 핸드폰 번호
     private String phone;
 
-
+    // 성별
     private Gender gender;
 
+    // 생년 월일
     private LocalDate birth;
+    private Timestamp timestamp;
 
-
+    // 주소
     private String address;
 
-
-    public Member toMember(MemberRegistRequestDto dto) {
+    public Member toMember() {
         return Member.builder()
-                .id(null)
                 .profileImage(this.profileImage)
                 .name(this.name)
                 .email(this.email)
-                .nickName("fffff")
+                .nickName(this.nickName)
                 .password(this.password)
                 .phone(this.phone)
                 .gender(this.gender)
-                .birth(LocalDate.now())
+                .birth(this.birth)
                 .address(this.address)
                 .createdAt(LocalDate.now())
                 .sitterStatus(SitterStatus.NONE)
                 .build();
-
     }
-
 }
 
