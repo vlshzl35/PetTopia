@@ -1,4 +1,4 @@
-package com.sh.pettopia.Hojji.community.entity;
+package com.sh.pettopia.Hojji.community.posts.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
