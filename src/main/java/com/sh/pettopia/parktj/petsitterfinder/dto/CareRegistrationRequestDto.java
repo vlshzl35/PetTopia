@@ -3,6 +3,7 @@ import com.sh.pettopia.Hojji.pet.entity.*;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import com.sh.pettopia.parktj.petsitterfinder.entity.RequestService;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,11 +18,12 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
+@Builder
 public class CareRegistrationRequestDto {
     private Long petId;
     private String petName;
     private int age;
-    private int weight;
+    private PetSize petSize;
     private PetGender petGender;
     private LocalDate birth;
     private boolean neutered;
@@ -46,21 +48,35 @@ public class CareRegistrationRequestDto {
      * @return
      */
 
+    /**
+     * 08/08 박태준
+     * 빌더 패턴 (Builder pattern) 이란?
+     * 객체를 생성할 수 있는 builder() 함수를 통해 얻어가고 거기에 셋팅하고자 하는 값을 마지막에 build()를 통해  객체 생성
+     *  1. 가독성 향상, 2. 어떤 값을 먼저 설정하던 상관 없음!!!! - 지민이가 알려줌
+     *
+     * 사용법?
+     * 빌더 패턴을 적용할 때 객체에 @Builder 어노테이션을 달기만 함녀됨
+     *
+     * @param pet
+     * @return
+     */
     public static CareRegistrationRequestDto fromPet(Pet pet){
-        return new CareRegistrationRequestDto(
-                pet.getPetId(),
-                pet.getName(),
-                pet.getAge(),
-                pet.getWeight(),
-                pet.getPetGender(),
-                pet.getBirth(),
-                pet.isNeutered(),
-                pet.getProfile(),
-                pet.getVaccinationType(),
-                pet.getParasitePrevention(),
-                pet.getSocialization(),
-                pet.getStatus(),
-                pet.getMember());
+        return CareRegistrationRequestDto.builder()
+                .petId(pet.getPetId())
+                .petName(pet.getName())
+                .age(pet.getAge())
+                .petSize(pet.getSize())
+                .petGender(pet.getPetGender())
+                .birth(pet.getBirth())
+                .neutered(pet.isNeutered())
+                .profile(pet.getProfile())
+                .vaccinationType(pet.getVaccinationType())
+                .parasitePrevention(pet.getParasitePrevention())
+                .socialization(pet.getSocialization())
+                .status(pet.getStatus())
+                .member(pet.getMember())
+                .build();
+
     }
 }
 
