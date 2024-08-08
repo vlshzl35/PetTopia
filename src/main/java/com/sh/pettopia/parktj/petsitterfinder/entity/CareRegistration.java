@@ -1,6 +1,5 @@
 package com.sh.pettopia.parktj.petsitterfinder.entity;
 
-import com.sh.pettopia.Hojji.pet.entity.Pet;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,10 +25,7 @@ public class CareRegistration {
 
     // 지연로딩, 관련 데이터를 필요할 때까지 미뤄서 가져옴
     // 즉시로딩(EAGER): 설정된 연관관계는 엔티티가 로드될 때 즉시 관련 데이터를 함께 로딩함.
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pet_id", referencedColumnName = "pet_id", nullable = false)
-    private Pet pet;
-    
+
     @Column(name = "member_id", nullable = false )
     private Long memberId;
     
