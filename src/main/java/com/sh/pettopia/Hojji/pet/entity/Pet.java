@@ -3,13 +3,14 @@ package com.sh.pettopia.Hojji.pet.entity;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import com.sh.pettopia.choipetsitter.entity.AvailablePetSize;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Set;
 
+@Data
+@Setter(AccessLevel.PRIVATE)
+// ---- 위에 Data랑 Setter 태준 추가 08/07
 @Entity
 @Table(name = "tbl_pet")
 @NoArgsConstructor
