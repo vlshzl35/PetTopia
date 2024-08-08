@@ -183,142 +183,143 @@
 <div class="page-body" layout:fragment="main">
     <section class="hero-wrap hero-wrap-2" data-stellar-background-ratio="0.5"
              style="background-image: url('/images/KakaoTalk_20240527_201110282.jpg'); height: 200px; border-radius: 8px;"></section>
-    <form name = "petRegustFrm" method="post">
-             <div class="form-container">
-        <div class="left-column">
-            <div class="form-group">
-                <label>펫 선택:</label>
-<!--                펫 이름을 노출시키고, 폼 제출 시 펫 아이디를 전송함-->
-                <select id="petSelect" name="petSelect">
-<!--                    선택하기전 기본값을 돌보실 펫을 선택해 주세요로 설정 disabled selected-->
+    <form method="post" name="petRegustFrm">
+        <div class="form-container">
+            <div class="left-column">
+                <div class="form-group">
+                    <label>펫 선택:</label>
+                    <!--                펫 이름을 노출시키고, 폼 제출 시 펫 아이디를 전송함-->
+                    <select id="petSelect" name="petSelect">
+                        <!--                    선택하기전 기본값을 돌보실 펫을 선택해 주세요로 설정 disabled selected-->
 
-<!--                    8/8 오전 1:32 그럼 petid를 선택하자마자 이벤트를 발생시켜야함
-                        발생한 이벤트로 petId값이 전달되고 그 값을 서버에서 받아서
-                        petId에 해당하는 pet의 정보가 돌아록해서 비동기처리로 폼에 값들 전부 입력 되도록 해야할 것 같다. .. 현재의 계획.. 될진 모른다
--->
-                    <option value="" disabled selected>돌보실 펫을 선택해 주세요.</option>
-                    <option th:each="pet : ${pets}" th:value="${pet.petId}" th:text="${pet.petName}"></option>
-                </select>
+                        <!--                    8/8 오전 1:32 그럼 petid를 선택하자마자 이벤트를 발생시켜야함
+                                                발생한 이벤트로 petId값이 전달되고 그 값을 서버에서 받아서
+                                                petId에 해당하는 pet의 정보가 돌아록해서 비동기처리로 폼에 값들 전부 입력 되도록 해야할 것 같다. .. 현재의 계획.. 될진 모른다
+                        -->
+                        <option disabled selected value="">돌보실 펫을 선택해 주세요.</option>
+                        <option th:each="pet : ${pets}" th:text="${pet.petName}" th:value="${pet.petId}"></option>
+                    </select>
+                </div>
+                <!--            8/8 일 오전 1:51 돌볼 펫을 선택하면 event를 발생시켜 petId를 출력시켜주는 코드
+                                실제로 console 창에 option 태그에서 펫 이름 선택하면 그에 맞는 petId가 출력되는 것을 확인했음
+                                출력된 id 값으로 ajax를 통해 각 폼에 맞게 뿌려주는걸 어떻게 하는지 고민해봐야할듯
+
+                -->
+                <script>
+                    document.getElementById('petSelect').addEventListener('change', function () {
+                        var petId = this.value;
+                        console.log("선택된 펫 ID : ", petId)
+                    })
+                </script>
+                <!-- 이미지 업로드를 위한 폼 필드 -->
+                <div class="form-group">
+                    <div>
+                        <input onchange="readURL(this)" type="file">
+                        <img alt="미리보기 이미지" id="preview"/>
+                    </div>
+                </div>
+                <!--            08/07 태준
+                                option 태그에서 강아지 입력했을 때 아래 input 태그들을 ajax로 비동기 처리식으로 처리해야하는데 어떻게 할지 생각해보자
+
+                                - json
+                                데이터를 저장하거나 전송할 때 사용되는 텍스트 기반의 경량의 데이터 교환 방식
+                                json은 읽기 쉽고, 스기 쉬움, 기계가 파싱하기 쉬운 테스트 기반임
+
+                                - ajax
+                                javascript를 사용하여 비동기적으로 데이터를 서버와 교환
+                                ajax 사용하면 새로고침하지 않아도 부분적인 페이지 업데이트가 가능함
+
+                -->
+                <div class="form-group">
+                    <label for="petName">이름:</label>
+                    <input id="petName" name="petName" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="petAge">나이:</label>
+                    <input id="petAge" name="petAge" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="petBreed">견종:</label>
+                    <input id="petBreed" name="petBreed" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="petBirth">출생일:</label>
+                    <input id="petBirth" name="petBirth" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="petSize">사이즈:</label>
+                    <input id="petSize" name="petSize" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="petWeight">무게:</label>
+                    <input id="petWeight" name="petWeight" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="petSociability">사회성:</label>
+                    <input id="petSociability" name="petSociability" type="text">
+                </div>
+                <div class="form-group">
+                    <label>예방접종 여부:</label>
+                    <div class="radio-group">
+                        <input id="pet-vaccination" name="vaccination" type="radio" value="yes">
+                        <label for="pet-vaccination">Y</label>
+
+                        <input id="not-vaccinated" name="vaccination" type="radio" value="no">
+                        <label for="not-vaccinated">N</label>
+                    </div>
+                </div>
+
+                <!-- 08/07 와요랑 비교해서 돌봄 종류가 어떤 것이 있는지 확인하고 매칭시키기-->
             </div>
-<!--            8/8 일 오전 1:51 돌볼 펫을 선택하면 event를 발생시켜 petId를 출력시켜주는 코드
-                실제로 console 창에 option 태그에서 펫 이름 선택하면 그에 맞는 petId가 출력되는 것을 확인했음
-                출력된 id 값으로 ajax를 통해 각 폼에 맞게 뿌려주는걸 어떻게 하는지 고민해봐야할듯
+            <div class="right-column">
+                <div class="form-group">
+                    <label for="startDate">시작 날짜:</label>
+                    <input id="startDate" name="startDate" type="date">
+                </div>
+                <div class="form-group">
+                    <label for="endDate">종료 날짜:</label>
+                    <input id="endDate" name="endDate" type="date">
+                </div>
+                <div class="form-group" id="addressForm">
+                    <label for="address">주소 입력: </label>
+                    <input id="address" name="address" placeholder="주소를 입력하세요" type="text">
+                </div>
+                <div class="form-group">
+                    <label>돌봄유형:</label>
+                    <!--                 radio 는 name 다르게하면 다중선택 가능 -->
+                    <div class="radio-group">
+                        <input id="visitCare" name="visitCare" type="radio" value="방문돌봄">
+                        <label for="visitCare">방문돌봄</label>
 
--->
-            <script>
-                document.getElementById('petSelect').addEventListener('change', function (){
-                    var petId = this.value;
-                    console.log("선택된 펫 ID : ", petId)
-                })
-            </script>
-            <!-- 이미지 업로드를 위한 폼 필드 -->
-            <div class="form-group">
-                <div>
-                    <input type="file" onchange="readURL(this)">
-                    <img id="preview" alt="미리보기 이미지"/>
+                        <input id="walkCare" name="walkCare" type="radio" value="산책돌봄">
+                        <label for="walkCare">산책</label>
+
+                        <input id="leavingCare" name="leavingCare" type="leavingCare" value="맡김돌봄">
+                        <label for="leavingCare">맡김 돌봄</label>
+                    </div>
+                </div>
+                <!--            radio 태그의 value 속성은 해당 라디오 버튼이 선택됐을 때 제출되는 값이다 -->
+                <div class="form-group">
+                    <label>실종 여부:</label>
+                    <div class="radio-group">
+                        <input id="not-missed" name="missed" type="radio" value="WITH_OWNER">
+                        <label for="not-missed">같이 살아요!!</label>
+
+                        <input id="missed" name="missed" type="radio" value="MISSING">
+                        <label for="missed">실종 됐어요! 도움을 청합니다</label>
+                    </div>
                 </div>
             </div>
-<!--            08/07 태준
-                option 태그에서 강아지 입력했을 때 아래 input 태그들을 ajax로 비동기 처리식으로 처리해야하는데 어떻게 할지 생각해보자
-
-                - json
-                데이터를 저장하거나 전송할 때 사용되는 텍스트 기반의 경량의 데이터 교환 방식
-                json은 읽기 쉽고, 스기 쉬움, 기계가 파싱하기 쉬운 테스트 기반임
-
-                - ajax
-                javascript를 사용하여 비동기적으로 데이터를 서버와 교환
-                ajax 사용하면 새로고침하지 않아도 부분적인 페이지 업데이트가 가능함
-
--->
-            <div class="form-group">
-                <label for="petName">이름:</label>
-                <input id="petName" name="petName" type="text">
-            </div>
-            <div class="form-group">
-                <label for="petAge">나이:</label>
-                <input id="petAge" name="petAge" type="text">
-            </div>
-            <div class="form-group">
-                <label for="petBreed">견종:</label>
-                <input id="petBreed" name="petBreed" type="text">
-            </div>
-            <div class="form-group">
-                <label for="petBirth">출생일:</label>
-                <input id="petBirth" name="petBirth" type="text">
-            </div>
-            <div class="form-group">
-                <label for="petSize">사이즈:</label>
-                <input id="petSize" name="petSize" type="text">
-            </div>
-            <div class="form-group">
-                <label for="petWeight">무게:</label>
-                <input id="petWeight" name="petWeight" type="text">
-            </div>
-            <div class="form-group">
-                <label for="petSociability">사회성:</label>
-                <input id="petSociability" name="petSociability" type="text">
-            </div>
-            <div class="form-group">
-                <label>예방접종 여부:</label>
-                <div class="radio-group">
-                    <input id="pet-vaccination" name="vaccination" type="radio" value="yes">
-                    <label for="pet-vaccination">Y</label>
-
-                    <input id="not-vaccinated" name="vaccination" type="radio" value="no">
-                    <label for="not-vaccinated">N</label>
-                </div>
-            </div>
-
-<!-- 08/07 와요랑 비교해서 돌봄 종류가 어떤 것이 있는지 확인하고 매칭시키기-->
+            <button class="submit-btn" type="submit">등록하기</button>
         </div>
-        <div class="right-column">
-            <div class="form-group">
-                <label for="startDate">시작 날짜:</label>
-                <input id="startDate" name="startDate" type="date">
-            </div>
-            <div class="form-group">
-                <label for="endDate">종료 날짜:</label>
-                <input id="endDate" name="endDate" type="date">
-            </div>
-            <div id="addressForm" class="form-group">
-                <label for="address">주소 입력: </label>
-                <input id="address" name = "address" placeholder="주소를 입력하세요" type="text">
-            </div>
-            <div class="form-group">
-                <label>돌봄유형:</label>
-<!--                 radio 는 name 다르게하면 다중선택 가능 -->
-                <div class="radio-group">
-                    <input type="radio" id="visitCare" name="visitCare"  value="방문돌봄">
-                    <label for="visitCare">방문돌봄</label>
-
-                    <input type="radio" id="walkCare" name="walkCare"  value="산책돌봄">
-                    <label for="walkCare">산책</label>
-
-                    <input type="leavingCare" id="leavingCare" name="leavingCare"  value="맡김돌봄">
-                    <label for="leavingCare">맡김 돌봄</label>
-                </div>
-            </div>
-<!--            radio 태그의 value 속성은 해당 라디오 버튼이 선택됐을 때 제출되는 값이다 -->
-            <div class="form-group">
-                <label>실종 여부:</label>
-                <div class="radio-group">
-                    <input type="radio" id="not-missed" name="missed"  value="WITH_OWNER">
-                    <label for="not-missed">같이 살아요!!</label>
-
-                    <input type="radio" id="missed" name="missed"  value="MISSING">
-                    <label for="missed">실종 됐어요! 도움을 청합니다</label>
-                </div>
-            </div>
-        </div>
-        <button type="submit" class="submit-btn">등록하기</button>
-    </div>
     </form>
 
     <script>
+        // 이미지 읽어오는 자바 스크립트 코드
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     document.getElementById('preview').src = e.target.result;
                 };
                 reader.readAsDataURL(input.files[0]);
@@ -335,11 +336,10 @@
          * - JQuery를 이용해서 라디오 박스의 선택된 값을 가져오는 코드
          * $("input:radio[name='{라디오버튼  Name}']:checked").val();
          *
-         *
-         *
          */
     </script>
 </div>
+
 <!-- script 파일 무조건 fragment layout 내부에 있어야 하네 -->
 
 </body>
