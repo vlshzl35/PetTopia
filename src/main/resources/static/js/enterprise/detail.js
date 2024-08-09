@@ -31,26 +31,38 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // 닫기 버튼을 누르면 모달 숨기기
-    document.querySelector('.closeBtn').onclick = function() {
+    document.querySelector('.closeBtn1').onclick = function() {
         document.getElementById('uploadPopup').style.display = 'none';
     };
+
+    document.querySelector('.closeBtn2').onclick = function() {
+        document.getElementById('uploadPopup').style.display = 'none';
+    };
+
+
 
 
 });
 
 // ajax로 영수증 네이버 OCR API에 전송하기
+function closePopup() {
+    document.getElementById('uploadPopup').style.display = 'none';
+}
+
 document.fileUploadFrm.onsubmit = (e) => {
     e.preventDefault();
 
     // multipart/form-data 비동기 요청
     const frmData = new FormData(e.target);
+    frmData.append('type', 'general');  // type파라미터에 general(일반) value넣기
+
     console.log('type = ', frmData.get('type'));
     console.log('file = ', frmData.get('file'));
 
-    console.log('[[@{/ocrUpload}]]');
+    const apiUrl = document.getElementById('apiUrl').dataset.url;
 
     $.ajax({
-        url: `[[@{/ocrUpload}]]`,
+        url: apiUrl, // url: `[[@{/ocrUpload}]]`,
         method: 'post',
         data: frmData,
         contentType: false, // multipart/form-data 설정
@@ -62,9 +74,17 @@ document.fileUploadFrm.onsubmit = (e) => {
             const _data = JSON.parse(data);
             console.log(_data);
 
-            // // 업로드 성공 시 리뷰 작성 폼 보이기
-            // document.getElementById('reviewForm').style.display = 'block';
-            // closePopup(); // 팝업 닫기
+            // uploadPopup에서 ocr 인증에 썻던 form 안보이도록 숨기기
+            const uploadPopupContent = document.getElementById('uploadPopup').innerHTML;
+            document.getElementById('uploadPopup').innerHTML = '';
+
+            // Display the review form inside the same modal
+            const reviewForm = document.getElementById('reviewForm');
+            document.getElementById('uploadPopup').appendChild(reviewForm);
+            reviewForm.style.display = 'block'; // Show review form in the same modal
+
+            // 리뷰 작성까지 마치면 팝업 닫기
+            // closePopup();
         },
         error: console.log,
         complete() {
@@ -72,6 +92,16 @@ document.fileUploadFrm.onsubmit = (e) => {
         }
     })
 };
+
+// 리뷰 등록 폼
+document.querySelectorAll('.star-rating input').forEach(input => {
+    input.addEventListener('change', function() {
+        console.log(`Selected rating: ${this.value}`); // 선택된 별점을 콘솔에 출력
+    });
+});
+
+
+
 
 
 
