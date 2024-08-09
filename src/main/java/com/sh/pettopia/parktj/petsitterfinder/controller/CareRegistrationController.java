@@ -107,13 +107,13 @@ public class CareRegistrationController {
 
     }
 
-    @PostMapping("/careregistrationform")
-    public String careRegist(@ModelAttribute PetDetailsRegistRequestDto registRequestDtodto, RedirectAttributes redirectAttributes){
-//        careRegistrationService.regist(registRequestDto);
-        return "redirect:/petsitterfinder/careregistrationlist";
-
-
-    }
+//    @PostMapping("/careregistrationform")
+//    public String careRegist(@ModelAttribute PetDetailsRegistRequestDto registRequestDtodto, RedirectAttributes redirectAttributes){
+////        careRegistrationService.regist(registRequestDto);
+//        return "redirect:/petsitterfinder/careregistrationlist";
+//
+//
+//    }
 
 
     /**
