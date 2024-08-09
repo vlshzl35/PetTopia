@@ -1,4 +1,4 @@
-package com.sh.petsitter;
+package com.sh.pettopia.choipetsitter.entity;
 
 import lombok.Getter;
 

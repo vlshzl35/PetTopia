@@ -1,7 +1,6 @@
-package com.sh.petsitter;
+package com.sh.pettopia.choipetsitter.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class Reply {
+public class PetSitterReply {
     // 회원리뷰에 대한 답글
     // 필요한 속성, 아딴 게시글에. 회원의 아이디, 펫시터의 아이디, 펫시터가 등록한 댓글
     @Column(name = "reply_text")

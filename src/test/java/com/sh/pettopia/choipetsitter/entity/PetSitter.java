@@ -1,13 +1,10 @@
 package com.sh.pettopia.choipetsitter.entity;
 
-import com.sh.pettopia.Hojji.pet.entity.Pet;
 import com.sh.pettopia.choipetsitter.dto.PetSitterRegisterDto;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.joda.time.LocalDate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,11 +13,14 @@ import java.util.Set;
 @Entity(name = "petsitter")
 @Table(name = "tbl_petsitter")
 @Data
+@Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class PetSitter {
     // 펫 시터의 대한 프로필
+
+
 
     @Id
     @Column(name = "petsitter_id")
@@ -30,7 +30,6 @@ public class PetSitter {
     private String introduce; // 가벼운 소개
 
     @Column(name = "post_url")
-    @ColumnDefault("")
     private String postUrl; // 홍보글 url
 
     @Column(name = "images_url_list")
@@ -42,7 +41,6 @@ public class PetSitter {
     @Column(name = "available_pet_size")
     @Enumerated(EnumType.STRING)
     @ElementCollection
-    @ColumnDefault("")
     private Set<AvailablePetSize> availablePetSize;
     // 이용가능한 서비스 ( 빗질, 산책, 약 먹이기, 등등...)
 
@@ -57,15 +55,30 @@ public class PetSitter {
     @Column(name = "available_service")
     @Enumerated(EnumType.STRING)
     @ElementCollection
-    @ColumnDefault("")
     private Set<AvailableService> availableService;
 
     @Embedded
     private PetSitterAddress petSitterAddress;
 
-    @Column(name = "available_dates")
-    @ElementCollection
-    private List<LocalDate> availableDates;
+    public void changeIntroduce(String introduce) {
+        this.introduce = introduce;
+    }
+
+    public void changeAvailablePetSize(AvailablePetSize availablePetSize) {
+        this.availablePetSize.add(availablePetSize);
+    }
+
+    public void removeAvailablePetSize(AvailablePetSize availablePetSize) {
+        this.availablePetSize.remove(availablePetSize);
+    }
+
+    public void changeAvailableService(AvailableService availableService) {
+        this.availableService.add(availableService);
+    }
+
+    public void removeAvailableService(AvailableService availableService) {
+        this.availableService.remove(availableService);
+    }
 
     public PetSitter DtoToEntity(PetSitterRegisterDto dto)
     {
