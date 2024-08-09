@@ -17,10 +17,10 @@ public class PetSitterAddress {
     @Column(name = "address")
     private String address; // 주소
 
-    @Column(name = "detailaddress")
+    @Column(name = "detail_address")
     private String detailAddress; // 상세주소
 
-    @Column(name = "extraaddress")
+    @Column(name = "extra_address")
     private String extraAddress; // 참고사항 ex) 아파트 정문에서 오른쪽으로 오면 빠릅니다
 
 }
