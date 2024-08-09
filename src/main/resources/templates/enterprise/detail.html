@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/default}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>병원리뷰</title>
+    <link href="/css/enterprise/detail.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
+</head>
+<body>
+    <div class="page-body" layout:fragment="main">
+        <div class="navi_right set-mobile-width is-active">
+            <div class="head">
+                <div class="hos_info">
+                    <h1>24시 청담우리동물병원</h1> <!-- 병원 이름을 h1 태그로 강조 -->
+                    <div class="rating">1차 병원 | ★ 4.9</div> <!-- 별점 추가 -->
+                    <p class="address">(06085) 서울특별시 강남구 삼성로 614</p> <!-- 주소 정보 -->
+                </div>
+                <div class="actions">
+                    <button class="btn call">전화하기</button>
+                    <button class="btn appointment">예약하기</button>
+                    <button class="btn details">진료보기</button>
+                </div>
+            </div>
+            <div class="body">
+                <p class="tab_wrap">
+                    <button class="tab_button btn_info" id="btnHospitalInfo">병원 정보</button>
+                    <button class="tab_button btn_reviews" id="btnReviews">후기<span class="num">(3)</span></button>
+                </p>
+                <div class="tab_inner" id="hospitalInfoTab" >
+                    <div class="info_box">
+                        <p class="info_box-title"><b>대표 의사</b><span>윤병길</span></p>
+                        <ul class="info_box-list">
+                            <li><b>이메일</b><span>ybg123@naver.com</span></li>
+                            <li><b>전화번호</b><span>02-512-2575</span></li>
+                            <li><b>블로그</b><span>http://blog.naver.com/cdwoori/</span></li>
+                        </ul>
+                    </div>
+                    <div class="info_box">
+                        <ul class="info_box-list">
+                            <li><b>영업시간</b><span>매일 00:00~24:00</span></li>
+                            <li><b>전문분야</b><span>예방접종, 건강검진, 노령성 질환, 난치성 질환 등</span></li>
+                            <li><b>부가서비스</b><span>24시 미용 호텔</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 후기 탭 -->
+                <div class="tab_inner" id="reviewTab">
+                    <button class="writeReviewBtn" id="writeReviewBtn">후기 작성</button>
+
+                    <div class="entReview">
+                        <div class="review-details">
+                            <span class="reviewer">양희윤</span>
+                            <span class="review-date">2023-07-23</span>
+                            <span class="review-stars">★★★★★</span>
+                            <span class="review-rating">5.0</span>
+                            <div class="review-text">마음에 듭니다. 수의사 제 전용으로 고용하겠습니다.</div>
+                        </div>
+                    </div>
+                    <div class="entReview">
+                        <!-- 다른 리뷰 항목 반복 -->
+                        <div class="review-details">
+                            <span class="reviewer">박태준</span>
+                            <span class="review-date">2023-07-24</span>
+                            <span class="review-stars">★★★</span>
+                            <span class="review-rating">3.0</span>
+                            <div class="review-text">희망이는 귀여웡</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 파일 업로드 폼 (팝업) -->
+        <div id="uploadPopup" class="modal">
+            <!-- 영수증 인증 영역 -->
+            <div class="additional-content">
+                <h2>영수증 인증</h2>
+                <span class="closeBtn1">&times;</span>
+                <form name="fileUploadFrm" method="post">
+                    <div id="apiUrl" th:data-url="@{/ocrUpload}"></div>
+                    <input type="file" name="file" accept="image/*" required/>
+                    <button type="submit" class="ocrSubmitBtn">인증하기</button>
+                </form>
+                <br>
+                <span class="highlight">영수증 인증시 주의사항</span>
+                <p>영수증 인식은 OCR 기술을 통해 읽은 문자와 숫자를 바로 보여주고 있습니다.<br>이 과정에서 다양한 문제로 영수증 인식이 실패될 수 있습니다.</p>
+                <ul class="warning-list">
+                    <strong>올바른 영수증 촬영 방법</strong>
+                    <li>영수증을 펼친 후, 영수증 전체가 잘 나오도록 정면에서 촬영</li>
+                    <li>배경에 다른 물체나 글씨가 없도록 촬영</li>
+                    <li>필수 정보(업체명, 전화번호, 사업자등록번호, 결제 일시, 승인번호 등)가 잘 나오도록 촬영</li>
+
+                    <li><strong>올바르지 못한 영수증 촬영 예시</strong></li>
+                    <li>영수증의 일부만 나오는 경우</li>
+                    <li>복잡한 배경과 함께 찍은 경우</li>
+                    <li>손가락으로 영수증을 가린 경우</li>
+                    <li>기울어진 영수증 사진</li>
+                    <li>찢어지거나 구겨진 영수증</li>
+                    <li>영수증 여러 장을 겹쳐서 찍은 경우</li>
+                    <li>모니터에 있는 영수증을 촬영한 경우</li>
+                    <li>휴대폰에 있는 영수증을 촬영한 경우</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 리뷰 작성 폼 -->
+        <div id="reviewForm" class="comment-form-wrap pt-5" style="display:none;">
+            <div class="additional-content">
+                <form action="#" class="p-5 bg-light">
+                    <h2 class="mb-5">리뷰 작성</h2>
+                    <span class="closeBtn2">&times;</span>
+                    <div class="form-group">
+                        <label for="name">이름</label>
+                        <input type="text" class="form-control" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label form="starRate">별점 </label><br>
+                        <div class="star-rating">
+                            <div class="star-rating">
+                                <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars">★</label>
+                                <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars">★</label>
+                                <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars">★</label>
+                                <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars">★</label>
+                                <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star">★</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="" id="message" cols="30" rows="10" class="form-control" placeholder="자유롭게 작성하세요" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="등록하기" class="btn py-3 px-4 btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script layout:fragment="js" th:src="@{/js/enterprise/detail.js}"></script>
+</html>

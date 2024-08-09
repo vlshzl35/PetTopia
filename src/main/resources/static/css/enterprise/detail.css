@@ -1,0 +1,287 @@
+.head {
+    background: #f7f7f7; /* 배경색 설정 */
+    padding: 20px;
+    border-radius: 8px; /* 모서리 둥글게 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 그림자 효과 */
+    margin-bottom: 20px; /* 하단 여백 */
+}
+
+.hos_info h1 {
+    font-size: 24px;
+    color: #333; /* 제목 색상 */
+}
+
+.hos_info .rating {
+    font-size: 18px;
+    color: #666; /* 평점 색상 */
+    margin-top: 5px; /* 위쪽 여백 */
+}
+
+.hos_info .address {
+    font-size: 16px;
+    color: #999; /* 주소 색상 */
+    margin-top: 10px; /* 위쪽 여백 */
+}
+
+.actions .btn {
+    background: #4CAF50; /* 버튼 색상 */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px; /* 오른쪽 여백 */
+    cursor: pointer; /* 마우스 오버 포인터 */
+    border-radius: 4px; /* 버튼 모서리 둥글게 */
+}
+
+.actions .btn:hover {
+    background: #45a049; /* 호버 시 버튼 색상 변경 */
+}
+
+/* body */
+.tab_wrap {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.tab_button {
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    color: gray;
+}
+
+.tab_button.is-active {
+    color: black;
+    border-bottom: 2px solid black;
+}
+
+.info_box {
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    margin-bottom: 10px;
+
+    border: 1px solid #e0e0e0; /* 경계선 색상 */
+    box-shadow: none; /* 그림자 제거 */
+}
+
+.info_box-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.info_box-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 0; /* 추가된 부분: 마지막 리스트 요소의 여백 문제 해결 */
+}
+
+.info_box-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    padding: 8px 0; /* 상하 패딩 조정, 좌우 패딩 제거 */
+    border-bottom: none; /* 기존 구분선 제거 */
+}
+
+.info_box-list li b, .info_box-title b {
+    margin-right: 10px; /* 오른쪽 마진 추가 */
+}
+
+.info_box-list li:last-child {
+    border-bottom: none;
+}
+
+.page-body {
+    max-width: 800px; /* 최대 너비 설정 */
+    width: 100%; /* 너비를 화면 크기에 맞추어 조절 */
+    margin: 20px auto; /* 상하 20px, 좌우 자동으로 중앙 정렬 */
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* 병원 정보, 후기 초기값 설정 (block : 보임, none : 막음) */
+#hospitalInfoTab {
+    display: block;
+}
+
+#reviewTab {
+    display: none;
+}
+
+/* 리뷰 탭 */
+.writeReviewBtn {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #4CAF50; /* 초록색 배경 */
+    color: white; /* 흰색 글자 */
+    font-size: 16px;
+    border: none; /* 테두리 제거 */
+    border-radius: 20px; /* 둥근 모서리 */
+    cursor: pointer; /* 포인터 커서 */
+    text-align: center;
+    text-decoration: none; /* 텍스트 밑줄 제거 */
+    transition: background-color 0.3s; /* 배경색 변경 애니메이션 */
+}
+
+/**/
+/* 이미지 스타일 조정 */
+#entReview img {
+    width: 80px; /* 이미지 너비 조정 */
+    height: auto; /* 이미지 높이 자동 조정 */
+    border-radius: 50%; /* 원형 이미지 */
+    margin-right: 15px; /* 이미지와 텍스트 사이의 간격 */
+}
+
+/* 리뷰 컨테이너 스타일 */
+.entReview {
+    background-color: #f9f9f9; /* 배경색 */
+    padding: 15px; /* 패딩 */
+    margin-top: 10px; /* 상단 여백 */
+    border-radius: 10px; /* 모서리 둥글게 */
+}
+
+.reviewer {
+    font-size: 15px; /* 이름의 글자 크기 증가 */
+    font-weight: bold; /* 글자 굵게 */
+}
+
+/* 별점 및 리뷰 날짜 스타일 */
+.review-details {
+    font-size: 12px; /* 글자 크기 */
+    color: #666; /* 글자 색상 */
+    margin-bottom: 5px; /* 하단 여백 */
+}
+
+/* 리뷰 평점을 나타내는 별 스타일 */
+.review-stars {
+    color: gold; /* 별 색상 */
+    margin-right: 5px; /* 별 간 간격 */
+}
+
+/* OCR인증 팝업 */
+#uploadPopup {
+    display: none; /* 기본적으로 숨기기 */
+
+    position: fixed;  /* 팝업을 화면에 고정 */
+    top: 0;           /* 화면의 상단부터 시작 */
+    left: 0;          /* 화면의 왼쪽부터 시작 */
+    width: 100%;      /* 너비 전체 차지 */
+    height: 100%;     /* 높이 전체 차지 */
+    background-color: rgba(0,0,0,0.5); /* 반투명 검은 배경 */
+    z-index: 1000;    /* 다른 요소들 위에 표시 */
+    overflow-y: auto; /* 필요시 내부 스크롤 활성화 */
+    padding: 20px;    /* 패딩 추가 */
+}
+
+/* 모달 팝업 스타일 */
+.modal {
+    display: flex; /* 기본적으로 숨김 */
+    position: fixed; /* 화면 위치 고정 */
+    z-index: 1; /* 모든 내용 위에 표시 */
+    left: 0;
+    top: 0;
+    width: 100%; /* 전체 너비 */
+    height: 100%; /* 전체 높이 */
+    overflow: auto; /* 스크롤바 자동 생성 */
+    background-color: white; /* 흐린 배경 */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 중앙 정렬 */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* 내용 너비 */
+}
+
+/* 내용 박스 스타일 */
+.additional-content {
+     background-color: white; /* 배경색 */
+     padding: 20px;          /* 패딩 */
+     border-radius: 10px;    /* 모서리 둥글게 */
+     box-shadow: 0 0 15px rgba(0,0,0,0.2); /* 그림자 효과 */
+}
+
+.ocrSubmitBtn {
+    display: block; /* 버튼을 블록 요소로 만들어 줄 전체를 차지하게 함 */
+    width: 100%; /* 버튼의 너비를 부모 컨테이너의 100%로 설정 */
+    padding: 12px 0; /* 상하 패딩을 12px로 설정 */
+    background-color: #4CAF50; /* 버튼의 배경 색상을 녹색으로 설정 */
+    color: white; /* 텍스트 색상을 흰색으로 설정 */
+    border: none; /* 테두리 제거 */
+    border-radius: 4px; /* 모서리 둥글게 처리 */
+    font-size: 16px; /* 글자 크기 설정 */
+    font-weight: bold; /* 글자 두께를 굵게 */
+    cursor: pointer; /* 커서를 포인터로 설정하여 클릭 가능함을 나타냄 */
+    margin-top: 20px; /* 버튼 위에 20px의 마진 추가 */
+    transition: background-color 0.3s ease; /* 배경색 변경시 애니메이션 효과 */
+}
+
+.ocrSubmitBtn:hover {
+    background-color: #367c39; /* 호버 시 버튼의 배경색을 어둡게 조정 */
+}
+
+.ocrSubmitBtn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2); /* 클릭 시 내부 그림자 효과를 추가하여 눌린 느낌을 줌 */
+}
+
+/* 강조된 텍스트 스타일 */
+.highlight {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.closeBtn1, .closeBtn2 {
+    position: absolute;  /* 절대 위치 설정 */
+    top: 20px;           /* 상단에서 20px의 위치 */
+    right: 40px;         /* 우측에서 20px의 위치 */
+    font-size: 36px;     /* 폰트 크기 */
+    color: darkgrey;          /* 폰트 색상 */
+    cursor: pointer;     /* 마우스 오버 시 포인터로 변경 */
+    font-weight: bold;   /* 글자 두께 굵게 */
+}
+
+/* 리뷰 폼 */
+.star-rating {
+    direction: rtl; /* 별을 오른쪽에서 왼쪽으로 배열 */
+    font-size: 24px;
+}
+.star-rating > input {
+    display: none; /* 라디오 버튼 숨김 */
+}
+.star-rating > label {
+    color: #ccc; /* 기본 별 색상 */
+    cursor: pointer;
+    font-size: 30px;
+}
+.star-rating > input:checked ~ label,
+.star-rating > input:checked ~ label ~ label {
+    color: #4CAF50; /* 선택된 별 색상 */
+}
+
+#reviewForm {
+    max-width: 800px; /* 최대 너비 설정 */
+    width: 100%; /* 너비를 화면 크기에 맞추어 조절 */
+    margin: 20px auto; /* 상하 20px, 좌우 자동으로 중앙 정렬 */
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative; /* 상대 위치 설정 추가 */
+    display: none; /* 기본적으로 숨김 */
+}
+
+
+
+
+
+
+
