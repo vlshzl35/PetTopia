@@ -4,10 +4,13 @@ package com.sh.pettopia.choipetsitter.entity;
 import jakarta.persistence.*;
 import jdk.jfr.Enabled;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity(name = "reservation")
 @Table(name = "tbl_reservation")
@@ -34,13 +37,21 @@ public class Reservation {
     @Column(name = "note")
     private String note; // 참고사항
 
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(name = "update_at")
+    @UpdateTimestamp
+    private LocalDateTime updateAt;
+
     @Column(name = "reservation_status")
     @Enumerated(EnumType.STRING)
     private ReservationStatus reservationStatus; // 예약 상태(요청대기, 요청수락, 요청취소, 돌봄중, 돌봄 완료)
 
     // 어떤 펫시터에 대한 예약인가
     @Column(name="member_id")
-    private Long memberId;
+    private String  memberId;
 
     // 어떤
     @Column(name = "petsitter_id")
