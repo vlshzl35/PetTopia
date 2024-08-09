@@ -24,12 +24,17 @@
             display: flex;
             justify-content: space-between;
         }
+
+        .btn-disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
     </style>
 </head>
 <body>
 <div layout:fragment="main" class="page-body">
 
-    <section class="ftco-section ">
+    <section class="ftco-section">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8 text-center mb-5">
@@ -38,7 +43,7 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-8">
-                    <form th:action = "@{/member/registMember}" id="signup-form" >
+                    <form th:action = "@{/member/registMember}" id="signup-form" onsubmit="return validateForm()">
                         <!-- 모두 동의 체크박스 추가 -->
                         <div class="agreement-section">
                             <h5>모든 약관에 동의합니다(필수)</h5>
@@ -83,15 +88,11 @@
                         </div>
 
                         <div class="d-flex justify-content-around">
-                            <!--                            <div class="p-2 flex-fill">-->
                             <button type="button" th:onclick="|location.href='@{/member/login}'|"
                                     class="btn btn-secondary p-2 flex-fill">취소
                             </button>
-                            <!-- button 타입에서는 onclick으로 링크를 걸어줘야 함 & type = button으로 해야 onclick으로 걸어둔 링크로 이동할 수 있음-->
-                            <!--                            </div>-->
-                            <!--                            <div class="p-2 flex-fill">-->
 
-                            <button type="submit" class="btn btn-success p-2 flex-fill">다음</button>
+                            <button type="submit" id="next-button" class="btn btn-success p-2 flex-fill">다음</button>
                         </div>
                     </form>
                 </div>
@@ -107,13 +108,50 @@
                     stroke="#F96D00"/>
         </svg>
     </div>
+    <script>
+        document.getElementById('agree-all').addEventListener('change', function () {
+            const isChecked = this.checked;
+            document.getElementById('agree-terms').checked = isChecked;
+            document.getElementById('agree-privacy').checked = isChecked;
+            document.getElementById('agree-location').checked = isChecked;
+        });
+
+        document.querySelectorAll('.form-check-input').forEach(item => {
+            item.addEventListener('change', updateAgreeAllCheckbox);
+        });
+
+        function updateAgreeAllCheckbox() {
+            const agreeAllCheckbox = document.getElementById('agree-all');
+            const agreeTerms = document.getElementById('agree-terms').checked;
+            const agreePrivacy = document.getElementById('agree-privacy').checked;
+            const agreeLocation = document.getElementById('agree-location').checked;
+
+            if (!agreeTerms || !agreePrivacy || !agreeLocation) {
+                agreeAllCheckbox.checked = false;
+            } else {
+                agreeAllCheckbox.checked = true;
+            }
+        }
+
+        function validateForm() {
+            const agreeTerms = document.getElementById('agree-terms').checked;
+            const agreePrivacy = document.getElementById('agree-privacy').checked;
+            const agreeLocation = document.getElementById('agree-location').checked;
+
+            if (agreeTerms && agreePrivacy && agreeLocation) {
+                return true;  // 회원 등록 폼으로 넘어갑니다.
+            } else {
+                alert('모든 이용 약관에 동의해주세요!');
+                return false;  // 모든 체크박스가 체크되어있지 않으면, 다음으로 넘어가지 않습니다.
+            }
+        }
+    </script>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<script>
-</script>
+
 </body>
 </html>
