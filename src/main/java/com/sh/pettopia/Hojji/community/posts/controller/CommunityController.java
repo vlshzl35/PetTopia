@@ -1,4 +1,4 @@
-package com.sh.pettopia.Hojji.community.controller;
+package com.sh.pettopia.Hojji.community.posts.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
