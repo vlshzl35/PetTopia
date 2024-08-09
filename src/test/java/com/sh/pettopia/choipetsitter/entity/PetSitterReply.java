@@ -1,21 +1,20 @@
 package com.sh.pettopia.choipetsitter.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class Reply {
+public class PetSitterReply {
     // 회원리뷰에 대한 답글
     // 필요한 속성, 아딴 게시글에. 회원의 아이디, 펫시터의 아이디, 펫시터가 등록한 댓글
     @Column(name = "reply_text")
