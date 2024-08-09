@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 //@SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 테스트용 메모리DB 사용안하고 실제 DB 사용
 public class EnterpriseTest {
+
     @Autowired
     private EnterpriseRepository enterpriseRepository;
     @Autowired

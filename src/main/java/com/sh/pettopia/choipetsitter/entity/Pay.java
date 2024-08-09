@@ -30,10 +30,10 @@ public class Pay {
     private LocalDate endDate;
 
     @Column(name = "petsitter_id")
-    private Long petsitterId;
+    private Long petSitterId;
 
     @Column(name = "member_id")
-    private Long memberID;
+    private Long memberId;
 
     @Column(name = "pay_date")
     @CreationTimestamp

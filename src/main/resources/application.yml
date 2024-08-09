@@ -18,6 +18,7 @@ logging:
     root: info
     com.sh: debug
 
+
   # 공통 jpa 설정
   jpa:
     generate-ddl: truel

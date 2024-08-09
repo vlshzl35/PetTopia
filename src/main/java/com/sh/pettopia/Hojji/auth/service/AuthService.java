@@ -28,7 +28,13 @@ public class AuthService implements UserDetailsService {
         // UsernameNotFoundException을 던져줘야 spring-security가 인식합니다.
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
-        return new AuthPrincipal(member); // Entity를 UserDetails로 변환합니다.
+
+        System.out.println("username = " + username);
+        // optional객체를 반환하기 때문에 객체가 있으면 주고, 없으면 예외를 던져주세요! 라는 orElseThrow를 사용
+        // UsernameNotFoundException을 던져줘야 spring-security가 알아먹음
+        return new AuthPrincipal(member); // 🙉 entity를 UserDetails로 변환하는 작업 -> db에서 조회한 것은 entity이기 때문!
+
+
     }
 
 //    /**

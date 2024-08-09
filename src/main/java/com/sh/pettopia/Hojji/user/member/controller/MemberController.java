@@ -43,7 +43,6 @@ public class MemberController {
         String encryptedPassword = passwordEncoder.encode(dto.getPassword());
         dto.setPassword(encryptedPassword);
 
-
         // 2. 회원 등록 요청
         memberService.registMember(dto);
         redirectAttributes.addFlashAttribute("message", "회원가입을 축하드립니다!✨");
