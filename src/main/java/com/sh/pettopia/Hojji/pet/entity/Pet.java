@@ -60,6 +60,7 @@ public class Pet {
     private String socialization;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     // 실종 상태를 변경하기 위함
     private PetStatus status;
 
@@ -69,5 +70,5 @@ public class Pet {
 
     @Column(nullable = false)
     private String breed;
-    
+
 }
