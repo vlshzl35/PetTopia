@@ -2,7 +2,6 @@ package com.sh.pettopia.Hojji.user.member.controller;
 
 
 import com.sh.pettopia.Hojji.user.member.dto.MemberRegistRequestDto;
-import com.sh.pettopia.Hojji.user.member.entity.Member;
 import com.sh.pettopia.Hojji.user.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -55,7 +54,6 @@ public class MemberController {
     @ResponseBody
     public boolean sameEmailCheck(@RequestParam("memberEmail") String email) {
         log.debug("Post / 이메일 체크 시작");
-        log.debug("memberEmail = {}", email);
 
         // true의 의미 : 이미 존재하는 이메일이라는 의미입니다.
         // false로 반환해야 사용할 수 있는 이메일입니다.

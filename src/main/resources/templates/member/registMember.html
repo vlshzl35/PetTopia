@@ -83,8 +83,10 @@
                                 <div class="form-group col-md-6">
                                     <label for="confirm-password">비밀번호 확인 *</label>
                                     <input type="password" class="form-control" id="confirm-password"
-                                           placeholder="비밀번호 확인" name="passwordCheck" required>
+                                           placeholder="비밀번호 확인" onKeyUp=pwCheck()  name="passwordCheck" required>
+                                    <p id="checkPassword"></p>
                                 </div>
+
                             </div>
 
                             <div class="form-row">
@@ -173,13 +175,12 @@
 
 <script layout:fragment="js">
     let emailCheckResult = false;
+    let pwCheckResult = false;
 
     function isValid() {
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirm-password').value;
 
         if (emailCheckResult) {
-            if (password === confirmPassword) {
+            if (emailCheckResult) {
                 alert('👍회원가입을 축하드립니다!👍');
                 return true;
             } else {
@@ -192,9 +193,9 @@
         }
     }
 
+    // 이메일 중복 체크를 하는 코드입니다.
     function duplicateEmailCheck() {
         const memberEmail = document.getElementById('email');
-
         $.ajax({
             url: '[[@{/member/sameEmailCheck}]]', // 대괄호를 꼭 써줘야 한다, 그렇지 않으면 controller로 넘어가지 않는다.
             method: 'post',
@@ -202,10 +203,12 @@
                 memberEmail: memberEmail.value
             },
             success: function (res) {
+
                 if (res === true) {
                     alert('이미 사용중인 이메일입니다. 다시 입력해주세요!');
                     console.log('사용중인 이메일입니다. 다시 입력해주세요');
-                } else {
+                }
+                else {
                     alert('사용 가능한 이메일입니다!');
                     emailCheckResult = true;
                 }
@@ -218,6 +221,21 @@
             }
         });
         return emailCheckResult;
+    }
+
+    // 비밀번호 확인하는 코드입니다.
+    const pwCheck = () => {
+        const pw = document.getElementById('password').value;
+        const pwCheck = document.getElementById('confirm-password').value;
+        const pwCheckResult = document.getElementById('checkPassword');
+
+        if(pw == pwCheck) {
+            pwCheckResult.style.color = '#00bd56';
+            pwCheckResult.innerHTML = "비밀번호가 일치합니다.";
+        }else {
+            pwCheckResult.style.color = "#fd1e52";
+            pwCheckResult.innerHTML = " 비밀번호가 일치하지 않습니다."
+        }
     }
 
     function sample6_execDaumPostcode() {
