@@ -1,6 +1,20 @@
 {
   "documents": [
     {
+      "address_name": "서울 강남구 삼성동 119-3",
+      "category_group_code": "HP8",
+      "category_group_name": "병원",
+      "category_name": "가정,생활 > 반려동물 > 동물병원",
+      "distance": "",
+      "id": "16906667",
+      "phone": "02-512-2575",
+      "place_name": "마이펫동물의료센터",
+      "place_url": "http://place.map.kakao.com/16906667",
+      "road_address_name": "서울 강남구 삼성로 573",
+      "x": "127.053160985762",
+      "y": "37.5125036883222"
+    },
+    {
       "address_name": "서울 강남구 삼성동 70-6",
       "category_group_code": "HP8",
       "category_group_name": "병원",
@@ -85,20 +99,6 @@
       "y": "37.51649752349994"
     },
     {
-      "address_name": "서울 강남구 삼성동 119-3",
-      "category_group_code": "HP8",
-      "category_group_name": "병원",
-      "category_name": "가정,생활 > 반려동물 > 동물병원",
-      "distance": "",
-      "id": "16906667",
-      "phone": "02-512-2575",
-      "place_name": "마이펫동물의료센터",
-      "place_url": "http://place.map.kakao.com/16906667",
-      "road_address_name": "서울 강남구 삼성로 573",
-      "x": "127.053160985762",
-      "y": "37.5125036883222"
-    },
-    {
       "address_name": "서울 강남구 삼성동 9-5",
       "category_group_code": "HP8",
       "category_group_name": "병원",
@@ -125,6 +125,105 @@
       "road_address_name": "서울 강남구 봉은사로 640",
       "x": "127.065361839277",
       "y": "37.5149176634518"
+    },
+    {
+      "address_name": "서울 강남구 청담동 46",
+      "category_group_code": "HP8",
+      "category_group_name": "병원",
+      "category_name": "가정,생활 > 반려동물 > 동물병원",
+      "distance": "",
+      "id": "356547106",
+      "phone": "02-511-7522",
+      "place_name": "VIP동물의료센터 청담점",
+      "place_url": "http://place.map.kakao.com/356547106",
+      "road_address_name": "서울 강남구 삼성로133길 7",
+      "x": "127.04905967486701",
+      "y": "37.51941886357878"
+    },
+    {
+      "address_name": "서울 강남구 청담동 132-19",
+      "category_group_code": "HP8",
+      "category_group_name": "병원",
+      "category_name": "가정,생활 > 반려동물 > 동물병원",
+      "distance": "",
+      "id": "2023021097",
+      "phone": "02-3445-7275",
+      "place_name": "일마레동물메디컬센터",
+      "place_url": "http://place.map.kakao.com/2023021097",
+      "road_address_name": "서울 강남구 영동대로 708",
+      "x": "127.057135352262",
+      "y": "37.5210577614408"
+    },
+    {
+      "address_name": "서울 강남구 청담동 47",
+      "category_group_code": "HP8",
+      "category_group_name": "병원",
+      "category_name": "가정,생활 > 반려동물 > 동물병원",
+      "distance": "",
+      "id": "24172268",
+      "phone": "02-6925-7021",
+      "place_name": "청담아이윌24시동물병원",
+      "place_url": "http://place.map.kakao.com/24172268",
+      "road_address_name": "서울 강남구 삼성로133길 3",
+      "x": "127.04918425644132",
+      "y": "37.51964856754429"
+    },
+    {
+      "address_name": "서울 강남구 청담동 46",
+      "category_group_code": "HP8",
+      "category_group_name": "병원",
+      "category_name": "가정,생활 > 반려동물 > 동물병원",
+      "distance": "",
+      "id": "263283176",
+      "phone": "070-8652-0585",
+      "place_name": "놀로 동물행동 클리닉",
+      "place_url": "http://place.map.kakao.com/263283176",
+      "road_address_name": "서울 강남구 삼성로133길 7",
+      "x": "127.048985051157",
+      "y": "37.5194720537324"
+    },
+    {
+      "address_name": "서울 강남구 대치동 903-12",
+      "category_group_code": "HP8",
+      "category_group_name": "병원",
+      "category_name": "가정,생활 > 반려동물 > 동물병원",
+      "distance": "",
+      "id": "16297669",
+      "phone": "02-555-6835",
+      "place_name": "원동물병원",
+      "place_url": "http://place.map.kakao.com/16297669",
+      "road_address_name": "서울 강남구 역삼로 459",
+      "x": "127.05746528981487",
+      "y": "37.50286272299058"
+    },
+    {
+      "address_name": "서울 강남구 청담동 46",
+      "category_group_code": "HP8",
+      "category_group_name": "병원",
+      "category_name": "가정,생활 > 반려동물 > 동물병원",
+      "distance": "",
+      "id": "1072121256",
+      "phone": "02-6952-7524",
+      "place_name": "VIP동물한방재활의학센터by Dr신사경",
+      "place_url": "http://place.map.kakao.com/1072121256",
+      "road_address_name": "서울 강남구 삼성로133길 7",
+      "x": "127.049030278107",
+      "y": "37.5194404998592"
     }
-  ]
+  ],
+  "meta": {
+    "is_end": false,
+    "pageable_count": 45,
+    "same_name": {
+      "keyword": "동물병원",
+      "region": [
+        "서울 관악구 삼성동",
+        "경남 양산시 삼성동",
+        "전북 익산시 삼성동",
+        "대전 동구 삼성동"
+      ],
+      "selected_region": "서울 강남구 삼성동"
+    },
+    "total_count": 82
+  }
 }
