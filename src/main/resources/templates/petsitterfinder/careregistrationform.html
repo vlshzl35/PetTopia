@@ -183,21 +183,22 @@
 <div class="page-body" layout:fragment="main">
     <section class="hero-wrap hero-wrap-2" data-stellar-background-ratio="0.5"
              style="background-image: url('/images/KakaoTalk_20240527_201110282.jpg'); height: 200px; border-radius: 8px;"></section>
-    <form method="post" name="petRegustFrm">
+    <form method="post" name="careRegistration">
         <div class="form-container">
             <div class="left-column">
                 <div class="form-group">
-                    <label>펫 선택:</label>
                     <!--                펫 이름을 노출시키고, 폼 제출 시 펫 아이디를 전송함-->
-                    <select id="petSelect" name="petSelect">
-                        <!--                    선택하기전 기본값을 돌보실 펫을 선택해 주세요로 설정 disabled selected-->
+                    <!--                    petId를 서버에서 requestParam을 통해 전달받을 수 있다. -->
+                    <!--                    선택하기전 기본값을 돌보실 펫을 선택해 주세요로 설정 disabled selected-->
 
-                        <!--                    8/8 오전 1:32 그럼 petid를 선택하자마자 이벤트를 발생시켜야함
+                    <!--                    8/8 오전 1:32 그럼 petid를 선택하자마자 이벤트를 발생시켜야함
                                                 발생한 이벤트로 petId값이 전달되고 그 값을 서버에서 받아서
                                                 petId에 해당하는 pet의 정보가 돌아록해서 비동기처리로 폼에 값들 전부 입력 되도록 해야할 것 같다. .. 현재의 계획.. 될진 모른다
                         -->
+                    <label>펫 선택:</label>
+                    <select id="petSelect" name="petId">
                         <option disabled selected value="">돌보실 펫을 선택해 주세요.</option>
-                        <option th:each="pet : ${pets}" th:text="${pet.petName}" th:value="${pet.petId}"></option>
+                        <option th:each="pet : ${pets}" th:text="${pet.name}" th:value="${pet.petId}"></option>
                     </select>
                 </div>
                 <!--            8/8 일 오전 1:51 돌볼 펫을 선택하면 event를 발생시켜 petId를 출력시켜주는 코드
@@ -206,10 +207,47 @@
 
                 -->
                 <script>
+                    /**
+                     *  08/08 3시20분 400 bad request 발생
+                     *  400 오류?
+                     *   The 400 (Bad Request) status code indicates that the server cannot or
+                     *    will not process the request because the received syntax is invalid,
+                     *    nonsensical, or exceeds some limitation on what the server is willing
+                     *    to process.
+                     *    -> 문법오류라는 듯?
+                     */
                     document.getElementById('petSelect').addEventListener('change', function () {
                         var petId = this.value;
                         console.log("선택된 펫 ID : ", petId)
+
+                        // 비동기 처리로 pet의정보 가져오는 코드 8/8일 박태준
+                        //
+                        $.ajax({
+                            url: '[[@{/petsitterfinder/request-pet-info}]]',
+                            method: 'get',
+                            dataType: 'json',
+                            data: {petId: petId},
+                            success(data) {
+                                $('#petName').val(data.name)
+                                $('#petAge').val(data.age)
+                                $('#petGender').val(data.petGender)
+                                $('#petBirth').val(data.birth)
+                                $('#petSociability').val(data.socialization)
+                                $('#petSize').val(data.size)
+                                $('#petVaccination').val(data.vaccinationType)
+                                $('#petParasitePrevention').val(data.parasitePrevention)
+                                $('#petBreed').val(data.breed)
+                                $('#isMissing').val(data.status)
+                                $('#isNeutered').val(data.neutered)
+                            }
+                        })
+
                     })
+
+                    // 8/8 박태준 비동기처리로 json 데이터 타입 받아오는 코드
+                </script>
+                <script>
+
                 </script>
                 <!-- 이미지 업로드를 위한 폼 필드 -->
                 <div class="form-group">
@@ -234,10 +272,12 @@
                     <label for="petName">이름:</label>
                     <input id="petName" name="petName" type="text">
                 </div>
+
                 <div class="form-group">
-                    <label for="petAge">나이:</label>
-                    <input id="petAge" name="petAge" type="text">
+                    <label for="petGender">성별:</label>
+                    <input id="petGender" name="petGender" type="text">
                 </div>
+
                 <div class="form-group">
                     <label for="petBreed">견종:</label>
                     <input id="petBreed" name="petBreed" type="text">
@@ -251,26 +291,28 @@
                     <input id="petSize" name="petSize" type="text">
                 </div>
                 <div class="form-group">
-                    <label for="petWeight">무게:</label>
-                    <input id="petWeight" name="petWeight" type="text">
-                </div>
-                <div class="form-group">
                     <label for="petSociability">사회성:</label>
                     <input id="petSociability" name="petSociability" type="text">
                 </div>
                 <div class="form-group">
-                    <label>예방접종 여부:</label>
-                    <div class="radio-group">
-                        <input id="pet-vaccination" name="vaccination" type="radio" value="yes">
-                        <label for="pet-vaccination">Y</label>
-
-                        <input id="not-vaccinated" name="vaccination" type="radio" value="no">
-                        <label for="not-vaccinated">N</label>
-                    </div>
+                        <label for = "petVaccination">예방접종:</label>
+                        <input id="petVaccination" name="petVaccination" type="text" >
                 </div>
+                <div class="form-group">
+                    <label for = "petParasitePrevention">기생충 예방:</label>
+                    <input id="petParasitePrevention" name="petParasitePrevention" type="text" >
+                </div>
+                <div class="form-group">
+                    <label>실종 여부:</label>
+                    <input id="isMissing" name="isMissing" type="text" >
+                </div>
+                <div class="form-group">
+                    <label>중성화 여부:</label>
+                    <input id="isNeutered" name="isNeutered" type="text" >
+                </div>
+            </div>
 
                 <!-- 08/07 와요랑 비교해서 돌봄 종류가 어떤 것이 있는지 확인하고 매칭시키기-->
-            </div>
             <div class="right-column">
                 <div class="form-group">
                     <label for="startDate">시작 날짜:</label>
@@ -280,37 +322,75 @@
                     <label for="endDate">종료 날짜:</label>
                     <input id="endDate" name="endDate" type="date">
                 </div>
-                <div class="form-group" id="addressForm">
-                    <label for="address">주소 입력: </label>
+
+                <script>
+                    /**
+                     * 08/09 박태준 시작날짜, 종료 날짜 받아오는 javascript
+                     */
+                     document.getElementById('startDate').addEventListener('change', function(){
+                            const startDate = this.value
+                         console.log(startDate);
+                     })
+
+                    document.getElementById('endDate').addEventListener('change', function(){
+                        const endDate = this.value
+                        console.log(endDate);
+                    })
+
+
+                </script>
+                <div class="form-group">
+                    <label for="address">주소 입력(*동까지만 입력해주세요*): </label>
                     <input id="address" name="address" placeholder="주소를 입력하세요" type="text">
                 </div>
                 <div class="form-group">
                     <label>돌봄유형:</label>
                     <!--                 radio 는 name 다르게하면 다중선택 가능 -->
                     <div class="radio-group">
-                        <input id="visitCare" name="visitCare" type="radio" value="방문돌봄">
+                        <input id="visitCare" name="visitCare" type="radio" value="방문돌봄" onclick="toggleRadio(this)">
                         <label for="visitCare">방문돌봄</label>
 
-                        <input id="walkCare" name="walkCare" type="radio" value="산책돌봄">
+                        <input id="walkCare" name="walkCare" type="radio" value="산책돌봄" onclick="toggleRadio(this)">
                         <label for="walkCare">산책</label>
 
-                        <input id="leavingCare" name="leavingCare" type="leavingCare" value="맡김돌봄">
+                        <input id="leavingCare" name="leavingCare" type="radio" value="맡김돌봄" onclick="toggleRadio(this)">
                         <label for="leavingCare">맡김 돌봄</label>
                     </div>
+
+                    <script>
+                        <!--  08/09 박태준 radio 취소하는 코드 -->
+                        let lastChecked = null;
+                        function toggleRadio(radio) {
+                            if (lastChecked === radio) {
+                                radio.checked = false;
+                                lastChecked = null;
+                            } else {
+                                lastChecked = radio;
+                            }
+
+                            document.getElementById('visitCare').addEventListener('change', function(){
+                                const visitCare = this.value
+                                console.log(visitCare);
+                            })
+
+                            document.getElementById('walkCare').addEventListener('change', function(){
+                                const walkCare = this.value
+                                console.log(walkCare);
+                            })
+                            document.getElementById('leavingCare').addEventListener('change', function(){
+                                const leavingCare = this.value
+                                console.log(leavingCare);
+                            })
+                        }
+                    </script>
                 </div>
                 <!--            radio 태그의 value 속성은 해당 라디오 버튼이 선택됐을 때 제출되는 값이다 -->
-                <div class="form-group">
-                    <label>실종 여부:</label>
-                    <div class="radio-group">
-                        <input id="not-missed" name="missed" type="radio" value="WITH_OWNER">
-                        <label for="not-missed">같이 살아요!!</label>
-
-                        <input id="missed" name="missed" type="radio" value="MISSING">
-                        <label for="missed">실종 됐어요! 도움을 청합니다</label>
-                    </div>
-                </div>
             </div>
             <button class="submit-btn" type="submit">등록하기</button>
+<!--            8/9 박태준
+            Submit 하면 일단 CareRegistration DB에 값들 전부 등록 되도록 해야함
+            아직 감이안온다.. DTO로 받아서 Entity 변환 후에 Data insert 되도록 해야할듯
+-->
         </div>
     </form>
 
@@ -327,7 +407,6 @@
                 document.getElementById('preview').src = "";
             }
         }
-
 
         /**
          * - JavaScript document.querySelector를 이용해서 라디오박스의 선택 된 값을 가져올 수 있다.
