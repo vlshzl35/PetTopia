@@ -7,13 +7,13 @@ public enum AvailableService {
 
     olderPetWalk("olderPetWalk")
     , youngerPetWalk("youngerPetWalk")
-    , everydayWalk("매일산책")
+    , everydayWalk("everydayWalk")
     , medicine("medicine")
-    , walkPickup("도보픽업")
-    , play("실내놀이")
-    , firstAid("응급처리")
-    , longReservation("장기예약")
-    , brush("빗질");
+    , walkPickup("walkPickup")
+    , play("play")
+    , firstAid("firstAid")
+    , longReservation("longReservation")
+    , brush("brush");
 
     private final String petService;
 

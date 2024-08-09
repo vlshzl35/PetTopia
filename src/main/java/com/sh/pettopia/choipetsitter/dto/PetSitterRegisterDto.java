@@ -7,6 +7,7 @@ import com.sh.pettopia.choipetsitter.entity.PetSitterAddress;
 import com.sh.pettopia.ncpTest.FileDto;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -27,6 +28,7 @@ public class PetSitterRegisterDto {
     private String address;
     private String postUrl;
     private PetSitterAddress petSitterAddress;
+    private Set<String > availableDates;
 
     public void setAvailable(Set<AvailableService> availableServices, Set<AvailablePetSize> availablePetSizes) {
         this.availablePetSizes = availablePetSizes;
@@ -45,6 +47,7 @@ public class PetSitterRegisterDto {
                 .detailAddress(entity.getPetSitterAddress().getDetailAddress())
                 .extraAddress(entity.getPetSitterAddress().getExtraAddress())
                 .address(entity.getPetSitterAddress().getAddress())
-                .postUrl(entity.getPostUrl()).build();
+                .availableDates(entity.getAvailableDates())
+                .build();
     }
 }

@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum AvailablePetSize {
 
-    소형견("smallPet"), 중형견("middlePet"), 대형견("largePet");
+    smallPet("smallPet"), middlePet("middlePet"), largePet("largePet");
 
     private final String petSize;
 

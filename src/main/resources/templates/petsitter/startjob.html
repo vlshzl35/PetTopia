@@ -12,6 +12,7 @@
 <div class="container" layout:fragment="main">
     <div>
         <button>
+            <span th:text="${#authentication.principal.member.name}"></span>
             <a th:href="@{/petsitter/registerprofile}">프로필 등록하기</a>
         </button>
 

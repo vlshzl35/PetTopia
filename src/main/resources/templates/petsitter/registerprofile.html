@@ -7,8 +7,8 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="_csrf_header" th:content="${_csrf.headerName}">
-    <meta name="_csrf" th:content="${_csrf.token}">
+
+<!--    <span th:text="${#authentication.principal.member.name}"></span>-->
     <title>프로필 등록</title>
     <style>
         body {
@@ -108,9 +108,9 @@
         <!--        index = <span th:text="${stat.index}"></span>-->
         <!--        이미지 주소 = <span th:text="${images}"></span>-->
         <!--        등록한 이미지 보기-->
-        <div style="overflow:scroll; width:500px; height:400px;">
+        <div style="overflow:scroll; width:500px; height:350px;">
             <div th:each="images,stat: ${imagesUrlList}">
-                <img th:src="${images}" alt="" style="height: 400px; width: 400px" th:onclick="remove_confirm(this.src)">
+                <img th:src="${images}" alt="" style="height: 400px; width: 350px" th:onclick="remove_confirm(this.src)">
             </div>
         </div>
 
@@ -132,17 +132,22 @@
                           placeholder="소개글을 입력해주세요"></textarea>
             </div>
         </div>
-        <div class="container">
+        <div class="container" th:object="${petService}">
             <div style="border: 1px solid black">
                 [[${petService}]]
+                [[${petSize}]]
                 [[${petService.contains(T(com.sh.pettopia.choipetsitter.entity.AvailableService).youngerPetWalk)}]]
                 [[${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).everydayWalk)}]]
                 [[${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).youngerPetWalk)}]]
-                <div class="">
+                [[${petService.contains('youngerPetWalk')}]]
+                <div >
                     <label for="everydayWalk">
                         <img th:src="@{/images/availableService/everydaywalk.PNG}" alt="everydayWalk">
                         <input type="checkbox" name="availableService" id="everydayWalk" value="everydayWalk"
                                th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).everydayWalk)}">
+<!--                               th:checked="${petService.contains('everydayWalk')}">-->
+
+
                     </label>
                     <label for="oldPetWalk">
                         <img th:src="@{/images/availableService/oldpetwalk.PNG}" alt="노견산책">
@@ -205,7 +210,7 @@
                 <label for="largePet">
                     <img th:src="@{/images/availableService/largepet.PNG}" alt="" class="petSize">
                     <input type="checkbox" name="availablePetSize" id="largePet" value="largePet"
-                           th:checked="${#sets.contains(petSize, T(com.sh.pettopia.choipetsitter.entity.AvailablePetSize).largePet)}">
+                           th:checked="${#sets.contains(petSize,T(com.sh.pettopia.choipetsitter.entity.AvailablePetSize).largePet)}">
                 </label>
             </div>
         </div>
