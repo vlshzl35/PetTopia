@@ -26,4 +26,9 @@ public class MemberService {
         // member를 등록합니다.
         memberRepository.save(member);
     }
+
+    @Transactional
+    public boolean sameEmailCheck(String memberEmail) {
+        return memberRepository.existsByEmail(memberEmail);
+    }
 }
