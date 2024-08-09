@@ -176,10 +176,17 @@
         let pwCheckResult = false;
 
         function isValid() {
-
-            if (emailCheckResult) {
+            if (emailCheckResult && pwCheckResult) {
                 if (emailCheckResult) {
+                    // 회원가입 축하 메시지
                     alert('👍회원가입을 축하드립니다!👍');
+
+                    // 펫 등록 여부를 묻는 confirm 다이얼로그
+                    if (confirm('펫을 등록하시겠습니까?')) {
+                        // 펫 등록 페이지로 리다이렉트
+                        location.href = '/pet/'; // 실제 펫 등록 페이지 URL로 변경
+                    }
+
                     return true;
                 } else {
                     alert('비밀번호가 일치하지 않습니다.');
@@ -190,6 +197,7 @@
                 return false;
             }
         }
+
 
         // 이메일 중복 체크를 하는 코드입니다.
         function duplicateEmailCheck() {
