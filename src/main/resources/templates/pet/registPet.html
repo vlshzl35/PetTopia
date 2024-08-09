@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <title>회원가입</title>
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+    <link rel="stylesheet" href="/css/petRegist.css">
+
+</head>
+<body>
+<div layout:fragment="main" class="page-body">
+
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center mb-5">
+                    <h2 class="heading-section">반려견 등록</h2>
+                </div>
+            </div>
+            <div class="row justify-content-center" style="display: flex; flex-direction: column; align-items: center;">
+                <img src="/images/KakaoTalk_20240527_201110282.jpg" alt="댕댕쓰 사진" height="400px" width="400px"
+                     style="border-radius: 50%; margin-bottom:5px;">
+
+                <h5>댕댕쓰 사진</h5>
+            </div>
+
+
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="wrapper">
+                        <form id="signup-form" method="post" onsubmit="return isValid()">
+
+                            <!-- 반려견 등록 폼 -->
+                            <div class="form-group">
+                                <label for="profile-pic">프로필 사진</label>
+                                <input type="file" class="form-control-file" id="profile-pic" name="profileImage">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label class="title" for="name" style="margin-bottom: 0;"><h5>이름</h5></label>
+                                    <input type="text" class="form-control" id="name" placeholder="댕댕이 이름을 입력해주세요."
+                                           name="email" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label class="title" for="gender" style="margin-bottom: 0;"><h5>성별</h5></label>
+                                    <select class="form-control" id="gender" name="gender" required>
+                                        <option value="">== 성별 선택 ==</option>
+                                        <option value="M">수컷</option>
+                                        <option value="F">암컷</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- 견종 -->
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label class="title" for="breed" style="margin-bottom: 0;"><h5>견종</h5></label>
+                                    <input type="text" class="form-control" id="breed" placeholder="견종을 입력해주세요."
+                                           name="breed" required>
+                                </div>
+                            </div>
+
+                            <!-- 몸무게 -->
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label class="title" for="weight" style="margin-bottom: 0;"><h5>몸무게</h5></label>
+                                    <select class="form-control" id="weight" name="weight" required>
+                                        <option value="">== 몸무게 ==</option>
+                                        <option value="small">소형견 (0~4.9kg)</option>
+                                        <option value="medium">중형견 (5~14.9kg)</option>
+                                        <option value="large">대형견 (15kg 이상)</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="dob"><h5>생일</h5></label>
+                                    <input type="date" class="form-control" id="dob" name="birth">
+                                </div>
+                            </div>
+
+                            <!-- 중성화 여부 -->
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label class="title"><h5>중성화를 했나요? *</h5></label>
+
+                                    <div class="btn-group-toggle col-md-12" data-toggle="buttons" style="padding: 0">
+                                        <label class="btn btn-outline-primary ">
+                                            <input type="checkbox" id="neutered" name="vaccination" value="neutered"
+                                                   autocomplete="off">했어요
+                                        </label>
+                                        <label class="btn btn-outline-primary">
+                                            <input type="checkbox" id="neutered_no" name="vaccination" value="neutered_no"
+                                                   autocomplete="off">안했어요
+                                        </label>
+
+                                    </div>
+
+
+<!--                                    <div class="checkbox-group">-->
+<!--                                        <input type="radio" id="neutered" name="neutered" value="yes">-->
+<!--                                        <label for="neutered">했어요</label>-->
+
+<!--                                        <input type="radio" id="neutered_no" name="neutered" value="no">-->
+<!--                                        <label for="neutered_no">안했어요</label>-->
+<!--                                    </div>-->
+                                </div>
+                            </div>
+
+                            <!-- 예방 접종 여부 -->
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label><h5>예방 접종 여부 *</h5></label>
+                                    <div class="btn-group-toggle col-md-12" data-toggle="buttons" style="padding: 0">
+                                        <label class="btn btn-outline-primary ">
+                                            <input type="checkbox" id="rabies" name="vaccination" value="rabies"
+                                                   autocomplete="off"> 광견병 (매년 1회 접종완료)
+                                        </label>
+                                        <label class="btn btn-outline-primary">
+                                            <input type="checkbox" id="combined" name="vaccination" value="combined"
+                                                   autocomplete="off"> 종합백신 (매년 1회 접종완료)
+                                        </label>
+                                        <label class="btn btn-outline-primary">
+                                            <input type="checkbox" id="corona" name="vaccination" value="corona"
+                                                   autocomplete="off"> 코로나 (매년 1회 접종완료)
+                                        </label>
+                                        <label class="btn btn-outline-primary">
+                                            <input type="checkbox" id="kennel" name="vaccination" value="kennel"
+                                                   autocomplete="off"> 켄넬코프 (매년 1회 접종완료)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- 기생충 예방 접종 여부 -->
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label class="title"><h5>기생충 예방 접종 여부 *</h5></label>
+                                    <div class="btn-group-toggle col-md-12" data-toggle="buttons" style="padding: 0">
+                                        <label class="btn btn-outline-primary">
+                                            <input type="checkbox" id="heartworm" name="vaccination" value="rabies"
+                                                   autocomplete="off">심장사상충
+                                        </label>
+                                        <label class="btn btn-outline-primary">
+                                            <input type="checkbox" id="externalParasites" name="vaccination"
+                                                   value="combined" autocomplete="off">외부기생충
+                                        </label>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 사회성 및 기타 참고사항 -->
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="sociability" class="title"><h5>사회성 및 기타 참고사항</h5></label>
+                                    <textarea class="form-control" id="sociability" name="sociability"
+                                              placeholder="사회성이나 기타 참고할 사항을 입력해주세요." rows="4"></textarea>
+                                </div>
+                            </div>
+
+
+                            <div>
+                                <button type="submit" class="btn btn-primary">🐶댕댕이 등록🐶</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen">
+        <svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                    stroke="#F96D00"/>
+        </svg>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
+
+    <script layout:fragment="js">
+        let emailCheckResult = false;
+        let pwCheckResult = false;
+
+        function isValid() {
+            if (emailCheckResult && pwCheckResult) {
+                if (emailCheckResult) {
+                    // 회원가입 축하 메시지
+                    alert('👍회원가입을 축하드립니다!👍');
+
+                    // 펫 등록 여부를 묻는 confirm 다이얼로그
+                    if (confirm('펫을 등록하시겠습니까?')) {
+                        // 펫 등록 페이지로 리다이렉트
+                        location.href = '/pet/registPet'; // 실제 펫 등록 페이지 URL로 변경
+                    }
+
+                    return true;
+                } else {
+                    alert('비밀번호가 일치하지 않습니다.');
+                    return false;
+                }
+            } else {
+                alert('이메일 중복 체크를 먼저 해주세요');
+                return false;
+            }
+        }
+
+
+        // 이메일 중복 체크를 하는 코드입니다.
+        function duplicateEmailCheck() {
+            const memberEmail = document.getElementById('email');
+            if (!memberEmail) {
+                alert('이메일을 입력해주세요.');
+                return false;
+            }
+
+            $.ajax({
+                url: '[[@{/member/sameEmailCheck}]]', // 대괄호를 꼭 써줘야 한다, 그렇지 않으면 controller로 넘어가지 않는다.
+                method: 'post',
+                data: {
+                    memberEmail: memberEmail.value
+                },
+                success: function (res) {
+
+                    if (res === true) {
+                        alert('이미 사용중인 이메일입니다. 다시 입력해주세요!');
+                        console.log('사용중인 이메일입니다. 다시 입력해주세요');
+                        emailCheckResult = false; // 이메일 중복 확인 실패
+                    } else {
+                        alert('사용 가능한 이메일입니다!');
+                        emailCheckResult = true; // 이메일 사용 가능
+                    }
+                },
+                error: function () {
+                    console.log('이메일 중복 체크 오류입니다.');
+                },
+                complete: function () {
+                    console.log('이메일 중복 체크 완료')
+                }
+            });
+            return emailCheckResult;
+        }
+
+        // 비밀번호 확인하는 코드입니다.
+        const pwCheck = () => {
+            const pw = document.getElementById('password').value;
+            const pwCheck = document.getElementById('confirm-password').value;
+            const pwResult = document.getElementById('pwResult');
+
+            if (pw === pwCheck) {
+                pwResult.style.color = '#00bd56';
+                pwResult.innerHTML = "비밀번호가 일치합니다.";
+                pwCheckResult = true;
+            } else {
+                pwResult.style.color = '#e2263e';
+                pwResult.innerHTML = " 비밀번호가 일치하지 않습니다."
+                pwCheckResult = false;
+            }
+        }
+
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</div>
+
+
+</body>
+</html>
