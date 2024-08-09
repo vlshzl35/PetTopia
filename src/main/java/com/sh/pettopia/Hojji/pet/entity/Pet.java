@@ -66,4 +66,8 @@ public class Pet {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @Column(nullable = false)
+    private String breed;
+    
 }

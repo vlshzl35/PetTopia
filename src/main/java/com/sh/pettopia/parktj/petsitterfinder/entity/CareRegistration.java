@@ -1,5 +1,9 @@
 package com.sh.pettopia.parktj.petsitterfinder.entity;
 
+import com.sh.pettopia.Hojji.pet.entity.ParasitePrevention;
+import com.sh.pettopia.Hojji.pet.entity.PetGender;
+import com.sh.pettopia.Hojji.pet.entity.PetSize;
+import com.sh.pettopia.Hojji.pet.entity.PetStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,6 +29,9 @@ public class CareRegistration {
 
     // 지연로딩, 관련 데이터를 필요할 때까지 미뤄서 가져옴
     // 즉시로딩(EAGER): 설정된 연관관계는 엔티티가 로드될 때 즉시 관련 데이터를 함께 로딩함.
+
+    @Column(name ="pet_id", nullable = false)
+    private Long petId;
 
     @Column(name = "member_id", nullable = false )
     private Long memberId;
@@ -53,6 +60,42 @@ public class CareRegistration {
 
     @Column(name = "dog_image_url", nullable = false)
     private String dogImangeUrl;
+
+    @Column(name = "pet_name", nullable = false)
+    private String petName;
+
+    @Column(name ="pet_bith", nullable = false)
+    private LocalDate birth;
+
+    @Column(name ="pet_neutered", nullable = false)
+    private boolean neutered;
+
+    @Column(name ="pet_profile", nullable = false)
+    private String profile;
+
+    @Column(name = "pet_vaccination_type", nullable = true)
+    private String vaccinationType;
+
+    @Column(name ="pet_socialization", nullable = false)
+    private String socialization;
+
+    @Column(name="pet_status", nullable = false)
+    private PetStatus status;
+
+    @Column(name = "pet_breed", nullable = false)
+    private String breed;
+
+    @Column(name ="pet_size" , nullable = false)
+    private PetSize petSize;
+
+    @Column(name = "pet_gender", nullable = false)
+    private PetGender petGender;
+
+    @Column(name = "pet_parasite_prevention_type", nullable = true)
+    private ParasitePrevention parasitePrevention;
+
+    @Column(name = "member_address", nullable = false)
+    private String address;
 
 
 }
