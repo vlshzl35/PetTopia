@@ -1,4 +1,4 @@
-package com.sh.petsitter;
+package com.sh.pettopia.choipetsitter.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,10 +30,10 @@ public class Pay {
     private LocalDate endDate;
 
     @Column(name = "petsitter_id")
-    private Long petsitterId;
+    private Long petSitterId;
 
     @Column(name = "member_id")
-    private Long memberID;
+    private Long memberId;
 
     @Column(name = "pay_date")
     @CreationTimestamp

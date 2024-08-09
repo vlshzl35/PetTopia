@@ -1,5 +1,8 @@
-package com.sh.petsitter;
+package com.sh.pettopia.choipetsitter.entity;
 
+import lombok.Getter;
+
+@Getter
 public enum ReservationStatus {
     ready("요청대기"), OK("요청수락"), cancel("요청취소");
 
@@ -9,7 +12,4 @@ public enum ReservationStatus {
         this.reservationStatus=reservationStatus;
     }
 
-    public String getReservationStatus(){
-        return reservationStatus;
-    }
 }
