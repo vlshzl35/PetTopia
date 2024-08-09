@@ -18,4 +18,9 @@ public class EnterpriseController {
     public void hospitalReview() {
 
     }
+
+    @GetMapping("/detail")
+    public void detail() {
+
+    }
 }

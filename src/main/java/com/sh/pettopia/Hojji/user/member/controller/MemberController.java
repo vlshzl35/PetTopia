@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -29,15 +27,17 @@ public class MemberController {
     private String value;
 
     @GetMapping("/termsOfService")
-    public void termsOfService(){
+    public void termsOfService() {
     }
 
     @GetMapping("/registMember")
-    public void registMember() {
+    public void registMember(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("message", "회원가입을 축하드립니다!✨");
+
     }
 
     @PostMapping("/registMember")
-    public String registMember(@ModelAttribute MemberRegistRequestDto dto, RedirectAttributes redirectAttributes) {
+    public String registMember(@ModelAttribute MemberRegistRequestDto dto, RedirectAttributes redirectAttributes, Model model) {
         // 1. 비밀번호 암호화
         log.debug("dto = {}", dto);
         String encryptedPassword = passwordEncoder.encode(dto.getPassword());
@@ -45,7 +45,18 @@ public class MemberController {
 
         // 2. 회원 등록 요청
         memberService.registMember(dto);
+        log.debug("Post / 회원 가입 완료");
         redirectAttributes.addFlashAttribute("message", "회원가입을 축하드립니다!✨");
-        return "redirect:/";
+        return "redirect:/auth/login";
+    }
+
+    @PostMapping("/sameEmailCheck")
+    @ResponseBody
+    public boolean sameEmailCheck(@RequestParam("memberEmail") String email) {
+        log.debug("Post / 이메일 체크 시작");
+
+        // true의 의미 : 이미 존재하는 이메일이라는 의미입니다.
+        // false로 반환해야 사용할 수 있는 이메일입니다.
+        return memberService.sameEmailCheck(email);
     }
 }
