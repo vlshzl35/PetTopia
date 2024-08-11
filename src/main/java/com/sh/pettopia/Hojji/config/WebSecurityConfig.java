@@ -1,10 +1,8 @@
 package com.sh.pettopia.Hojji.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
@@ -37,14 +35,12 @@ public class WebSecurityConfig {
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests((registry) -> {
             // 특수한 경우부터 보편적인 경우 순으로 작성했습니다.
-            registry.requestMatchers("/", "/index.html","/ocrUpload", "/pet/**").permitAll() // 누구나 허용
+            registry.requestMatchers("/", "/index.html","/ocrUpload", "/petsitter/petsittingmain", "petsitter/list", "petsitterfinder/careregistrationlist", "/enterprise/location", "community/posts").permitAll() // 누구나 허용
                     .requestMatchers("/member/**", "/auth/login").anonymous()// 로그인 안 한 사용자에게 허용되는 페이지
-                    .requestMatchers("/community/**", "/enterprise/**", "/mypage/**", "/petsitter/**", "/petsitterfinder/**").authenticated() // 인증된 사용자만 허용 - 로그인 한 사용자를 의미함
+//                    .requestMatchers("/community/**", "/enterprise/**", "/mypage/**", "/petsitter/**", "/petsitterfinder/**").authenticated() // 인증된 사용자만 허용 - 로그인 한 사용자를 의미함
                     .requestMatchers("/petsitter/registerpost").hasRole("SITTER") // ROLE_ADMIN 권한이 있는 사용자만 허용
                     .requestMatchers("/petsitter/registerprofile").hasRole("SITTER") // ROLE_SITTER 권한이 있는 사용자만 허용
-
                     .requestMatchers("/petsitter/startjob").hasRole("SITTER") // ROLE_ADMIN 권한이 있는 사용자만 허용
-
                     .anyRequest().authenticated(); // 나머지들은 이렇게 해주세요~
         }); // 람다로 작성하게 되어있음
 
