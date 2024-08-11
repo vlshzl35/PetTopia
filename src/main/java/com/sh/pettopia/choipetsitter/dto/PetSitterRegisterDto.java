@@ -14,6 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
+@Getter
 @Data
 @Builder
 public class PetSitterRegisterDto {
@@ -21,7 +22,7 @@ public class PetSitterRegisterDto {
     private List<String> imageUrlList;// 프로필에 등록한 사진들 경로
     private String introduce; // 소개글
     private Set<AvailableService> availableServices;
-    private Set<AvailablePetSize> availablePetSizes;
+    private Set<AvailablePetSize > availablePetSizes;
     private String postcode;
     private String detailAddress;
     private String extraAddress;
@@ -30,7 +31,7 @@ public class PetSitterRegisterDto {
     private PetSitterAddress petSitterAddress;
     private Set<String > availableDates;
 
-    public void setAvailable(Set<AvailableService> availableServices, Set<AvailablePetSize> availablePetSizes) {
+    public void setAvailable(Set<AvailableService > availableServices, Set<AvailablePetSize > availablePetSizes) {
         this.availablePetSizes = availablePetSizes;
         this.availableServices = availableServices;
     }

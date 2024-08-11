@@ -2,6 +2,7 @@ package com.sh.pettopia.choipetsitter.controller;
 
 import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
 import com.sh.pettopia.Hojji.pet.entity.Pet;
+import com.sh.pettopia.choipetsitter.dto.PetSitterListDto;
 import com.sh.pettopia.choipetsitter.dto.PetSitterRegisterDto;
 import com.sh.pettopia.choipetsitter.entity.AvailablePetSize;
 import com.sh.pettopia.choipetsitter.entity.AvailableService;
@@ -12,6 +13,8 @@ import com.sh.pettopia.ncpTest.FileDto;
 import com.sh.pettopia.ncpTest.FileService;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.collection.spi.PersistentList;
+import org.springframework.boot.Banner;
 import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -43,8 +46,17 @@ public class PetSitterController {
             , @RequestParam("availableService") @Nullable Set<AvailableService> service
             , @RequestParam("availablePetSize") @Nullable Set<AvailablePetSize> petSize
             , @AuthenticationPrincipal AuthPrincipal principal
-            , @RequestPart(value = "files", required = false) List<MultipartFile> multipartFiles) {
+            , @RequestPart(value = "files", required = true) List<MultipartFile> multipartFiles) {
         log.info("POST /petsitter/registerprofile");
+        List<String> imageUrl = new ArrayList<>();
+
+        System.out.println("multipartFiles = " + multipartFiles);
+
+        List<MultipartFile> checkFiles = multipartFiles.stream()
+                .filter(file -> !file.isEmpty())
+                .toList();
+
+        System.out.println("checkFiles = " + checkFiles);
 
         // 따로따로 가져온 주소를 클래스로 바꾼다
         PetSitterAddress petSitterAddress
@@ -52,24 +64,20 @@ public class PetSitterController {
                 , petSitterRegisterDto.getDetailAddress(), petSitterRegisterDto.getExtraAddress());
         petSitterRegisterDto.setPetSitterAddress(petSitterAddress);
 
-        // form안에 같이 전송이 안된 서비스와 펫사이즈를 dto에 셋한다
         petSitterRegisterDto.setAvailable(service, petSize);
 
 
-        List<String> imageUrl = new ArrayList<>();
-        if(!imageUrl.isEmpty()) {
-            petSitterRegisterDto.setImageUrlList(imageUrl);
 //         파일 값이 존재한다면
-            if (multipartFiles != null || !multipartFiles.isEmpty()) {
-                //파일들의 url을 List로 담아서 Dto->Entity할 때 넣는다
-                List<FileDto> fileDtoList = fileService.uploadFilesSample(multipartFiles);
+        if (!checkFiles.isEmpty()) {
+            //파일들의 url을 List로 담아서 Dto->Entity할 때 넣는다
+            List<FileDto> fileDtoList = fileService.sitterUpFile(multipartFiles,principal.getMember().getEmail());
 
-                for (FileDto fileDtoImageUrl : fileDtoList) {
-                    imageUrl.add(fileDtoImageUrl.getUploadFileUrl());
-                }
-
+            for (FileDto fileDtoImageUrl : fileDtoList) {
+                imageUrl.add(fileDtoImageUrl.getUploadFileUrl());
             }
+            petSitterRegisterDto.setImageUrlList(imageUrl);
         }
+
 
         PetSitter petSitter = new PetSitter().DtoToEntity(petSitterRegisterDto);
         petSitter.setPetSitterId(principal.getMember().getEmail());
@@ -81,49 +89,107 @@ public class PetSitterController {
     }
 
     @GetMapping("/list")
-    public void list() {
+    public void list( Model model) {
+        log.info("GET petsitter/list");
+        List<PetSitter> petSitters=petSitterService.findAll();
+        
+        System.out.println("petSitters = " + petSitters);
+        model.addAttribute("petSitterList",petSitters);
         // 펫시터 리스트를 가져온다
     }
 
-    @GetMapping("/detail")
-    public void detail() {
+    @GetMapping("/detail/{petSitterId}")
+    public String  detail(@PathVariable String petSitterId, Model model) {
+        log.info("GET /petsitter/detail/{}",petSitterId);
+        PetSitter petSitter=petSitterService.findOneByPetSitter(petSitterId);
+        PetSitterRegisterDto petSitterRegisterDto=new PetSitterRegisterDto().EntityToDto(petSitter);
+        Set<String> petServiceList=new HashSet<>();
+        Set<String> petSizeList=new HashSet<>();
+        List<String> profileImg=new ArrayList<>();
+
+        for(AvailableService service : petSitter.getAvailableService())
+        {
+            petServiceList.add(service.getPetService());
+        }
+        System.out.println("stringService = " + petServiceList);
+
+        for(AvailablePetSize petSize : petSitter.getAvailablePetSize())
+        {
+            petSizeList.add(petSize.getPetSize());
+        }
+
+        List<FileDto> fileDtoList = fileService.sitterImage(petSitter.getPetSitterId());// 주소를 sample-folder/member/memberid가 들어가야 될 거같다
+
+        for (FileDto fileDtoImageUrl : fileDtoList) {
+            profileImg.add(fileDtoImageUrl.getUploadFileUrl());
+        }
+        System.out.println("profileImg = " + profileImg);
+
+        System.out.println("stringService = " + petServiceList);
+
+        model.addAttribute("profile", petSitterRegisterDto);
+        model.addAttribute("petSize", petSizeList);
+        model.addAttribute("petService",petServiceList);
+        // 여기서 항상 서버에서 이미지 url을 담는다 -> html에서 그 url이 입력되면 이미지는 출력이된다
+        model.addAttribute("profileImg",profileImg);
+        model.addAttribute("dates", petSitter.getAvailableDates());
+
+
+        return "petsitter/detail";
         // 펫시터 디테일페이지
     }
 
     @GetMapping("/registerpost") // 홍보글 등록 핸들러
     public void registerGet(Model model, @AuthenticationPrincipal AuthPrincipal principal) {
-        log.info("GET /register_post입니다");
+        log.info("GET /register_post");
         System.out.println(principal.getMember().getEmail());
         PetSitter petSitter = petSitterService.findOneByPetSitter(principal.getMember().getEmail());
+
+        Set<String> petServiceList=new HashSet<>();
+        Set<String> petSizeList=new HashSet<>();
+
+        for(AvailableService service : petSitter.getAvailableService())
+        {
+            petServiceList.add(service.getPetService());
+        }
+        System.out.println("stringService = " + petServiceList);
+
+        for(AvailablePetSize petSize : petSitter.getAvailablePetSize())
+        {
+            petSizeList.add(petSize.getPetSize());
+        }
+        System.out.println("stringService = " + petServiceList);
 
         if (petSitter != null) {
 
             PetSitterRegisterDto petSitterProfile = new PetSitterRegisterDto().EntityToDto(petSitter);
             model.addAttribute("profile", petSitterProfile);
 
-            model.addAttribute("petSize", petSitter.getAvailablePetSize());
+            model.addAttribute("petSize", petSizeList);
 
-            model.addAttribute("petService", petSitter.getAvailableService());
+            model.addAttribute("petService",petServiceList);
             // 여기서 항상 서버에서 이미지 url을 담는다 -> html에서 그 url이 입력되면 이미지는 출력이된다
             model.addAttribute("imagesUrlList", petSitter.getImagesUrlList());
 
-        } else {
-            model.addAttribute(new PetSitterRegisterDto());
+            model.addAttribute("dates", petSitter.getAvailableDates());
+
         }
-        model.addAttribute("dates", petSitter.getAvailableDates());
+
 
         // 펫시터 홍보글 작성
     }
 
     @PostMapping("/registerpost")
     public String registerPost(
-            @RequestParam(value = "dates") Set<String > dates
+            @RequestParam(value = "dates") Set<String> dates
             , @AuthenticationPrincipal AuthPrincipal principal
             , @ModelAttribute PetSitterRegisterDto petSitterRegisterDto
     ) {
-        log.info("GET petsitter/register_post 입니다");
+        log.info("POST petsitter/register_post 입니다");
         System.out.println("dates = " + dates);
+
         PetSitter petSitter = petSitterService.findOneByPetSitter(principal.getMember().getEmail());
+
         petSitter.DtoToEntity(petSitterRegisterDto);
         petSitter.changeAvailableDates(dates);
 
@@ -140,22 +206,48 @@ public class PetSitterController {
         log.debug("authentication = {}", authentication.isAuthenticated());
         log.debug("principal = {}", principal.getMember().getEmail());
 
+        List<String> imageUrl=new ArrayList<>(); // NCP 서버에 등록된 주소를 가져오기 위한 객체
+        Set<String> stringService=new HashSet<>();
+        Set<String> stringPetSize=new HashSet<>();
+
         PetSitter petSitter = petSitterService.findOneByPetSitter(principal.getMember().getEmail());
 
+        for(AvailableService service : petSitter.getAvailableService())
+        {
+            stringService.add(service.getPetService());
+        }
+        System.out.println("stringService = " + stringService);
+
+        for(AvailablePetSize petSize : petSitter.getAvailablePetSize())
+        {
+            stringPetSize.add(petSize.getPetSize());
+        }
+
+        System.out.println("stringPetSize = " + stringPetSize);
         System.out.println("petSitter = " + petSitter);
+
         if (petSitter != null) {
 
+            List<FileDto> fileDtoList = fileService.sitterImage(petSitter.getPetSitterId());// 주소를 sample-folder/member/memberid가 들어가야 될 거같다
+
+            for (FileDto fileDtoImageUrl : fileDtoList) {
+                imageUrl.add(fileDtoImageUrl.getUploadFileUrl());
+            }
+            System.out.println("imageUrl = " + imageUrl);
+
             PetSitterRegisterDto petSitterRegisterDto = new PetSitterRegisterDto().EntityToDto(petSitter);
+            petSitterRegisterDto.setImageUrlList(imageUrl);
+
             model.addAttribute(petSitterRegisterDto);
 
-            model.addAttribute("petSize", petSitter.getAvailablePetSize());
+            model.addAttribute("petService",stringService);
 
-            model.addAttribute("petService", petSitter.getAvailableService());
+            model.addAttribute("petSize", stringPetSize);
+
+//            model.addAttribute("petService", petSitter.getAvailableService());
             // 여기서 항상 서버에서 이미지 url을 담는다 -> html에서 그 url이 입력되면 이미지는 출력이된다
-            model.addAttribute("imagesUrlList", petSitter.getImagesUrlList());
+            model.addAttribute("imagesUrlList", petSitterRegisterDto.getImageUrlList());
 
-        } else {
-            model.addAttribute(new PetSitterRegisterDto());
         }
 
 
