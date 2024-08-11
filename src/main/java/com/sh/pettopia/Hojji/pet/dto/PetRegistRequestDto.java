@@ -15,11 +15,14 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 public class PetRegistRequestDto {
+    // 사진
+    private String profileImage;
+
     // 이름
     private String name;
 
     // 성별
-    private PetGender petGender;
+    private PetGender gender;
 
     // 견종
     private String breed;
@@ -44,8 +47,9 @@ public class PetRegistRequestDto {
 
     public Pet toPet() {
         return Pet.builder()
+                .profile(this.profileImage)
                 .name(this.name)
-                .petGender(this.petGender)
+                .petGender(this.gender)
                 .breed(this.breed)
                 .size(this.size)
                 .birth(this.birth)
@@ -53,6 +57,7 @@ public class PetRegistRequestDto {
                 .vaccinationType(this.vaccinationType)
                 .parasitePrevention(this.parasitePrevention)
                 .socialization(this.socialization)
+                .status(PetStatus.WITH_OWNER)
                 .build();
     }
 

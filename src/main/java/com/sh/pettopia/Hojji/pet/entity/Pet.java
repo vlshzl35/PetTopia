@@ -80,4 +80,7 @@ public class Pet {
     @Column(nullable = false)
     private String breed;
 
+    public void setOwner(Member member) {
+        this.member = member;
+    }
 }
