@@ -31,13 +31,12 @@ public class MemberController {
     }
 
     @GetMapping("/registMember")
-    public void registMember(RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("message", "회원가입을 축하드립니다!✨");
+    public void registMember() {
 
     }
 
     @PostMapping("/registMember")
-    public String registMember(@ModelAttribute MemberRegistRequestDto dto, RedirectAttributes redirectAttributes, Model model) {
+    public String registMember(@ModelAttribute MemberRegistRequestDto dto) {
         // 1. 비밀번호 암호화
         log.debug("dto = {}", dto);
         String encryptedPassword = passwordEncoder.encode(dto.getPassword());
@@ -46,7 +45,6 @@ public class MemberController {
         // 2. 회원 등록 요청
         memberService.registMember(dto);
         log.debug("Post / 회원 가입 완료");
-        redirectAttributes.addFlashAttribute("message", "회원가입을 축하드립니다!✨");
         return "redirect:/auth/login";
     }
 
