@@ -31,24 +31,14 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // 닫기 버튼을 누르면 모달 숨기기
-    document.querySelector('.closeBtn1').onclick = function() {
+    document.querySelector('.closeBtn').onclick = function() {
         document.getElementById('uploadPopup').style.display = 'none';
     };
-
-    document.querySelector('.closeBtn2').onclick = function() {
-        document.getElementById('uploadPopup').style.display = 'none';
-    };
-
-
-
-
 });
 
-// ajax로 영수증 네이버 OCR API에 전송하기
-function closePopup() {
-    document.getElementById('uploadPopup').style.display = 'none';
-}
 
+
+// ajax로 영수증 네이버 OCR API에 전송하기
 document.fileUploadFrm.onsubmit = (e) => {
     e.preventDefault();
 
@@ -74,34 +64,36 @@ document.fileUploadFrm.onsubmit = (e) => {
             const _data = JSON.parse(data);
             console.log(_data);
 
-            // uploadPopup에서 ocr 인증에 썻던 form 안보이도록 숨기기
-            const uploadPopupContent = document.getElementById('uploadPopup').innerHTML;
-            document.getElementById('uploadPopup').innerHTML = '';
-
-            // Display the review form inside the same modal
-            const reviewForm = document.getElementById('reviewForm');
-            document.getElementById('uploadPopup').appendChild(reviewForm);
-            reviewForm.style.display = 'block'; // Show review form in the same modal
-
-            // 리뷰 작성까지 마치면 팝업 닫기
-            // closePopup();
+            // 리뷰등록 팝업 열기
+            // 영수증 인증 섹션 숨기기 & 초기화
+            // 1. upload팝업을 숨깁니다.
+            document.getElementById('uploadPopup').style.display = 'none';
+            // 2. 파일 업로드 필드, 텍스트 입력 필드 등이 있다면, 이러한 필드들을 비우거나 초기 상태로 돌려놓기
+            document.getElementById('ocrVerificationSection').style.display = 'block';
+            // 3. 내부의 입력 필드나 선택 옵션을 초기화
+            document.querySelector('#uploadPopup input[type="file"]').value = '';
+            // 리뷰 작성 폼 표시
+            document.getElementById('reviewPopup').style.display = 'block';
         },
-        error: console.log,
-        complete() {
+        error: function(err) {
+            console.log(err);
+        },
+        complete: function() {
             e.target.reset(); // 폼 초기화
         }
     })
 };
 
 // 리뷰 등록 폼
+// 별점
 document.querySelectorAll('.star-rating input').forEach(input => {
     input.addEventListener('change', function() {
         console.log(`Selected rating: ${this.value}`); // 선택된 별점을 콘솔에 출력
     });
 });
 
-
-
-
-
+// 닫기 버튼 핸들링
+document.querySelector('#closeBtn2').onclick = function() {
+    document.getElementById('reviewPopup').style.display = 'none';
+};
 
