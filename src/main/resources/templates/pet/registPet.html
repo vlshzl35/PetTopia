@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <title>회원가입</title>
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+    <link rel="stylesheet" href="/css/petRegist.css">
+
+</head>
+<body>
+<div layout:fragment="main" class="page-body">
+
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center mb-5">
+                    <h2 class="heading-section">반려견 등록</h2>
+                </div>
+            </div>
+            <div class="row justify-content-center" style="display: flex; flex-direction: column; align-items: center;">
+                <img src="/images/KakaoTalk_20240527_201110282.jpg" alt="댕댕쓰 사진" height="400px" width="400px"
+                     style="border-radius: 50%; margin-bottom:5px;">
+
+                <h5>댕댕쓰 사진</h5>
+            </div>
+
+
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="wrapper">
+                        <form th:action = "@{/pet/registPet}" id="signup-form" method="post" >
+
+                            <!-- 반려견 등록 폼 -->
+                            <div class="form-group">
+                                <label for="profile-pic">프로필 사진</label>
+                                <input type="file" class="form-control-file" id="profile-pic" name="profileImage">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label class="title" for="name" style="margin-bottom: 0;"><h5>이름</h5></label>
+                                    <input type="text" class="form-control" id="name" placeholder="댕댕이 이름을 입력해주세요."
+                                           name="name" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label class="title" for="gender" style="margin-bottom: 0;"><h5>성별</h5></label>
+                                    <select class="form-control" id="gender" name="gender" required>
+                                        <option value="">== 성별 선택 ==</option>
+                                        <option value="M">수컷</option>
+                                        <option value="F">암컷</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- 견종 -->
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label class="title" for="breed" style="margin-bottom: 0;"><h5>견종</h5></label>
+                                    <input type="text" class="form-control" id="breed" placeholder="견종을 입력해주세요."
+                                           name="breed" required>
+                                </div>
+                            </div>
+
+                            <!-- 몸무게 -->
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label class="title" for="weight" style="margin-bottom: 0;"><h5>몸무게</h5></label>
+                                    <select class="form-control" id="weight" name="size" required>
+                                        <option value="">== 몸무게 ==</option>
+                                        <option value="SMALL">소형견 (0~4.9kg)</option>
+                                        <option value="MEDIUM">중형견 (5~14.9kg)</option>
+                                        <option value="LARGE">대형견 (15kg 이상)</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="dob"><h5>생일</h5></label>
+                                    <input type="date" class="form-control" id="dob" name="birth">
+                                </div>
+                            </div>
+
+                            <!-- 중성화 여부 -->
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label class="title"><h5>중성화를 했나요? *</h5></label>
+                                    <div class="col-md-12" style="padding: 0">
+                                        <label class="btn btn-outline-primary">
+                                            <input type="radio" id="neutered_yes" name="neutered" value="true" required> 했어요
+                                        </label>
+                                        <label class="btn btn-outline-primary">
+                                            <input type="radio" id="neutered_no" name="neutered" value="false" required> 안했어요
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- 예방 접종 여부 -->
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label><h5>예방 접종 여부 *</h5></label>
+                                    <div class="btn-group-toggle col-md-12" data-toggle="buttons" style="padding: 0">
+                                        <label class="btn btn-outline-primary ">
+                                            <input type="checkbox" id="rabies" name="vaccinationType" value="RABIES"
+                                                   autocomplete="off"> 광견병 (매년 1회 접종완료)
+                                        </label>
+                                        <label class="btn btn-outline-primary">
+                                            <input type="checkbox" id="combined" name="vaccinationType" value="COMBINED_VACCINE"
+                                                   autocomplete="off"> 종합백신 (매년 1회 접종완료)
+                                        </label>
+                                        <label class="btn btn-outline-primary">
+                                            <input type="checkbox" id="corona" name="vaccinationType" value="CORONAVIRUS"
+                                                   autocomplete="off"> 코로나 (매년 1회 접종완료)
+                                        </label>
+                                        <label class="btn btn-outline-primary">
+                                            <input type="checkbox" id="kennel" name="vaccinationType" value="KENNEL_COUGH"
+                                                   autocomplete="off"> 켄넬코프 (매년 1회 접종완료)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- 기생충 예방 접종 여부 -->
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label class="title"><h5>기생충 예방 접종 여부 *</h5></label>
+                                    <div class="btn-group-toggle col-md-12" data-toggle="buttons" style="padding: 0">
+                                        <label class="btn btn-outline-primary">
+                                            <input type="checkbox" id="heartworm" name="parasitePrevention" value="HEARTWORM"
+                                                   autocomplete="off">심장사상충
+                                        </label>
+                                        <label class="btn btn-outline-primary">
+                                            <input type="checkbox" id="externalParasites" name="parasitePrevention"
+                                                   value="FLEA_TICK" autocomplete="off">외부기생충
+                                        </label>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 사회성 및 기타 참고사항 -->
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="sociability" class="title"><h5>사회성 및 기타 참고사항</h5></label>
+                                    <textarea class="form-control" id="sociability" name="socialization"
+                                              placeholder="사회성이나 기타 참고할 사항을 입력해주세요." rows="4" ></textarea>
+                                </div>
+                            </div>
+
+
+                            <div>
+                                <button type="submit" class="btn btn-primary">🐶댕댕이 등록🐶</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen">
+        <svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                    stroke="#F96D00"/>
+        </svg>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
+
+
+</div>
+
+</body>
+</html>
