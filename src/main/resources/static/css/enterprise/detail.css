@@ -176,21 +176,26 @@
     height: 100%;     /* 높이 전체 차지 */
     background-color: rgba(0,0,0,0.5); /* 반투명 검은 배경 */
     z-index: 1000;    /* 다른 요소들 위에 표시 */
-    overflow-y: auto; /* 필요시 내부 스크롤 활성화 */
     padding: 20px;    /* 패딩 추가 */
 }
 
 /* 모달 팝업 스타일 */
-.modal {
-    display: flex; /* 기본적으로 숨김 */
-    position: fixed; /* 화면 위치 고정 */
-    z-index: 1; /* 모든 내용 위에 표시 */
-    left: 0;
-    top: 0;
-    width: 100%; /* 전체 너비 */
-    height: 100%; /* 전체 높이 */
-    overflow: auto; /* 스크롤바 자동 생성 */
-    background-color: white; /* 흐린 배경 */
+.modal{
+    /*display: flex; !* 기본적으로 숨김 *!*/
+    /*position: fixed; !* 화면 위치 고정 *!*/
+    /*z-index: 1; !* 모든 내용 위에 표시 *!*/
+    /*left: 0;*/
+    /*top: 0;*/
+    /*width: 100%; !* 전체 너비 *!*/
+    /*height: 100%; !* 전체 높이 *!*/
+    /*overflow: auto; !* 스크롤바 자동 생성 *!*/
+    /*background-color: white; !* 흐린 배경 *!*/
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+    padding: 20px;
 }
 
 .modal-content {
@@ -203,10 +208,23 @@
 
 /* 내용 박스 스타일 */
 .additional-content {
-     background-color: white; /* 배경색 */
-     padding: 20px;          /* 패딩 */
-     border-radius: 10px;    /* 모서리 둥글게 */
-     box-shadow: 0 0 15px rgba(0,0,0,0.2); /* 그림자 효과 */
+    position: relative;  /* 자식 요소의 절대 위치를 위해 상대 위치 설정 */
+    background-color: white;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+}
+
+.closeBtn{
+    position: absolute;  /* 절대 위치 설정 */
+    top: 10px;           /* 상단에서 20px의 위치 */
+    right: 30px;         /* 우측에서 20px의 위치 */
+    font-size: 36px;     /* 폰트 크기 */
+    color: darkgrey;          /* 폰트 색상 */
+    cursor: pointer;     /* 마우스 오버 시 포인터로 변경 */
+    font-weight: bold;   /* 글자 두께 굵게 */
 }
 
 .ocrSubmitBtn {
@@ -238,17 +256,9 @@
     font-weight: bold;
 }
 
-.closeBtn1, .closeBtn2 {
-    position: absolute;  /* 절대 위치 설정 */
-    top: 20px;           /* 상단에서 20px의 위치 */
-    right: 40px;         /* 우측에서 20px의 위치 */
-    font-size: 36px;     /* 폰트 크기 */
-    color: darkgrey;          /* 폰트 색상 */
-    cursor: pointer;     /* 마우스 오버 시 포인터로 변경 */
-    font-weight: bold;   /* 글자 두께 굵게 */
-}
-
 /* 리뷰 폼 */
+
+/* 별 색상 */
 .star-rating {
     direction: rtl; /* 별을 오른쪽에서 왼쪽으로 배열 */
     font-size: 24px;
@@ -264,19 +274,6 @@
 .star-rating > input:checked ~ label,
 .star-rating > input:checked ~ label ~ label {
     color: #4CAF50; /* 선택된 별 색상 */
-}
-
-#reviewForm {
-    max-width: 800px; /* 최대 너비 설정 */
-    width: 100%; /* 너비를 화면 크기에 맞추어 조절 */
-    margin: 20px auto; /* 상하 20px, 좌우 자동으로 중앙 정렬 */
-    padding: 20px;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    position: relative; /* 상대 위치 설정 추가 */
-    display: none; /* 기본적으로 숨김 */
 }
 
 

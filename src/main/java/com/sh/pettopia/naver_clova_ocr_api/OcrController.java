@@ -45,7 +45,7 @@ public class OcrController {
         String response = ocrService.processOcr(type, path.toString());
         log.debug("response = {}", response);
 
-        model.addAttribute("message", file.getOriginalFilename() + " 이미지가 정상처리되었습니다.");
+        model.addAttribute("message", file.getOriginalFilename() + " 영수증 인증 성공");
         model.addAttribute("data", response);
         return ResponseEntity.ok(model);
     }
