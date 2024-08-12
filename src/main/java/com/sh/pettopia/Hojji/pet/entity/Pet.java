@@ -31,6 +31,7 @@ public class Pet {
     private int age;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private PetSize size;
 
     @Column(name = "pet_gender", nullable = false)

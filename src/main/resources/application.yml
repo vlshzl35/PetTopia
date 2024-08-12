@@ -3,6 +3,12 @@ spring:
   application:
     name: pettopia
 
+  datasource:
+    url: jdbc:mysql://localhost/pettopiadb
+    username: sh
+    password: sh
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
   profiles:
     default: test
 #    active: prod
@@ -17,6 +23,7 @@ logging:
   level:
     root: info
     com.sh: debug
+
 
 
   # 공통 jpa 설정
