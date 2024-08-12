@@ -1,4 +1,7 @@
 package com.sh.pettopia.enterprise.repository;
 
-public class PharmacyRepository {
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PharmacyRepository {
 }
