@@ -1,6 +1,7 @@
 package com.sh.pettopia.parktj.petsitterfinder.controller;
 
 import com.sh.pettopia.Hojji.pet.service.PetService;
+import com.sh.pettopia.parktj.petsitterfinder.dto.CareRegistrationDetailResponseDto;
 import com.sh.pettopia.parktj.petsitterfinder.dto.CareRegistrationListResponseDto;
 import com.sh.pettopia.parktj.petsitterfinder.dto.PetDetailsRegistRequestDto;
 import com.sh.pettopia.parktj.petsitterfinder.dto.PetDetailsResponseDto;
@@ -42,9 +43,18 @@ public class CareRegistrationController {
     private  final PetService petService;
 
 
-
+    /**
+     * 쿼리 파라미터로 postId 받아, postId에 맞는 게시글 정보 받아오고 Dto로 뿌려주는 코드
+     * 주소 값 받아서 api에서 지도 조회
+     * @param postId
+     * @param model
+     */
     @GetMapping("/careregistrationdetails")
-    public void careRegistrationDetails(){
+    public void careRegistrationDetails(@RequestParam(value = "postId") Long postId, Model model){
+        CareRegistrationDetailResponseDto detailDto = careRegistrationService.findAllByPostId(postId);
+        model.addAttribute("detail", detailDto);
+        log.debug("detailDto = {}", detailDto);
+
 
     }
 
@@ -158,6 +168,7 @@ public class CareRegistrationController {
 
 
     }
+
     }
 
 /**
