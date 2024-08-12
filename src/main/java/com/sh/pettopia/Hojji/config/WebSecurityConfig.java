@@ -20,7 +20,7 @@ public class WebSecurityConfig {
      */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("css/**", "js/**",  "scss/**", "images/**", "fonts/**"); // 이 경로로 시작하는 것들은 보안 검사를 하지 말라는 의미
+        return (web) -> web.ignoring().requestMatchers("css/**", "js/**",  "scss/**", "images/**", "fonts/**", "json/**", "ocr/**"); // 이 경로로 시작하는 것들은 보안 검사를 하지 말라는 의미
     }
 
     @Bean
