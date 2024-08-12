@@ -1,6 +1,7 @@
 package com.sh.pettopia.parktj.petsitterfinder.controller;
 
 import com.sh.pettopia.Hojji.pet.service.PetService;
+import com.sh.pettopia.parktj.petsitterfinder.dto.CareRegistrationListResponseDto;
 import com.sh.pettopia.parktj.petsitterfinder.dto.PetDetailsRegistRequestDto;
 import com.sh.pettopia.parktj.petsitterfinder.dto.PetDetailsResponseDto;
 import com.sh.pettopia.parktj.petsitterfinder.service.CareRegistrationService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * model
@@ -46,9 +48,24 @@ public class CareRegistrationController {
 
     }
 
+    /**
+     * 8/11
+     * 박태준 궁금
+     * - pet의 정보를 list로 받는게 좋을까 set으로 받는게 좋을까?
+     *
+     * ### List
+     *  - 순서보장: List는 요소들이 추가된 순서대로 데이터를 저장하므로, 데이터의 순서가 중요할 떄 적합
+     *  - 중복허용: postId에 대해 여러개의 펫정보가 있을 수 있다면, List로 받는게 좋음(postId에 하나의 펫만 가능)
+     * ### Set
+     *  - 중복 불허 : 각 펫의 정보가 고유해야 한다면 Set이 적합함
+     *  - 순서 무시: Set은 요소의 순서를 보장하지 않음, 순서가 중요하지 않고 각 요소의 유일성이 중요할 떄 유리함
+     * @param model
+     */
     @GetMapping("careregistrationlist")
-    public void careRegistrationList(){
-
+    public void careRegistrationList(Model model){
+        List <CareRegistrationListResponseDto> careRegistrationListResponseDtos  = careRegistrationService.findAll();
+        model.addAttribute("lists", careRegistrationListResponseDtos);
+        log.debug("list = {}", careRegistrationListResponseDtos);
     }
 
     // 멤버에 id에 맞는 펫 정보 option 태그에 보여주기 위한
@@ -107,24 +124,55 @@ public class CareRegistrationController {
 
     }
 
-//    @PostMapping("/careregistrationform")
-//    public String careRegist(@ModelAttribute PetDetailsRegistRequestDto registRequestDtodto, RedirectAttributes redirectAttributes){
-////        careRegistrationService.regist(registRequestDto);
-//        return "redirect:/petsitterfinder/careregistrationlist";
-//
-//
-//    }
-
-
     /**
      * // 08/09 돌봄 등록글 등록 제출 누르면 값 전달되는 postMapping
      * @ModelAttribute?
      * 컨트롤러에서 모델 데이터를 뷰에 전달하거나, 뷰에서 폼 데이터를 컨트롤러로 바인딩할 대 사용
      * ex) HTML 폼에서 'name' 이라는 인풋 필드가 있으, 컨트롤러에서 @ModelAtrribute 이용하여 객체의 name에 바인딩 가능
+     *
+     * input 태그의 name값과 dto의 필드의 명이 같아야함, 그래야 자동적으로 매핑해줌
      * @return
      */
-//    @PostMapping("/careregistrationform")
-//    public String careRegist(){
-//
-//    }
-}
+
+    /**
+     * 08/10 박태준 오류 발생
+     *
+     * Sat Aug 10 16:36:19 KST 2024
+     * There was an unexpected error (type=Internal Server Error, status=500).
+     * Cannot invoke "Object.toString()" because "this.petVaccinationType" is null
+     * java.lang.NullPointerException: Cannot invoke "Object.toString()" because "this.petVaccinationType" is null
+     *
+     * - html 에서 vaccinationtype에 대한 값을 받아오지 못하는것같다.
+     * @param registRequestDto
+     * @param redirectAttributes
+     * @return
+     */
+
+
+    @PostMapping("/careregistrationform")
+    public String careRegist(@ModelAttribute PetDetailsRegistRequestDto registRequestDto, RedirectAttributes redirectAttributes){
+        //08/10 박태준 값이 잘 남어오는지 확인
+        log.debug("dto = {}", registRequestDto);
+        careRegistrationService.regist(registRequestDto);
+        return "redirect:/petsitterfinder/careregistrationlist";
+
+
+    }
+    }
+
+/**
+ * 일요일 해야할거
+ * - 게시글 등록된거 리스트에서는 강아지 얼굴 이름 지역등이 뜨게하고
+ * - 상세보기에서 입력한값, 강아지 사진 주소 등이 들어가서 뜨게 만들기
+ * - 등록한 리스트를 클릭했을 때 postId에 해당하는 정보들이 그 상세페이지에 뜨도록 해야함
+ *  감이안잡힌다.. 강사님 어떻게 하셨는지 보자
+ *  - 입력한 주소값이 그대로 들어가면서 지도가 띄어지도록 해야함
+ *
+ *  8/12할거 현재 새벽 1시
+ *  - url postId=2 에서 postId=2 는 쿼리 파라미터임.
+ *  - @RequestParam 어노테이션을 이용하여, URL의 postId(쿼리 파라미터를 ) 메서드의 파라미터로 바인딩할 수 있음
+ *  - 월요일에 이거 바인딩해서 각 postId로 정보 불러온뒤 dto로 변환해서 각 게시물마다 정보 뿌려주면 되겠다.
+ *
+ *  이번주에 해야할거? cr 했으니 ud , 예약 하는 시스템 만들고 websocket 으로 댓글이나 예약에대한 알람 구현해보기 ;ㅣ
+ *
+ */
