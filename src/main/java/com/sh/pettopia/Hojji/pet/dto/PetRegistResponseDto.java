@@ -1,6 +1,9 @@
 package com.sh.pettopia.Hojji.pet.dto;
 
-import com.sh.pettopia.Hojji.pet.entity.*;
+import com.sh.pettopia.Hojji.pet.entity.ParasitePrevention;
+import com.sh.pettopia.Hojji.pet.entity.PetGender;
+import com.sh.pettopia.Hojji.pet.entity.PetSize;
+import com.sh.pettopia.Hojji.pet.entity.VaccinationType;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +12,12 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.util.Set;
 
+
 @Data
 @NotNull
 @AllArgsConstructor
 @Builder
-public class PetRegistRequestDto {
+public class PetRegistResponseDto {
     // 사진
     private String petProfileUrl;
 
@@ -43,21 +47,4 @@ public class PetRegistRequestDto {
 
     //  사회성 및 기타 참고사항
     private String socialization;
-
-    public Pet toPet() {
-        return Pet.builder()
-                .profile(this.petProfileUrl)
-                .name(this.name)
-                .petGender(this.gender)
-                .breed(this.breed)
-                .size(this.size)
-                .birth(this.birth)
-                .neutered(this.neutered)
-                .vaccinationType(this.vaccinationType)
-                .parasitePrevention(this.parasitePrevention)
-                .socialization(this.socialization)
-                .status(PetStatus.WITH_OWNER)
-                .build();
-    }
-
 }
