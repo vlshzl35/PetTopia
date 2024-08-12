@@ -1,6 +1,9 @@
 package com.sh.pettopia.enterprise.controller;
 
-import groovy.util.logging.Slf4j;
+import com.sh.pettopia.enterprise.dto.EnterpriseDetailResponseDto;
+import com.sh.pettopia.enterprise.service.EnterpriselService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @Slf4j
+@RequiredArgsConstructor
 @RequestMapping("/enterprise")
 public class EnterpriseController {
+
+    private final EnterpriselService enterpriselService;
 
     @GetMapping("/location")
     public void location() {
@@ -25,9 +31,4 @@ public class EnterpriseController {
     public void detail() {
 
     }
-
-//    @GetMapping("/detail")
-//    public void detail(@RequestParam("id") Long id, Model model) {
-//
-//    }
 }
