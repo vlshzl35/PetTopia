@@ -18,9 +18,9 @@ public class hospitalController {
     private final HospitalService hospitalService;
     @GetMapping("/detail")
     public String detail(@RequestParam("id") Long id, Model model) {
-        EnterpriseDetailResponseDto hospitalDetail = hospitalService.findById(id);
-        log.debug("hospitalDetail = {}", hospitalDetail);
-        model.addAttribute("hospitalDetail", hospitalDetail);
+        EnterpriseDetailResponseDto detail = hospitalService.findById(id);
+        log.debug("detail = {}", detail);
+        model.addAttribute("detail", detail);
         return "enterprise/test";
     }
 }
