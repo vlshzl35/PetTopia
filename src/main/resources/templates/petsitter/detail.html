@@ -8,6 +8,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>펫시터의 이름</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        img {
+            width: 120px;
+            height: 50px;
+            margin: 3%;
+        }
+
+        .petSize {
+            width: 150px;
+            height: 70px;
+            margin: 3%;
+        }
+    </style>
 </head>
 <body>
 
@@ -18,8 +31,8 @@
         <div class="container">
             <div class="row no-gutters slider-text align-items-end">
                 <div class="col-md-9 ftco-animate pb-5">
-                    <p class="breadcrumbs mb-2"><span class="mr-2"><a th:href="@{/}">Home <i
-                            class="ion-ios-arrow-forward"></i></a></span>
+                    <p class="breadcrumbs mb-2"><span class="mr-2"><a th:href="@{/}">Home
+                        <i class="ion-ios-arrow-forward"></i></a></span>
                         <span>펫시터
 							<i class="ion-ios-arrow-forward"></i>
 						</span>
@@ -29,13 +42,18 @@
             </div>
         </div>
     </section>
-    <div class="container">
+    <div class="container" th:object="${profile}">
         <div style="display: flex;">
             <div style="padding-right: 30px">
                 <h2>여기는 포트폴리오를 작성하는 공간입니다</h2>
                 <div style="display: flex">
                     <h4>여기는 사용자의 사진이나 반려동물의 사진이 들어옵니다</h4>
-                    <h4>여기는 사용자의 이름이 들어옵니다</h4>
+                    <h4 th:text="${profile.memberId}">여기는 사용자의 이름이 들어옵니다</h4>
+                    <div style="overflow:scroll; width:500px; height:350px;">
+                        <div th:each="images,stat: ${profileImg}">
+                            <img th:src="${images}" alt="" style="height: 400px; width: 350px">
+                        </div>
+                    </div>
                 </div>
                 <div style="padding: 5px">
                     <h4>여기는 자신의 자격증이나 기타 증명이 들어옵니다(대부분 자격증)</h4>
@@ -44,7 +62,46 @@
                     </div>
                     <div>
                         <h4>여기는 펫시터가 가능한 기능들을 보여줍니다 아마 이것도 db로 관리해야 될 거 같습니다</h4>
-                        <img th:src="@{/images/petsitterfunc.PNG}" alt="가능한 기능">
+                        <div class="container" >
+                            <div style="border: 1px solid black" class="col-md-6 col-lg-3 ftco-animate">
+                                <div class="container">
+                                    <div th:if="${petService.contains('everydayWalk')}">
+                                        <img th:src="@{/images/availableService/everydaywalk.PNG}" alt="everydayWalk">
+                                    </div>
+                                    <div th:if="${petService.contains('olderPetWalk')}">
+                                        <img th:src="@{/images/availableService/oldpetwalk.PNG}" alt="노견산책">
+                                    </div>
+
+                                    <div th:if="${petService.contains('youngerPetWalk')}">
+                                        <img th:src="@{/images/availableService/youngerpetwalk.PNG}" alt="어린견산책">
+                                    </div>
+                                </div>
+                                <div class="container">
+                                    <div th:if="${petService.contains('play')}">
+                                        <img th:src="@{/images/availableService/play.PNG}" alt="실내놀이">
+                                    </div>
+                                    <div th:if="${petService.contains('firstAid')}">
+                                        <img th:src="@{/images/availableService/firstaid.PNG}" alt="응급처리">
+                                    </div>
+                                    <div th:if="${petService.contains('walkPickup')}">
+                                        <img th:src="@{/images/availableService/pickup.PNG}" alt="도보픽업">
+                                    </div>
+                                </div>
+                                <div class="container">
+                                    <div th:if="${petService.contains('brush')}">
+                                        <img th:src="@{/images/availableService/brush.PNG}" alt="모발관리">
+                                    </div>
+                                    <div th:if="${petService.contains('medicine')}">
+                                        <img th:src="@{/images/availableService/medicine.PNG}" alt="약먹이기">
+                                    </div>
+                                    <div th:if="${petService.contains('longReservation')}">
+                                        <img th:src="@{/images/availableService/longreservation.PNG}" alt="장기예약">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
                     </div>
                 </div>
                 <div style="padding: 5px">
@@ -69,7 +126,17 @@
                                     <input type="text" name="wr_3" value="" id="wr_3" required
                                            class="frm_input full_input required datepicker" placeholder="종료 날짜"
                                            readonly>
-
+                                    <div class="" style="border: 1px solid black; display: block;" id="availablePetSize">
+                                        <div th:if="${petSize.contains('smallPet')}">
+                                            <img th:src="@{/images/availablePetSize/smallpet.PNG}" alt="소형견">
+                                        </div>
+                                        <div th:if="${petSize.contains('middlePet')}">
+                                            <img th:src="@{/images/availablePetSize/middlepet.PNG}" alt="중형견">
+                                        </div>
+                                        <div th:if="${petSize.contains('largePet')}">
+                                            <img th:src="@{/images/availablePetSize/largepet.PNG}" alt="대형견">
+                                        </div>
+                                    </div>
                                 </div>
 
                             </form>
@@ -115,30 +182,6 @@
                 });
             });
     </script>
-<!--    <script>-->
-<!--        jQuery(function ($) {-->
-<!--            $.datepicker.regional["ko"] = {-->
-<!--                closeText: "닫기",-->
-<!--                prevText: "이전달",-->
-<!--                nextText: "다음달",-->
-<!--                currentText: "오늘",-->
-<!--                monthNames: ["1월(JAN)", "2월(FEB)", "3월(MAR)", "4월(APR)", "5월(MAY)", "6월(JUN)", "7월(JUL)", "8월(AUG)", "9월(SEP)", "10월(OCT)", "11월(NOV)", "12월(DEC)"],-->
-<!--                monthNamesShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],-->
-<!--                dayNames: ["일", "월", "화", "수", "목", "금", "토"],-->
-<!--                dayNamesShort: ["일", "월", "화", "수", "목", "금", "토"],-->
-<!--                dayNamesMin: ["일", "월", "화", "수", "목", "금", "토"],-->
-<!--                weekHeader: "Wk",-->
-<!--                dateFormat: "yy-mm-dd",-->
-<!--                firstDay: 0,-->
-<!--                isRTL: false,-->
-<!--                showMonthAfterYear: true,-->
-<!--                yearSuffix: ""-->
-<!--            };-->
-<!--            $.datepicker.setDefaults($.datepicker.regional["ko"]);-->
-<!--            $("#wr_2").datepicker();-->
-<!--            $("#wr_3").datepicker();-->
-<!--        });-->
-<!--    </script>-->
 </main>
 </body>
 </html>

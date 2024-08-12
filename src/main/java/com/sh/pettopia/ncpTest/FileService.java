@@ -79,6 +79,7 @@ public class FileService {
     }
 
     // NCP 해당 폴더에 올라온 파일 모두 불러오기
+
     public List<FileDto> listFiles(String filePath) {
         List<FileDto> files = new ArrayList<>();
         ListObjectsV2Request req = new ListObjectsV2Request().withBucketName(bucketName).withPrefix(filePath + "/");
@@ -95,6 +96,41 @@ public class FileService {
                         .originalFileName(fileName)
                         .uploadFileName(fileName)
                         .uploadFilePath(filePath) // 현재 지정한 폴더만 가져옴
+                        .uploadFileUrl("https://kr.object.ncloudstorage.com/" + bucketName + "/" + key)
+                        .build());
+            }
+            req.setContinuationToken(result.getNextContinuationToken());
+        } while (result.isTruncated());
+
+        return files;
+    }
+
+    public List<FileDto> sitterUpFile(List<MultipartFile> multipartFiles,String sitterEmail){
+
+        String filePath="member/"+sitterEmail;
+        System.out.println(filePath);
+        return uploadFiles(multipartFiles,filePath );  // ncp 버킷에 filePath 경로의 디렉토리에 올라감(없으면 생성함)
+
+    }
+
+    // NCP 해당 폴더에 올라온 파일 모두 불러오기
+    public List<FileDto> sitterImage(String filePath) {
+        String path="member/"+filePath+"/";
+        List<FileDto> files = new ArrayList<>();
+        ListObjectsV2Request req = new ListObjectsV2Request().withBucketName(bucketName).withPrefix(path);
+        ListObjectsV2Result result;
+
+        do {
+            result = amazonS3Client.listObjectsV2(req);
+
+            for (S3ObjectSummary objectSummary : result.getObjectSummaries()) {
+                String key = objectSummary.getKey();
+                String fileName = key.substring(key.lastIndexOf("/") + 1);
+
+                files.add(FileDto.builder()
+                        .originalFileName(fileName)
+                        .uploadFileName(fileName)
+                        .uploadFilePath(path) // 현재 지정한 폴더만 가져옴
                         .uploadFileUrl("https://kr.object.ncloudstorage.com/" + bucketName + "/" + key)
                         .build());
             }

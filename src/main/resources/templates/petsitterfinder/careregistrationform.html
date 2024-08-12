@@ -234,7 +234,7 @@
                                 $('#petBirth').val(data.birth)
                                 $('#petSociability').val(data.socialization)
                                 $('#petSize').val(data.size)
-                                $('#petVaccination').val(data.vaccinationType)
+                                $('#petVaccinationType').val(data.vaccinationType)
                                 $('#petParasitePrevention').val(data.parasitePrevention)
                                 $('#petBreed').val(data.breed)
                                 $('#isMissing').val(data.status)
@@ -250,6 +250,11 @@
 
                 </script>
                 <!-- 이미지 업로드를 위한 폼 필드 -->
+<!--
+                8-11 박태준
+                - 모르겠는것?
+                사진 url로 어떻게 넣어주는 건지 아직 모르겠음 알아보고 어떻게 넣는지 기술하겠음
+-->
                 <div class="form-group">
                     <div>
                         <input onchange="readURL(this)" type="file">
@@ -295,8 +300,8 @@
                     <input id="petSociability" name="petSociability" type="text">
                 </div>
                 <div class="form-group">
-                        <label for = "petVaccination">예방접종:</label>
-                        <input id="petVaccination" name="petVaccination" type="text" >
+                        <label for = "petVaccinationType">예방접종:</label>
+                        <input id="petVaccinationType" name="petVaccinationType" type="text" >
                 </div>
                 <div class="form-group">
                     <label for = "petParasitePrevention">기생충 예방:</label>

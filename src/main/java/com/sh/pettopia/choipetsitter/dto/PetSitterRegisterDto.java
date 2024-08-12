@@ -7,12 +7,14 @@ import com.sh.pettopia.choipetsitter.entity.PetSitterAddress;
 import com.sh.pettopia.ncpTest.FileDto;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
+@Getter
 @Data
 @Builder
 public class PetSitterRegisterDto {
@@ -20,15 +22,16 @@ public class PetSitterRegisterDto {
     private List<String> imageUrlList;// 프로필에 등록한 사진들 경로
     private String introduce; // 소개글
     private Set<AvailableService> availableServices;
-    private Set<AvailablePetSize> availablePetSizes;
+    private Set<AvailablePetSize > availablePetSizes;
     private String postcode;
     private String detailAddress;
     private String extraAddress;
     private String address;
     private String postUrl;
     private PetSitterAddress petSitterAddress;
+    private Set<String > availableDates;
 
-    public void setAvailable(Set<AvailableService> availableServices, Set<AvailablePetSize> availablePetSizes) {
+    public void setAvailable(Set<AvailableService > availableServices, Set<AvailablePetSize > availablePetSizes) {
         this.availablePetSizes = availablePetSizes;
         this.availableServices = availableServices;
     }
@@ -45,6 +48,7 @@ public class PetSitterRegisterDto {
                 .detailAddress(entity.getPetSitterAddress().getDetailAddress())
                 .extraAddress(entity.getPetSitterAddress().getExtraAddress())
                 .address(entity.getPetSitterAddress().getAddress())
-                .postUrl(entity.getPostUrl()).build();
+                .availableDates(entity.getAvailableDates())
+                .build();
     }
 }

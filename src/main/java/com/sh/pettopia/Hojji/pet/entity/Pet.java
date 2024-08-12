@@ -32,6 +32,7 @@ public class Pet {
 
     // 크기
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private PetSize size;
 
     // 성별
