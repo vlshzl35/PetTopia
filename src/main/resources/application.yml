@@ -28,7 +28,7 @@ logging:
 
   # 공통 jpa 설정
   jpa:
-    generate-ddl: truel
+    generate-ddl: true
     properties:
       hibernate:
         format_sql: true

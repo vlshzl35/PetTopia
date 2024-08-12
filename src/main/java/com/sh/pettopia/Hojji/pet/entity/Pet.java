@@ -1,7 +1,6 @@
 package com.sh.pettopia.Hojji.pet.entity;
 
 import com.sh.pettopia.Hojji.user.member.entity.Member;
-import com.sh.pettopia.choipetsitter.entity.AvailablePetSize;
 import jakarta.persistence.*;
 import lombok.*;
 
