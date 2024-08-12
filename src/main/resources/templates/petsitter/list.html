@@ -15,7 +15,12 @@
   2. 컨트롤+R = 현재페이지 찾아바꾸기 입니다
 
   -->
-
+<style>
+	img{
+		width: 500px;
+		height: 500px;
+	}
+</style>
 </head>
 <body>
 <div layout:fragment="main" class="page-body">
@@ -38,200 +43,40 @@
 
     <section class="ftco-section bg-light">
         <div class="container">
+            [[${petSitterList}]]
             <div  style="display:flex; border-bottom: #0b0b0b 1px solid; border-top: 20px; padding-bottom: 30px; "  >
                 <input type="text" placeholder="주소를 입력해주세요"  id="searchAddress">
                 <div>
                     <button type="button" onclick="alert('검색합니다')" style="width: 30px; height: 30px; background-image: url(/images/searchbtn.PNG);" >
                     </button> <!--여기서 동네 조건 검색을 한다-->
                 </div>
-				<div style="align-content: end">
-					<a  th:href="@{/petsitter/register}" style="border: #0b0b0b 1px solid; font-size: 15px"> 글작성</a>
-				</div>
             </div>
-            <div class="row">
-                <div class="col-md-6 col-lg-3 ftco-animate"  >
-					<a th:href="@{/petsitter/detail}"><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
+            <div class="row" >
+                <div class="col-md-6 col-lg-3 ftco-animate" th:each="petSitter, stat : ${petSitterList}" th:object="${petSitter}" >
+					<a th:href="@{|/petsitter/detail/*{petSitterId}|}"><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
                     <div class="staff">
                         <div class="img-wrap d-flex align-items-stretch">
-                            <div class="img align-self-stretch" style="background-image: url(/images/staff-1.jpg);"></div>
+							<div >
+                                <div th:each="img,stat : ${petSitter.imagesUrlList}" th:object="${img}">
+									<img th:src="${img}" alt="Profile Image" />
+								<!-- Display the first image if imageUrlList is not empty -->
+                                </div>
+							</div>
                         </div>
                         <div class=" pt-3 px-3 pb-4">
-							<span class="position mb-2">사용자 주소</span>
+							<span class="position mb-2" th:text="${petSitter.petSitterAddress.address}">사용자 주소</span>
 							<div>
 								<span id="starRating">별점 : 4.5</span>
 								<span id="review">후기 : 100개</span>
 							</div>
                             <div class="faded">
-                                <p>한 줄 문구 ex : 30대 부부가 돌봐드립니다, 중년부부가 돌봐드립니다</p>
+                                <p th:text="${petSitter.introduce}"></p>
                             </div>
                         </div>
                     </div>
 					</a>
                 </div>
-				<div class="col-md-6 col-lg-3 ftco-animate" ><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
-					<div class="staff">
-						<div class="img-wrap d-flex align-items-stretch">
-							<div class="img align-self-stretch"
-								 style="background-image: url(/images/staff-1.jpg);"></div>
-						</div>
-						<div class="text pt-3 px-3 pb-4 ">
-							<span class="position mb-2">사용자 주소</span>
-							<div class="faded">
-								<p>여기는 사용자 정보(한 줄 문구 ex : 30대 부부가 돌봐드립니다, 중년부부가 돌봐드립니다)</p>
 
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-lg-3 ftco-animate" ><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
-					<div class="staff">
-						<div class="img-wrap d-flex align-items-stretch">
-							<div class="img align-self-stretch"
-								 style="background-image: url(/images/staff-1.jpg);"></div>
-						</div>
-						<div class="text pt-3 px-3 pb-4 ">
-							<span class="position mb-2">사용자 주소</span>
-							<div class="faded">
-								<p>여기는 사용자 정보(한 줄 문구 ex : 30대 부부가 돌봐드립니다, 중년부부가 돌봐드립니다)</p>
-
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-lg-3 ftco-animate" ><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
-					<div class="staff">
-						<div class="img-wrap d-flex align-items-stretch">
-							<div class="img align-self-stretch"
-								 style="background-image: url(/images/staff-1.jpg);"></div>
-						</div>
-						<div class="text pt-3 px-3 pb-4 ">
-							<span class="position mb-2">사용자 주소</span>
-							<div class="faded">
-								<p>여기는 사용자 정보(한 줄 문구 ex : 30대 부부가 돌봐드립니다, 중년부부가 돌봐드립니다)</p>
-
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-lg-3 ftco-animate" ><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
-					<div class="staff">
-						<div class="img-wrap d-flex align-items-stretch">
-							<div class="img align-self-stretch"
-								 style="background-image: url(/images/staff-1.jpg);"></div>
-						</div>
-						<div class="text pt-3 px-3 pb-4 ">
-							<span class="position mb-2">사용자 주소</span>
-							<div class="faded">
-								<p>여기는 사용자 정보(한 줄 문구 ex : 30대 부부가 돌봐드립니다, 중년부부가 돌봐드립니다)</p>
-
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-lg-3 ftco-animate" ><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
-					<div class="staff">
-						<div class="img-wrap d-flex align-items-stretch">
-							<div class="img align-self-stretch"
-								 style="background-image: url(/images/staff-1.jpg);"></div>
-						</div>
-						<div class="text pt-3 px-3 pb-4 ">
-							<span class="position mb-2">사용자 주소</span>
-							<div class="faded">
-								<p>여기는 사용자 정보(한 줄 문구 ex : 30대 부부가 돌봐드립니다, 중년부부가 돌봐드립니다)</p>
-
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-lg-3 ftco-animate" ><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
-					<div class="staff">
-						<div class="img-wrap d-flex align-items-stretch">
-							<div class="img align-self-stretch"
-								 style="background-image: url(/images/staff-1.jpg);"></div>
-						</div>
-						<div class="text pt-3 px-3 pb-4 ">
-							<span class="position mb-2">사용자 주소</span>
-							<div class="faded">
-								<p>여기는 사용자 정보(한 줄 문구 ex : 30대 부부가 돌봐드립니다, 중년부부가 돌봐드립니다)</p>
-
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-lg-3 ftco-animate" ><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
-					<div class="staff">
-						<div class="img-wrap d-flex align-items-stretch">
-							<div class="img align-self-stretch"
-								 style="background-image: url(/images/staff-1.jpg);"></div>
-						</div>
-						<div class="text pt-3 px-3 pb-4 ">
-							<span class="position mb-2">사용자 주소</span>
-							<div class="faded">
-								<p>여기는 사용자 정보(한 줄 문구 ex : 30대 부부가 돌봐드립니다, 중년부부가 돌봐드립니다)</p>
-
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-lg-3 ftco-animate" ><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
-					<div class="staff">
-						<div class="img-wrap d-flex align-items-stretch">
-							<div class="img align-self-stretch"
-								 style="background-image: url(/images/staff-1.jpg);"></div>
-						</div>
-						<div class="text pt-3 px-3 pb-4 ">
-							<span class="position mb-2">사용자 주소</span>
-							<div class="faded">
-								<p>여기는 사용자 정보(한 줄 문구 ex : 30대 부부가 돌봐드립니다, 중년부부가 돌봐드립니다)</p>
-
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-lg-3 ftco-animate" ><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
-					<div class="staff">
-						<div class="img-wrap d-flex align-items-stretch">
-							<div class="img align-self-stretch"
-								 style="background-image: url(/images/staff-1.jpg);"></div>
-						</div>
-						<div class="text pt-3 px-3 pb-4 ">
-							<span class="position mb-2">사용자 주소</span>
-							<div class="faded">
-								<p>여기는 사용자 정보(한 줄 문구 ex : 30대 부부가 돌봐드립니다, 중년부부가 돌봐드립니다)</p>
-
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-lg-3 ftco-animate" ><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
-					<div class="staff">
-						<div class="img-wrap d-flex align-items-stretch">
-							<div class="img align-self-stretch"
-								 style="background-image: url(/images/staff-1.jpg);"></div>
-						</div>
-						<div class="text pt-3 px-3 pb-4 ">
-							<span class="position mb-2">사용자 주소</span>
-							<div class="faded">
-								<p>여기는 사용자 정보(한 줄 문구 ex : 30대 부부가 돌봐드립니다, 중년부부가 돌봐드립니다)</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-lg-3 ftco-animate" ><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
-					<div class="staff">
-						<div class="img-wrap d-flex align-items-stretch">
-							<div class="img align-self-stretch"
-								 style="background-image: url(/images/staff-1.jpg);"></div>
-						</div>
-						<div class="text pt-3 px-3 pb-4 ">
-							<span class="position mb-2">사용자 주소</span>
-							<div class="faded">
-								<p>여기는 사용자 정보(한 줄 문구 ex : 30대 부부가 돌봐드립니다, 중년부부가 돌봐드립니다)</p>
-
-							</div>
-						</div>
-					</div>
-				</div>
             </div>
         </div>
     </section>

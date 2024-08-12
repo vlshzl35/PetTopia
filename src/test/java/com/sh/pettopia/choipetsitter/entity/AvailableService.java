@@ -5,15 +5,15 @@ import lombok.Getter;
 @Getter
 public enum AvailableService {
 
-    노견산책("olderPetWalk")
-    , 어린견산책("youngerPetWalk")
-    , 매일산책("everydayWalk")
-    , 약먹이기("medicine")
-    , 도보픽업("walkPickup")
-    , 실내놀이("play")
-    , 응급처치("firstAid")
-    , 장기예약("longReservation")
-    , 모발관리("brush");
+    olderPetWalk("olderPetWalk")
+    , youngerPetWalk("youngerPetWalk")
+    , everydayWalk("매일산책")
+    , medicine("medicine")
+    , walkPickup("도보픽업")
+    , play("실내놀이")
+    , firstAid("응급처리")
+    , longReservation("장기예약")
+    , brush("빗질");
 
     private final String petService;
 

@@ -7,8 +7,8 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="_csrf_header" th:content="${_csrf.headerName}">
-    <meta name="_csrf" th:content="${_csrf.token}">
+
+<!--    <span th:text="${#authentication.principal.member.name}"></span>-->
     <title>프로필 등록</title>
     <style>
         body {
@@ -108,9 +108,9 @@
         <!--        index = <span th:text="${stat.index}"></span>-->
         <!--        이미지 주소 = <span th:text="${images}"></span>-->
         <!--        등록한 이미지 보기-->
-        <div style="overflow:scroll; width:500px; height:400px;">
+        <div style="overflow:scroll; width:500px; height:350px;">
             <div th:each="images,stat: ${imagesUrlList}">
-                <img th:src="${images}" alt="" style="height: 400px; width: 400px" th:onclick="remove_confirm(this.src)">
+                <img th:src="${images}" alt="" style="height: 400px; width: 350px" th:onclick="remove_confirm(this.src)">
             </div>
         </div>
 
@@ -132,80 +132,85 @@
                           placeholder="소개글을 입력해주세요"></textarea>
             </div>
         </div>
-        <div class="container">
+        <div class="container" >
             <div style="border: 1px solid black">
                 [[${petService}]]
-                [[${petService.contains(T(com.sh.pettopia.choipetsitter.entity.AvailableService).youngerPetWalk)}]]
-                [[${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).everydayWalk)}]]
-                [[${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).youngerPetWalk)}]]
-                <div class="">
+                [[${petSize}]]
+                [[${petService.contains('youngerPetWalk')}]]
+                <div >
                     <label for="everydayWalk">
                         <img th:src="@{/images/availableService/everydaywalk.PNG}" alt="everydayWalk">
                         <input type="checkbox" name="availableService" id="everydayWalk" value="everydayWalk"
-                               th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).everydayWalk)}">
+                               th:checked="${petService.contains('everydayWalk')}">
+
                     </label>
                     <label for="oldPetWalk">
                         <img th:src="@{/images/availableService/oldpetwalk.PNG}" alt="노견산책">
                         <input type="checkbox" name="availableService" id="oldPetWalk" value="olderPetWalk"
-                               th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).olderPetWalk)}">
+                               th:checked="${petService.contains('olderPetWalk')}">
+
                     </label>
                     <label for="youngerPetWalk">
                         <img th:src="@{/images/availableService/youngerpetwalk.PNG}" alt="어린견산책">
                         <input type="checkbox" name="availableService" id="youngerPetWalk" value="youngerPetWalk"
-                               th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).youngerPetWalk)}">
+                               th:checked="${petService.contains('youngerPetWalk')}">
+                              <!-- th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).youngerPetWalk)}">-->
                     </label>
                 </div>
                 <div class="">
                     <label for="play">
                         <img th:src="@{/images/availableService/play.PNG}" alt="실내놀이">
                         <input type="checkbox" name="availableService" id="play" alt="" value="play"
-                               th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).play)}">
+                               th:checked="${petService.contains('play')}">
+                              <!-- th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).play)}">-->
                     </label>
                     <label for="firstAid">
                         <img th:src="@{/images/availableService/firstaid.PNG}" alt="응급처치">
                         <input type="checkbox" name="availableService" id="firstAid" value="firstAid"
-                               th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).firstAid)}">
+                               th:checked="${petService.contains('firstAid')}">
                     </label>
                     <label for="pickup">
                         <img th:src="@{/images/availableService/pickup.PNG}" alt="도보픽업">
                         <input type="checkbox" name="availableService" id="pickup" value="walkPickup"
-                               th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).walkPickup)}">
+                               th:checked="${petService.contains('walkPickup')}">
                     </label>
                 </div>
                 <div class="">
                     <label for="brush">
                         <img th:src="@{/images/availableService/brush.PNG}" alt="모발관리">
                         <input type="checkbox" name="availableService" id="brush" value="brush"
-                               th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).brush)}">
+                               th:checked="${petService.contains('brush')}">
                     </label>
                     <label for="medicine">
                         <img th:src="@{/images/availableService/medicine.PNG}" alt="약먹이기">
                         <input type="checkbox" name="availableService" id="medicine" value="medicine"
-                               th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).medicine)}">
+                               th:checked="${petService.contains('medicine')}">
                     </label>
                     <label for="longReservation">
                         <img th:src="@{/images/availableService/longreservation.PNG}" alt="장기예약">
                         <input type="checkbox" name="availableService" id="longReservation" value="longReservation"
-                               th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).longReservation)}">
+                               th:checked="${petService.contains('longReservation')}">
                     </label>
                 </div>
 
             </div>
             <div class="" style="border: 1px solid black; display: block;" id="availablePetSize">
                 <label for="smallPet">
-                    <img th:src="@{/images/availableService/smallpet.PNG}" alt="" class="petSize">
+                    <img th:src="@{/images/availablePetSize/smallpet.PNG}" alt="" class="petSize">
                     <input type="checkbox" name="availablePetSize" id="smallPet" value="smallPet"
-                           th:checked="${#sets.contains(petSize, T(com.sh.pettopia.choipetsitter.entity.AvailablePetSize).smallPet)}">
+                           th:checked="${petSize.contains('smallPet')}">
+
                 </label>
                 <label for="middlePet">
-                    <img th:src="@{/images/availableService/middlepet.PNG}" alt="" class="petSize">
+                    <img th:src="@{/images/availablePetSize/middlepet.PNG}" alt="" class="petSize">
                     <input type="checkbox" name="availablePetSize" id="middlePet" value="middlePet"
-                           th:checked="${#sets.contains(petSize, T(com.sh.pettopia.choipetsitter.entity.AvailablePetSize).middlePet)}">
+                           th:checked="${petSize.contains('middlePet')}">
                 </label>
                 <label for="largePet">
-                    <img th:src="@{/images/availableService/largepet.PNG}" alt="" class="petSize">
+                    <img th:src="@{/images/availablePetSize/largepet.PNG}" alt="" class="petSize">
                     <input type="checkbox" name="availablePetSize" id="largePet" value="largePet"
-                           th:checked="${#sets.contains(petSize, T(com.sh.pettopia.choipetsitter.entity.AvailablePetSize).largePet)}">
+                           th:checked="${petSize.contains('largePet')}">
+
                 </label>
             </div>
         </div>

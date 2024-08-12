@@ -2,9 +2,14 @@ package com.sh.pettopia.choipetsitter.entity;
 
 import com.sh.pettopia.choipetsitter.dto.PetSitterRegisterDto;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.joda.time.LocalDate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,17 +18,14 @@ import java.util.Set;
 @Entity(name = "petsitter")
 @Table(name = "tbl_petsitter")
 @Data
-@Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class PetSitter {
     // 펫 시터의 대한 프로필
 
-
-
     @Id
-    @Column(name = "petsitter_id")
+    @Column(name = "id")
     private String petSitterId; // 회원 아이디 = 멤버아이디
 
     @Column(name = "introduce")
@@ -60,25 +62,9 @@ public class PetSitter {
     @Embedded
     private PetSitterAddress petSitterAddress;
 
-    public void changeIntroduce(String introduce) {
-        this.introduce = introduce;
-    }
-
-    public void changeAvailablePetSize(AvailablePetSize availablePetSize) {
-        this.availablePetSize.add(availablePetSize);
-    }
-
-    public void removeAvailablePetSize(AvailablePetSize availablePetSize) {
-        this.availablePetSize.remove(availablePetSize);
-    }
-
-    public void changeAvailableService(AvailableService availableService) {
-        this.availableService.add(availableService);
-    }
-
-    public void removeAvailableService(AvailableService availableService) {
-        this.availableService.remove(availableService);
-    }
+    @Column(name = "available_dates")
+    @ElementCollection
+    private List<LocalDate> availableDates;
 
     public PetSitter DtoToEntity(PetSitterRegisterDto dto)
     {
