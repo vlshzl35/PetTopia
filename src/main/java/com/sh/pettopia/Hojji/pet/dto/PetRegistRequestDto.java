@@ -1,6 +1,5 @@
 package com.sh.pettopia.Hojji.pet.dto;
 
-import com.sh.pettopia.Hojji.common.Gender;
 import com.sh.pettopia.Hojji.pet.entity.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
