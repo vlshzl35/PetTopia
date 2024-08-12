@@ -24,5 +24,5 @@ public abstract class Enterprise {
     @Column(nullable = false)
     private String entAddress; // 주소
     @Column(nullable = false)
-    private String officeHours; // 영업시간 09:00-18:00 형식으로 쓰기
+    private String officeHours; // 영업시간 09:00 - 18:00 형식으로 쓰기
 }
