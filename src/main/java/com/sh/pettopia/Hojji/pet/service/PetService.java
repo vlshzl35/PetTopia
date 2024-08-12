@@ -34,11 +34,11 @@ public class PetService {
     public void registPet(Member member, PetRegistRequestDto petDto) {
         // PetDto를 Pet 테이블에 저장하기 위해 Pet Entity로 변환합니다.
         Pet pet = petDto.toPet();
-        log.debug("PetEntity/Owner 세팅전 = {}", pet); // 반환된 Pet
+        log.debug("PetEntity - Owner 세팅전 = {}", pet); // 반환된 Pet
 
         // PetOwner를 설정합니다.
         pet.setOwner(member);
-        log.debug("PetEntity/Owner 세팅후 = {}", pet.getMember().getId());
+        log.debug("PetEntity -Owner 세팅후 = {}", pet);
         petRepository.save(pet);
     }
 }

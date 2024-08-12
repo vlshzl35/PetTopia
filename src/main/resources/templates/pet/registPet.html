@@ -18,23 +18,23 @@
                     <h2 class="heading-section">반려견 등록</h2>
                 </div>
             </div>
-            <div class="row justify-content-center" style="display: flex; flex-direction: column; align-items: center;">
-                <img src="/images/KakaoTalk_20240527_201110282.jpg" alt="댕댕쓰 사진" height="400px" width="400px"
-                     style="border-radius: 50%; margin-bottom:5px;">
-
-                <h5>댕댕쓰 사진</h5>
-            </div>
-
 
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="wrapper">
-                        <form th:action = "@{/pet/registPet}" id="signup-form" method="post" >
+                        <form th:action = "@{/pet/registPet}" method="post" th:object="${petR}" enctype="multipart/form-data" id="signup-form">
+                            <!-- enctype 속성이 multipart/form-data로 설정되어 있어야 서버가 요청을 multipart로 처리할 수 있음 -->
 
                             <!-- 반려견 등록 폼 -->
+                            <div class="row justify-content-center" style="display: flex; flex-direction: column; align-items: center;">
+                                <img src="/images/KakaoTalk_20240527_201110282.jpg" alt="댕댕쓰 사진" height="400px" width="400px"
+                                     style="border-radius: 50%; margin-bottom:5px;">
+
+                                <h5>댕댕쓰 사진</h5>
+                            </div>
                             <div class="form-group">
                                 <label for="profile-pic">프로필 사진</label>
-                                <input type="file" class="form-control-file" id="profile-pic" name="profileImage">
+                                <input type="file" class="form-control-file" id="profile-pic" name="files">
                             </div>
 
                             <div class="form-row">

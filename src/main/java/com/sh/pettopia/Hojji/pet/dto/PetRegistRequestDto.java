@@ -16,7 +16,7 @@ import java.util.Set;
 @Builder
 public class PetRegistRequestDto {
     // 사진
-    private String profileImage;
+    private String petProfileUrl;
 
     // 이름
     private String name;
@@ -47,7 +47,7 @@ public class PetRegistRequestDto {
 
     public Pet toPet() {
         return Pet.builder()
-                .profile(this.profileImage)
+                .profile(this.petProfileUrl)
                 .name(this.name)
                 .petGender(this.gender)
                 .breed(this.breed)
