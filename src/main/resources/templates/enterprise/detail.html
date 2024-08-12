@@ -4,10 +4,7 @@
 <head>
     <title>병원리뷰</title>
     <link href="/css/enterprise/detail.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-            crossorigin="anonymous" referrerpolicy="no-referrer">
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
     <div class="page-body" layout:fragment="main">
@@ -75,10 +72,11 @@
         <!-- 파일 업로드 폼 (팝업) -->
         <div id="uploadPopup" class="modal">
             <!-- 영수증 인증 영역 -->
-            <div class="additional-content">
-                <h2>영수증 인증</h2>
-                <span class="closeBtn1">&times;</span>
+<!--            <div class="additional-content" id="ocrVerificationSection">-->
+            <div class="additional-content" id="ocrVerificationSection">
+                <span class="closeBtn" id="closeBtn1">&times;</span>
                 <form name="fileUploadFrm" method="post">
+                    <h2>영수증 인증</h2>
                     <div id="apiUrl" th:data-url="@{/ocrUpload}"></div>
                     <input type="file" name="file" accept="image/*" required/>
                     <button type="submit" class="ocrSubmitBtn">인증하기</button>
@@ -92,7 +90,7 @@
                     <li>배경에 다른 물체나 글씨가 없도록 촬영</li>
                     <li>필수 정보(업체명, 전화번호, 사업자등록번호, 결제 일시, 승인번호 등)가 잘 나오도록 촬영</li>
 
-                    <li><strong>올바르지 못한 영수증 촬영 예시</strong></li>
+                    <strong>올바르지 못한 영수증 촬영 예시</strong>
                     <li>영수증의 일부만 나오는 경우</li>
                     <li>복잡한 배경과 함께 찍은 경우</li>
                     <li>손가락으로 영수증을 가린 경우</li>
@@ -106,11 +104,11 @@
         </div>
 
         <!-- 리뷰 작성 폼 -->
-        <div id="reviewForm" class="comment-form-wrap pt-5" style="display:none;">
+        <div id="reviewPopup" class="modal">
             <div class="additional-content">
-                <form action="#" class="p-5 bg-light">
+                <span class="closeBtn" id="closeBtn2">&times;</span>
+                <form class="reviewForm" action="#" method="post">
                     <h2 class="mb-5">리뷰 작성</h2>
-                    <span class="closeBtn2">&times;</span>
                     <div class="form-group">
                         <label for="name">이름</label>
                         <input type="text" class="form-control" id="name" required>
