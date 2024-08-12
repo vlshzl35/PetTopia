@@ -56,12 +56,18 @@
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="wrapper">
-                        <form id="signup-form" method="post" onsubmit="return isValid()">
+                        <form th:action="@{/member/registMember}" enctype="multipart/form-data" id="signup-form" method="post" onsubmit="return isValid()">
+                            <!-- enctype 속성이 multipart/form-data로 설정되어 있어야 서버가 요청을 multipart로 처리할 수 있음 -->
+
                             <!-- 회원가입 폼 -->
-                            <h3>회원가입</h3>
+                            <div class="row justify-content-center" style="display: flex; flex-direction: column; align-items: center;">
+                                <img id = "preview" src="/images/developer.png" alt="기본 회원 사진" height="400px" width="400px"
+                                     style="border: #00bd56; border-radius: 50%; margin-bottom:5px;">
+                            </div>
+
                             <div class="form-group">
                                 <label for="profile-pic">프로필 사진</label>
-                                <input type="file" class="form-control-file" id="profile-pic" name="profileImage">
+                                <input type="file" class="form-control-file" id="profile-pic" name="files" onchange="previewImage(event)">
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -237,6 +243,17 @@
                 pwResult.style.color = '#e2263e';
                 pwResult.innerHTML = " 비밀번호가 일치하지 않습니다."
                 pwCheckResult = false;
+            }
+        }
+
+        function previewImage(event) {
+            const reader = new FileReader();  // FileReader 객체 생성
+            reader.onload = function() {
+                const output = document.getElementById('preview');  // 미리보기 이미지 태그
+                output.src = reader.result;  // 이미지 태그의 src 속성에 데이터 URL 설정
+            };
+            if (event.target.files && event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);  // 파일 내용을 읽어 데이터 URL로 변환
             }
         }
 
