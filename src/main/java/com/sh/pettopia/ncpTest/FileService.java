@@ -150,4 +150,10 @@ public class FileService {
         return uploadFiles(files, filePath);
     }
 
+    // 홍지민 - 회원 사진 업로드 하는 메소드입니다.
+    public List<FileDto> memberProfileUpload(List<MultipartFile> files, String memberName) {
+        String filePath = "member/" + memberName;
+        log.debug(filePath);
+        return uploadFiles(files, filePath);
+    }
 }

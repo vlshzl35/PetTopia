@@ -54,7 +54,7 @@ public class PetController {
             }
         }
 
-        // 업로드한 파일 명을 Pet이 갖고 있는 profile에 저장합니다.
+        // 업로드한 파일 명을 PetDto의 profileUrl에 저장합니다.
         if (!petProfileUrls.isEmpty()) {
             petDto.setPetProfileUrl(petProfileUrls.get(0));
             log.debug("petProfileURL = {}", petProfileUrls.get(0));
@@ -64,7 +64,6 @@ public class PetController {
 
         // Pet을 등록하기 위해 member와 petDto를 넘겨줍니다.
         petService.registPet(member, petDto);
-        redirectAttributes.addFlashAttribute("message", "🐶펫 등록이 완료되었습니다!🐶");
         return "redirect:/";
     }
 }
