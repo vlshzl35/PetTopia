@@ -4,6 +4,8 @@ package com.sh.pettopia.Hojji.user.member.controller;
 import com.sh.pettopia.Hojji.user.member.dto.MemberRegistRequestDto;
 import com.sh.pettopia.Hojji.user.member.service.MemberService;
 
+import com.sh.pettopia.ncpTest.FileDto;
+import com.sh.pettopia.ncpTest.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
@@ -20,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+    private final FileService fileService;
 //    private final AuthService authService;
 
     @Value("${profile.value}")
@@ -35,13 +42,34 @@ public class MemberController {
     }
 
     @PostMapping("/registMember")
-    public String registMember(@ModelAttribute MemberRegistRequestDto dto) {
+    public String registMember(
+            @ModelAttribute MemberRegistRequestDto dto,
+            @RequestParam(value = "files") List<MultipartFile> files) {
         // 1. 비밀번호 암호화
         log.debug("dto = {}", dto);
         String encryptedPassword = passwordEncoder.encode(dto.getPassword());
         dto.setPassword(encryptedPassword);
 
-        // 2. 회원 등록 요청
+        // 2. 프로필 URL 저장
+        List<String> memberProfileUrls = new ArrayList<>();
+        if (files != null && !files.isEmpty()) {
+            // file + 회원 이름으로 폴더를 만들기 위해서 같이 넘겨줍니다.
+            List<FileDto> memberProfiles = fileService.memberProfileUpload(files, dto.getName());
+            for (FileDto file : memberProfiles) {
+                memberProfileUrls.add(file.getUploadFileUrl());
+            }
+        }
+
+        // 3. 업로드한 파일 명을 MemberDto의 profileUrl에 저장합니다.
+        if (!memberProfileUrls.isEmpty()) {
+            dto.setProfileUrl(memberProfileUrls.get(0));
+            log.debug("memberProfileURL = {}", memberProfileUrls.get(0));
+        }
+        else {
+            log.debug("프로필 URL이 없습니다.");
+        }
+
+        // 3. 회원 등록 요청
         memberService.registMember(dto);
         log.debug("Post / 회원 가입 완료");
         return "redirect:/auth/login";
