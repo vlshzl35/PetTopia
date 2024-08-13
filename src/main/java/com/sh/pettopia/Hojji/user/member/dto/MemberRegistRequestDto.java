@@ -21,7 +21,7 @@ public class MemberRegistRequestDto {
     // Ex) 프로필이미지가 html 상으로 name = "profileImage" 이면 Dto에서도 변수 명이 profileImage여야 한다.
 
     // 프로필 이미지
-    private String profileImage;
+    private String profileUrl;
 
     // 본명
     private String name;
@@ -50,7 +50,7 @@ public class MemberRegistRequestDto {
 
     public Member toMember() {
         return Member.builder()
-                .profileImage(this.profileImage)
+                .profileImage(this.profileUrl)
                 .name(this.name)
                 .email(this.email)
                 .nickName(this.nickName)

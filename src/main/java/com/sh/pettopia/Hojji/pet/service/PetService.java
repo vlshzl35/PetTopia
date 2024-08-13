@@ -1,6 +1,7 @@
 package com.sh.pettopia.Hojji.pet.service;
 
 import com.sh.pettopia.Hojji.pet.dto.PetRegistRequestDto;
+import com.sh.pettopia.Hojji.pet.dto.PetRegistResponseDto;
 import com.sh.pettopia.Hojji.pet.entity.Pet;
 import com.sh.pettopia.Hojji.pet.repository.PetRepository;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
@@ -29,14 +30,14 @@ public class PetService {
     }
 
     // 8/11 홍지민 작업 시작
-    public void registPet(Member member, PetRegistRequestDto petDto) {
+    public Pet registPet(Member member, PetRegistRequestDto petDto) {
         // PetDto를 Pet 테이블에 저장하기 위해 Pet Entity로 변환합니다.
         Pet pet = petDto.toPet();
-        log.debug("PetEntity/Owner 세팅전 = {}", pet); // 반환된 Pet
+        log.debug("PetEntity - Owner 세팅전 = {}", pet); // 반환된 Pet
 
         // PetOwner를 설정합니다.
         pet.setOwner(member);
-        log.debug("PetEntity/Owner 세팅후 = {}", pet.getMember().getId());
-        petRepository.save(pet);
+        log.debug("PetEntity -Owner 세팅후 = {}", pet);
+        return petRepository.save(pet);
     }
 }
