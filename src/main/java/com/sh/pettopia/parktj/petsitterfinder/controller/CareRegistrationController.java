@@ -1,5 +1,6 @@
 package com.sh.pettopia.parktj.petsitterfinder.controller;
 
+import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
 import com.sh.pettopia.Hojji.pet.service.PetService;
 import com.sh.pettopia.parktj.petsitterfinder.dto.CareRegistrationDetailResponseDto;
 import com.sh.pettopia.parktj.petsitterfinder.dto.CareRegistrationListResponseDto;
@@ -9,13 +10,13 @@ import com.sh.pettopia.parktj.petsitterfinder.service.CareRegistrationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * model
@@ -50,10 +51,17 @@ public class CareRegistrationController {
      * @param model
      */
     @GetMapping("/careregistrationdetails")
-    public void careRegistrationDetails(@RequestParam(value = "postId") Long postId, Model model){
+    public void careRegistrationDetails(@AuthenticationPrincipal AuthPrincipal authPrincipal ,@RequestParam(value = "postId") Long postId, Model model){
         CareRegistrationDetailResponseDto detailDto = careRegistrationService.findAllByPostId(postId);
         model.addAttribute("detail", detailDto);
         log.debug("detailDto = {}", detailDto);
+
+        Long currentMemberId = authPrincipal.getMember().getId();
+        Long writerMemberId = detailDto.getMemberId();
+
+        boolean isWriter = currentMemberId.equals(writerMemberId);
+        model.addAttribute("isWriter", isWriter);
+        log.debug("isWriter = {}", isWriter);
 
 
     }
@@ -71,7 +79,7 @@ public class CareRegistrationController {
      *  - 순서 무시: Set은 요소의 순서를 보장하지 않음, 순서가 중요하지 않고 각 요소의 유일성이 중요할 떄 유리함
      * @param model
      */
-    @GetMapping("careregistrationlist")
+    @GetMapping("/careregistrationlist")
     public void careRegistrationList(Model model){
         List <CareRegistrationListResponseDto> careRegistrationListResponseDtos  = careRegistrationService.findAll();
         model.addAttribute("lists", careRegistrationListResponseDtos);
@@ -79,10 +87,10 @@ public class CareRegistrationController {
     }
 
     // 멤버에 id에 맞는 펫 정보 option 태그에 보여주기 위한
-    // 08/09 멤버 session에 저장된 정보로 맞는 정보 찾아오기
+    // 08/13 멤버 session에 저장된 정보로 맞는 정보 찾아오기
     @GetMapping("/careregistrationform")
-    public void careRegistrationForm(Model model){
-        List<PetDetailsResponseDto> pets = petService.findAll();
+    public void careRegistrationForm(@AuthenticationPrincipal AuthPrincipal authPrincipal, Model model){
+        PetDetailsResponseDto pets = petService.findAllByMemberId(authPrincipal.getMember().getId());
         // 여기엔 이미 memberId 2개 내가 하려는건 로그인한 member의 id 의 pet 이름만 뜨도록 하는 것
 
         log.debug("pets = {}", pets);
@@ -169,21 +177,20 @@ public class CareRegistrationController {
 
     }
 
-    }
+
 
 /**
- * 일요일 해야할거
- * - 게시글 등록된거 리스트에서는 강아지 얼굴 이름 지역등이 뜨게하고
- * - 상세보기에서 입력한값, 강아지 사진 주소 등이 들어가서 뜨게 만들기
- * - 등록한 리스트를 클릭했을 때 postId에 해당하는 정보들이 그 상세페이지에 뜨도록 해야함
- *  감이안잡힌다.. 강사님 어떻게 하셨는지 보자
- *  - 입력한 주소값이 그대로 들어가면서 지도가 띄어지도록 해야함
+ * 게시글 업데이트 하는 mapping
+ * - location.href 는 JavaScript에서 현재 페이지를 새 URL로 변경할 때 사용함, 버튼을 클릭하면 지정된 URL로 이동함
  *
- *  8/12할거 현재 새벽 1시
- *  - url postId=2 에서 postId=2 는 쿼리 파라미터임.
- *  - @RequestParam 어노테이션을 이용하여, URL의 postId(쿼리 파라미터를 ) 메서드의 파라미터로 바인딩할 수 있음
- *  - 월요일에 이거 바인딩해서 각 postId로 정보 불러온뒤 dto로 변환해서 각 게시물마다 정보 뿌려주면 되겠다.
+ * -URL의 동적 생성
+ * @{/petsitterfinder/detailupdate(postId=${detail.postId})} 구문은 서버 측에서 detail.postId 값을 가져와서 URL을 생성함
  *
- *  이번주에 해야할거? cr 했으니 ud , 예약 하는 시스템 만들고 websocket 으로 댓글이나 예약에대한 알람 구현해보기 ;ㅣ
+ * - 결과적으로 postId 값에 다라 사용자에게 보여지는 값이 달라짐
  *
  */
+//@GetMapping("/menuUpdate")
+//    public void updateDetail(@RequestParam(value = "postId")Long postId, @AuthenticationPrincipal AuthPrincipal authPrincipal){
+//        careRegistrationService.updateByPostIdAndMemberId(postId, authPrincipal.getMember().getId());
+//}
+}

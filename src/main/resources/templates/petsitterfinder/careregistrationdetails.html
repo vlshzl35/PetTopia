@@ -1,22 +1,162 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/default}">
+<html layout:decorate="~{layout/default}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title>주소 검색</title>
+    <title>주소 검색 및 예약 정보</title>
     <style>
-        #map {
-            width: 50%;
-            height: 150px;
-            margin-top: 10px;
+        .page-body {
+            display: flex;
+            /*자식 요소들이 충분한 공간이 없을 경우 다음 줄로 넘어가도록 설정 */
+            flex-wrap: wrap;
+            align-items: flex-start; /*수평 중앙 정렬*/
+            width: 80%;
+            height: 1500px;
+            margin: 10px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        /*    위에 코드가 지도 body 안에 넣어주는 코드 */
         }
+        .reservation-details {
+            left: 20px;
+            width:150%; /* 너비 설정 */
+            background: #d4edda; /* 배경색 */
+            padding: 20px; /* 내부 여백 */
+            border-radius: 8px; /* 테두리 둥글게 */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 그림자 효과 */
+            text-align: center; /* 텍스트 왼쪽 정렬 */
+            line-height: 1.6; /* 줄 간격 */
+        }
+        .petProfile{
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            /*position으로 절대적으로 위치 설정 */
+            position: absolute;
+        }
+
+        h2 {
+            color: #28a745; /* 제목 색상 */
+            margin-bottom: 10px; /* 제목 아래 여백 */
+        }
+        p {
+            color: #0b0b0b; /* 문단 색상 */
+            font-size: 14px; /* 글꼴 크기 */
+        }
+        /*#map{*/
+        /*    right:10px;*/
+        /*    bottom: 10px;*/
+        /*    position: absolute;*/
+        /*    padding: 20px;*/
+        /*    width: 350px;*/
+        /*    height: 350px;*/
+        /*}*/
+        .map-spot{
+            bottom: 250px;
+            position: absolute;
+            right: 10px;
+            width: 350px;
+            height: 350px;
+        }
+        .reservation-btn-spot {
+            position: absolute;
+            bottom: 600px;
+            width: 350px;
+            height: 100px;
+            right: 10px;
+        }
+        /*버튼에 관련한 css*/
+        .submitBtn{
+            width: 350px;
+            height: 100px;
+            color: #1e7e34;
+            border: #1e7e34;
+            cursor:pointer;
+            font-size: 40px;
+
+        }
+        /*마우스 오버 시 버튼의 배경색을 변경*/
+        .submitBtn:hover{
+            background-color: #d4edda;
+        }
+
+
     </style>
 </head>
 <body>
-<div layout:fragment="main" class="page-body">
-    <form id="addressForm">
-        <label for="addressInput">회원 위치 </label>
-        <input type="hidden" id="addressInput" placeholder="주소를 입력하세요" th:value="${detail.address}" >
-    </form>
-    <div id="map" ></div>
+
+<div class="page-body" layout:fragment="main">
+
+<!--
+    08/13 태그
+    <div> : id나 class 속성을 사용해서 문서 구조를 만들거나 스타일 적할 때 사용, 즉, 영역을 구별하거나 스타일로 문서를 꾸미는 것임
+    이 태그는 시각적으로 구분하는 컨테이너 역할을함
+
+    <p> : 웹 문서에서 텍스트 단락을 입력할 때 많이 사용 <p> <br>
+    <br> 과 <p>의 차이점? <br> 태그는 실제로는 단락이 만들어진 게 아니므로 CSS를 사용해 텍스트 단락 스타일을 적용할 때는 <p>태그 사용
+    <span> 태그는 텍스트의 일부분에 스타일을 적용하거나 문서의 일부를 구분짓는데 사용, 이 경우 예약 정보의 실제값 을 감싸는데 사용
+
+-->
+<!--
+    8/13일 할일
+    이미지 URL 어떻게 받아오는지, LocalDate로 받아온 날짜 값으로 달력에 어떻게 띄어줄 수 있는지 확인
+
+
+-->
+
+    <!-- 예약 정보 표시 영역 -->
+    <section id = "reserveInfoSection">
+    <div class="reservation-details">
+        <input type="hidden" id="addressInput"  th:value="${detail.address}">
+        <h2><strong>🐶우리 강아지를 돌봐주세요🐶</strong></h2>
+        <p>이름: <span th:text="${detail.petName}"></span></p>
+        <p>강아지 성격: <span th:text="${detail.petSociability}"></span></p>
+        <p>강아지 출생일: <span th:text="${detail.petBirth}"></span></p>
+        <p>견종: <span th:text="${detail.petBreed}"></span></p>
+        <p>강아지 크기: <span th:text="${detail.petSize}"></span></p>
+        <p>예박 접종: <span th:text="${detail.petVaccinationType}"></span></p>
+        <p>기생충 예방 접종: <span th:text="${detail.petParasitePrevention}"></span></p>
+        <p>예약 종료요청 날짜: <input type="date" th:value="${detail.startDate}" readonly></p>
+        <p>예약 요청 날짜: <input type="date" th:value="${detail.endDate}" readonly></p>
+        <div class = "update-box">
+            <button class = "btnForUpdate" th:if="${isWriter}" th:onclick="|location.href = '@{/petsitterfinder/detailupdate(postId=${detail.postId})}'|">수정</button>
+        </div>
+
+
+
+    </div>
+    </section>
+
+
+    <section id = "petProfileSection">
+        <div class="petProfile">
+            <h2>☺️우리 강아지에요☺️</h2>
+            <img src ="/images/KakaoTalk_20240527_201110282.jpg" alt = "강아진사진" width="350px", height="350px">
+        </div>
+    </section>
+    <section id ="mapInfoSection">
+        <div class="map-spot">
+            <h2>🏠이 근처에 살아요🏠</h2>
+        <div id="map"></div>
+        </div>
+    </section>
+    <div class = "reservation-btn-spot">
+        <form action = "submitResevation" method = "post">
+            <button class="submitBtn" type="submit" >예약 요청</button>
+        </form>
+    </div>
+    <section>
+        <div class="inquireBox">
+
+        </div>
+    </section>
+
+
+
+
+
 
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c2c4e06dc64e84c36fa8af04a0f00306&libraries=services"></script>
     <script>
@@ -32,7 +172,7 @@
         var infowindow = new kakao.maps.InfoWindow();
 
         function searchAddress() {
-            var address = document.getElementById('addressInput').value; // 사용자 입력값 가져오기
+            var address = document.getElementById('addressInput').value;
 
             geocoder.addressSearch(address, function(result, status) {
                 if (status === kakao.maps.services.Status.OK) {
@@ -45,7 +185,6 @@
                     infowindow.close();
                     marker.setMap(null);
                 }
-
                 var circle = new kakao.maps.Circle({
                     center: new kakao.maps.LatLng(result[0].y, result[0].x),  // 원의 중심좌표입니다
                     radius: 30, // 미터 단위의 원의 반지름입니다
@@ -57,11 +196,10 @@
                     fillOpacity: 0.4  // 채우기 불투명도입니다
                 });
                 circle.setMap(map);
-
             });
         }
 
-        document.addEventListener('DOMContentLoaded', searchAddress); // 페이지 로드 시   주소 검색 실행
+        document.addEventListener('DOMContentLoaded', searchAddress);
     </script>
 </div>
 </body>

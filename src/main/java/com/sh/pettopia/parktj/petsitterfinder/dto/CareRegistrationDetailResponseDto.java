@@ -33,6 +33,7 @@ public class CareRegistrationDetailResponseDto {
     private LocalDate endDate;
     private String address;
     private Set<RequestService> requestService;
+    private Long postId;
 
     public static CareRegistrationDetailResponseDto toCareRegistrationDetailDto(CareRegistration careRegistration){
         return CareRegistrationDetailResponseDto.builder()
@@ -48,6 +49,8 @@ public class CareRegistrationDetailResponseDto {
                 .petSize(careRegistration.getPetSize())
                 .petName(careRegistration.getPetName())
                 .petGender(careRegistration.getPetGender())
+                .postId(careRegistration.getPostId())
+                .memberId(careRegistration.getMemberId())
                 .build();
     }
 }

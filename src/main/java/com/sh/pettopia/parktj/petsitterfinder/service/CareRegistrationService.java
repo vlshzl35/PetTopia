@@ -52,4 +52,8 @@ public class CareRegistrationService {
     public CareRegistrationDetailResponseDto findAllByPostId(Long postId) {
         return CareRegistrationDetailResponseDto.toCareRegistrationDetailDto(registrationRepository.findAllByPostId(postId));
     }
+
+//    public void updateByPostIdAndMemberId(Long postId, Long id) {
+//        registrationRepository.updateByPostIdAndMemberId(postId, id);
+//    }
 }

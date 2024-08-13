@@ -20,10 +20,8 @@ public class PetService {
     private final PetRepository petRepository;
 
 //    08/07 박태준 추가
-    public List<PetDetailsResponseDto> findAll(){
-        return petRepository.findAll().stream()
-                .map(PetDetailsResponseDto::PetDetailFromPet)
-                .toList();
+    public PetDetailsResponseDto findAllByMemberId(Long memberId){
+        return PetDetailsResponseDto.PetDetailFromPet(petRepository.findAllByMemberId(memberId));
     }
     // 8/08 박태준 추가
     public PetDetailsResponseDto findByPetId(Long petId) {
