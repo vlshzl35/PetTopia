@@ -57,7 +57,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    @DisplayName("회원 등록")
+    @DisplayName("일반 회원/펫시터/관리자 등록")
     @Transactional
 //    @Rollback(value = false) // @DataJpaTest가 기본적으로 테스트 후, 트랜잭션을 롤백하므로 실제 DB에 저장하기 위해 사용합니다.
     public void test(){
@@ -127,6 +127,69 @@ class MemberRepositoryTest {
         System.out.println(member);
         /**
          * Member(super=User(id=52, email=jmh907@gmail.comm, password=123, name=홍희망, gender=F, phone=010, authorities=[ROLE_SITTER, ROLE_ADMIN, ROLE_MEMBER]), nickName=희망읭잉, address=강남구, profileImage=희망.jpg, birth=1999-09-07, createdAt=2024-08-11, sitterStatus=NONE)
+         */
+
+        //then
+        assertThat(member.getId()).isNotZero();
+    }
+
+    @Test
+    @DisplayName("관리자 등록")
+    @Transactional
+    @Rollback(value = false) // @DataJpaTest가 기본적으로 테스트 후, 트랜잭션을 롤백하므로 실제 DB에 저장하기 위해 사용합니다.
+    public void test2(){
+        //given
+        Member member = Member.builder()
+                .email("jmh907@gmail.comm")
+                .password("123")
+                .name("관리쟈?")
+                .gender(Gender.F)
+                .phone("010")
+                .authorities(Set.of(Authority.ROLE_ADMIN))
+                .nickName("관리쟈라ㅏㅏㅏ")
+                .address("강남구")
+                .profileImage("관리쟝.jpg")
+                .birth(LocalDate.of(1999,9,7))
+                .createdAt(LocalDate.now())
+                .sitterStatus(SitterStatus.NONE)
+                .build();
+
+        //when
+        member = memberRepository.saveAndFlush(member); // insert문 바로 날리기 위함
+        /**
+         * Hibernate:
+         *     select
+         *         tbl.next_val
+         *     from
+         *         hibernate_sequences tbl
+         *     where
+         *         tbl.sequence_name=? for update
+         * Hibernate:
+         *     update
+         *         hibernate_sequences
+         *     set
+         *         next_val=?
+         *     where
+         *         next_val=?
+         *         and sequence_name=?
+         * Hibernate:
+         *     insert
+         *     into
+         *         tbl_member
+         *         (email, gender, name, password, phone, address, birth, created_at, nick_name, profile_image, sitter_status, id)
+         *     values
+         *         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         * Hibernate:
+         *     insert
+         *     into
+         *         tbl_authority
+         *         (member_id, authorities)
+         *     values
+         *         (?, ?)
+         */
+        System.out.println(member);
+        /**
+         * Member(super=User(id=152, email=jmh907@gmail.comm, password=123, name=관리쟈?, gender=F, phone=010, authorities=[ROLE_ADMIN]), nickName=관리쟈라ㅏㅏㅏ, address=강남구, profileImage=관리쟝.jpg, birth=1999-09-07, createdAt=2024-08-13, sitterStatus=NONE)
          */
 
         //then
