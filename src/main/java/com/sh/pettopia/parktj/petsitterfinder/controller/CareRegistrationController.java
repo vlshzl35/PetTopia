@@ -90,7 +90,7 @@ public class CareRegistrationController {
     // 08/13 멤버 session에 저장된 정보로 맞는 정보 찾아오기
     @GetMapping("/careregistrationform")
     public void careRegistrationForm(@AuthenticationPrincipal AuthPrincipal authPrincipal, Model model){
-        PetDetailsResponseDto pets = petService.findAllByMemberId(authPrincipal.getMember().getId());
+        List<PetDetailsResponseDto> pets = petService.findAllByMemberId(authPrincipal.getMember().getId());
         // 여기엔 이미 memberId 2개 내가 하려는건 로그인한 member의 id 의 pet 이름만 뜨도록 하는 것
 
         log.debug("pets = {}", pets);
