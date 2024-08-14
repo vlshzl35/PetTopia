@@ -7,8 +7,8 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-<!--    <span th:text="${#authentication.principal.member.name}"></span>-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!--    <span th:text="${#authentication.principal.member.name}"></span>-->
     <title>프로필 등록</title>
     <style>
         body {
@@ -18,14 +18,6 @@
             margin: 0;
         }
 
-        #showImage {
-            width: 400px;
-            height: 300px;
-            background-color: lightgray;
-            border-radius: 20px 20px / 20px 20px;
-            overflow: hidden;
-            margin: 0px 10px 10px 0px;
-        }
 
         img {
             width: 150px;
@@ -39,13 +31,6 @@
             margin: 3%;
         }
 
-        #showImage {
-            width: 300px; /* Set the width of the container */
-            height: 200px; /* Set the height of the container */
-            overflow: hidden;
-            position: relative;
-        }
-
         #showImage img {
             width: 100%;
             height: 100%;
@@ -53,35 +38,6 @@
             transition: transform 0.5s ease;
         }
 
-        .prev, .next {
-            position: absolute;
-            top: 50%;
-            width: 30px;
-            height: 30px;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            user-select: none;
-            font-size: 20px;
-            z-index: 100;
-        }
-
-        .prev {
-            left: 10px;
-        }
-
-        .next {
-            right: 10px;
-        }
-
-        .slider-container {
-            position: relative;
-            width: 300px;
-            height: 200px;
-        }
 
         textarea {
             width: 100%;
@@ -89,28 +45,27 @@
             border: 1px solid black;
             resize: none;
         }
+
+        #mainImage {
+            width: 400px;
+            height: 300px;
+            background-color: lightgray;
+            border-radius: 20px 20px / 20px 20px;
+            overflow: hidden;
+            margin: 0px 10px 10px 0px;
+        }
     </style>
 </head>
 <body>
 <div class="container" layout:fragment="main">
-    <h3>여기는 펫시터의 프로필 등록 및 수정</h3>
     <form th:action="@{/petsitter/registerprofile}" id="registFrm" method="post" th:object="${petSitterRegisterDto}"
           enctype="multipart/form-data" class="container">
-        <h3>이미지 미리보기</h3>
-        <div class="slider-container">
-            <div class="prev" onclick="moveSlide(-1)">&#10094;</div>
-            <div id="showImage"></div>
-            <div class="next" onclick="moveSlide(1)">&#10095;</div>
-        </div>
-        <input type="file" onchange="loadFile(this)" name="files" multiple>
-        <!--    name="upFile" 이걸로 controller에서 값을 찾음-->
+        <div >
+            <div class="container">
+                <div class="addImage" id="mainImage"></div><!-- 이미지 띄울 공간 여기에 새로 만들어진 이미지 태그가 append된다 -->
+                <input type="file" onchange="mainImgLoad(this)" name="mainImage" multiple>
+                    <img th:src="${petSitterRegisterDto.mainImageUrl}" alt="">
 
-        <!--        index = <span th:text="${stat.index}"></span>-->
-        <!--        이미지 주소 = <span th:text="${images}"></span>-->
-        <!--        등록한 이미지 보기-->
-        <div style="overflow:scroll; width:500px; height:350px;">
-            <div th:each="images,stat: ${imagesUrlList}">
-                <img th:src="${images}" alt="" style="height: 400px; width: 350px" th:onclick="remove_confirm(this.src)">
             </div>
         </div>
 
@@ -122,93 +77,92 @@
             <input type="text" id="detailAddress" placeholder="상세주소" name="detailAddress" th:field="*{detailAddress}">
             <input type="text" id="extraAddress" placeholder="참고항목" name="extraAddress" th:field="*{extraAddress}">
         </div>
-
         <div class="form-group">
             <h3>소개</h3>
             <div class="input-group">
-                <label for="introduce">
-                </label>
-                <textarea name="introduce" id="introduce" th:field="*{introduce}"
-                          placeholder="소개글을 입력해주세요"></textarea>
+
+                <label for="introduce"></label><textarea name="introduce" id="introduce" th:field="*{mainIntroduce}"
+                                                         placeholder="소개글을 입력해주세요"></textarea>
+
             </div>
         </div>
-        <div class="container" >
+        <div class="container">
             <div style="border: 1px solid black">
                 [[${petService}]]
                 [[${petSize}]]
                 [[${petService.contains('youngerPetWalk')}]]
-                <div >
+                <div>
                     <label for="everydayWalk">
                         <img th:src="@{/images/availableService/everydaywalk.PNG}" alt="everydayWalk">
-                        <input type="checkbox" name="availableService" id="everydayWalk" value="everydayWalk"
+                        <input type="checkbox" name="availableServices" id="everydayWalk" value="everydayWalk"
                                th:checked="${petService.contains('everydayWalk')}">
 
                     </label>
                     <label for="oldPetWalk">
                         <img th:src="@{/images/availableService/oldpetwalk.PNG}" alt="노견산책">
-                        <input type="checkbox" name="availableService" id="oldPetWalk" value="olderPetWalk"
+                        <input type="checkbox" name="availableServices" id="oldPetWalk" value="olderPetWalk"
                                th:checked="${petService.contains('olderPetWalk')}">
 
                     </label>
                     <label for="youngerPetWalk">
                         <img th:src="@{/images/availableService/youngerpetwalk.PNG}" alt="어린견산책">
-                        <input type="checkbox" name="availableService" id="youngerPetWalk" value="youngerPetWalk"
+                        <input type="checkbox" name="availableServices" id="youngerPetWalk" value="youngerPetWalk"
                                th:checked="${petService.contains('youngerPetWalk')}">
-                              <!-- th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).youngerPetWalk)}">-->
+                        <!-- th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.availableServices).youngerPetWalk)}">-->
                     </label>
                 </div>
                 <div class="">
                     <label for="play">
                         <img th:src="@{/images/availableService/play.PNG}" alt="실내놀이">
-                        <input type="checkbox" name="availableService" id="play" alt="" value="play"
+                        <input type="checkbox" name="availableServices" id="play" alt="" value="play"
                                th:checked="${petService.contains('play')}">
-                              <!-- th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.AvailableService).play)}">-->
+                        <!-- th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.availableServices).play)}">-->
                     </label>
                     <label for="firstAid">
                         <img th:src="@{/images/availableService/firstaid.PNG}" alt="응급처치">
-                        <input type="checkbox" name="availableService" id="firstAid" value="firstAid"
+                        <input type="checkbox" name="availableServices" id="firstAid" value="firstAid"
                                th:checked="${petService.contains('firstAid')}">
                     </label>
                     <label for="pickup">
                         <img th:src="@{/images/availableService/pickup.PNG}" alt="도보픽업">
-                        <input type="checkbox" name="availableService" id="pickup" value="walkPickup"
+                        <input type="checkbox" name="availableServices" id="pickup" value="walkPickup"
                                th:checked="${petService.contains('walkPickup')}">
                     </label>
                 </div>
                 <div class="">
                     <label for="brush">
                         <img th:src="@{/images/availableService/brush.PNG}" alt="모발관리">
-                        <input type="checkbox" name="availableService" id="brush" value="brush"
+                        <input type="checkbox" name="availableServices" id="brush" value="brush"
                                th:checked="${petService.contains('brush')}">
                     </label>
                     <label for="medicine">
                         <img th:src="@{/images/availableService/medicine.PNG}" alt="약먹이기">
-                        <input type="checkbox" name="availableService" id="medicine" value="medicine"
+                        <input type="checkbox" name="availableServices" id="medicine" value="medicine"
                                th:checked="${petService.contains('medicine')}">
                     </label>
                     <label for="longReservation">
                         <img th:src="@{/images/availableService/longreservation.PNG}" alt="장기예약">
-                        <input type="checkbox" name="availableService" id="longReservation" value="longReservation"
+                        <input type="checkbox" name="availableServices" id="longReservation" value="longReservation"
                                th:checked="${petService.contains('longReservation')}">
                     </label>
                 </div>
 
             </div>
-            <div class="" style="border: 1px solid black; display: block;" id="availablePetSize">
+            <div class="" style="border: 1px solid black; display: block;" id="availablePetSizes">
                 <label for="smallPet">
                     <img th:src="@{/images/availablePetSize/smallpet.PNG}" alt="" class="petSize">
-                    <input type="checkbox" name="availablePetSize" id="smallPet" value="smallPet"
+                    <input type="checkbox" name="availablePetSizes" id="smallPet" value="smallPet"
                            th:checked="${petSize.contains('smallPet')}">
 
                 </label>
                 <label for="middlePet">
                     <img th:src="@{/images/availablePetSize/middlepet.PNG}" alt="" class="petSize">
-                    <input type="checkbox" name="availablePetSize" id="middlePet" value="middlePet"
+                    <input type="checkbox" name="availablePetSizes" id="middlePet" value="middlePet"
                            th:checked="${petSize.contains('middlePet')}">
                 </label>
                 <label for="largePet">
                     <img th:src="@{/images/availablePetSize/largepet.PNG}" alt="" class="petSize">
-                    <input type="checkbox" name="availablePetSize" id="largePet" value="largePet"
+                    <input type="checkbox" name="availablePetSizes" id="largePet" value="largePet"
                            th:checked="${petSize.contains('largePet')}">
 
                 </label>
@@ -218,66 +172,60 @@
         <button type="submit" class="btn btn-primary">제출</button>
     </form>
     <script>
-        function remove_confirm(imgUrl){
-            var header = $("meta[name='_csrf_header']").attr('content');
-            var token = $("meta[name='_csrf']").attr('content');
-           if(confirm("사진을 제거 하시겠습니까??"))
-           {
+        function mainImgLoad(input) {
+            const file = input.files[0]; // 선택된 파일 가져오기
 
-               alert(imgUrl);
-               $.ajax({
-                   beforeSend: function(xhr){
-                       xhr.setRequestHeader(header, token);
-                   },
-                   url: '[[@{/petsitter/removeimg}]]',
-                   method: 'post',
-                   data: {
-                       // get방식에서는 url뒤에 queryString형태로 추가한다.
-                       imgUrl : imgUrl
-                   },
+            const newImage = document.createElement("img"); //새 이미지 추가
 
-                   success(responseText, textStatus, jqXhr) {
-                       // 정상처리
-                       console.log(responseText, textStatus, jqXhr);
-                       alert("이미지가 정상제거 되었습니다");
+            //이미지 source 가져오기
+            newImage.src = URL.createObjectURL(file);
+            newImage.id = "img-id"
+            newImage.style.width = "100%";
+            newImage.style.height = "100%";
+            newImage.style.objectFit = "cover";
 
-                       }
-               })
-
-           }
+            //이미지를 showImageDiv div에 추가
+            console.log(newImage.src, newImage.id);
+            const showImageDiv = document.getElementById('mainImage');
+            if (showImageDiv.querySelector('img')) // 이미지를 출력하는 공간안에 img쿼리 셀렉터가 있는지 확인
+            {
+                showImageDiv.removeChild(showImageDiv.querySelector('img')); // 출력되는 div에 이미 올라가있는 이미지가 있으면 삭제를 한다
+            }
+            showImageDiv.append(newImage); // 출력되는 div 공간에 만들어진 image태그를 showImage에 append를 한다
+            // 이미지 태그를 새로 만들어, div태그에 append하기 때문에 if문에서 삭제를 안해주면 그 아래로 계속 append가 된다
+            //
 
         }
     </script>
     <script>
-        let currentIndex = 0;
-        const images = [];
+        function remove_confirm(imgUrl) {
+            var header = $("meta[name='_csrf_header']").attr('content');
+            var token = $("meta[name='_csrf']").attr('content');
+            if (confirm("사진을 제거 하시겠습니까??")) {
 
-        function loadFile(input) {
-            const files = input.files;
-            const showImageDiv = document.getElementById('showImage');
+                alert(imgUrl);
+                $.ajax({
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    url: '[[@{/petsitter/removeimg}]]',
+                    method: 'post',
+                    data: {
+                        // get방식에서는 url뒤에 queryString형태로 추가한다.
+                        imgUrl: imgUrl
+                    },
 
-            if (showImageDiv.querySelector('img')) {
-                showImageDiv.innerHTML = ''; // Clear existing images
+                    success(responseText, textStatus, jqXhr) {
+                        // 정상처리
+                        console.log(responseText, textStatus, jqXhr);
+                        alert("이미지가 정상제거 되었습니다");
+
+                    }
+                })
+
             }
 
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                const newImage = document.createElement("img");
-                newImage.src = URL.createObjectURL(file);
-                newImage.style.transform = `translateX(${currentIndex * -100}%)`;
-                images.push(newImage);
-                showImageDiv.append(newImage);
-            }
         }
-
-        function moveSlide(step) {
-            const showImageDiv = document.getElementById('showImage');
-            currentIndex = (currentIndex + step + images.length) % images.length;
-            images.forEach((img, index) => {
-                img.style.transform = `translateX(${(index - currentIndex) * 100}%)`;
-            });
-        }
-
     </script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>

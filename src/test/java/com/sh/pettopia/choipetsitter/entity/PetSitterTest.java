@@ -1,6 +1,7 @@
 package com.sh.pettopia.choipetsitter.entity;
 
 import com.sh.pettopia.choipetsitter.repository.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.*;
 
 //@SpringBootTest(classes = PetSitterTest.class)
 @DataJpaTest
@@ -35,43 +36,27 @@ public class PetSitterTest {
     private PayRepository payRepository;
 
 
-
-
     @Test
     @DisplayName("update")
     void test1() {
-//        Set<AvailablePetSize> petSizes=new HashSet<>();
-//        petSizes.add(AvailablePetSize.대형견);
-//        petSizes.add(AvailablePetSize.중형견);
-//
-//        List<String> imageUrls=new ArrayList<>();
-//        imageUrls.add("이미지1 주소입니다");
-//        imageUrls.add("이미지2 주소입니다");
-//        imageUrls.add("이미지3 주소입니다");
-//        imageUrls.add("이미지4 주소입니다");
-//
-//
-//
-//        Set<AvailableService> services=new HashSet<>();
-//        services.add(AvailableService.매일산책);
-//        services.add(AvailableService.응급처치);
-//        services.add(AvailableService.노견산책);
-//        services.add(AvailableService.모발관리);
-//        PetSitterAddress petSitterAddress= new PetSitterAddress("05234","서울 강동구 고덕로61길 37","102동 1006","(고덕동, 현대아파트)");
-//
-//        PetSitter petSitter=PetSitter.builder()
-//                .petSitterId("cstangga@naver.com")
-//                .availablePetSize(petSizes)
-//                .availableService(services)
-//                .imagesUrlList(imageUrls)
-//                .petSitterAddress(petSitterAddress)
-//                .introduce("안녕하세요 최최창창욱욱입니다")
-//                .url("www.daum.com").build();
-//
-//        petSitterRepository.save(petSitter);
-//
-//
-//        System.out.println("petSitter = " + petSitter);
+        Map<String , Integer> pet=new HashMap<>();
+        pet.put("중형견",1);
+        pet.put("대형견",2);
+        Reservation reservation= Reservation.builder()
+                .petSitter_id("cstangga@naver.com")
+                .createdAt(LocalDateTime.now())
+                .endTime(LocalTime.of(19,0,0))
+                .startTime(LocalTime.of(16,0,0))
+                .memberId("cstanga@naver.com")
+                .reservationDay(
+                        List.of(LocalDate.of(2024,8,16),
+                                LocalDate.of(2024,8,17),
+                                LocalDate.of(2024,8,19))
+                        ).note("순합니다")
+                .petSizeAndHowMany(pet)
+                .reservationStatus(ReservationStatus.OK).build();
+
+        System.out.println("reservation = " + reservation);
     }
 
 }

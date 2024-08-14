@@ -19,6 +19,10 @@ public enum AvailableService {
 
     AvailableService(String petService){
         this.petService=petService;
-    }
 
+
+    }
+    public String getPetService(){
+        return petService;
+    }
 }
