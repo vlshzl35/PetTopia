@@ -11,6 +11,7 @@
             background-size: cover;
             background-position: center center;
         }
+
         .overlay {
             position: absolute;
             top: 0;
@@ -19,9 +20,11 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.3);
         }
+
         .breadcrumbs, .bread {
             color: white;
         }
+
         .post-item {
             margin-bottom: 20px;
             padding: 20px;
@@ -32,17 +35,21 @@
             justify-content: space-between;
             align-items: center;
         }
+
         .post-item img {
             max-height: 100px;
             border-radius: 5px;
         }
+
         .post-details {
             flex: 1;
             margin-right: 20px;
         }
+
         .badge-category {
             font-size: 0.9rem;
         }
+
         .category-buttons {
             margin-bottom: 20px;
         }
@@ -51,18 +58,75 @@
             margin-right: 5px;
             margin-bottom: 10px;
         }
+
         .pagination {
             justify-content: center;
         }
+
         .alert-info {
-            background-color: #e9f7fd;
-            color: #31708f;
-            border-color: #bce8f1;
+            background-color: #e4f6e4;
+            color: #004e23;
+            border-color: #b3ffd3;
         }
+
         .alert-info a {
-            color: #31708f;
+            color: #004e23;
         }
+
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            border: 1px solid #00bd56;
+            border-radius: 25px;
+            padding: 5px 10px;
+            width: fit-content;
+        }
+
+        .search-select {
+            border: none;
+            background: transparent;
+            color: #4CAF50;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 10px;
+            outline: none; /* Removes outline */
+        }
+
+        .search-input {
+            border: none;
+            outline: none;
+            width: 150px;
+        }
+
+        .search-button {
+            background: #4CAF50;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .search-button i {
+            font-size: 20px; /* Adjust size as needed */
+        }
+
+        /* Ensure styles don't break on smaller screens */
+        @media (max-width: 600px) {
+            .search-wrapper {
+                width: 100%;
+                padding: 5px;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+        }
+
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 </head>
 <body>
 <div layout:fragment="main" class="page-body">
@@ -87,12 +151,37 @@
                 <div class="col-md-12">
                     <h2 class="heading-section mb-4">커뮤니티</h2>
 
-                    <!-- 카테고리 버튼 -->
-                    <div class="category-buttons justify-content-start">
-                        <button class="btn btn-outline-primary" onclick="filterPosts('all')">전체</button>
-                        <button class="btn btn-outline-primary" onclick="filterPosts('나눔')">반려동물 용품 나눔</button>
-                        <button class="btn btn-outline-primary" onclick="filterPosts('강아지')">동네 강아지 친구 찾기</button>
-                        <button class="btn btn-outline-primary" onclick="filterPosts('자유')">자유</button>
+                    <!-- 카테고리 버튼  -->
+                    <ul class="nav nav-tabs" style="margin-bottom: 10px;">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">전체</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">나눔</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">동네 강아지 친구 찾기</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" >자유게시판</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" >공지사항</a>
+                        </li>
+                    </ul>
+
+                    <!--검색창 -->
+                    <div class="search-wrapper" style="margin-bottom: 5px">
+                        <select class="search-select">
+                            <option value="all">제목</option>
+                            <option value="all">내용</option>
+                            <option value="all">전체+내용</option>
+                            <option value="all">글쓴이</option>
+                        </select>
+                        <input type="text" class="search-input" placeholder="검색어를 입력하세요">
+                        <button class="search-button">
+                            <i class="fas fa-search"></i>
+                        </button>
                     </div>
 
                     <!-- 공지사항 -->
