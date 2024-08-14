@@ -11,6 +11,9 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Map;
 
 @Entity(name = "reservation")
 @Table(name = "tbl_reservation")
@@ -28,14 +31,25 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "start_date")
-    private LocalDate startDate; // 예약 시작시간
+    @Column(name = "reservation_day")
+    @ElementCollection
+    private List<LocalDate> reservationDay; // 예약 날짜
 
-    @Column(name = "end_dated")
-    private LocalDate endDate; // 예약 종료시간
+    @Column(name = "start_time")
+    private LocalTime startTime; // 예약 시작시간
+
+    @Column(name = "end_time")
+    private LocalTime endTime; // 예약 종료시간
 
     @Column(name = "note")
     private String note; // 참고사항
+
+    @Column(name = "petsize_and_howmany")
+    @ElementCollection
+    private List<PetSizeAndHowManyPet> petSizeAndHowManyPets;
+
+    @Column(name = "total_price")
+    private int totalPrice;
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -47,7 +61,7 @@ public class Reservation {
 
     @Column(name = "reservation_status")
     @Enumerated(EnumType.STRING)
-    private ReservationStatus reservationStatus; // 예약 상태(요청대기, 요청수락, 요청취소, 돌봄중, 돌봄 완료)
+    private ReservationStatus reservationStatus; // 예약 상태(요청대기, 요청수락, 요청취소)
 
     // 어떤 펫시터에 대한 예약인가
     @Column(name="member_id")
