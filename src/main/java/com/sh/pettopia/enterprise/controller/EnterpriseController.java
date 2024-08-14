@@ -1,7 +1,7 @@
 package com.sh.pettopia.enterprise.controller;
 
 import com.sh.pettopia.enterprise.dto.EnterpriseDetailResponseDto;
-import com.sh.pettopia.enterprise.service.EnterpriselService;
+//import com.sh.pettopia.enterprise.service.EnterpriselService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,19 +16,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/enterprise")
 public class EnterpriseController {
 
-    private final EnterpriselService enterpriselService;
+//    private final EnterpriselService enterpriselService;
 
     @GetMapping("/location")
     public void location() {
-
-    }
-    @GetMapping("/hospitalreview")
-    public void hospitalReview() {
-
     }
 
     @GetMapping("/detail")
     public void detail() {
-
     }
+
+
 }

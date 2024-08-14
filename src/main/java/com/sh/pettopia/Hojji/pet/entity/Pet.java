@@ -80,6 +80,7 @@ public class Pet {
     @Column(nullable = false)
     private String breed;
 
+    // Pet의 Owener를 설정합니다.
     public void setOwner(Member member) {
         this.member = member;
     }
