@@ -1,10 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
+<html layout:decorate="~{layout/default}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>MyPage</title>
+
+    <!-- Font Awesome 추가 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        /* 중앙 정렬 및 크기 조정 */
+        .icon {
+            font-size: 200px; /* 아이콘 크기 증가 */
+            text-align: center; /* 텍스트 중앙 정렬 */
+            display: flex; /* 플렉스 박스 사용 */
+            justify-content: center; /* 수평 중앙 정렬 */
+            align-items: center; /* 수직 중앙 정렬 */
+            margin: 0 auto; /* 여백을 사용해 수평 중앙 정렬 보장 */
+        }
+
+        /* 스크롤 문제 해결 */
+        html, body {
+            height: auto; /* 전체 페이지에 필요한 만큼의 높이 */
+            overflow-x: hidden; /* 가로 스크롤 방지 */
+            overflow-y: auto; /* 세로 스크롤 허용 */
+        }
+
+        .radio-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .radio-group label {
+            margin-right: 20px;
+            margin-bottom: 0; /* 수직 여백 제거 */
+        }
+
+        .radio-group input {
+            margin-right: 5px;
+        }
+
+        .btn-delete {
+            color: #e03e2d;
+        }
+
+        .btn-save {
+            color: #1e7e34;
+        }
+    </style>
 </head>
 <body>
+<div class="page-body" layout:fragment="main">
 
+    <section class="hero-wrap hero-wrap-2" data-stellar-background-ratio="0.5"
+             style="background-image: url('/images/bg_2.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-end">
+                <div class="col-md-9 ftco-animate pb-5">
+                    <p class="breadcrumbs mb-2"><span class="mr-2"><a href="../index.html">Home <i
+                            class="ion-ios-arrow-forward"></i></a></span> <span>MyPage <i
+                            class="ion-ios-arrow-forward"></i></span></p>
+                    <h1 class="mb-0 bread">MyPage</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ftco-section bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center mb-5">
+                    <h2 class="heading-section">돌봐주세요 게시글 수정</h2>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="wrapper">
+                        <div class="row mb-5 justify-content-center"> <!-- 중앙 정렬을 위해 추가 -->
+                            <div class="col-md-3">
+                                <div class="dbox w-100 text-center">
+                                    <div class="icon d-flex align-items-center justify-content-center">
+                                        <!-- Font Awesome 발바닥 아이콘 사용 -->
+                                        <i class="fas fa-paw"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 버튼 추가 영역 -->
+                        <div class="row mb-5 justify-content-center">
+                            <div class="col-md-3">
+                                <button class="btn btn-primary w-100" onclick="showSection('petProfileSection')">펫 프로필
+                                </button>
+                            </div>
+                        </div>
+                        <!-- 버튼 추가 영역 끝 -->
+                        <!-- 섹션 추가 영역 -->
+                        <div id="petProfileSection" style="display:none;">
+                            <h3>펫 프로필</h3>
+                            <form method="post" name="detailUpdateFrm">
+                                <input name="postId" type="hidden" value="{postId}">
+                                <div class="form-group">
+                                    <label for="petPhoto">펫 사진:</label>
+                                    <input class="form-control-file" id="petPhoto" type="file">
+                                </div>
+
+
+                                <p style="margin-right: 10px;"><label>펫 서비스 :</label><br>
+                                <div class="radio-group">
+
+                                    <label for="walkCare" style="margin-right: 20px;">산책돌봄
+                                        <input class="form-control-file" id="walkCare" name="requestService"
+                                               type="checkbox" value="산책돌봄">
+                                    </label>
+
+                                    <label for="visitCare" style="margin-right: 20px;">방문돌봄
+                                        <input class="form-control-file" id="visitCare" name="requestService"
+                                               type="checkbox" value="방문돌봄">
+                                    </label>
+
+                                    <label for="leavingCare" style="margin-right: 20px;">맡김돌봄
+                                        <input class="form-control-file" id="leavingCare" name="requestService"
+                                               type="checkbox" value="맡김돌봄">
+                                    </label>
+                                </div>
+
+                                <br><br><br>
+                                <div class="form-group">
+                                    <label for="address">주소 :</label>
+                                    <textarea class="form-control" id="address" name="address"
+                                              placeholder="수정하실 주소를 입력해주세요."
+                                              rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="requestStartDate">예약 신청 날짜:</label>
+                                    <input class="form-control" id="requestStartDate" name="requestStartDate"
+                                           type="date">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="requestEndDate">예약 종료 날짜:</label>
+                                    <input class="form-control" id="requestEndDate" name="requestEndDate" type="date">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="petWeight">강아지 무게:</label>
+                                    <select class="form-control" id="petWeight" name="petSize" required>
+                                        <option value="">== 몸무게 ==</option>
+                                        <option value="SMALL">소형견 (0~4.9kg)</option>
+                                        <option value="MEDIUM">중형견 (5~14.9kg)</option>
+                                        <option value="LARGE">대형견 (15kg 이상)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="character">사회성 및 당부사항:</label>
+                                    <textarea class="form-control" id="character" name="petSociability"
+                                              placeholder="수정하실 사회성 및 당부사항을 입력해주세요"
+                                              rows="3"></textarea>
+                                </div>
+                                <button class="btn btn-save" type="submit" value="수정">수정하기</button>
+                                <button class="btn btn-delete" type="submit" value="삭제" onclick="deleteDetail();">삭제하기</button>
+                            </form>
+
+                            <form method="post" name="detailDeleteFrm" th:action="@{/petsitterfinder/detailDelete}">
+                                <input type="hidden" name = "postId">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        const deleteDetail = () => {
+            confirm('정보 삭제 할텨?') && document.detailDeleteFrm.submit();
+        }
+
+
+    </script>
+    <script>
+        function showSection(sectionId) {
+            // 모든 섹션을 숨기기
+            document.getElementById('petProfileSection').style.display = 'none';
+            // 선택된 섹션만 보이기
+            var section = document.getElementById(sectionId);
+            section.style.display = 'block';
+            // 선택된 섹션으로 스크롤 이동
+            section.scrollIntoView({behavior: 'smooth'});
+        }
+    </script>
+
+
+    <!-- loader -->
+    <div class="show fullscreen" id="ftco-loader">
+        <svg class="circular" height="48px" width="48px">
+            <circle class="path-bg" cx="24" cy="24" fill="none" r="22" stroke="#eeeeee" stroke-width="4"/>
+            <circle class="path" cx="24" cy="24" fill="none" r="22" stroke="#F96D00" stroke-miterlimit="10"
+                    stroke-width="4"/>
+        </svg>
+    </div>
+</div>
 </body>
 </html>

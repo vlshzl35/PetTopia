@@ -120,6 +120,8 @@
         <p>기생충 예방 접종: <span th:text="${detail.petParasitePrevention}"></span></p>
         <p>예약 종료요청 날짜: <input type="date" th:value="${detail.startDate}" readonly></p>
         <p>예약 요청 날짜: <input type="date" th:value="${detail.endDate}" readonly></p>
+        <p>예약 서비스: <span th:text="${detail.requestService}"></span></p>
+
         <div class = "update-box">
             <button class = "btnForUpdate" th:if="${isWriter}" th:onclick="|location.href = '@{/petsitterfinder/detailupdate(postId=${detail.postId})}'|">수정</button>
         </div>
