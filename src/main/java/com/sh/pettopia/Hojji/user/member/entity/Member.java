@@ -2,6 +2,7 @@ package com.sh.pettopia.Hojji.user.member.entity;
 
 
 import com.sh.pettopia.Hojji.user.User;
+import com.sh.pettopia.mypage.dto.ProfileUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -45,4 +46,10 @@ public class Member extends User {
     @Column(name = "sitter_status")
     private SitterStatus sitterStatus;
 
+    public void profileUpdate(ProfileUpdateRequestDto dto) {
+        this.address = dto.getAddress();
+        this.setPhone(dto.getPhone());
+        this.nickName = dto.getNickName();
+
+    }
 }
