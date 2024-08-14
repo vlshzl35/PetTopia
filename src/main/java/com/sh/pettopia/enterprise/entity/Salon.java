@@ -22,5 +22,3 @@ public class Salon extends Enterprise {
         super(entId, entName, entPhone, entAddress, officeHours, entUrl, introduction);
     }
 }
-
-

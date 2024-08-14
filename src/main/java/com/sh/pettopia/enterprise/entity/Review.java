@@ -23,7 +23,7 @@ public class Review {
     private Long reviewId; // 리뷰 id(pk)
     private Long entId; // 업체 id(fk)
     private Long memberId; // 리뷰를 작성한 회원 id(fk)
-//    @Enumerated(EnumType.STRING) // Rating은 enum타입
+    //    @Enumerated(EnumType.STRING) // Rating은 enum타입
 //    private Rating rating; // 별점
     private double rating; // 별점
     private String reviewContent; // 작성한 내용
