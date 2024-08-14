@@ -19,6 +19,7 @@
             section.scrollIntoView({ behavior: 'smooth' });
         }
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 <div layout:fragment="main" class="page-body">
@@ -42,55 +43,12 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-6 text-center mb-5">
-                    <h2 class="heading-section">마이페이지</h2>
+                    <h2 class="heading-section" th:text="${member.name} + ' 회원님'"></h2>
                 </div>
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="wrapper">
-                        <div class="row mb-5">
-                            <div class="col-md-3">
-                                <div class="dbox w-100 text-center">
-                                    <div class="icon d-flex align-items-center justify-content-center">
-                                        <span class="fa fa-map-marker"></span>
-                                    </div>
-                                    <div class="text">
-                                        <p><span>주소:</span> 서울특별시 동작구 대방동 500-1</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="dbox w-100 text-center">
-                                    <div class="icon d-flex align-items-center justify-content-center">
-                                        <span class="fa fa-phone"></span>
-                                    </div>
-                                    <div class="text">
-                                        <p><span>연락처:</span> <a href="tel://1234567920">010 8973 9943</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="dbox w-100 text-center">
-                                    <div class="icon d-flex align-items-center justify-content-center">
-                                        <span class="fa fa-paper-plane"></span>
-                                    </div>
-                                    <div class="text">
-                                        <p><span>이메일:</span> <a href="mailto:info@yoursite.com">shqkel@gmail.com</a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="dbox w-100 text-center">
-                                    <div class="icon d-flex align-items-center justify-content-center">
-                                        <span class="fa fa-venus-mars"></span>
-                                    </div>
-                                    <div class="text">
-                                        <p><span>성별:</span> <a href="#">남</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <!-- 버튼 추가 영역 -->
                         <div class="row mb-5 justify-content-center">
                             <div class="col-md-3">
@@ -110,69 +68,96 @@
                         <!-- 섹션 추가 영역 -->
                         <div id="editProfileSection" style="display:none;">
                             <h3>회원정보 수정</h3>
-                            <form>
+                            <form id="profileUpdateForm" method="post">
+                                <!-- 사용자에게 보이지 않는 ID를 저장하는 숨겨진 필드 -->
+                                <input type="hidden" name="id" th:value="${member.id}">
+<!--                                <div class="form-group">-->
+<!--                                    <label for="email">이메일:</label>-->
+<!--                                    <input type="email" class="form-control" id="email" th:value="${member.email}" readonly>-->
+<!--                                </div>-->
                                 <div class="form-group">
-                                    <label for="address">주소:</label>
-                                    <input type="text" class="form-control" id="address" placeholder="주소를 입력하세요">
+                                    <label>주소:</label>
+                                    <input type="text" class="form-control" name="address" th:value="${member.address}" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="phone">연락처:</label>
-                                    <input type="text" class="form-control" id="phone" placeholder="연락처를 입력하세요">
+                                    <label>연락처:</label>
+                                    <input type="text" class="form-control" name="phone" th:value="${member.phone}" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="email">이메일:</label>
-                                    <input type="email" class="form-control" id="email" placeholder="이메일을 입력하세요">
-                                </div>
-                                <div class="form-group">
-                                    <label for="birthday">생년월일:</label>
-                                    <input type="date" class="form-control" id="birthday" placeholder="생년월일을 입력하세요">
-                                </div>
-                                <div class="form-group">
-                                    <label for="gender">성별:</label>
-                                    <select class="form-control" id="gender">
-                                        <option>남</option>
-                                        <option>여</option>
-                                    </select>
+                                    <label>닉네임:</label>
+                                    <input type="text" class="form-control" name="nickName" th:value="${member.nickName}" required>
                                 </div>
                                 <button type="submit" class="btn btn-primary">수정하기</button>
                             </form>
                         </div>
+
                         <div id="petProfileSection" style="display:none;">
                             <h3>펫 프로필</h3>
-                            <form>
-                                <div class="form-group">
-                                    <label for="petPhoto">펫 사진:</label>
-                                    <input type="file" class="form-control-file" id="petPhoto">
-                                </div>
-                                <div class="form-group">
-                                    <label for="petName">펫 이름:</label>
-                                    <input type="text" class="form-control" id="petName" placeholder="펫 이름을 입력하세요">
-                                </div>
-                                <div class="form-group">
-                                    <label for="species">종:</label>
-                                    <input type="text" class="form-control" id="species" placeholder="종을 입력하세요">
-                                </div>
-                                <div class="form-group">
-                                    <label for="petGender">성별:</label>
-                                    <select class="form-control" id="petGender">
-                                        <option>남</option>
-                                        <option>여</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="petBirthday">생일:</label>
-                                    <input type="date" class="form-control" id="petBirthday">
-                                </div>
-                                <div class="form-group">
-                                    <label for="weight">몸무게:</label>
-                                    <input type="number" class="form-control" id="weight" placeholder="몸무게를 입력하세요">
-                                </div>
-                                <div class="form-group">
-                                    <label for="character">성향:</label>
-                                    <textarea class="form-control" id="character" rows="3" placeholder="성향을 입력하세요"></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary">저장하기</button>
-                            </form>
+<!--                            <form>-->
+<!--                                <div class="form-group">-->
+<!--                                    <label for="petPhoto">펫 사진:</label>-->
+<!--                                    <input type="file" class="form-control-file" id="petPhoto">-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <label for="petName">펫 이름:</label>-->
+<!--                                    <input type="text" class="form-control" id="petName" placeholder="펫 이름을 입력하세요">-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <label for="species">종:</label>-->
+<!--                                    <input type="text" class="form-control" id="species" placeholder="종을 입력하세요">-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <label for="petGender">성별:</label>-->
+<!--                                    <select class="form-control" id="petGender">-->
+<!--                                        <option>남</option>-->
+<!--                                        <option>여</option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <label for="petBirthday">생일:</label>-->
+<!--                                    <input type="date" class="form-control" id="petBirthday">-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <label for="weight">몸무게:</label>-->
+<!--                                    <input type="number" class="form-control" id="weight" placeholder="몸무게를 입력하세요">-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <label for="character">성향:</label>-->
+<!--                                    <textarea class="form-control" id="character" rows="3" placeholder="성향을 입력하세요"></textarea>-->
+<!--                                </div>-->
+<!--                                <button type="submit" class="btn btn-primary">저장하기</button>-->
+<!--                            </form>-->
+                            <div>
+                                <h4>등록된 펫</h4>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">번호</th>
+                                        <th scope="col">이름</th>
+                                        <th scope="col">성별</th>
+                                        <th scope="col">품종</th>
+                                        <th scope="col">나이</th>
+                                        <th scope="col">중성화</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>절망이</td>
+                                        <td>남자아이</td>
+                                        <td>푸들</td>
+                                        <td>10</td>
+                                        <td>했어요</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <a th:href="@{/pet/registPet}">
+                                    <button class="btn btn-primary btn-lg" style="background-color: #28a745; border: none; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
+                                        추가 등록하기
+                                    </button>
+                                </a>
+
+                            </div>
                         </div>
                         <div id="usageHistorySection" style="display:none;">
                             <h3>이용내역</h3>
