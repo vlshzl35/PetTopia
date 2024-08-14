@@ -7,11 +7,46 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>펫시터의 이름</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.mobiscroll.com/4.10.4/css/mobiscroll.min.css">
+    <script src="https://cdn.mobiscroll.com/4.10.4/js/mobiscroll.jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!--    flatdatepicker-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
     <style>
+        .selectTime {
+            width: 375px;
+            border-radius: 8px;
+            border: 1px solid #DFE3EA;
+            box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.07);
+            padding-left: 32px;
+            padding-right: 32px;
+            padding-bottom: 32px;
+        }
+
+        .selectPet {
+
+        }
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button{
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            width: 3em;
+        }
+
+        .totalPrice {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
         img {
-            width: 120px;
-            height: 50px;
+            width: 150px;
+            height: 60px;
             margin: 3%;
         }
 
@@ -19,6 +54,36 @@
             width: 150px;
             height: 70px;
             margin: 3%;
+        }
+
+        textarea {
+            width: 100%;
+            height: 7em;
+            border: 1px solid black;
+            resize: none;
+        }
+
+        .serviceList {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row
+        }
+
+        .serviceList > .service {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 200px;
+            height: 69px;
+        }
+
+        p {
+            font-size: 14px;
+            letter-spacing: -0.2px;
+            line-height: 20px;
+            color: #393C47;
+            margin-top: 38px
+
         }
     </style>
 </head>
@@ -31,7 +96,8 @@
         <div class="container">
             <div class="row no-gutters slider-text align-items-end">
                 <div class="col-md-9 ftco-animate pb-5">
-                    <p class="breadcrumbs mb-2"><span class="mr-2"><a th:href="@{/}">Home
+                    <p class="breadcrumbs mb-2"><span class="mr-2">
+                        <a th:href="@{/}">Home
                         <i class="ion-ios-arrow-forward"></i></a></span>
                         <span>펫시터
 							<i class="ion-ios-arrow-forward"></i>
@@ -42,15 +108,14 @@
             </div>
         </div>
     </section>
-    <div class="container" th:object="${profile}">
+    <div class="container" th:object="${dto}">
         <div style="display: flex;">
             <div style="padding-right: 30px">
                 <h2>여기는 포트폴리오를 작성하는 공간입니다</h2>
                 <div style="display: flex">
-                    <h4>여기는 사용자의 사진이나 반려동물의 사진이 들어옵니다</h4>
-                    <h4 th:text="${profile.memberId}">여기는 사용자의 이름이 들어옵니다</h4>
+                    <h4 th:text="${dto.getPetSitterId}" name="petSitterId">여기는 사용자의 이름이 들어옵니다</h4>
                     <div style="overflow:scroll; width:500px; height:350px;">
-                        <div th:each="images,stat: ${profileImg}">
+                        <div th:each="images,stat: ${dto.imageUrlList}">
                             <img th:src="${images}" alt="" style="height: 400px; width: 350px">
                         </div>
                     </div>
@@ -61,45 +126,48 @@
                         <img th:src="@{/images/License.PNG}" alt="증명서">
                     </div>
                     <div>
-                        <h4>여기는 펫시터가 가능한 기능들을 보여줍니다 아마 이것도 db로 관리해야 될 거 같습니다</h4>
-                        <div class="container" >
-                            <div style="border: 1px solid black" class="col-md-6 col-lg-3 ftco-animate">
-                                <div class="container">
-                                    <div th:if="${petService.contains('everydayWalk')}">
-                                        <img th:src="@{/images/availableService/everydaywalk.PNG}" alt="everydayWalk">
-                                    </div>
-                                    <div th:if="${petService.contains('olderPetWalk')}">
-                                        <img th:src="@{/images/availableService/oldpetwalk.PNG}" alt="노견산책">
-                                    </div>
+                        <p>소개 글</p>
+                        <p th:text="${dto.getMainIntroduce}"></p>
+                    </div>
+                    <div>
+                        <div class="serviceList">
 
-                                    <div th:if="${petService.contains('youngerPetWalk')}">
-                                        <img th:src="@{/images/availableService/youngerpetwalk.PNG}" alt="어린견산책">
-                                    </div>
-                                </div>
-                                <div class="container">
-                                    <div th:if="${petService.contains('play')}">
-                                        <img th:src="@{/images/availableService/play.PNG}" alt="실내놀이">
-                                    </div>
-                                    <div th:if="${petService.contains('firstAid')}">
-                                        <img th:src="@{/images/availableService/firstaid.PNG}" alt="응급처리">
-                                    </div>
-                                    <div th:if="${petService.contains('walkPickup')}">
-                                        <img th:src="@{/images/availableService/pickup.PNG}" alt="도보픽업">
-                                    </div>
-                                </div>
-                                <div class="container">
-                                    <div th:if="${petService.contains('brush')}">
-                                        <img th:src="@{/images/availableService/brush.PNG}" alt="모발관리">
-                                    </div>
-                                    <div th:if="${petService.contains('medicine')}">
-                                        <img th:src="@{/images/availableService/medicine.PNG}" alt="약먹이기">
-                                    </div>
-                                    <div th:if="${petService.contains('longReservation')}">
-                                        <img th:src="@{/images/availableService/longreservation.PNG}" alt="장기예약">
-                                    </div>
-                                </div>
-
+                            <div th:if="${petService.contains('everydayWalk')}" class="service">
+                                <img th:src="@{/images/availableService/everydaywalk.PNG}" alt="everydayWalk">
                             </div>
+
+                            <div th:if="${petService.contains('olderPetWalk')}" class="service">
+                                <img th:src="@{/images/availableService/oldpetwalk.PNG}" alt="노견산책">
+                            </div>
+
+                            <div th:if="${petService.contains('youngerPetWalk')}" class="service">
+                                <img th:src="@{/images/availableService/youngerpetwalk.PNG}" alt="어린견산책">
+                            </div>
+
+                            <div th:if="${petService.contains('play')}" class="service">
+                                <img th:src="@{/images/availableService/play.PNG}" alt="실내놀이">
+                            </div>
+
+                            <div th:if="${petService.contains('firstAid')}" class="service">
+                                <img th:src="@{/images/availableService/firstaid.PNG}" alt="응급처리">
+                            </div>
+
+                            <div th:if="${petService.contains('walkPickup')}">
+                                <img th:src="@{/images/availableService/pickup.PNG}" alt="도보픽업">
+                            </div>
+
+                            <div th:if="${petService.contains('brush')}" class="service">
+                                <img th:src="@{/images/availableService/brush.PNG}" alt="모발관리">
+                            </div>
+
+                            <div th:if="${petService.contains('medicine')}" class="service">
+                                <img th:src="@{/images/availableService/medicine.PNG}" alt="약먹이기">
+                            </div>
+
+                            <div th:if="${petService.contains('longReservation')}" class="service">
+                                <img th:src="@{/images/availableService/longreservation.PNG}" alt="장기예약">
+                            </div>
+
 
                         </div>
                     </div>
@@ -112,47 +180,91 @@
             </div>
 
             <div style="padding: 5px">
-                <h2>여기는 예약하기 위한 공간입니다</h2>
                 <div style="padding: 5px">
-                    <p>여기는 예약하기 위한 날짜가 들어옵니다</p>
                     <div>
-                        <div style="border: #0b0b0b 1px solid; margin: 10px;" class="align-content-end">
-                            <form action="">
-                                <div class="bo_w_tit write_div">
-                                    <div><span>언제 시터가 필요하신가요??</span></div>
-                                    <input style="align-content: flex-end" type="text" name="wr_2" value="" id="wr_2"
-                                           required class="frm_input full_input required datepicker" placeholder="시작날짜"
-                                           readonly>
-                                    <input type="text" name="wr_3" value="" id="wr_3" required
-                                           class="frm_input full_input required datepicker" placeholder="종료 날짜"
-                                           readonly>
-                                    <div class="" style="border: 1px solid black; display: block;" id="availablePetSize">
-                                        <div th:if="${petSize.contains('smallPet')}">
-                                            <img th:src="@{/images/availablePetSize/smallpet.PNG}" alt="소형견">
-                                        </div>
-                                        <div th:if="${petSize.contains('middlePet')}">
-                                            <img th:src="@{/images/availablePetSize/middlepet.PNG}" alt="중형견">
-                                        </div>
-                                        <div th:if="${petSize.contains('largePet')}">
-                                            <img th:src="@{/images/availablePetSize/largepet.PNG}" alt="대형견">
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </form>
-                            <div>
-                                <button id="btn-kakao">예약 요청</button>
-                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-                            </div>
-                        </div>
-                        <div>
-                            <p>가능한 애견</p>
-                            <img th:src="@{/images/pay.PNG}" alt="요금">
-                        </div>
                         <div>
                             <p>가능한 날짜</p>
-                            <img th:src="@{/images/possibledate.PNG}" alt="">
                         </div>
+                        <div style="margin: 10px;" class="align-content-end">
+                            <form th:action="@{/petsitter/reservation}" method="post">
+                                <label for="petSitterId" hidden="hidden">
+                                    <input type="text" name="petSitterId" id="petSitterId"
+                                           th:value="${dto.getPetSitterId}">
+                                </label>
+                                <div class="bo_w_tit write_div">
+                                    <div class="selectTime">
+                                        <div><p>언제 시터가 필요하신가요??</p></div>
+                                        <div style="margin-top:20px;">
+                                            <p>예약날짜 : </p>
+                                            <label for="impossibleDays">
+                                            <input type="text" th:value="${dto.impossibleDays}" id="impossibleDays" name="reservationDays" required/>
+                                        </label>
+                                            <label for="startTime">시작 시간 : </label>
+                                            <input id="startTime" type="time" name="startTime" value="" placeholder="시간 선택" required/>
+                                            <label for="endTime"></label>
+                                            <p>종료 시간 : </p><input type="time" name="endTime" id="endTime" placeholder="시간 선택" required>
+                                        </div>
+                                        <div>
+                                            <label for="note"></label>
+                                            <input type="text" name="note" id="note" placeholder="기타사항을 작성해주세요"
+                                                   style="width: 100%">
+                                        </div>
+                                    </div>
+                                    <p>가능한 애견</p>
+                                    <div class="selectTime" style=" display: inline-block;"
+                                         id="availablePetSize">
+
+                                        <div th:if="${petSize.contains('smallPet')}" class="petSize"
+                                             style="display: inline">
+                                            <img th:src="@{/images/availablePetSize/smallpet.PNG}" alt="소형견">
+                                            <label>
+                                                <input name="petSizeAndHowManyPets[0].petSize" value="소형견"
+                                                       hidden="hidden">
+                                            </label>
+                                            <label>
+                                                <input type="number" name="petSizeAndHowManyPets[0].howMayPet" min="0">
+                                            </label>
+                                        </div>
+
+                                        <div th:if="${petSize.contains('middlePet')}" class="petSize"
+                                             style="display: inline">
+                                            <img th:src="@{/images/availablePetSize/middlepet.PNG}" alt="중형견">
+                                            <label>
+                                                <input name="petSizeAndHowManyPets[1].petSize" value="중형견"
+                                                       hidden="hidden"/>
+                                            </label>
+                                            <label>
+                                                <input type="number" name="petSizeAndHowManyPets[1].howMayPet" min="0"/>
+                                            </label>
+
+                                        </div>
+
+                                        <div th:if="${petSize.contains('largePet')}" class="petSize"
+                                             style="display: inline">
+                                            <img th:src="@{/images/availablePetSize/largepet.PNG}" alt="대형견">
+                                            <label>
+                                                <input name="petSizeAndHowManyPets[2].petSize" value="대형견"
+                                                       hidden="hidden">
+                                            </label>
+                                            <label>
+                                                <input type="number" name="petSizeAndHowManyPets[2].howMayPet" min="0">
+                                            </label>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <button type="submit">예약 시작</button>
+                            </form>
+                            <div>
+
+
+                                <!--                                <button id="btn-kakao">예약 요청</button>-->
+                                <!--                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>-->
+                            </div>
+                        </div>
+
 
                     </div>
                 </div>
@@ -160,28 +272,62 @@
         </div>
     </div>
     <script>
-            $("#btn-kakao").click(function() {
-                $.ajax({
-                    url: '/pay/ready',
-                    type: 'get',
-                    data: {
-                        item_name: '대형견',
-                        quantity: "1",
-                        total_amount: "70000",
-                        tax_free_amount: "0",
-                    },
-                    success: function(response) {
-                        console.log("결제완료 페이지입니다");
-                        alert(response.next_redirect_pc_url); //kakao payment api에서 알아서 응답해주는 url
-                        location.href  = response.next_redirect_pc_url; // 결제 페이지
-                    },
-                    error: function(xhr, err, status) {
-                        console.log(xhr.responseText);
-                        alert(err + "이(가) 발생했습니다: " + status);
-                    }
-                });
+        $("#btn-kakao").click(function () {
+            $.ajax({
+                url: '/pay/ready',
+                type: 'get',
+                data: {
+                    item_name: '대형견',
+                    quantity: "1",
+                    total_amount: "70000",
+                    tax_free_amount: "0",
+                },
+                success: function (response) {
+                    console.log("결제완료 페이지입니다");
+                    alert(response.next_redirect_pc_url); //kakao payment api에서 알아서 응답해주는 url
+                    location.href = response.next_redirect_pc_url; // 결제 페이지
+                },
+                error: function (xhr, err, status) {
+                    console.log(xhr.responseText);
+                    alert(err + "이(가) 발생했습니다: " + status);
+                }
             });
+        });
     </script>
+    <script th:inline="javascript">
+
+        const impossibleDays = document.getElementById('impossibleDays');
+
+        var dates = [[${dto.impossibleDays}]];
+
+        flatpickr(impossibleDays, {
+            dateFormat: "Y-m-d", // 날짜 및 시간 형식 설정 (예: 2023-09-12 15:30)
+            enableTime: false,        // 시간 선택 활성화
+            time_24hr: false,         // 24시간 형식 사용
+            minDate: 'today',        // 오늘 이전 날짜 선택 비활성화
+            maxDate: new Date().fp_incr(92), // 14 days from now
+            // defaultDate: 'today',    // 초기 날짜 설정 (현재 날짜와 시간)
+            inline: true, // 상시 출력
+            clickOpens: true, // 클릭으로 달력 출력
+            mode: "multiple", // 여러날 선택
+            disable: dates, // 특정 날짜 비활성화
+            locale: 'ko',            // 한국어로 지역화
+            onOpen: function (selectedDates, dateStr, instance) {
+                // 위젯이 열릴 때 실행할 코드
+            },
+            onClose: function (selectedDates, dateStr, instance) {
+                // 위젯이 닫힐 때 실행할 코드
+            },
+            onChange: function (selectedDates, dateStr, instance) {
+                // 날짜가 변경될 때 실행할 코드
+            },
+            disableMobile: true,      // 모바일 기기에서 위젯 비활성화
+            altInput: true,           // 추가 입력란 활성화
+            // altFormat: 'F j, Y H:i', // 추가 입력란의 날짜 및 시간 형식
+        });
+    </script>
+    <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 </main>
 </body>
 </html>

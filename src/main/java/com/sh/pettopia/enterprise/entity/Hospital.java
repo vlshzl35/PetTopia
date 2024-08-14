@@ -18,9 +18,7 @@ import java.util.List;
 @ToString
 public class Hospital extends Enterprise {
     // 고유 pk없음
-
-
-    public Hospital(Long entId, String entName, String entPhone, String entAddress, String officeHours) {
-        super(entId, entName, entPhone, entAddress, officeHours);
+    public Hospital(Long entId, String entName, String entPhone, String entAddress, String officeHours, String entUrl, String introduction) {
+        super(entId, entName, entPhone, entAddress, officeHours, entUrl, introduction);
     }
 }

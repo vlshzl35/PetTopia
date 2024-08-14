@@ -5,7 +5,9 @@ import com.sh.pettopia.Hojji.pet.dto.PetRegistResponseDto;
 import com.sh.pettopia.Hojji.pet.entity.Pet;
 import com.sh.pettopia.Hojji.pet.repository.PetRepository;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
+import com.sh.pettopia.parktj.petsitterfinder.dto.CareRegistrationListResponseDto;
 import com.sh.pettopia.parktj.petsitterfinder.dto.PetDetailsResponseDto;
+import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +22,15 @@ import java.util.List;
 public class PetService {
     private final PetRepository petRepository;
 
-//    08/07 박태준 추가
-    public List<PetDetailsResponseDto> findAll(){
-        return petRepository.findAll().stream()
-                .map(PetDetailsResponseDto::PetDetailFromPet)
-                .toList();
+    //    08/07 박태준 추가
+    // 08/13 오류나서 봤더니 memberId 당 한마리의 펫만 가질 수 있도록되있어서
+    // List<Pet> 으로 수정하였음
+    public List<PetDetailsResponseDto> findAllByMemberId(Long memberId){
+       List<Pet> pets  = petRepository.findAllByMemberId(memberId);
+       return pets.stream().map(PetDetailsResponseDto::PetDetailFromPet).toList();
     }
+
+
     // 8/08 박태준 추가
     public PetDetailsResponseDto findByPetId(Long petId) {
         return PetDetailsResponseDto.PetDetailFromPet(petRepository.findByPetId(petId));

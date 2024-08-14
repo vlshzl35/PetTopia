@@ -16,9 +16,10 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class Pharmacy extends Enterprise {
-    // 고유 pk없음
+    private String drugInfo; // 판매하는 동물약품 정보
 
-    public Pharmacy(Long entId, String entName, String entPhone, String entAddress, String officeHours) {
-        super(entId, entName, entPhone, entAddress, officeHours);
+    public Pharmacy(Long entId, String entName, String entPhone, String entAddress, String officeHours, String entUrl, String introduction, String drugInfo) {
+        super(entId, entName, entPhone, entAddress, officeHours, entUrl, introduction);
+        this.drugInfo = drugInfo;
     }
 }
