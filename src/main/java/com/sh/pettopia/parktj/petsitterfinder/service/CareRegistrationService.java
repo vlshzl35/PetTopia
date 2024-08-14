@@ -1,5 +1,6 @@
 package com.sh.pettopia.parktj.petsitterfinder.service;
 
+import com.sh.pettopia.parktj.petsitterfinder.dto.CareRegistrationDetailResponseDto;
 import com.sh.pettopia.parktj.petsitterfinder.dto.CareRegistrationListResponseDto;
 import com.sh.pettopia.parktj.petsitterfinder.dto.PetDetailsRegistRequestDto;
 import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;
@@ -47,4 +48,12 @@ public class CareRegistrationService {
         List<CareRegistration> careRegistration = registrationRepository.findAllByOrderByPostIdDesc();
         return careRegistration.stream().map(CareRegistrationListResponseDto::fromCareRegistration).toList();
     }
+
+    public CareRegistrationDetailResponseDto findAllByPostId(Long postId) {
+        return CareRegistrationDetailResponseDto.toCareRegistrationDetailDto(registrationRepository.findAllByPostId(postId));
+    }
+
+//    public void updateByPostIdAndMemberId(Long postId, Long id) {
+//        registrationRepository.updateByPostIdAndMemberId(postId, id);
+//    }
 }

@@ -3,6 +3,7 @@ package com.sh.pettopia.ncpTest;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j // 홍지민 추가 - 로그 찍어보려고 추가했습니다.
 public class FileService {
 
     private final AmazonS3Client amazonS3Client;
@@ -105,17 +107,18 @@ public class FileService {
         return files;
     }
 
-    public List<FileDto> sitterUpFile(List<MultipartFile> multipartFiles,String sitterEmail){
+    public List<FileDto> sitterUpFile(List<MultipartFile> multipartFiles,String petSitterEmail,String directory){
 
-        String filePath="member/"+sitterEmail;
+        String filePath="petsitter/"+petSitterEmail+"/"+directory;
         System.out.println(filePath);
-        return uploadFiles(multipartFiles,filePath );  // ncp 버킷에 filePath 경로의 디렉토리에 올라감(없으면 생성함)
+        return uploadFiles(multipartFiles,filePath);  // ncp 버킷에 filePath 경로의 디렉토리에 올라감(없으면 생성함)
 
     }
 
     // NCP 해당 폴더에 올라온 파일 모두 불러오기
-    public List<FileDto> sitterImage(String filePath) {
-        String path="member/"+filePath+"/";
+    public List<FileDto> sitterDownImg(String petSitterEmail,String directory) {
+        String path="petsitter/"+petSitterEmail+"/"+directory+"/";
+        System.out.println("service path = " + path);
         List<FileDto> files = new ArrayList<>();
         ListObjectsV2Request req = new ListObjectsV2Request().withBucketName(bucketName).withPrefix(path);
         ListObjectsV2Result result;
@@ -138,5 +141,20 @@ public class FileService {
         } while (result.isTruncated());
 
         return files;
+    }
+
+
+    // 홍지민 - 펫 프로필 사진 업로드하는 메소드입니다.
+    public List<FileDto> petProfileUpload(List<MultipartFile> files, String petName) {
+        String filePath = "pet/" + petName;
+        log.debug(filePath);
+        return uploadFiles(files, filePath);
+    }
+
+    // 홍지민 - 회원 사진 업로드 하는 메소드입니다.
+    public List<FileDto> memberProfileUpload(List<MultipartFile> files, String memberName) {
+        String filePath = "member/" + memberName;
+        log.debug(filePath);
+        return uploadFiles(files, filePath);
     }
 }

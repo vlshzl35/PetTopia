@@ -30,9 +30,9 @@ public class PharmacyController {
         log.debug("pharmacyDetail: {}", pharmacyDetail);
         model.addAttribute("enterpriseDetail", pharmacyDetail); // html에게 salonDetail정보를 주기
 
-        List<ReviewResponseDto> reviews =  reviewService.findByEntId(entId); // 리뷰 데이터
+        List<ReviewResponseDto> reviews = reviewService.findByEntId(entId); // 리뷰 데이터
         log.debug("reviews = {}", reviews);
-        model.addAttribute( "reviews", reviews);
+        model.addAttribute("reviews", reviews);
 
         return "enterprise/detail";
     }
