@@ -51,6 +51,7 @@ public class CareRegistrationDetailResponseDto {
                 .petGender(careRegistration.getPetGender())
                 .postId(careRegistration.getPostId())
                 .memberId(careRegistration.getMemberId())
+                .requestService(careRegistration.getRequestService())
                 .build();
     }
 }

@@ -1,6 +1,7 @@
 package com.sh.pettopia.parktj.petsitterfinder.entity;
 
 import com.sh.pettopia.Hojji.pet.entity.*;
+import com.sh.pettopia.parktj.petsitterfinder.dto.PetDetailsUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,29 +23,14 @@ public class CareRegistration {
     @Column(name = "post_id")
     private Long postId;
 
-    // jpql을 사용하여 pet의 정보를 가져오기 위해 petId 갖고있음
-    //JPQL에서는 엔티티 이름을 사용합니다.
-    // 객체지향적이고 JPA의 강점을 살리는 방식은 엔티티 간의 관계를 설정하여 Pet 엔티티 간의 직접적인 연관을 맺으라는데
-
-    // 지연로딩, 관련 데이터를 필요할 때까지 미뤄서 가져옴
-    // 즉시로딩(EAGER): 설정된 연관관계는 엔티티가 로드될 때 즉시 관련 데이터를 함께 로딩함.
-
-    /**
-     * 08/10 @ElementCollection ?
-     * - JPA에서 엔티티 클래스의 속성이 기본 값 타입이 컬렉션일 때 사용되는 어노테이션
-     * - 엔티티가 아닌 기본 값 타입의 컬렉션을 매핑할 때 사용함
-     * - 엔티티가 복합 값 타입(내부적으로 여러 필드를 가지는 객체)을 포함하는 컬렉션을 갖고 있을 때 사용
-     * - 복합 값 타입은 일반적으로 @Embeddable로 표시해야하며, @ElementCollection과 함께 사용함
-     */
-
     @Column(name ="pet_id", nullable = false)
     private Long petId;
 //
     @Column(name = "member_id", nullable = true)
     private Long memberId;
-    
+
     // @CreationTimestamp - 엔티티가 생성되어 데이터베이스에 처음 저장될 때 현재 시간을 자동으로 해당 필드에 할당
-    // 데이터베이스에 엔티티가 처음 저장될 때 한 번만 값이 설정되어야하므로  "updatable = false" 적용, 출처: gpt
+    // 데이터베이스에 엔티티가 처음 저장될 때 한 번만 값이 설정되어야하므로  "updatable = false" 적용
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDate createdDate;
@@ -55,9 +41,15 @@ public class CareRegistration {
     private LocalDate updatedDate;
 
     // 사용자가 요청하는 서비스, 요청 날짜 이기 때문에, request% 로 통일 하였습니다.
-    @Column(name = "request_service", nullable = false)
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "tbl_request_service", joinColumns = @JoinColumn(name = "postId"))
+    /**
+     * @ElementCollection : 기본 값 타입을 갖는 컬렉션을 매핑할 때 사용되는 JPA 어노테이션
+     * - 값 타입은 엔티티가 아닌 타입을 의미함. 기본적으로 int, String , 열거형
+     * @CollectionTable : 컬렉션이 매핑될 데이터베이스 테이블의 세부사항을 지정함
+     * - name 속성은 컬렉션이 저장될 테이블 이름을 지정
+     * - joinColums 속성은 컬렉션이 소유 엔티티와 연결될 떄 조인되는 조인 컬럼을 지정 여기서는 postId컬럼
+     */
+    @ElementCollection
+    @CollectionTable(name = "tbl_request_service", joinColumns = @JoinColumn(name = "post_id"))
     @Enumerated(EnumType.STRING)
     private Set<RequestService> requestService;
 
@@ -110,8 +102,14 @@ public class CareRegistration {
     @Column(name = "member_address", nullable = false)
     private String address;
 
-/**
- * 08-11 박태준
- * pet_parasite_prevention 이랑 tbl_pet_vaccination은 pet 정보 등록할때랑 다른 테이블에 만들어놔야할듯
- */
+
+
+    public void update(PetDetailsUpdateRequestDto dto){
+                this.postId = dto.getPostId();
+                this.address = dto.getAddress();
+                this.requestStartDate = dto.getRequestStartDate();
+                this.requestEndDate = dto.getRequestEndDate();
+                this.requestService = dto.getRequestService();
+    }
+
 }

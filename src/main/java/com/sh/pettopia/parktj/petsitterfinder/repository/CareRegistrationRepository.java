@@ -15,5 +15,7 @@ public interface CareRegistrationRepository extends JpaRepository<CareRegistrati
 
     CareRegistration findAllByPostId(Long postId);
 
+    void deleteByPostId(Long postId);
+
 //    void updateByPostIdAndMemberId(Long postId, Long memberId);
 }
