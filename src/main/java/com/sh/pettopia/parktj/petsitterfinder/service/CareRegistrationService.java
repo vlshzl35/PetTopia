@@ -3,6 +3,7 @@ package com.sh.pettopia.parktj.petsitterfinder.service;
 import com.sh.pettopia.parktj.petsitterfinder.dto.CareRegistrationDetailResponseDto;
 import com.sh.pettopia.parktj.petsitterfinder.dto.CareRegistrationListResponseDto;
 import com.sh.pettopia.parktj.petsitterfinder.dto.PetDetailsRegistRequestDto;
+import com.sh.pettopia.parktj.petsitterfinder.dto.PetDetailsUpdateRequestDto;
 import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;
 import com.sh.pettopia.parktj.petsitterfinder.repository.CareRegistrationRepository;
 import jakarta.transaction.Transactional;
@@ -20,16 +21,17 @@ public class CareRegistrationService {
     public void regist(PetDetailsRegistRequestDto registRequestDto) {
         // dto를 CareRegistration 엔티티로 전환해주고 그 값을 DB에 넣는 코드
         CareRegistration careRegistration = registRequestDto.toCareRegistration();
-        /**
-         * 08/10 오후 4시 50분, registrationRepository가 null이라는 오류가 발생함
-         *
-         * 원인?
-         * - @Autowired 어노테이션 사용하지 않아서 의존성 주입을 해주지 못했음
-         *
-         */
         registrationRepository.save(careRegistration);
 
     }
+
+    /**
+     * 08/10 오후 4시 50분, registrationRepository가 null이라는 오류가 발생함
+     *
+     * 원인?
+     * - @Autowired 어노테이션 사용하지 않아서 의존성 주입을 해주지 못했음
+     *
+     */
 
     /**
      * Stream
@@ -56,4 +58,22 @@ public class CareRegistrationService {
 //    public void updateByPostIdAndMemberId(Long postId, Long id) {
 //        registrationRepository.updateByPostIdAndMemberId(postId, id);
 //    }
+
+    public CareRegistrationDetailResponseDto findByPostId(Long postId) {
+         return CareRegistrationDetailResponseDto.toCareRegistrationDetailDto(registrationRepository.findAllByPostId(postId));
+    }
+
+    public void update(PetDetailsUpdateRequestDto dto) {
+        //정보 조회
+        CareRegistration careRegistration = registrationRepository.findAllByPostId(dto.getPostId());
+        careRegistration.update(dto);
+
+
+
+
+    }
+
+    public void deleteByPostId(Long postId) {
+        registrationRepository.deleteByPostId(postId);
+    }
 }
