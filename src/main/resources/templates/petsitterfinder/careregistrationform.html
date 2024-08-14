@@ -205,21 +205,11 @@
 
                 -->
                 <script>
-                    /**
-                     *  08/08 3시20분 400 bad request 발생
-                     *  400 오류?
-                     *   The 400 (Bad Request) status code indicates that the server cannot or
-                     *    will not process the request because the received syntax is invalid,
-                     *    nonsensical, or exceeds some limitation on what the server is willing
-                     *    to process.
-                     *    -> 문법오류라는 듯?
-                     */
                     document.getElementById('petSelect').addEventListener('change', function () {
                         var petId = this.value;
                         console.log("선택된 펫 ID : ", petId)
 
                         // 비동기 처리로 pet의정보 가져오는 코드 8/8일 박태준
-                        //
                         $.ajax({
                             url: '[[@{/petsitterfinder/request-pet-info}]]',
                             method: 'get',
