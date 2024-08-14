@@ -21,7 +21,7 @@ public class WebSecurityConfig {
      */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("css/**", "js/**",  "scss/**", "images/**", "fonts/**", "json/**", "ocr/**", "assets/**", "assets/**"); // 이 경로로 시작하는 것들은 보안 검사를 하지 말라는 의미
+        return (web) -> web.ignoring().requestMatchers("css/**", "js/**",  "scss/**", "images/**", "fonts/**", "json/**", "ocr/**", "assets/**"); // 이 경로로 시작하는 것들은 보안 검사를 하지 말라는 의미
     }
 
     @Bean
@@ -38,13 +38,14 @@ public class WebSecurityConfig {
             // 특수한 경우부터 보편적인 경우 순으로 작성했습니다.
             registry
                     // 누구나 허용
-                    .requestMatchers("/", "/index.html","/ocrUpload", "/petsitter/petsittingmain", "petsitter/list", "petsitterfinder/careregistrationlist", "/enterprise/location", "community/posts").permitAll()
+                    .requestMatchers("/", "/index.html","/ocrUpload", "/petsitter/petsittingmain", "/petsitter/list", "/petsitterfinder/careregistrationlist", "/enterprise/location",
+                            "/community/postList").permitAll()
 
                     // 로그인 안 한 사용자에게 허용되는 페이지
                     .requestMatchers("/member/**", "/auth/login").anonymous()
 
                     // 인증된 사용자만 허용 - 로그인 한 사용자를 의미함
-                    .requestMatchers("/community/**", "/enterprise/**", "/mypage/**", "/petsitter/**", "/petsitterfinder/**").authenticated()
+                    .requestMatchers("/petsitter/detail/","/petsitter/successpay/", "/enterprise/**", "/mypage/**", "/petsitter/**", "/petsitterfinder/**").authenticated()
 
                     // ROLE_SITTER 권한이 있는 사용자만 허용
                     .requestMatchers("/petsitter/registerpost", "/petsitter/registerprofile", "/petsitter/startjob").hasRole("SITTER")
