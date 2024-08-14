@@ -64,69 +64,36 @@
         }
 
         .alert-info {
-            background-color: #e4f6e4;
-            color: #004e23;
-            border-color: #b3ffd3;
+            background-color: #e9f7fd;
+            color: #31708f;
+            border-color: #bce8f1;
         }
 
         .alert-info a {
-            color: #004e23;
+            color: #31708f;
         }
 
-        .search-wrapper {
-            display: flex;
-            align-items: center;
-            border: 1px solid #00bd56;
-            border-radius: 25px;
-            padding: 5px 10px;
-            width: fit-content;
-        }
-
-        .search-select {
-            border: none;
-            background: transparent;
-            color: #4CAF50;
-            font-weight: bold;
-            cursor: pointer;
-            margin-right: 10px;
-            outline: none; /* Removes outline */
-        }
-
-        .search-input {
-            border: none;
-            outline: none;
-            width: 150px;
-        }
-
-        .search-button {
-            background: #4CAF50;
-            border: none;
-            border-radius: 50%;
+        .badge {
             color: white;
-            padding: 5px 10px;
-            cursor: pointer;
-            margin-left: 10px;
         }
 
-        .search-button i {
-            font-size: 20px; /* Adjust size as needed */
+        .badge-category-share {
+            background-color: #71afff;
         }
 
-        /* Ensure styles don't break on smaller screens */
-        @media (max-width: 600px) {
-            .search-wrapper {
-                width: 100%;
-                padding: 5px;
-            }
+        .badge-category-friends {
+            background-color: #46ad58;
+        }
 
-            .search-input {
-                width: 100%;
-            }
+        .badge-category-free {
+            background-color: #ffd240;
+        }
+
+        .badge-category-notice {
+            background-color: #ff5362;
         }
 
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
 </head>
 <body>
 <div layout:fragment="main" class="page-body">
@@ -151,37 +118,29 @@
                 <div class="col-md-12">
                     <h2 class="heading-section mb-4">커뮤니티</h2>
 
-                    <!-- 카테고리 버튼  -->
-                    <ul class="nav nav-tabs" style="margin-bottom: 10px;">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">전체</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">나눔</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">동네 강아지 친구 찾기</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" >자유게시판</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" >공지사항</a>
-                        </li>
-                    </ul>
+                    <!-- 카테고리 버튼 -->
+                    <div class="category-buttons justify-content-start">
+                        <button class="btn btn-outline-primary" onclick="filterPosts('all')">전체</button>
+                        <button class="btn btn-outline-primary" onclick="filterPosts('나눔')">반려동물 용품 나눔</button>
+                        <button class="btn btn-outline-primary" onclick="filterPosts('강아지')">동네 강아지 친구 찾기</button>
+                        <button class="btn btn-outline-primary" onclick="filterPosts('자유')">자유</button>
+                    </div>
 
-                    <!--검색창 -->
-                    <div class="search-wrapper" style="margin-bottom: 5px">
-                        <select class="search-select">
-                            <option value="all">제목</option>
-                            <option value="all">내용</option>
-                            <option value="all">전체+내용</option>
-                            <option value="all">글쓴이</option>
-                        </select>
-                        <input type="text" class="search-input" placeholder="검색어를 입력하세요">
-                        <button class="search-button">
-                            <i class="fas fa-search"></i>
-                        </button>
+
+                    <div class="d-flex search-container justify-content-between">
+                            <button class="btn btn-primary"
+                                    th:onclick="|location.href = '@{/menu/menuRegist}'|">게시글 등록
+                            </button>
+
+                        <form class="row col-8" style="margin: 0; padding :0">
+                            <div class="col-auto">
+                                <input class="form-control" type="search" placeholder="검색어를 입력하세요" aria-label="Search"
+                                       name="q" th:value="${param.q}">
+                            </div>
+                            <div class="col-auto p-0">
+                                <button class="btn btn-outline-success" type="submit">검색</button>
+                            </div>
+                        </form>
                     </div>
 
                     <!-- 공지사항 -->
@@ -189,61 +148,98 @@
                         📢 <a href="#">펫트라슈 6월 후기 어워드 당첨자 발표!!!</a>
                     </div>
 
-                    <!-- 게시글 목록 -->
-                    <div class="post-item" data-category="나눔">
-                        <div class="post-details">
-                            <h4 class="mb-1">동물병원 후기작성</h4>
-                            <p class="mb-1">2024-06-10 • 우영이누나 • 조회수 84</p>
-                            <span class="badge badge-danger badge-category">실종</span>
-                        </div>
-                        <div>
-                            <img th:src="@{/images/post1.jpg}" alt="Post Image" class="img-fluid">
-                        </div>
+                    <div class="table-container my-3">
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>No.</th>
+                                <th>카테고리</th>
+                                <th>제목</th>
+                                <th>작성자</th>
+                                <th>작성일</th>
+                                <th>조회수</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="post : ${posts}">
+                                <td th:text="${post.category}"></td>
+                                <td>
+                                    <span th:text="${post.category}"
+                                          th:classappend="|badge badge-category badge-category-${post.category.toString().toLowerCase()}|">
+                                    </span>
+                                </td>
+                                <td>
+                                    <a th:href="|@{/community/postDetail?postTitle=}${post.title}|"
+                                       th:text="${post.title}"></a>
+                                </td>
+                                <td th:text="${post.writer}"></td>
+                                <td th:text="${post.createdAt}"></td>
+                                <td th:text="${post.views}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
 
-                    <div class="post-item" data-category="강아지">
-                        <div class="post-details">
-                            <h4 class="mb-1">강아지점종시기</h4>
-                            <p class="mb-1">2024-05-16 • 채희 • 조회수 95</p>
-                            <span class="badge badge-success badge-category">발견</span>
-                        </div>
-                        <div>
-                            <img th:src="@{/images/post2.jpg}" alt="Post Image" class="img-fluid">
-                        </div>
-                    </div>
+                    <!--                    &lt;!&ndash; 게시글 목록 &ndash;&gt;-->
+                    <!--                    <div class="post-item" data-category="나눔">-->
+                    <!--                        <div class="post-details">-->
+                    <!--                            <h4 class="mb-1">동물병원 후기작성</h4>-->
+                    <!--                            <p class="mb-1">2024-06-10 • 우영이누나 • 조회수 84</p>-->
+                    <!--                            <span class="badge badge-danger badge-category">실종</span>-->
+                    <!--                        </div>-->
+                    <!--                        <div>-->
+                    <!--                            <img th:src="@{/images/post1.jpg}" alt="Post Image" class="img-fluid">-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
 
-                    <div class="post-item" data-category="자유">
-                        <div class="post-details">
-                            <h4 class="mb-1">펫트라슈 홈페이지 리뉴얼 축하드려요~</h4>
-                            <p class="mb-1">2024-05-06 • haruzora2 • 조회수 57</p>
-                            <span class="badge badge-secondary badge-category">자유</span>
-                        </div>
-                        <div>
-                            <img th:src="@{/images/post3.jpg}" alt="Post Image" class="img-fluid">
-                        </div>
-                    </div>
+                    <!--                    <div class="post-item" data-category="강아지">-->
+                    <!--                        <div class="post-details">-->
+                    <!--                            <h4 class="mb-1">강아지점종시기</h4>-->
+                    <!--                            <p class="mb-1">2024-05-16 • 채희 • 조회수 95</p>-->
+                    <!--                            <span class="badge badge-success badge-category">발견</span>-->
+                    <!--                        </div>-->
+                    <!--                        <div>-->
+                    <!--                            <img th:src="@{/images/post2.jpg}" alt="Post Image" class="img-fluid">-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
 
-                    <!-- 페이징 바 -->
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
+                    <!--                    <div class="post-item" data-category="자유">-->
+                    <!--                        <div class="post-details">-->
+                    <!--                            <h4 class="mb-1">펫트라슈 홈페이지 리뉴얼 축하드려요~</h4>-->
+                    <!--                            <p class="mb-1">2024-05-06 • haruzora2 • 조회수 57</p>-->
+                    <!--                            <span class="badge badge-secondary badge-category">자유</span>-->
+                    <!--                        </div>-->
+                    <!--                        <div>-->
+                    <!--                            <img th:src="@{/images/post3.jpg}" alt="Post Image" class="img-fluid">-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <!--                </div>-->
+
+                    <nav class="position-relative" th:if="${pageCriteria != null}" th:object="${pageCriteria}"
+                         aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <!--/* 이전 영역 */-->
+                            <li th:class="|page-item *{pagebarStart == 1 ? 'disabled' : ''}|">
+                                <a class="page-link" th:href="|*{url}*{pagebarStart - 1}|">이전</a>
                             </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
+
+                            <!--/* 페이지숫자 영역 */-->
+                            <!--/* th:each에는 break 기능이 없다.*/-->
+                            <th:block th:each="pageNo : *{#numbers.sequence(pagebarStart, pagebarEnd)}">
+                                <li th:if="${pageNo <= pageCriteria.maxPage}"
+                                    th:class="|page-item ${pageCriteria.page == pageNo ? 'active' : ''}|">
+                                    <a class="page-link" th:href="|*{url}${pageNo}|" th:text="${pageNo}"></a>
+                                </li>
+                            </th:block>
+
+                            <!--/* 다음 영역 */-->
+                            <li th:class="|page-item *{pagebarEnd > maxPage ? 'disabled' : ''}|">
+                                <a class="page-link" th:href="|*{url}*{pagebarEnd + 1}|">다음</a>
                             </li>
                         </ul>
                     </nav>
                 </div>
             </div>
-        </div>
     </section>
 
     <!-- loader -->

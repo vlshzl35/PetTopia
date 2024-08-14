@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "tbl_community")
@@ -37,19 +38,23 @@ public class Post {
 
     @Column(name = "created_at", nullable = false)
     // 게시일
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     @Column(name = "updated_at", nullable = false)
     // 게시글 수정일
-    private LocalDateTime updatedAt;
+    private LocalDate updatedAt;
 
     @Column(name = "like_count")
     // 좋아요 수
-    private int likeCount;
+    private Integer likeCount;
+
+    @Column(name = "view_count")
+    // 좋아요 수
+    private Integer viewCount;
 
     @Column(name = "report_count")
     // 신고 횟수
-    private int reportCount;
+    private Integer reportCount;
 
     // Comment 클래스 안에 createAt = 현재 클래스 40번 줄과 컬럼값이 겹침
     @Embedded
