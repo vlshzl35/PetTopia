@@ -8475,15 +8475,15 @@ h1, h2, h3, h4, h5,
     font-size: 20px;
     color: #00bd56; }
 
-.ftco-intro .services {
+.ftco-intro .serviceList {
   padding: 30px;
   background: #fff;
   border-radius: 4px; }
   @media (min-width: 992px) {
-    .ftco-intro .services {
+    .ftco-intro .serviceList {
       margin-top: -50px; } }
 
-.services {
+.serviceList {
   display: block;
   width: 100%;
   position: relative;
@@ -8496,7 +8496,7 @@ h1, h2, h3, h4, h5,
   -webkit-transition: all 0.3s ease;
   -ms-transition: all 0.3s ease;
   transition: all 0.3s ease; }
-  .services .icon {
+  .serviceList .icon {
     position: absolute;
     top: 0;
     left: 0;
@@ -8509,17 +8509,17 @@ h1, h2, h3, h4, h5,
     margin: 0 auto;
     margin-bottom: 20px;
     margin-top: -50px; }
-    .services .icon span {
+    .serviceList .icon span {
       font-size: 40px;
       color: #00bd56; }
-  .services .media-body {
+  .serviceList .media-body {
     margin-top: 40px;
     -moz-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
     -webkit-transition: all 0.3s ease;
     -ms-transition: all 0.3s ease;
     transition: all 0.3s ease; }
-    .services .media-body h3 {
+    .serviceList .media-body h3 {
       font-weight: 700;
       font-size: 20px;
       color: #000000;
@@ -8528,7 +8528,7 @@ h1, h2, h3, h4, h5,
       -webkit-transition: all 0.3s ease;
       -ms-transition: all 0.3s ease;
       transition: all 0.3s ease; }
-    .services .media-body .btn-custom {
+    .serviceList .media-body .btn-custom {
       position: absolute;
       bottom: -25px;
       left: 0;
@@ -8541,23 +8541,23 @@ h1, h2, h3, h4, h5,
       -webkit-box-shadow: 0px 10px 30px -4px rgba(0, 0, 0, 0.15);
       -moz-box-shadow: 0px 10px 30px -4px rgba(0, 0, 0, 0.15);
       box-shadow: 0px 10px 30px -4px rgba(0, 0, 0, 0.15); }
-      .services .media-body .btn-custom span {
+      .serviceList .media-body .btn-custom span {
         color: #fff; }
-  .services:hover, .services.active {
+  .serviceList:hover, .serviceList.active {
     background: #00bd56; }
-    .services:hover .icon, .services.active .icon {
+    .serviceList:hover .icon, .serviceList.active .icon {
       background: #fff; }
-    .services:hover .media-body, .services.active .media-body {
+    .serviceList:hover .media-body, .serviceList.active .media-body {
       color: rgba(255, 255, 255, 0.9); }
-      .services:hover .media-body h3, .services.active .media-body h3 {
+      .serviceList:hover .media-body h3, .serviceList.active .media-body h3 {
         color: #fff; }
-    .services:hover .btn-custom, .services.active .btn-custom {
+    .serviceList:hover .btn-custom, .serviceList.active .btn-custom {
       background: #fff;
       right: -20px; }
-      .services:hover .btn-custom span, .services.active .btn-custom span {
+      .serviceList:hover .btn-custom span, .serviceList.active .btn-custom span {
         color: #00bd56; }
   @media (max-width: 991.98px) {
-    .services {
+    .serviceList {
       margin-bottom: 30px; } }
 
 .services-2 {

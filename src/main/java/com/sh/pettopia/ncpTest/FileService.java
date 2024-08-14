@@ -107,17 +107,18 @@ public class FileService {
         return files;
     }
 
-    public List<FileDto> sitterUpFile(List<MultipartFile> multipartFiles,String sitterEmail){
+    public List<FileDto> sitterUpFile(List<MultipartFile> multipartFiles,String petSitterEmail,String directory){
 
-        String filePath="member/"+sitterEmail;
+        String filePath="petsitter/"+petSitterEmail+"/"+directory;
         System.out.println(filePath);
         return uploadFiles(multipartFiles,filePath);  // ncp 버킷에 filePath 경로의 디렉토리에 올라감(없으면 생성함)
 
     }
 
     // NCP 해당 폴더에 올라온 파일 모두 불러오기
-    public List<FileDto> sitterImage(String filePath) {
-        String path="member/"+filePath+"/";
+    public List<FileDto> sitterDownImg(String petSitterEmail,String directory) {
+        String path="petsitter/"+petSitterEmail+"/"+directory+"/";
+        System.out.println("service path = " + path);
         List<FileDto> files = new ArrayList<>();
         ListObjectsV2Request req = new ListObjectsV2Request().withBucketName(bucketName).withPrefix(path);
         ListObjectsV2Result result;
