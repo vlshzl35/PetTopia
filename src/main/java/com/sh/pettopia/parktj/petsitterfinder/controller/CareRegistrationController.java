@@ -55,6 +55,8 @@ public class CareRegistrationController {
     public void careRegistrationDetails(@AuthenticationPrincipal AuthPrincipal authPrincipal, @RequestParam(value = "postId") Long postId, Model model) {
         CareRegistrationDetailResponseDto detailDto = careRegistrationService.findAllByPostId(postId);
         model.addAttribute("detail", detailDto);
+//        이 부분 댓글에 멤버 정보 포함시키기 위함임
+        model.addAttribute("memberInfo", authPrincipal.getMember());
         log.debug("detailDto = {}", detailDto);
 
         // post를 작성한 작성자의 memberId 와 로그인한 memberId 가 같은지 검증해주는 코드 ( 수정, 삭제 권한)
@@ -115,13 +117,15 @@ public class CareRegistrationController {
 
     }
 
+    
+
     /**
      * # 궁금
      *
      * - RequestMapping으로 쿼리 파라미터를 받아올 수 있는것으로 안다.
      * - 하지만 detailupdate에서 글을 삭제할때는 form에 있는 postId만을 가져온다.
      * - url에 있는 쿼리 파라미터를 가져오지 못한다. 이유가 뭘까?
-     * -> post 요청시 쿼리 파라미터와 폼 데이터의 혼동이 있을 수 있다고 한다.
+     * -> post 요청시 쿼리 파라s미터와 폼 데이터의 혼동이 있을 수 있다고 한다.
      *
      * ## 더 명확한 해설
      *
