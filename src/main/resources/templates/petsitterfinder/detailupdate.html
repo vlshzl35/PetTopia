@@ -161,9 +161,20 @@
                                 <button class="btn btn-save" type="submit" value="수정">수정하기</button>
                                 <button class="btn btn-delete" type="submit" value="삭제" onclick="deleteDetail();">삭제하기</button>
                             </form>
+                            <script>
+                                function showSection(sectionId) {
+                                    // 모든 섹션을 숨기기
+                                    document.getElementById('petProfileSection').style.display = 'none';
+                                    // 선택된 섹션만 보이기
+                                    var section = document.getElementById(sectionId);
+                                    section.style.display = 'block';
+                                    // 선택된 섹션으로 스크롤 이동
+                                    section.scrollIntoView({behavior: 'smooth'});
+                                }
+                            </script>
 
                             <form method="post" name="detailDeleteFrm" th:action="@{/petsitterfinder/detailDelete}">
-                                <input type="hidden" name = "postId">
+                                <input type="hidden" name="postId" th:value="${detailForUpdate.postId}">
                             </form>
                         </div>
                     </div>
@@ -178,17 +189,7 @@
 
 
     </script>
-    <script>
-        function showSection(sectionId) {
-            // 모든 섹션을 숨기기
-            document.getElementById('petProfileSection').style.display = 'none';
-            // 선택된 섹션만 보이기
-            var section = document.getElementById(sectionId);
-            section.style.display = 'block';
-            // 선택된 섹션으로 스크롤 이동
-            section.scrollIntoView({behavior: 'smooth'});
-        }
-    </script>
+
 
 
     <!-- loader -->
