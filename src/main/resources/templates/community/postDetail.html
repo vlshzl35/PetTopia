@@ -147,11 +147,11 @@
                         <!-- 게시글 헤더 -->
                         <div class="post-header">
                             <div>
-                                <div class="post-title">[[${post.title}]]</div>
+                                <div class="post-title" th:text = "${post.title}"></div>
                                 <div class="post-meta" style="display: flex">
-                                    <h4>[[${post.category}]]</h4> |
-                                    <h4>작성자: [[${post.nickName}]]</h4> |
-                                    <h4>작성일: [[${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm') }]]</h4>
+                                    <h6 th:text = "${post.category} +' |'"></h6>
+                                    <h6 th:text = "'작성자 :' + ${post.nickName}  +' |'"></h6>
+                                    <h6>작성일: [[${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm') }]]</h6>
                                 </div>
                             </div>
                         </div>
@@ -163,7 +163,9 @@
 
                         <!-- 게시글 푸터 (버튼) -->
                         <div class="post-footer">
-                            <button type="button" class="btn btn-custom" th:onclick="|location.href = '@{/community/postUpdate(postId=${post.postId})}'|">수정</button>
+                            <div th:if="${#authentication.principal.member.id == post.memberId}">
+                                <button type="button" class="btn btn-custom" th:onclick="|location.href = '@{/community/updatePost(postId=${post.postId})}'|">수정</button>
+                            </div>
                             <button type="button" class="btn btn-secondary" th:onclick="|location.href = '@{/community/postList}'|">목록으로</button>
                         </div>
                     </div>
@@ -246,7 +248,7 @@
         }
     }
 
-    const message = '[[${message}]]';
+    const message = `[[${message}]]`;
     message && alert(message);
 
     function toggleReplyForm(replyButton) {

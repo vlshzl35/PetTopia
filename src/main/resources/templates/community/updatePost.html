@@ -54,12 +54,6 @@
         .alert-info a {
             color: #31708f;
         }
-
-        /* 편집기 컨테이너의 크기를 조정합니다 */
-        #editor {
-            height: 300px;
-        }
-
         table {
             margin: auto;
         }
@@ -108,6 +102,107 @@
             padding-left: 10px;
             background-color: #00bd56;
         }
+
+        .hero-wrap {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background-size: cover;
+            background-position: center center;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .breadcrumbs, .bread {
+            color: white;
+        }
+
+        .post-container {
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #fff;
+            /*box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);*/
+            margin-left: 0; /* 게시글이 화면 중앙에 있도록 간격 조정 */
+            margin-right: 0; /* 게시글이 화면 중앙에 있도록 간격 조정 */
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 15px;
+        }
+
+        .post-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .post-meta {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .post-body {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        .post-footer {
+            display: flex;
+            justify-content: flex-end;
+            border-top: 2px solid #e0e0e0;
+            padding-top: 15px;
+        }
+
+        .post-footer button {
+            margin-left: 10px;
+        }
+
+        .btn-custom {
+            background-color: #00bd56;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .btn-custom:hover {
+            background-color: #009e46;
+            color: white;
+        }
+
+        .comment-list .comment {
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .comment-list .vcard img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .comment-reply .form-group {
+            margin-bottom: 10px;
+        }
+
     </style>
 
 </head>
@@ -128,7 +223,8 @@
         </div>
     </section>
 
-    <form th:action = "@{/community/registPost}" method="post" style="margin-bottom: 10px" onsubmit="return isValid()">
+    <form th:action = "@{/community/updatePost}" method="post" style="margin-bottom: 10px" onsubmit="return isValid()">
+
         <table>
             <tr>
                 <td><h3>커뮤니티 글쓰기</h3></td>
@@ -137,10 +233,13 @@
                 <td><label for = "category">Category</label></td>
             </tr>
 
+            <!--/* 게시물 ID (Hidden 필드) */-->
+            <input type="hidden" id="postId" name="postId" th:value="${post.postId}" />
+
             <!--/* 게시물 카테고리 */-->
             <tr>
                 <td class="header">
-                    <select name="category" id="category" onchange="filterPosts(this.value)">
+                    <select name="category" id="category" onchange="filterPosts(this.value)" th:value = "${post.category}" >
                         <option value="FREE" selected>자유</option>
                         <option value="SHARE">나눔</option>
                         <option value="FRIENDS">강아지 친구 찾기</option>
@@ -150,11 +249,12 @@
 
             <!--/* 게시물 제목 */-->
             <tr>
-                <td class="header"><label for = "title">제목</label></td>
+                <td class="header"><label for = "title" >제목</label></td>
             </tr>
             <tr>
                 <td class="header">
-                    <input type="text" placeholder="제목을 입력하세요" id = "title" name="title">
+                    <!--/* input 태그에서는 th : value 사용합니다 */-->
+                    <input type="text" placeholder="제목을 입력하세요" id = "title" name="title" th:value = "${post.title}">
                 </td>
             </tr>
 
@@ -164,15 +264,18 @@
             </tr>
             <tr>
                 <td class="header">
-                    <textarea type="text" placeholder="내용을 입력하세요" id = "content" name="content"></textarea>
+                    <!--/* textarea 태그에서는 th : text 사용합니다. */-->
+                    <textarea type="text" placeholder="내용을 입력하세요" id = "content" name="content" th:text = "${post.content}"></textarea>
                 </td>
             </tr>
             <tr>
-                <td><button type="submit" class="btn btn-primary"> ✏️게시글 등록✏️ </button></td>
+                <td>
+                    <button type="submit" class="btn btn-custom">등록</button>
+                    <button type="button" class="btn btn-secondary" th:onclick="|location.href = '@{/community/postList}'|">뒤로 가기</button>
+                </td>
             </tr>
         </table>
     </form>
-
 
     <!-- loader -->
     <div id="ftco-loader" class="show fullscreen">
@@ -193,27 +296,11 @@
     // 게시글 등록되고 나서 alert 해줍니다.
     function isValid() {
         if (true) {
-            alert('✏️게시글 등록이 완료되었습니다!✏️')
+            alert('✏️게시글 수정이 완료되었습니다!✏️')
         }
     }
 
-    function filterPosts(category) {
-        var posts = document.getElementsByClassName('post-item');
-        for (var i = 0; i < posts.length; i++) {
-            if (category === 'all') {
-                posts[i].style.display = 'flex';
-            } else {
-                if (posts[i].getAttribute('data-category') === category) {
-                    posts[i].style.display = 'flex';
-                } else {
-                    posts[i].style.display = 'none';
-                }
-            }
-        }
-    }
 
-    const message = `[[${message}]]`;
-    message && alert(message);
 
 </script>
 </body>

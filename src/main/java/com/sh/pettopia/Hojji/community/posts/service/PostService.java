@@ -1,8 +1,9 @@
 package com.sh.pettopia.Hojji.community.posts.service;
 
 import com.sh.pettopia.Hojji.community.posts.dto.PostListResponseDto;
-import com.sh.pettopia.Hojji.community.posts.dto.PostRegistReponseDto;
+import com.sh.pettopia.Hojji.community.posts.dto.PostDetailReponseDto;
 import com.sh.pettopia.Hojji.community.posts.dto.PostRegistRequestDto;
+import com.sh.pettopia.Hojji.community.posts.dto.PostUpdateRequestDto;
 import com.sh.pettopia.Hojji.community.posts.entity.Post;
 import com.sh.pettopia.Hojji.community.posts.repository.PostRepository;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
@@ -30,7 +31,7 @@ public class PostService {
         return communityPage.map(PostListResponseDto::fromPost);
     }
 
-    // 하나의 게시글 등록
+    // 게시글 등록
     public Long registPost(Member member, PostRegistRequestDto postRegistDto) {
         // 1. postRegistDto를 Post 테이블에 저장하기 위해 Post Entity로 변환합니다.
         Post post = postRegistDto.toPost();
@@ -48,11 +49,22 @@ public class PostService {
     }
 
     // 하나의 게시물 조회
-    public PostRegistReponseDto findByPostId(Long postId) {
+    public PostDetailReponseDto findByPostId(Long postId) {
         // 1. 게시글의 id로 게시글 하나를 조회합니다.
         Post post = postRepository.findByPostId(postId);
 
         // 2. 조회된 게시물을 다시 ResponseDto로 변환합니다.
-        return PostRegistReponseDto.fromPost(post);
+        return PostDetailReponseDto.fromPost(post);
+    }
+
+    // 게시글 수정
+    public Long updatePost(Long postId, PostUpdateRequestDto dto) {
+        // 1. 수정할 post의 Id를 조회합니다.
+        Post post = postRepository.findByPostId(postId);
+
+        // 2. 수정된 정보를 Post Entity 내부에서 수정합니다.
+        post.update(dto);
+
+        return postId;
     }
 }

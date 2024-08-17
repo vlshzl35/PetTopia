@@ -1,5 +1,6 @@
 package com.sh.pettopia.Hojji.community.posts.entity;
 
+import com.sh.pettopia.Hojji.community.posts.dto.PostUpdateRequestDto;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -68,7 +69,15 @@ public class Post {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    // 게시글 작성자를 셋팅하는 메소드입니다.
     public void setWriter(Member member) {
         this.member = member;
+    }
+
+    // 게시글을 수정하는 메소드입니다.
+    public void update(PostUpdateRequestDto dto) {
+        this.category = dto.getCategory();
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
     }
 }

@@ -27,7 +27,7 @@ public class PostListResponseDto {
     private String writer;
 
     // 작성일
-    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     // 조회수
     private Integer views;
@@ -38,7 +38,7 @@ public class PostListResponseDto {
                 post.getCategory(),
                 post.getTitle(),
                 post.getMember().getNickName(),
-                post.getCreatedAt(),
+                post.getUpdatedAt(),
                 post.getViewCount()
         );
     }

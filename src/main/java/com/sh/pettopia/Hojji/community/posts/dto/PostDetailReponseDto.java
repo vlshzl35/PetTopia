@@ -4,18 +4,16 @@ import com.sh.pettopia.Hojji.community.posts.entity.Category;
 import com.sh.pettopia.Hojji.community.posts.entity.Comment;
 import com.sh.pettopia.Hojji.community.posts.entity.Post;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostRegistReponseDto {
+public class PostDetailReponseDto {
     // 게시글 Id
     private Long postId;
 
@@ -31,12 +29,13 @@ public class PostRegistReponseDto {
     // 게시일
     private LocalDateTime updatedAt;
 
-
     // 댓글
     private List<Comment> comments;
 
     // 작성자
     private String nickName;
+
+    private Long memberId;
 
     //    // 좋아요 수
 //    private Integer likeCount;
@@ -48,15 +47,16 @@ public class PostRegistReponseDto {
 //    private Integer reportCount;
 
 
-    public static PostRegistReponseDto fromPost(Post post) {
-        return new PostRegistReponseDto(
+    public static PostDetailReponseDto fromPost(Post post) {
+        return new PostDetailReponseDto(
                 post.getPostId(),
                 post.getTitle(),
                 post.getContent(),
                 post.getCategory(),
                 post.getUpdatedAt(),
                 post.getComments(),
-                post.getMember().getNickName()
+                post.getMember().getNickName(),
+                post.getMember().getId()
         );
     }
 }

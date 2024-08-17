@@ -3,13 +3,13 @@ package com.sh.pettopia.Hojji.community.posts.controller;
 import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
 import com.sh.pettopia.Hojji.common.paging.PageCriteria;
 import com.sh.pettopia.Hojji.community.posts.dto.PostListResponseDto;
-import com.sh.pettopia.Hojji.community.posts.dto.PostRegistReponseDto;
+import com.sh.pettopia.Hojji.community.posts.dto.PostDetailReponseDto;
 import com.sh.pettopia.Hojji.community.posts.dto.PostRegistRequestDto;
+import com.sh.pettopia.Hojji.community.posts.dto.PostUpdateRequestDto;
 import com.sh.pettopia.Hojji.community.posts.service.PostService;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.client.RedirectException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -62,7 +62,7 @@ public class PostController {
     // 1개의 게시글 상세 조회
     @GetMapping("/postDetail")
     public void postDetail(@RequestParam Long postId, Model model) {
-        PostRegistReponseDto postReponseDto = postService.findByPostId(postId);
+        PostDetailReponseDto postReponseDto = postService.findByPostId(postId);
         log.debug("post = {}", postReponseDto);
 
         model.addAttribute("post", postReponseDto);
@@ -97,8 +97,30 @@ public class PostController {
         return "redirect:/community/postDetail?postId=" + postId;
     }
 
-    @GetMapping("/updatePost")
-    public void updatePost() {
 
+    @GetMapping("/updatePost")
+    public void updatePost(@RequestParam Long postId, Model model) {
+        PostDetailReponseDto postReponseDto = postService.findByPostId(postId);
+        log.debug("수정전 dto = {}", postReponseDto);
+
+        model.addAttribute("post", postReponseDto);
     }
+
+    @PostMapping("/updatePost")
+    public String updatePost(
+            Long postId,
+            @ModelAttribute PostUpdateRequestDto postUpdateRequestDto,
+            RedirectAttributes redirectAttributes) {
+        log.debug("수정후 DTo = {}", postUpdateRequestDto);
+
+        // 1. 받은 정보를 바탕으로 수정합니다.
+        postService.updatePost(postId, postUpdateRequestDto);
+
+        // 2. 게시글 수정 완료 알림
+        redirectAttributes.addFlashAttribute("message", "수정이 완료되었습니다!");
+
+        // 3. 게시글 상세 페이지로 리다이렉트 하기 위해 postId를 반환합니다.
+        return "redirect:/community/postDetail?postId=" + postId;
+    }
+
 }
