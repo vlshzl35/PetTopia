@@ -22,7 +22,7 @@ public class PetSitter {
     @Column(name = "id")
     private String petSitterId; // 회원 아이디 = 멤버아이디
 
-    @Column(name = "introduce")
+    @Column(name = "introduce",columnDefinition = "TEXT")
     private String introduce; // 가벼운 소개
 
     @Column(name = "one_line_introduce")

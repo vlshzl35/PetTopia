@@ -21,22 +21,17 @@ public class Pay {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "start_date")
-    @CreationTimestamp
-    private LocalDate startDate;
-
-    @Column(name = "end_date")
-    @UpdateTimestamp
-    private LocalDate endDate;
-
     @Column(name = "petsitter_id")
-    private Long petSitterId;
+    private String petSitterId;
 
     @Column(name = "member_id")
-    private Long memberId;
+    private String memberId;
 
     @Column(name = "pay_date")
     @CreationTimestamp
-    private LocalDateTime payDate;
+    private LocalDateTime payDate; // 결제 날짜
+
+    @Column(name = "pay_status")
+    private boolean payStatus; // true= 결제완료, false=결제취소(환불)
 
 }

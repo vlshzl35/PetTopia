@@ -57,7 +57,7 @@ public class PetSitterController {
             List<FileDto> fileDtoList = fileService.sitterUpFile(checkFiles,principal.getMember().getEmail(),"mainImage");
 
             for (FileDto fileDtoImageUrl : fileDtoList) {
-                imageUrl.add(fileDtoImageUrl.getUploadFileUrl());
+                imageUrl.add(fileDtoImageUrl.getUploadFileName());
             }
             dto.setMainImageUrl(imageUrl.get(0));
         }
@@ -65,11 +65,11 @@ public class PetSitterController {
 
         // 자격이 있는 사람은 당연히 펫시터가 존재할 것이다
         PetSitter petSitter=petSitterService.findOneByPetSitter(principal.getMember().getEmail());
-        petSitter.changeAvailableService(dto.getAvailableServices());
-        petSitter.changeAvailablePetSize(dto.getAvailablePetSizes());
-        petSitter.changeOneLineIntroduce(dto.getOneLineIntroduce());
-        petSitter.changeAddress(dto.getPetSitterAddress());
-        petSitter.changeMainImageUrl(dto.getMainImageUrl());
+        petSitter.changeAvailableService(dto.getAvailableServices()); // 가능한 서비스
+        petSitter.changeAvailablePetSize(dto.getAvailablePetSizes()); // 가능한 반려견 사이즈
+        petSitter.changeOneLineIntroduce(dto.getOneLineIntroduce()); // 한 줄 소개 = 펫시터 리스트에서 출력 할 거다
+        petSitter.changeAddress(dto.getPetSitterAddress()); // 펫시터의 주소
+        petSitter.changeMainImageUrl(dto.getMainImageUrl()); // 이미지 주소
         petSitter.changeIntroduce(dto.getMainIntroduce());
 
         System.out.println("petSitterRegisterDto = " + dto);
@@ -119,16 +119,10 @@ public class PetSitterController {
         System.out.println("profileImg = " + profileImg);
 
         System.out.println("stringService = " + petServiceList);
-        Map<String ,Integer> whatPetHowMany=new HashMap<>();
-
-        whatPetHowMany.put("중형견",5);
-        whatPetHowMany.put("소형견",6);
-        whatPetHowMany.put("대형견",1);
 
         model.addAttribute("dto", dto);
         model.addAttribute("petSize", petSizeList);
         model.addAttribute("petService",petServiceList);
-        model.addAttribute("pet",whatPetHowMany);
         // 여기서 항상 서버에서 이미지 url을 담는다 -> html에서 그 url이 입력되면 이미지는 출력이된다
 
         System.out.println("petSitter.getAvailableDates() = " + petSitter.getAvailableDates());
@@ -217,7 +211,7 @@ public class PetSitterController {
         // 펫시터 홍보글 작성
     }
 
-    @GetMapping("/registerprofile")
+    @GetMapping("/registerprofile") // 프로필 뿌려주는 핸들러
     public void registerPetSitterProfile(Model model, @AuthenticationPrincipal AuthPrincipal principal) {
         // PetSitter의 정보를 담을 Dto를 생성하여 넣는다
         log.info("GET /register_profile 입니다");
@@ -269,9 +263,10 @@ public class PetSitterController {
     }
 
     @PostMapping("/reservation")
-    public String reservation(@ModelAttribute ReservationDto reservationDto)
+    public String reservation(@ModelAttribute ReservationDto reservationDto,@AuthenticationPrincipal AuthPrincipal principal)
     {
         log.info("POST /petsitter/reservation");
+        reservationDto.setMemberId(principal.getMember().getEmail());
         System.out.println("reservationDto = " + reservationDto);
         System.out.println("reservationDto.getPetSizeAndHowManyPets() = " + reservationDto.getPetSizeAndHowManyPets());
         return String.format("redirect:/petsitter/detail/%s",reservationDto.getPetSitterId());
@@ -280,15 +275,24 @@ public class PetSitterController {
     /**
      * ajax로 이미지를 삭제하면 서버에서 삭제를 한다
      */
-    @PostMapping("/removeimg")
     @ResponseBody
-    public int removeImg(@RequestParam(value = "imgUrl") String imgUrl,
-                         @AuthenticationPrincipal AuthPrincipal principal) {
-        log.info("POST /petsitter/imgUrl");
-        System.out.println("imgUrl = " + imgUrl);
+    @PostMapping(value = "/profileImage")
+    public void removeProfileImage(@AuthenticationPrincipal AuthPrincipal principal) {
+        log.info("POST /petsitter/imageUrl");
         log.debug("principal = {}", principal.getMember().getEmail());
+        String img=petSitterService.findOneByPetSitter(principal.getMember().getEmail()).getMainImageUrl();
+        System.out.println("img = " + img);
 
-        return 1;
+        fileService.deleteImage(principal.getMember().getEmail(),"mainImage",img);
+
+    }
+    @ResponseBody
+    @PostMapping(value = "/removePostImage")
+    public void removePostImage( String fileNameWithExtension,@AuthenticationPrincipal AuthPrincipal principal)
+    {
+        log.info("POST /petsitter/postImage");
+        System.out.println("fileNameWithoutExtension = " + fileNameWithExtension);
+        fileService.deleteImage(principal.getMember().getEmail(),"imagesInPost",fileNameWithExtension);
     }
 
     @GetMapping("/petsittingmain")
