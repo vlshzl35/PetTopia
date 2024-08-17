@@ -71,6 +71,7 @@ public class PostController {
     // 게시글 등록 폼 조회
     @GetMapping("/registPost")
     public void registPost() {
+        log.debug("GET / registPost Form");
     }
 
     // 게시글 등록

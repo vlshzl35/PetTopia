@@ -14,7 +14,10 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class PostRegistReponseDto {
+    // 게시글 Id
+    private Long postId;
 
     // 게시글 제목
     private String title;
@@ -44,17 +47,10 @@ public class PostRegistReponseDto {
 //    // 신고 횟수
 //    private Integer reportCount;
 
-    public PostRegistReponseDto(String title, String content, Category category, LocalDateTime updatedAt, List<Comment> comments, String nickName) {
-        this.title = title;
-        this.content = content;
-        this.category = category;
-        this.updatedAt = updatedAt;
-        this.comments = comments;
-        this.nickName = nickName;
-    }
 
     public static PostRegistReponseDto fromPost(Post post) {
         return new PostRegistReponseDto(
+                post.getPostId(),
                 post.getTitle(),
                 post.getContent(),
                 post.getCategory(),
