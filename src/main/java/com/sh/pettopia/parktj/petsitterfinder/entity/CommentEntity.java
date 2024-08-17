@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -33,19 +34,24 @@ public class CommentEntity {
 
     @CreationTimestamp
     @Column(updatable = false)
-    private LocalDateTime createdTime;
+    private LocalDate createdTime;
 
     @UpdateTimestamp
     @Column(insertable = false)
     private LocalDateTime updatedTime;
 
+    @Column(name = "member_id")
+    private Long memberId;
+
     public static CommentEntity toSaveEntity(CommentDTO commentDTO, CareRegistration careRegistration) {
         CommentEntity commentEntity = new CommentEntity();
         commentEntity.setCommentContents(commentDTO.getCommentContents());
         commentEntity.setCommentWriter(commentDTO.getCommentWriter());
-        commentEntity.setCreatedTime(LocalDateTime.now());
+        commentEntity.setCreatedTime(LocalDate.now());
         commentEntity.setUpdatedTime(LocalDateTime.now());
         commentEntity.setCareRegistration(careRegistration);
+        commentEntity.setMemberId(commentDTO.getMemberId());
+
         return commentEntity;
     }
 }

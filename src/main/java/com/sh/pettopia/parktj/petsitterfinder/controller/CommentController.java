@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,8 +17,9 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/save")
+    // @ModelAttribute 로도 값을 받아올 수 있다.
     private ResponseEntity save(@ModelAttribute CommentDTO commentDTO) {
-        System.out.println("comentDTO = " + commentDTO);
+        System.out.println("commentDTO = " + commentDTO); // view 단으로부터 값을 잘 받아 왔는지 학인
         Long saveResult = commentService.save(commentDTO);
         if (saveResult != null) {
             //작성 성공하면 댓글목록을 가져와서 리턴함
@@ -29,10 +27,18 @@ public class CommentController {
             // 다시 전체댓글을 가져와서 반복문 형태로 보여줘야함
             List<CommentDTO> commentDTOList = commentService.findAll(commentDTO.getPostId());
             return new ResponseEntity<>(commentDTOList, HttpStatus.OK);
+
         } else {
             return new ResponseEntity<>("해당 게시글이 존재하지 않습니다", HttpStatus.NOT_FOUND);
 
         }
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<CommentDTO>> findAll(@RequestParam(value = "postId") Long postId){
+        System.out.println("postId = " + postId);
+     List<CommentDTO> commentDTOList = commentService.findAll(postId);
+     return new ResponseEntity<>(commentDTOList, HttpStatus.OK);
     }
 }
 /**

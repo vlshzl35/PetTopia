@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -16,7 +17,7 @@ public class CommentDTO {
     private String commentWriter;
     private String commentContents;
     private Long postId;
-    private LocalDateTime commentCreatedTime;
+    private LocalDate commentCreatedTime;
     private Long memberId;
 
 
@@ -28,6 +29,7 @@ public class CommentDTO {
         commentDTO.setCommentCreatedTime(commentEntity.getCreatedTime());
 //        commentDTO.setPostId(commentEntity.getCareRegistration().getPostId());
         commentDTO.setPostId(postId);
+        commentDTO.setMemberId(commentEntity.getMemberId());
 
         return commentDTO;
     }
