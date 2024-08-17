@@ -1,4 +1,4 @@
-//package com.sh.pettopia.parktj.petsitterfinder.repository;
+package com.sh.pettopia.parktj.petsitterfinder.repository;//package com.sh.pettopia.parktj.petsitterfinder.repository;
 //
 //import com.sh.pettopia.Hojji.pet.entity.*;
 //import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;

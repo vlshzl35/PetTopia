@@ -27,13 +27,12 @@ public class HospitalController {
     public String detail(@RequestParam("id") Long id, Model model) { // ex) /enterprise/hospital/detail?id=1과 같은 요청이 들어오면, id 변수는 1이됨. 요청 URL에서 id라는 쿼리 파라미터를 추출하여 메서드 매개변수 id에 할당
         EnterpriseDetailResponseDto hospitalDetail = hospitalService.findById(id); // 업체 상세 데이터
         log.debug("hospitalDetail = {}", hospitalDetail);
-        model.addAttribute( "enterpriseDetail", hospitalDetail);
+        model.addAttribute("enterpriseDetail", hospitalDetail);
 
-        List<ReviewResponseDto> reviews =  reviewService.findByEntId(id); // 리뷰 데이터
+        List<ReviewResponseDto> reviews = reviewService.findByEntId(id); // 리뷰 데이터
         log.debug("reviews = {}", reviews);
-        model.addAttribute( "reviews", reviews);
+        model.addAttribute("reviews", reviews);
 
         return "enterprise/detail";
     }
-
 }

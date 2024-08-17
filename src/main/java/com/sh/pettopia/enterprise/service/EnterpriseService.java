@@ -1,7 +1,6 @@
 package com.sh.pettopia.enterprise.service;
 
 import com.sh.pettopia.enterprise.dto.EnterpriseDetailResponseDto;
-import com.sh.pettopia.enterprise.dto.ReviewResponseDto;
 import com.sh.pettopia.enterprise.repository.EnterpriseRepository;
 import com.sh.pettopia.enterprise.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;

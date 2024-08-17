@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReviewResponseDto {
-//    private Long nickName; // tbl_member에서 가져올 것
+    //    private Long nickName; // tbl_member에서 가져올 것
     private Long memberId;
     private double rating; // 별점
     private String reviewContent; // 작성한 내용
