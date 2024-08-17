@@ -183,7 +183,13 @@
                             </thead>
                             <tbody>
                             <tr th:each="post, iterstat : ${posts}">
-                                <td th:text="${iterstat.index + 1}"></td>
+                                <!--/*
+                                pageCriteria.page : 현재 페이지 번호
+                                pageCriteria.itemsPerPage : 페이지 당 항목 수
+                                pageCriteria.page - 1 : 0부터 시작하는 현재 페이지의 인덱스를 계산함
+                                pageCriteria.itemsPerPage 와 곱해 현재 페이지의 첫번째 항목 번호를 계산함
+                                 */-->
+                                <td th:text="${(pageCriteria.page - 1) * pageCriteria.limit + iterstat.index + 1}"></td>
                                 <td>
                                     <span th:text="${post.category}"
                                           th:classappend="|badge badge-category badge-category-${post.category.toString().toLowerCase()}|">
