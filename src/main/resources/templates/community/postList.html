@@ -202,7 +202,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <a th:href="|@{/community/postDetail?postTitle=}${post.title}|"
+                                    <a th:href="|@{/community/postDetail?postId=}${post.postId}|"
                                        th:text="${post.title}"></a>
                                 </td>
                                 <td th:text="${post.writer}"></td>
@@ -221,41 +221,8 @@
                         </button>
                     </div>
 
-                    <!--                    &lt;!&ndash; 게시글 목록 &ndash;&gt;-->
-                    <!--                    <div class="post-item" data-category="나눔">-->
-                    <!--                        <div class="post-details">-->
-                    <!--                            <h4 class="mb-1">동물병원 후기작성</h4>-->
-                    <!--                            <p class="mb-1">2024-06-10 • 우영이누나 • 조회수 84</p>-->
-                    <!--                            <span class="badge badge-danger badge-category">실종</span>-->
-                    <!--                        </div>-->
-                    <!--                        <div>-->
-                    <!--                            <img th:src="@{/images/post1.jpg}" alt="Post Image" class="img-fluid">-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
 
-                    <!--                    <div class="post-item" data-category="강아지">-->
-                    <!--                        <div class="post-details">-->
-                    <!--                            <h4 class="mb-1">강아지점종시기</h4>-->
-                    <!--                            <p class="mb-1">2024-05-16 • 채희 • 조회수 95</p>-->
-                    <!--                            <span class="badge badge-success badge-category">발견</span>-->
-                    <!--                        </div>-->
-                    <!--                        <div>-->
-                    <!--                            <img th:src="@{/images/post2.jpg}" alt="Post Image" class="img-fluid">-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
-
-                    <!--                    <div class="post-item" data-category="자유">-->
-                    <!--                        <div class="post-details">-->
-                    <!--                            <h4 class="mb-1">펫트라슈 홈페이지 리뉴얼 축하드려요~</h4>-->
-                    <!--                            <p class="mb-1">2024-05-06 • haruzora2 • 조회수 57</p>-->
-                    <!--                            <span class="badge badge-secondary badge-category">자유</span>-->
-                    <!--                        </div>-->
-                    <!--                        <div>-->
-                    <!--                            <img th:src="@{/images/post3.jpg}" alt="Post Image" class="img-fluid">-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
-                    <!--                </div>-->
-
+                    <!-- 페이징 바 -->
                     <nav class="position-relative" th:if="${pageCriteria != null}" th:object="${pageCriteria}"
                          aria-label="Page navigation example">
                         <ul class="pagination justify-content-center">

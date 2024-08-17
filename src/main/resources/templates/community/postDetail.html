@@ -85,6 +85,7 @@
 
         .btn-custom:hover {
             background-color: #009e46;
+            color: white;
         }
 
         .comment-list .comment {
@@ -147,10 +148,10 @@
                         <div class="post-header">
                             <div>
                                 <div class="post-title">[[${post.title}]]</div>
-                                <div class="post-meta flex-row">
+                                <div class="post-meta" style="display: flex">
                                     <h4>[[${post.category}]]</h4> |
                                     <h4>작성자: [[${post.nickName}]]</h4> |
-                                    <h4>작성일: [[${post.updatedAt}]]</h4>
+                                    <h4>작성일: [[${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm') }]]</h4>
                                 </div>
                             </div>
                         </div>
@@ -163,7 +164,7 @@
                         <!-- 게시글 푸터 (버튼) -->
                         <div class="post-footer">
                             <button type="button" class="btn btn-custom" th:onclick="|location.href = '@{/community/postUpdate(postId=${post.postId})}'|">수정</button>
-                            <button type="button" class="btn btn-secondary" th:onclick="|location.href = '@{/community}'|">목록으로</button>
+                            <button type="button" class="btn btn-secondary" th:onclick="|location.href = '@{/community/postList}'|">목록으로</button>
                         </div>
                     </div>
 

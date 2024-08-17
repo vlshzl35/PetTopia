@@ -96,4 +96,9 @@ public class PostController {
         // 4. 게시글 상세 페이지로 리다이렉트 하므로 postId 파라미터를 함께 전달합니다.
         return "redirect:/community/postDetail?postId=" + postId;
     }
+
+    @GetMapping("/updatePost")
+    public void updatePost() {
+
+    }
 }

@@ -14,6 +14,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostListResponseDto {
+    // 게시글 Id
+    private Long postId;
+
     // 카테고리
     private Category category;
 
@@ -31,6 +34,7 @@ public class PostListResponseDto {
 
     public static PostListResponseDto fromPost(Post post) {
         return new PostListResponseDto(
+                post.getPostId(),
                 post.getCategory(),
                 post.getTitle(),
                 post.getMember().getNickName(),
