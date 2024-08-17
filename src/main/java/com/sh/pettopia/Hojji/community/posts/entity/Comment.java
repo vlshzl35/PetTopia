@@ -9,11 +9,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Embeddable
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
     // 내용
@@ -22,9 +22,16 @@ public class Comment {
 
     // 등록 일자
     @Column(name = "comment_created_at")
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     // 수정 일자
     @Column(name = "comment_updated_at")
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
+
+    // 기본 생성자로 기본 값을 설정합니다.
+    public Comment() {
+        this.commentContent = "";
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
 }

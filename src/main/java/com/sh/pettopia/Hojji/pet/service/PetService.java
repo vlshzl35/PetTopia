@@ -1,7 +1,6 @@
 package com.sh.pettopia.Hojji.pet.service;
 
 import com.sh.pettopia.Hojji.pet.dto.PetRegistRequestDto;
-import com.sh.pettopia.Hojji.pet.dto.PetRegistResponseDto;
 import com.sh.pettopia.Hojji.pet.entity.Pet;
 import com.sh.pettopia.Hojji.pet.repository.PetRepository;
 import com.sh.pettopia.Hojji.user.member.entity.Member;

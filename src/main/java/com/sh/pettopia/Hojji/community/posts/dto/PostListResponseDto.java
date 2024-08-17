@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -23,7 +24,7 @@ public class PostListResponseDto {
     private String writer;
 
     // 작성일
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     // 조회수
     private Integer views;

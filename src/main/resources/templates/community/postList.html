@@ -118,30 +118,63 @@
                 <div class="col-md-12">
                     <h2 class="heading-section mb-4">커뮤니티</h2>
 
+
+
+
                     <!-- 카테고리 버튼 -->
-                    <div class="category-buttons justify-content-start">
-                        <button class="btn btn-outline-primary" onclick="filterPosts('all')">전체</button>
-                        <button class="btn btn-outline-primary" onclick="filterPosts('나눔')">반려동물 용품 나눔</button>
-                        <button class="btn btn-outline-primary" onclick="filterPosts('강아지')">동네 강아지 친구 찾기</button>
-                        <button class="btn btn-outline-primary" onclick="filterPosts('자유')">자유</button>
-                    </div>
-
-
-                    <div class="d-flex search-container justify-content-between">
-                            <button class="btn btn-primary"
-                                    th:onclick="|location.href = '@{/menu/menuRegist}'|">게시글 등록
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
+                                    data-bs-target="#home-tab-pane" type="button" role="tab"
+                                    aria-controls="home-tab-pane" aria-selected="true">전체
                             </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
+                                    data-bs-target="#profile-tab-pane" type="button" role="tab"
+                                    aria-controls="profile-tab-pane" aria-selected="false">자유
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab"
+                                    data-bs-target="#contact-tab-pane" type="button" role="tab"
+                                    aria-controls="contact-tab-pane" aria-selected="false">강아지 친구 찾기
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="disabled-tab" data-bs-toggle="tab"
+                                    data-bs-target="#disabled-tab-pane" type="button" role="tab"
+                                    aria-controls="disabled-tab-pane" aria-selected="false" disabled>나눔
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <form class="row">
+                                <div class="col-auto">
+                                    <input class="form-control" type="search" placeholder="검색어를 입력하세요"
+                                           aria-label="Search"
+                                           name="q" th:value="${param.q}">
+                                </div>
+                                <div >
+                                    <button class="btn btn-outline-success" type="submit">검색</button>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
 
-                        <form class="row col-8" style="margin: 0; padding :0">
-                            <div class="col-auto">
-                                <input class="form-control" type="search" placeholder="검색어를 입력하세요" aria-label="Search"
-                                       name="q" th:value="${param.q}">
-                            </div>
-                            <div class="col-auto p-0">
-                                <button class="btn btn-outline-success" type="submit">검색</button>
-                            </div>
-                        </form>
-                    </div>
+<!--                    <div class="tab-content" id="myTabContent">-->
+<!--                        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel"-->
+<!--                             aria-labelledby="home-tab" tabindex="0">...-->
+<!--                        </div>-->
+<!--                        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab"-->
+<!--                             tabindex="0">...-->
+<!--                        </div>-->
+<!--                        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab"-->
+<!--                             tabindex="0">...-->
+<!--                        </div>-->
+<!--                        <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab"-->
+<!--                             tabindex="0">...-->
+<!--                        </div>-->
+<!--                    </div>-->
 
                     <!-- 공지사항 -->
                     <div class="alert alert-info" role="alert">
@@ -178,6 +211,14 @@
                             </tr>
                             </tbody>
                         </table>
+                    </div>
+
+
+                    <!-- 게시글 등록 & 검색 -->
+                    <div class="d-flex search-container justify-content-end" style="margin-bottom: 10px">
+                        <button class="btn btn-primary"
+                                th:onclick="|location.href = '@{/community/registPost}'|">게시글 등록
+                        </button>
                     </div>
 
                     <!--                    &lt;!&ndash; 게시글 목록 &ndash;&gt;-->
@@ -271,6 +312,7 @@
             }
         }
     }
+
 </script>
 </body>
 </html>
