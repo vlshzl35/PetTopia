@@ -36,6 +36,7 @@ public abstract class User {
     private String name;
 
     // 성별
+
     @Column
     @Enumerated(EnumType.STRING) // enum을 string으로 관리
     private Gender gender;
