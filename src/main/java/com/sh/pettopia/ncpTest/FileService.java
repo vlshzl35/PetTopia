@@ -62,6 +62,7 @@ public class FileService {
                         new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata)
                                 .withCannedAcl(CannedAccessControlList.PublicRead));
 
+
                 // S3에 업로드한 폴더 및 파일 URL
                 uploadFileUrl = "https://kr.object.ncloudstorage.com/" + bucketName + "/" + keyName;
 
@@ -76,6 +77,7 @@ public class FileService {
                             .uploadFilePath(filePath)
                             .uploadFileUrl(uploadFileUrl)
                             .build());
+
         }
         return s3files;
     }
@@ -109,9 +111,18 @@ public class FileService {
 
     public List<FileDto> sitterUpFile(List<MultipartFile> multipartFiles,String petSitterEmail,String directory){
 
-        String filePath="petsitter/"+petSitterEmail+"/"+directory;
+        String filePath="petsitter/"+petSitterEmail+"/"+directory; // 파일에 저장되는 경로는 petsitter/email/directory 안에 파일이 저장된다
         System.out.println(filePath);
         return uploadFiles(multipartFiles,filePath);  // ncp 버킷에 filePath 경로의 디렉토리에 올라감(없으면 생성함)
+
+    }
+
+    public void deleteImage(String petSitterEmail, String directory, String fileName)
+    {
+        String path="petsitter/"+petSitterEmail+"/"+directory+"/";
+        System.out.println("service path = " + path);
+
+        amazonS3Client.deleteObject(bucketName,path+fileName);
 
     }
 
@@ -129,6 +140,7 @@ public class FileService {
             for (S3ObjectSummary objectSummary : result.getObjectSummaries()) {
                 String key = objectSummary.getKey();
                 String fileName = key.substring(key.lastIndexOf("/") + 1);
+
 
                 files.add(FileDto.builder()
                         .originalFileName(fileName)

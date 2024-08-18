@@ -8,6 +8,8 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <!--    <span th:text="${#authentication.principal.member.name}"></span>-->
     <title>프로필 등록</title>
     <style>
@@ -64,7 +66,7 @@
             <div class="container">
                 <div class="addImage" id="mainImage"></div><!-- 이미지 띄울 공간 여기에 새로 만들어진 이미지 태그가 append된다 -->
                 <input type="file" onchange="mainImgLoad(this)" name="mainImage" multiple>
-                    <img th:src="${petSitterRegisterDto.mainImageUrl}" alt="">
+                    <img th:src="${petSitterRegisterDto.mainImageUrl}" alt="" onclick="remove_confirm(src)" id="removeMainImage">
 
             </div>
         </div>
@@ -198,27 +200,32 @@
         }
     </script>
     <script>
-        function remove_confirm(imgUrl) {
+        function remove_confirm(src) {
             var header = $("meta[name='_csrf_header']").attr('content');
             var token = $("meta[name='_csrf']").attr('content');
+            console.log("header : "+header,"token : "+ token)
+            // var formData=new FormData;
+            // formData.append('image',imageUrl)
+            console.log("src : "+src);
+
             if (confirm("사진을 제거 하시겠습니까??")) {
 
-                alert(imgUrl);
                 $.ajax({
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader(header, token);
-                    },
-                    url: '[[@{/petsitter/removeimg}]]',
+                    // beforeSend: function (xhr) {
+                    //     xhr.setRequestHeader(header, token);
+                    // },
+                    url: '[[@{/petsitter/profileImage}]]',
                     method: 'post',
-                    data: {
-                        // get방식에서는 url뒤에 queryString형태로 추가한다.
-                        imgUrl: imgUrl
-                    },
-
-                    success(responseText, textStatus, jqXhr) {
-                        // 정상처리
-                        console.log(responseText, textStatus, jqXhr);
+                    // enctype: 'multipart/form-data',
+                    contentType: false, // false = content-type 헤더가 multipart/form-data로 전송하게 함
+                    processData: false, // false = formData를 string으로 변환하지 않음
+                    data: src,
+                    success(responseText) {
                         alert("이미지가 정상제거 되었습니다");
+                        console.log("responseText : "+responseText);
+                        location.reload();
+                        // console.log(responseText, textStatus, jqXhr);
+
 
                     }
                 })
@@ -278,11 +285,6 @@
         }
     </script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script
-            src="https://code.jquery.com/jquery-3.7.1.js"
-            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-            crossorigin="anonymous"></script>
 </div>
 
 </body>

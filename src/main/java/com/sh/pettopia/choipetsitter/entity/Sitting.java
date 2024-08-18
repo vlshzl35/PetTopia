@@ -2,7 +2,6 @@ package com.sh.pettopia.choipetsitter.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Cleanup;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,7 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Set;
+
 
 @Entity(name = "sitting")
 @Table(name = "tbl_sitting")
@@ -22,13 +21,9 @@ public class Sitting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "start_date")
+    @Column(name = "service_date")
     @CreationTimestamp
-    private LocalDate startDate; // 실제 요청 서비스를 실행하는 날짜
-
-    @Column(name = "end_date")
-    @UpdateTimestamp
-    private LocalDate endDate; // 실제 요청 서비스가 끝나는 날짜
+    private LocalDate serviceDate; // 실제 요청 서비스를 실행하는 날짜
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -38,16 +33,18 @@ public class Sitting {
     @UpdateTimestamp
     private LocalDateTime updatedAt; // 상태값이 바뀔때 저장
 
-
     @Column(name = "status")
     @Enumerated
-    private SittingStatus sittingStatus;
+    private SittingStatus sittingStatus; // 돌봄대기, 돌봄중, 돌봄완료
 
     @Column(name = "member_id")
     private String memberId;
 
     @Column(name = "petsitter_id")
     private String petSitterId;
+
+    @Column(name = "request_Date")
+    private LocalDate requestDate; // 요청이 들어온 날짜
 
     public void changeSittingStatus(SittingStatus sittingStatus)
     {

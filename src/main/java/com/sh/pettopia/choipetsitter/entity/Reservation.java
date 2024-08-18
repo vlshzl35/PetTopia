@@ -46,7 +46,7 @@ public class Reservation {
 
     @Column(name = "petsize_and_howmany")
     @ElementCollection
-    private List<PetSizeAndHowManyPet> petSizeAndHowManyPets;
+    private List<PetSizeAndHowManyPet> petSizeAndHowManyPets; // 어떤 견종을 몇마리 할 것인지
 
     @Column(name = "total_price")
     private int totalPrice;

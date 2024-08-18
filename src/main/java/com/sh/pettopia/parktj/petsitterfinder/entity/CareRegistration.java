@@ -104,6 +104,7 @@ public class CareRegistration {
 
 
 
+
     public void update(PetDetailsUpdateRequestDto dto){
                 this.postId = dto.getPostId();
                 this.address = dto.getAddress();
