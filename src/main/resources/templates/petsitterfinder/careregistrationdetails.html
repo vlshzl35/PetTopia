@@ -121,8 +121,10 @@
         <p>예약 요청 날짜: <input type="date" th:value="${detail.startDate}" readonly></p>
         <p>예약 종료요청 날짜: <input type="date" th:value="${detail.endDate}" readonly></p>
         <p>예약 서비스: <span th:text="${detail.requestService}"></span></p>
-        <div class="update-box"> 
-            <button class="btn btn-primary" th:if="${isWriter}" th:onclick="|location.href = '@{/petsitterfinder/detailupdate(postId=${detail.postId})}'|">수정</button>
+        <div class="update-box">
+            <button class="btn btn-primary" th:if="${isWriter}" th:onclick="|location.href = '@{/petsitterfinder/detailupdate(postId=${detail.postId})}'|">수정/삭제</button>
+            <input type="hidden" name ="sitterStatus" id ="sitterStatus" th:value="${memberInfo.sitterStatus}">
+            <button name= "requestBtn" id="requestBtn" class="btn btn-primary">예약요청</button>
         </div>
     </section>
 
@@ -150,6 +152,7 @@
 
         <div id="comment-list" class="mt-4">
             <!-- 여기에 댓글 목록이 동적으로 삽입됩니다 -->
+
         </div>
     </section>
 
@@ -163,7 +166,9 @@
                 success: function(res) {
                     console.log("댓글 목록 로드 성공", res);
                     let output = "";
-                    res.forEach(comment => {
+                    // list가 아닌 Page로 객체를 반환했을 때 forEach 바로 사용 못함
+                    // res.forEach -> res.content.forEach로 수정함
+                    res.content.forEach(comment => {
                         output += `
                             <div class="comment">
                                 <div class="comment-meta">
@@ -259,6 +264,24 @@
         }
 
         document.addEventListener('DOMContentLoaded', searchAddress);
+    </script>
+
+<!--    sitterStatus가 approved되지 않은 회원은 예약 요청 거절됨. -->
+    <script>
+        const status = document.getElementById('sitterStatus').value;
+
+        document.getElementById('requestBtn').addEventListener('click', function (){
+            const sitterStatus = status
+            console.log(sitterStatus)
+
+            if(sitterStatus !== 'APPROVED'){
+                alert('펫시터 권한이 없는 회원은 예약 요청하실 수 없습니다.')
+            }else {
+                window.location.href = '/petsitterfinder/reservation'
+
+            }
+        })
+
     </script>
 </div>
 </body>

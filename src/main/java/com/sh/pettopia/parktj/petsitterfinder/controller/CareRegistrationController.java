@@ -58,6 +58,7 @@ public class CareRegistrationController {
 //        이 부분 댓글에 멤버 정보 포함시키기 위함임
         model.addAttribute("memberInfo", authPrincipal.getMember());
         log.debug("detailDto = {}", detailDto);
+        log.debug("memberInfo = {}", authPrincipal.getMember());
 
         // post를 작성한 작성자의 memberId 와 로그인한 memberId 가 같은지 검증해주는 코드 ( 수정, 삭제 권한)
 
@@ -87,8 +88,6 @@ public class CareRegistrationController {
         careRegistrationService.regist(registRequestDto);
         redirectAttributes.addFlashAttribute("message", "등록이 완료 되었습니다");
         return "redirect:/petsitterfinder/careregistrationlist";
-
-
     }
 
     // detail postId로 조회하는 코드
@@ -114,10 +113,13 @@ public class CareRegistrationController {
         careRegistrationService.deleteByPostId(postId);
         redirectAttributes.addFlashAttribute("message", "성공적으로 게시글이 삭제되었습니다.");
         return "redirect:/petsitterfinder/careregistrationlist";
+    }
+
+    @GetMapping("/reservation")
+    public void reservation(){
 
     }
 
-    
 
     /**
      * # 궁금
