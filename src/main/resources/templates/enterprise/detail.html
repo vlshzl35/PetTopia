@@ -14,20 +14,11 @@
             <div class="hos_info">
                 <div class="hos_info_top">
                     <h2 id="entName" th:text="${enterpriseDetail.entName}"></h2>
-                    <p class="entType">반려동물미용</p> <!-- 주소 정보 -->
-                    <br><br>
-                    <!--<div class="rating">1차 병원 | ★ 4.9</div> &lt;!&ndash; 별점 추가 &ndash;&gt;-->
-                    <!--                        <div class="average-rating">-->
-                    <!--                            <span>평균 별점: </span>-->
-                    <!--                            <span class="star-rating">-->
-                    <!--                                <span class="filled-stars" style="width: calc({{averageRating}} / 5 * 100%);">★★★★★</span>-->
-                    <!--                                <span class="empty-stars">☆☆☆☆☆</span>-->
-                    <!--                            </span>-->
-                    <!--                        </div>-->
+                    <p th:utext="'약국 | <span style=&quot;color: gold;&quot;>★</span> ' + (${averageRating} != null ? ${averageRating} : 0.0)"></p>
                 </div>
                 <div>
                     <i class="fa-solid fa-location-dot" style="margin-right: 7px;"></i>
-                    <span class="entAddress" th:text="${enterpriseDetail.entAddress}"></span> <!-- 주소 정보 -->
+                    <span class="entAddress" th:text="${enterpriseDetail.entAddress}"></span>
                     <br><br>
                 </div>
 
@@ -41,7 +32,7 @@
         <div class="body">
             <p class="tab_wrap">
                 <button class="tab_button btn_info" id="btnHospitalInfo">병원 정보</button>
-                <button class="tab_button btn_reviews" id="btnReviews">후기<span class="num">(3)</span></button>
+                <button class="tab_button btn_reviews" id="btnReviews">후기 <span class="num"  th:text="'(' + ${reviewCount} + ')'"></span></button>
             </p>
             <div class="tab_inner" id="hospitalInfoTab" >
                 <div class="info_box">
@@ -66,39 +57,28 @@
                     </ul>
                 </div>
             </div>
-            <!-- 후기 탭 -->
             <div class="tab_inner" id="reviewTab">
                 <button class="writeReviewBtn" id="writeReviewBtn">후기 작성</button>
-                <div class="entReview">
-                    <!-- 리뷰 항목 반복 -->
-                    <div th:each="review : ${reviews}" class="review-details">
-                        <span id="memberId" th:text="${review.memberId}"></span>
-                        <span id="createdAt" th:text="${review.createdAt}"></span>
-                        <span id="updatedAt" th:text="${review.updatedAt}"></span>
-                        <span id="rating" th:text="${review.rating}"></span>
-                        <div id="reviewContent" th:text="${review.reviewContent}" >희망이는 귀여웡</div>
-                    </div>
+
+                <!-- 리뷰가 존재하지 않을 때 대체 UI 표시 -->
+                <div th:if="${#lists.isEmpty(reviews)}" class="no-review">
+                    <img src="/images/enterprise/noReview.png" alt="No review content" style="width: 150px; height: auto; margin-bottom: 20px;">
+                    <p>아직 작성된 후기가 없어요</p>
                 </div>
-                <!--                    <div class="entReview">-->
-                <!--                        <div class="review-details">-->
-                <!--                            <span class="reviewer">양희윤</span>-->
-                <!--                            <span class="review-date">2023-07-23</span>-->
-                <!--                            <span class="review-stars">★★★★★</span>-->
-                <!--                            <span class="review-rating">5.0</span>-->
-                <!--                            <div class="review-text">마음에 듭니다. 수의사 제 전용으로 고용하겠습니다.</div>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                    <div class="entReview">-->
-                <!--                        &lt;!&ndash; 다른 리뷰 항목 반복 &ndash;&gt;-->
-                <!--                        <div class="review-details">-->
-                <!--                            <span class="reviewer">박태준</span>-->
-                <!--                            <span class="review-date">2023-07-24</span>-->
-                <!--                            <span class="review-stars">★★★</span>-->
-                <!--                            <span class="review-rating">3.0</span>-->
-                <!--                            <div class="review-text">희망이는 귀여웡</div>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
+                <!-- 리뷰가 있을 때 반복문으로 리뷰를 표시 -->
+                <div th:each="review : ${reviews}" th:unless="${#lists.isEmpty(reviews)}" class="entReview">
+                    <div class="review-details">
+                        <span id="userId" th:text="${review.userId}">닉네임</span>
+                        <span class="review-stars">
+                            <span th:each="star : ${#numbers.sequence(1, review.rating.intValue())}">★</span>
+                            <span th:if="${review.rating.intValue() < 5}" th:each="emptyStar : ${#numbers.sequence(1, 5 - review.rating.intValue())}">☆</span>
+                        </span>
+                        <span id="createdAt" th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}">등록일자</span>
+                    </div>
+                    <div id="reviewContent" class="review-content" th:text="${review.reviewContent}">리뷰 내용</div>
+                </div>
             </div>
+
         </div>
     </div>
     <!-- 파일 업로드 폼 (팝업) -->

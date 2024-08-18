@@ -28,10 +28,22 @@ public class PharmacyController {
         PharmacyDetailResponseDto pharmacyDetail = pharmacyService.findById(entId); // DB에서 ent_id를 검색해 해당하는 컬럼을 Dto에 담고 엔티티로 변환합니다.
         log.debug("pharmacyDetail: {}", pharmacyDetail);
         model.addAttribute("enterpriseDetail", pharmacyDetail); // html에게 salonDetail정보를 주기
+        model.addAttribute("entType", "약국");
 
-        List<ReviewResponseDto> reviews =  reviewService.findByEntId(entId); // 리뷰 데이터
+
+        // 리뷰 데이터
+        List<ReviewResponseDto> reviews =  reviewService.findByEntId(entId);
         log.debug("reviews = {}", reviews);
         model.addAttribute( "reviews", reviews);
+
+        // 업체 리뷰 총 개수
+        long reviewCount = reviewService.countByEntId(entId);
+        model.addAttribute("reviewCount", reviewCount);
+
+        // 업체 평균 별점
+        Double averageRating = reviewService.findAverageRatingByEntId(entId);
+        log.debug("averageRating = {}", averageRating);
+        model.addAttribute("averageRating", averageRating);
 
         return "enterprise/detail";
 

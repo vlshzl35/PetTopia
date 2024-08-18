@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ReviewResponseDto {
     //    private Long nickName; // tbl_member에서 가져올 것
-    private Long memberId;
+    private Long userId;
     private double rating; // 별점
     private String reviewContent; // 작성한 내용
     private LocalDateTime createdAt;
@@ -22,7 +22,7 @@ public class ReviewResponseDto {
     // DQL : Entity -> Dto 반환
     public static ReviewResponseDto fromReview(Review review) {
         return new ReviewResponseDto(
-                review.getMemberId(),
+                review.getUserId(),
                 review.getRating(),
                 review.getReviewContent(),
                 review.getCreatedAt(),

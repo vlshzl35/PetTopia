@@ -118,13 +118,6 @@ document.addEventListener('DOMContentLoaded', function() {
         starRatingContainer.appendChild(label);
     }
 
-    // 선택된 별점을 출력하는 이벤트 리스너
-    document.querySelectorAll('.star-rating input').forEach(input => {
-        input.addEventListener('change', function() {
-            console.log(`Selected rating: ${this.value}`); // 선택된 별점을 콘솔에 출력
-        });
-    });
-
     // 닫기 버튼 핸들링
     document.querySelector('#closeBtn2').onclick = function() {
         document.getElementById('reviewPopup').style.display = 'none';

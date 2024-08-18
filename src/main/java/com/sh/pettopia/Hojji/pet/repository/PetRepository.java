@@ -1,7 +1,6 @@
 package com.sh.pettopia.Hojji.pet.repository;
 
 import com.sh.pettopia.Hojji.pet.entity.Pet;
-import com.sh.pettopia.parktj.petsitterfinder.dto.PetDetailsResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

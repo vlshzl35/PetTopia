@@ -5,6 +5,8 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -22,14 +24,14 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId; // 리뷰 id(pk)
     private Long entId; // 업체 id(fk)
-    private Long memberId; // 리뷰를 작성한 회원 id(fk)
-    //    @Enumerated(EnumType.STRING) // Rating은 enum타입
-//    private Rating rating; // 별점
+    private Long userId; // 리뷰를 작성한 회원 id(fk)
     private double rating; // 별점
     private String reviewContent; // 작성한 내용
     @CreatedDate
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime createdAt; // 생성일시
     @LastModifiedDate
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime updatedAt; // 마지막 업데이트 일시
     @Embedded
     private Receipt receipt; // 리뷰에 속한 영수증을 알 수 있다(Recipt의 column이 Review와 같이 생성됨)
