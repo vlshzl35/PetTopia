@@ -29,7 +29,7 @@ public class Reservation {
     private Long id;
 
     @Column(name = "reservation_day")
-    private LocalDate reservationDay; // 예약 날짜
+    private String reservationDay; // 예약 날짜
 
     @Column(name = "start_time")
     private LocalTime startTime; // 예약 시작시간
@@ -74,7 +74,7 @@ public class Reservation {
     public Reservation dtoToEntity(ReservationDto dto)
     {
         return Reservation.builder()
-                .reservationDay(dto.getReservationDays())
+                .reservationDay(dto.getReservationDay())
                 .partnerOrderId(dto.getPartner_order_id())
                 .startTime(dto.getStartTime())
                 .endTime(dto.getEndTime())
