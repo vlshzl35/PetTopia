@@ -19,7 +19,7 @@ public class PetSitter {
     // 펫 시터의 대한 프로필
 
     @Id
-    @Column(name = "id")
+    @Column(name = "petsitter_id")
     private String petSitterId; // 회원 아이디 = 멤버아이디
 
     @Column(name = "introduce",columnDefinition = "TEXT")

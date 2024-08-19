@@ -1,13 +1,11 @@
 package com.sh.pettopia.choipetsitter.entity;
 
 import com.sh.pettopia.choipetsitter.repository.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -43,7 +41,7 @@ public class PetSitterTest {
         pet.put("중형견",1);
         pet.put("대형견",2);
         Reservation reservation= Reservation.builder()
-                .petSitter_id("cstangga@naver.com")
+                .petSitterId("cstangga@naver.com")
                 .createdAt(LocalDateTime.now())
                 .endTime(LocalTime.of(19,0,0))
                 .startTime(LocalTime.of(16,0,0))
