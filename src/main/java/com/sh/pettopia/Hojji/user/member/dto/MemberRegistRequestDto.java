@@ -42,7 +42,6 @@ public class MemberRegistRequestDto {
 
     // 생년 월일
     private LocalDate birth;
-    private Timestamp timestamp;
 
     // 주소
     private String address;
