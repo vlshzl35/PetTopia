@@ -1,4 +1,4 @@
-INSERT INTO tbl_ent_review (review_id, ent_id, member_id, rating, review_content, created_at, updated_at, business_registration, ent_name, payment_date, total_price, receipt_img_url)
+INSERT INTO tbl_ent_review (review_id, ent_id, user_id, rating, review_content, created_at, updated_at, business_registration, ent_name, payment_date, total_price, receipt_img_url)
 VALUES
     -- Entries with ent_id from 1 to 14 (Hospitals)
     (1, 1, 1, 5, '이 업체는 정말 훌륭합니다! 서비스도 좋고, 분위기도 좋습니다.', '2024-08-01 14:30:00', NULL, '16906667', '마이펫동물의료센터', '2024-07-30', 15000, 'https://navercloud.com/receipt1.jpg'),
@@ -32,7 +32,6 @@ VALUES
     (27, 20, 3, 3, '괜찮았습니다.', '2024-08-27 10:00:00', NULL, '457412737', '루이약국', '2024-08-26', 15000, 'https://navercloud.com/receipt27.jpg'),
     (28, 21, 4, 2, '별로였습니다.', '2024-08-28 09:00:00', '2024-08-28 09:30:00', '8361362', '샘약국', '2024-08-27', 14000, 'https://navercloud.com/receipt28.jpg'),
 
-    (review_id, ent_id, member_id, rating, review_content, created_at, updated_at, business_registration, ent_name, payment_date, total_price, receipt_img_url)
     -- Entries with ent_id from 29 to 50 (Salons)
     (29, 29, 1, 5, '여기서 미용을 받으니 반려동물이 더욱 사랑스럽게 변했어요!', '2024-09-01 10:00:00', NULL, '955776953', '릴리줄리살롱', '2024-08-31', 20000, 'https://navercloud.com/receipt29.jpg'),
     (30, 29, 2, 4, '미용사가 매우 친절했습니다.', '2024-09-02 11:00:00', NULL, '955776953', '릴리줄리 NULL살롱', '2024-09-01', 18000, 'https://navercloud.com/receipt30.jpg'),
@@ -42,8 +41,8 @@ VALUES
     (34, 31, 6, 5, '훌륭한 서비스! 강력 추천합니다.', '2024-09-06 15:00:00', NULL, '469379492', '강아지집', '2024-09-05', 20000, 'https://navercloud.com/receipt34.jpg'),
     (35, 32, 7, 5, '반려동물이 아주 만족해 보였어요.', '2024-09-07 16:00:00', NULL, '27310828', '에이컷', '2024-09-06', 19000, 'https://navercloud.com/receipt35.jpg'),
     (36, 32, 8, 3, '그럭저럭 괜찮았습니다.', '2024-09-08 17:00:00', '2024-09-08 17:30:00', '27310828', '에이컷', '2024-09-07', 16000, 'https://navercloud.com/receipt36.jpg'),
-    (37, 33, 9, 2, '개선이 필요합니다.', '2024-09-09 09:00:00', NULL, '1956983295', '애니살롱 1호점', '2024-09-08', 14000, 'https://navercloud.com/receipt37.jpg'),
-    (38, 33, 10, 1, '정말 실망했습니다.', '2024-09-10 10:00:00', '2024-09-10 10:30:00', '1956983295', '애니살롱 1호점', '2024-09-09', 12000, 'https://navercloud.com/receipt38.jpg'),
+    (37, 32, 9, 2, '개선이 필요합니다.', '2024-09-09 09:00:00', NULL, '1956983295', '에이컷', '2024-09-08', 14000, 'https://navercloud.com/receipt37.jpg'),
+    (38, 32, 10, 1, '정말 실망했습니다.', '2024-09-10 10:00:00', '2024-09-10 10:30:00', '1956983295', '에이컷', '2024-09-09', 12000, 'https://navercloud.com/receipt38.jpg'),
     (39, 34, 1, 4, '반려동물이 행복해 보였습니다!', '2024-09-11 11:00:00', NULL, '652935909', '중앙애견미용실', '2024-09-10', 21000, 'https://navercloud.com/receipt39.jpg'),
     (40, 34, 2, 3, '좋았습니다. 다시 방문할 것 같아요.', '2024-09-12 12:00:00', '2024-09-12 12:30:00', '652935909', '중앙애견미용실', '2024-09-11', 19000, 'https://navercloud.com/receipt40.jpg'),
     (41, 35, 3, 2, '그럭저럭 괜찮았습니다.', '2024-09-13 13:00:00', '2024-09-13 13:30:00', '1939648528', '부띠끄몽뚜뚜', '2024-09-12', 16000, 'https://navercloud.com/receipt41.jpg'),
