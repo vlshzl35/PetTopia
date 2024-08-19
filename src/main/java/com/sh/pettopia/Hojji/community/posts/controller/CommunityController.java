@@ -2,7 +2,6 @@ package com.sh.pettopia.Hojji.community.posts.controller;
 
 import com.sh.pettopia.Hojji.common.paging.PageCriteria;
 import com.sh.pettopia.Hojji.community.posts.dto.PostListResponseDto;
-import com.sh.pettopia.Hojji.community.posts.entity.Category;
 import com.sh.pettopia.Hojji.community.posts.service.CommunityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

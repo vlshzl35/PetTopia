@@ -3,13 +3,11 @@ package com.sh.pettopia.Hojji.user.member.controller;
 
 import com.sh.pettopia.Hojji.user.member.dto.MemberRegistRequestDto;
 import com.sh.pettopia.Hojji.user.member.service.MemberService;
-
 import com.sh.pettopia.ncpTest.FileDto;
 import com.sh.pettopia.ncpTest.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
