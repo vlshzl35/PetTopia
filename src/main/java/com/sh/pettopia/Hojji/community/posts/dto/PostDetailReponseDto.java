@@ -1,7 +1,7 @@
 package com.sh.pettopia.Hojji.community.posts.dto;
 
 import com.sh.pettopia.Hojji.community.posts.entity.Category;
-import com.sh.pettopia.Hojji.community.posts.entity.Comment;
+import com.sh.pettopia.Hojji.community.comment.entity.Comment;
 import com.sh.pettopia.Hojji.community.posts.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,9 +29,6 @@ public class PostDetailReponseDto {
     // 게시일
     private LocalDateTime updatedAt;
 
-    // 댓글
-    private List<Comment> comments;
-
     // 작성자
     private String nickName;
 
@@ -54,7 +51,6 @@ public class PostDetailReponseDto {
                 post.getContent(),
                 post.getCategory(),
                 post.getUpdatedAt(),
-                post.getComments(),
                 post.getMember().getNickName(),
                 post.getMember().getId()
         );

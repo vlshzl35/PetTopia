@@ -1,5 +1,6 @@
 package com.sh.pettopia.Hojji.community.posts.entity;
 
+import com.sh.pettopia.Hojji.community.comment.entity.Comment;
 import com.sh.pettopia.Hojji.community.posts.dto.PostUpdateRequestDto;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import jakarta.persistence.*;
@@ -7,7 +8,6 @@ import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,14 +60,10 @@ public class Post {
     @Column(name = "report_count")
     private Integer reportCount;
 
-    @ElementCollection
-    @CollectionTable(name = "tbl_comment", joinColumns = @JoinColumn (name = "post_id"))
-    @Column(name = "comments")
-    private List<Comment> comments = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
 
     // 게시글 작성자를 셋팅하는 메소드입니다.
     public void setWriter(Member member) {
