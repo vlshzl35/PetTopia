@@ -148,6 +148,8 @@
         </div>
         <input type="hidden" name="commentWriter" id="commentWriter" th:value="${memberInfo.name}">
         <input type="hidden" name="memberId" id="memberId" th:value="${memberInfo.id}">
+        <input type="hidden" name="memberEmail" id="memberEmail" th:value="${memberInfo.email}">
+
         <button id="comment-write-btn" class="btn btn-success w-100" onclick="commentWrite()">댓글 작성</button>
 
         <div id="comment-list" class="mt-4">
@@ -277,7 +279,23 @@
             if(sitterStatus !== 'APPROVED'){
                 alert('펫시터 권한이 없는 회원은 예약 요청하실 수 없습니다.')
             }else {
-                window.location.href = '/petsitterfinder/reservation'
+
+                const confirmation =  confirm('예약을 요청하시겠습니까?')
+                if(confirmation){
+                // 스크립트에서 쿼리파라미터 요청
+                const postId = [[${detail.postId}]];
+                const memberEmail = '[[${memberInfo.email}]]' // 문자열 받을 때에는 따옴표 무조건 감싸줘야함 안감싸줘서 계속 오류났었네 이런!!
+
+                    $.ajax({
+                        type: "post",
+                        url: "/petsitterfinder/reservation",
+                        data:{
+                            "memberEmail":memberEmail,
+                            "postId":postId
+
+                        }
+                    })
+                }
 
             }
         })
