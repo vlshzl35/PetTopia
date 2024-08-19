@@ -1,19 +1,16 @@
 package com.sh.pettopia.choipetsitter.entity;
 
 
+import com.sh.pettopia.choipetsitter.dto.ReservationDto;
 import jakarta.persistence.*;
-import jdk.jfr.Enabled;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.core.annotation.Order;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Map;
 
 @Entity(name = "reservation")
 @Table(name = "tbl_reservation")
@@ -32,8 +29,7 @@ public class Reservation {
     private Long id;
 
     @Column(name = "reservation_day")
-    @ElementCollection
-    private List<LocalDate> reservationDay; // 예약 날짜
+    private LocalDate reservationDay; // 예약 날짜
 
     @Column(name = "start_time")
     private LocalTime startTime; // 예약 시작시간
@@ -46,10 +42,13 @@ public class Reservation {
 
     @Column(name = "petsize_and_howmany")
     @ElementCollection
-    private List<PetSizeAndHowManyPet> petSizeAndHowManyPets;
+    private List<PetSizeAndHowManyPet> petSizeAndHowManyPets; // 어떤 견종을 몇마리 할 것인지
 
     @Column(name = "total_price")
     private int totalPrice;
+
+    @Column(name = "partner_order_id")
+    private String partnerOrderId;// 주문번호, 환불 할 때 필요함 // 결제가 중간에 안됐을 떄 써야 한다
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -69,9 +68,25 @@ public class Reservation {
 
     // 어떤
     @Column(name = "petsitter_id")
-    private String petSitter_id;
+    private String petSitterId;
 
 
+    public Reservation dtoToEntity(ReservationDto dto)
+    {
+        return Reservation.builder()
+                .reservationDay(dto.getReservationDays())
+                .partnerOrderId(dto.getPartner_order_id())
+                .startTime(dto.getStartTime())
+                .endTime(dto.getEndTime())
+                .petSitterId(dto.getPetSitterId())
+                .memberId(dto.getMemberId())
+                .reservationStatus(ReservationStatus.ready)
+                .petSizeAndHowManyPets(dto.getPetSizeAndHowManyPets())
+                .note(dto.getNote())
+                .totalPrice(dto.getTotal_amount())
+                .build();
+
+    }
     public void changeReservationStatus(ReservationStatus reservationStatus)
     {
         this.reservationStatus=reservationStatus;
