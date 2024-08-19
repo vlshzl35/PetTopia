@@ -7,7 +7,7 @@ import com.sh.pettopia.parktj.petsitterfinder.dto.PetDetailsRegistRequestDto;
 import com.sh.pettopia.parktj.petsitterfinder.dto.PetDetailsUpdateRequestDto;
 import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;
 import com.sh.pettopia.parktj.petsitterfinder.repository.CareRegistrationRepository;
-import com.sh.pettopia.parktj.petsitterfinder.repository.ReservationByPetSitterRepository;
+//import com.sh.pettopia.parktj.petsitterfinder.repository.ReservationByPetSitterRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class CareRegistrationService {
     @Autowired
     private CareRegistrationRepository registrationRepository;
 
-    private ReservationByPetSitterRepository reservationByPetSitterRepository;
+//    private ReservationByPetSitterRepository reservationByPetSitterRepository;
 
     public void regist(PetDetailsRegistRequestDto registRequestDto) {
         // dto를 CareRegistration 엔티티로 전환해주고 그 값을 DB에 넣는 코드
@@ -85,7 +85,7 @@ public class CareRegistrationService {
 
     public void saveReservation(PetSitter petSitter)
     {
-        reservationByPetSitterRepository.saveReservation(petSitter);
+//        reservationByPetSitterRepository.saveReservation(petSitter);
 
     }
 }
