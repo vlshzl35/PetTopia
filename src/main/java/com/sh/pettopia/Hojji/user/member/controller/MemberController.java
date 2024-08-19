@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,8 @@ public class MemberController {
     @PostMapping("/registMember")
     public String registMember(
             @ModelAttribute MemberRegistRequestDto dto,
-            @RequestParam(value = "files") List<MultipartFile> files) {
+            @RequestParam(value = "files") List<MultipartFile> files,
+            RedirectAttributes redirectAttributes) {
         // 1. 비밀번호 암호화
         log.debug("dto = {}", dto);
         String encryptedPassword = passwordEncoder.encode(dto.getPassword());

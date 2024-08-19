@@ -67,4 +67,11 @@ public class PostService {
 
         return postId;
     }
+
+    // 게시글 삭제
+    public void delete(Long postId) {
+        log.debug("Service단 / postId = {}", postId);
+
+        postRepository.deleteById(postId);
+    }
 }

@@ -56,14 +56,13 @@ public class PostController {
         log.debug("pageCriteria = {}", new PageCriteria(page, limit, totalCount, url));
 
         log.debug("url = {}", url);
-
     }
 
     // 1개의 게시글 상세 조회
     @GetMapping("/postDetail")
     public void postDetail(@RequestParam Long postId, Model model) {
         PostDetailReponseDto postReponseDto = postService.findByPostId(postId);
-        log.debug("post = {}", postReponseDto);
+        log.debug("GET / postDetail / postDto = {}", postReponseDto);
 
         model.addAttribute("post", postReponseDto);
     }
@@ -97,7 +96,7 @@ public class PostController {
         return "redirect:/community/postDetail?postId=" + postId;
     }
 
-
+    // 게시물 수정 폼 조회
     @GetMapping("/updatePost")
     public void updatePost(@RequestParam Long postId, Model model) {
         PostDetailReponseDto postReponseDto = postService.findByPostId(postId);
@@ -106,6 +105,7 @@ public class PostController {
         model.addAttribute("post", postReponseDto);
     }
 
+    // 게시물 수정
     @PostMapping("/updatePost")
     public String updatePost(
             Long postId,
@@ -117,10 +117,23 @@ public class PostController {
         postService.updatePost(postId, postUpdateRequestDto);
 
         // 2. 게시글 수정 완료 알림
-        redirectAttributes.addFlashAttribute("message", "수정이 완료되었습니다!");
+        redirectAttributes.addFlashAttribute("message", "🔮수정이 완료되었습니다!🔮");
 
         // 3. 게시글 상세 페이지로 리다이렉트 하기 위해 postId를 반환합니다.
         return "redirect:/community/postDetail?postId=" + postId;
     }
 
+    @PostMapping("/deletePost")
+    public String deletePost(
+            @RequestParam Long postId,
+            RedirectAttributes redirectAttributes) {
+        log.debug("postId = {}", postId);
+
+        // 1. 게시글 Id를 받아 삭제합니다.
+        postService.delete(postId);
+
+        // 2. 게시글 삭제 완료 알림
+        redirectAttributes.addFlashAttribute("message", "❇️ 게시글이 삭제되었습니다.❇️");
+        return "redirect:/community/postList";
+    }
 }

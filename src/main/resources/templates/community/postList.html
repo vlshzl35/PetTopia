@@ -64,13 +64,13 @@
         }
 
         .alert-info {
-            background-color: #e9f7fd;
-            color: #31708f;
-            border-color: #bce8f1;
+            background-color: #e4f6e4;
+            color: #e4f6e4;
+            border-color: #a3cdb1;
         }
 
         .alert-info a {
-            color: #31708f;
+            color: #004e23;
         }
 
         .badge {
@@ -92,8 +92,9 @@
         .badge-category-notice {
             background-color: #ff5362;
         }
-        .postTitle{
-            color: black ;
+
+        .postTitle {
+            color: black;
         }
     </style>
 </head>
@@ -119,8 +120,6 @@
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <h2 class="heading-section mb-4">커뮤니티</h2>
-
-
 
 
                     <!-- 카테고리 버튼 -->
@@ -156,7 +155,7 @@
                                            aria-label="Search"
                                            name="q" th:value="${param.q}">
                                 </div>
-                                <div >
+                                <div>
                                     <button class="btn btn-outline-success" type="submit">검색</button>
                                 </div>
                             </form>
@@ -252,28 +251,33 @@
                     stroke="#F96D00"/>
         </svg>
     </div>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<script>
-    function filterPosts(category) {
-        var posts = document.getElementsByClassName('post-item');
-        for (var i = 0; i < posts.length; i++) {
-            if (category === 'all') {
-                posts[i].style.display = 'flex';
-            } else {
-                if (posts[i].getAttribute('data-category') === category) {
+    <!--/* fragment 적용시, javaScript 코드가 fragment = "main"안에 있어야 한다! */-->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function filterPosts(category) {
+            var posts = document.getElementsByClassName('post-item');
+            for (var i = 0; i < posts.length; i++) {
+                if (category === 'all') {
                     posts[i].style.display = 'flex';
                 } else {
-                    posts[i].style.display = 'none';
+                    if (posts[i].getAttribute('data-category') === category) {
+                        posts[i].style.display = 'flex';
+                    } else {
+                        posts[i].style.display = 'none';
+                    }
                 }
             }
         }
-    }
 
-</script>
+        // Java 코드에서 addFlashAttribute로 담은 message를 alert를 해주기 위한 코드입니다.
+        const message = '[[${message}]]';
+        message && alert(message);
+    </script>
+</div>
 </body>
 </html>
