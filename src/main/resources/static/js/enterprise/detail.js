@@ -1,28 +1,38 @@
 document.addEventListener('DOMContentLoaded', function() {
-    var btnHospitalInfo = document.getElementById('btnHospitalInfo');
-    var hospitalInfoTab = document.getElementById('hospitalInfoTab');
-    var btnReviews = document.getElementById('btnReviews');
-    var reviewTab = document.getElementById('reviewTab');
+    const btnEnterpriseInfo = document.getElementById('btnEnterpriseInfo');
+    const enterpriseInfoTab = document.getElementById('enterpriseInfoTab');
+    const btnReviews = document.getElementById('btnReviews');
+    const reviewTab = document.getElementById('reviewTab');
 
-    btnHospitalInfo.addEventListener('click', function() {
-        if (hospitalInfoTab.style.display === 'block') {
-            hospitalInfoTab.style.display = 'none';
-        } else {
-            hospitalInfoTab.style.display = 'block';
-            reviewTab.style.display = 'none'; // 후기 탭을 숨깁니다.
+    // 리뷰 등록후 리다이렉트 시, 이전에 선택된 탭(리뷰탭) 활성화
+    const activeTab = localStorage.getItem('activeTab');
+    if (activeTab === 'reviews') {
+        reviewTab.style.display = 'block';
+        enterpriseInfoTab.style.display = 'none';
+    } else {
+        enterpriseInfoTab.style.display = 'block';
+        reviewTab.style.display = 'none';
+    }
+
+    btnEnterpriseInfo.addEventListener('click', function() {
+        // 업체 정보 탭이 열려있다면 아무것도 실행하지 않고, 닫혀있으면 실행
+        if (enterpriseInfoTab.style.display !== 'block') {
+            enterpriseInfoTab.style.display = 'block';
+            reviewTab.style.display = 'none'; // 리뷰 탭 숨기기
+            localStorage.setItem('activeTab', 'info'); // 리뷰탭이 활성화 될 때 상태 저장
         }
     });
 
     btnReviews.addEventListener('click', function() {
-        if (reviewTab.style.display === 'block') {
-            reviewTab.style.display = 'none';
-        } else {
+        // 업체 정보 탭이 열려있다면 아무것도 실행하지 않고, 닫혀있으면 실행
+        if (reviewTab.style.display !== 'block') {
             reviewTab.style.display = 'block';
-            hospitalInfoTab.style.display = 'none'; // 병원 정보 탭을 숨깁니다.
+            enterpriseInfoTab.style.display = 'none'; // 업체정보 탭 숨기기
+            localStorage.setItem('activeTab', 'reviews'); // 리뷰탭이 활성화 될 때 상태 저장
         }
     });
 
-    // 영수증 인증 폼
+    /* 영수증 인증 폼 */
 
     // 모달 창을 열고 닫는 스크립트
     document.getElementById('writeReviewBtn').onclick = function() {
@@ -118,8 +128,14 @@ document.addEventListener('DOMContentLoaded', function() {
         starRatingContainer.appendChild(label);
     }
 
-    // 닫기 버튼 핸들링
+    // 리뷰등록 모달 닫기 버튼 핸들링
     document.querySelector('#closeBtn2').onclick = function() {
         document.getElementById('reviewPopup').style.display = 'none';
     };
+
+    // 리뷰 폼 제출시 message 출력
+    document.querySelector("#reviewForm").addEventListener('submit', (e) => {
+        const reviewSubmitMessage = '${reviewSubmitMessage}';
+        reviewSubmitMessage && alert(reviewSubmitMessage); // 메세지가 존재하면 alert(회원가입 완료) 표시
+    })
 });

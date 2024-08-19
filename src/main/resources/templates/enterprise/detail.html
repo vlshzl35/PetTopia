@@ -14,7 +14,7 @@
             <div class="hos_info">
                 <div class="hos_info_top">
                     <h2 id="entName" th:text="${enterpriseDetail.entName}"></h2>
-                    <p th:utext="'약국 | <span style=&quot;color: gold;&quot;>★</span> ' + (${averageRating} != null ? ${averageRating} : 0.0)"></p>
+                    <p th:utext="${entType} + ' | <span style=&quot;color: gold;&quot;>★</span> ' + (${averageRating} != null ? ${averageRating} : 0.0)"></p>
                 </div>
                 <div>
                     <i class="fa-solid fa-location-dot" style="margin-right: 7px;"></i>
@@ -31,10 +31,10 @@
         </div>
         <div class="body">
             <p class="tab_wrap">
-                <button class="tab_button btn_info" id="btnHospitalInfo">병원 정보</button>
+                <button class="tab_button btn_info" id="btnEnterpriseInfo" th:text="${entType} + ' 정보'"></button>
                 <button class="tab_button btn_reviews" id="btnReviews">후기 <span class="num"  th:text="'(' + ${reviewCount} + ')'"></span></button>
             </p>
-            <div class="tab_inner" id="hospitalInfoTab" >
+            <div class="tab_inner" id="enterpriseInfoTab" >
                 <div class="info_box">
                     <ul class="info_box-list">
                         <li>
@@ -68,17 +68,17 @@
                 <!-- 리뷰가 있을 때 반복문으로 리뷰를 표시 -->
                 <div th:each="review : ${reviews}" th:unless="${#lists.isEmpty(reviews)}" class="entReview">
                     <div class="review-details">
-                        <span id="userId" th:text="${review.userId}">닉네임</span>
+                        <span id="nickName" th:text="${review.nickName}" style="font-size: 1.2em; font-weight: bold;"></span>
+<!--                        <span id="nickName" th:text="${review.nickName}"></span>-->
                         <span class="review-stars">
                             <span th:each="star : ${#numbers.sequence(1, review.rating.intValue())}">★</span>
                             <span th:if="${review.rating.intValue() < 5}" th:each="emptyStar : ${#numbers.sequence(1, 5 - review.rating.intValue())}">☆</span>
                         </span>
                         <span id="createdAt" th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}">등록일자</span>
                     </div>
-                    <div id="reviewContent" class="review-content" th:text="${review.reviewContent}">리뷰 내용</div>
+                    <div class="review-content" th:text="${review.reviewContent}">리뷰 내용</div>
                 </div>
             </div>
-
         </div>
     </div>
     <!-- 파일 업로드 폼 (팝업) -->
@@ -134,7 +134,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <textarea name="" id="message" cols="30" rows="10" class="form-control" placeholder="자유롭게 작성하세요" required></textarea>
+                    <textarea name="reviewContent" cols="30" rows="10" class="form-control" placeholder="자유롭게 작성하세요" required></textarea>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="등록하기" class="reviewSubmitBtn" style="font-size: 16px">

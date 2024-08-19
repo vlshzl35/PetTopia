@@ -1,16 +1,19 @@
 package com.sh.pettopia.enterprise.controller;
 
+import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
+import com.sh.pettopia.Hojji.user.member.entity.Member;
 import com.sh.pettopia.enterprise.dto.PharmacyDetailResponseDto;
+import com.sh.pettopia.enterprise.dto.ReviewRegistDto;
 import com.sh.pettopia.enterprise.dto.ReviewResponseDto;
 import com.sh.pettopia.enterprise.service.PharmacyService;
 import com.sh.pettopia.enterprise.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -46,6 +49,26 @@ public class PharmacyController {
         model.addAttribute("averageRating", averageRating);
 
         return "enterprise/detail";
+    }
 
+    // 리뷰 등록
+    @PostMapping("/detail")
+    public String reviewRegist(@RequestParam("id") Long entId, Model model, RedirectAttributes redirectAttributes,
+                               @AuthenticationPrincipal AuthPrincipal authPrincipal, // 인증된 사용자 정
+                               @ModelAttribute ReviewRegistDto reviewRegistDto) {
+
+        // 인증된 사용자 정보에서 회원 정보(Member)에서 사용자 id를 가져옵니다
+        Member member = authPrincipal.getMember();
+        Long userId = member.getId(); // userId 추출
+
+        // Dto에 userId와 entId 설정
+        reviewRegistDto.initializeIds(entId, userId);
+
+        // 리뷰 등록
+        reviewService.reviewRegist(reviewRegistDto);
+        log.debug("reviewRegistDto = {}", reviewRegistDto);
+
+        redirectAttributes.addFlashAttribute("reviewSubmitMessage", "리뷰가 등록되었습니다");
+        return "redirect:/enterprise/pharmacy/detail?id=" + entId;
     }
 }
