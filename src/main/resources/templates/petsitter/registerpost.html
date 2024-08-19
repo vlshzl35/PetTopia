@@ -115,8 +115,7 @@
                         </div>
                         <div style="overflow:scroll; width:500px; height:400px;">
                             <div th:each="image : ${dto.imageUrlList}">
-                                <img th:src=" ${image}" style="height: 400px; width: 400px"
-                                     th:onclick="remove_confirm(this.src)" alt="">
+                                <img th:src=" ${image}" style="height: 400px; width: 400px" onclick="remove_confirm(src)" alt="">
                             </div>
 
                         </div>
@@ -267,7 +266,38 @@
             </div>
         </form>
     </div>
+    <script>
+        function remove_confirm(src) {
+            var header = $("meta[name='_csrf_header']").attr('content');
+            var token = $("meta[name='_csrf']").attr('content');
+            console.log("src : "+src);
+            const parts = src.split('/');
+            const fileNameWithExtension = parts[parts.length - 1];
 
+            console.log(fileNameWithExtension);
+
+            if (confirm("사진을 제거 하시겠습니까??")) {
+
+                $.ajax({
+
+                    url: '[[@{/petsitter/removePostImage}]]',
+                    method: 'post',
+                    // contentType: false, // false = content-type 헤더가 multipart/form-data로 전송하게 함
+                    processData: true, // false = formData를 string으로 변환하지 않음
+                    data: {
+                        fileNameWithExtension:fileNameWithExtension
+                    },
+                    success(responseText) {
+                        alert("이미지가 정상제거 되었습니다");
+                        console.log("responseText : "+responseText);
+                        location.reload(); // 바로 새로고침
+                    }
+                })
+
+            }
+
+        }
+    </script>
     <script>
         const impossibleDays = document.getElementById('impossibleDays');
         var dates = [[${dto.impossibleDays}]];
