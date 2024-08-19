@@ -229,12 +229,13 @@
                                              style="display: inline">
                                             <label>
                                                 <input name="petSizeAndHowManyPets[0].petSize" value="소형견"
-                                                hidden="hidden">
+                                                       hidden="hidden">
                                             </label>
                                             <div>
                                                 <img th:src="@{/images/availablePetSize/smallpet.PNG}" alt="소형견">
                                                 <label>
-                                                    <input type="number" name="petSizeAndHowManyPets[0].howManyPet" id="smallPet"
+                                                    <input type="number" name="petSizeAndHowManyPets[0].howManyPet"
+                                                           id="smallPet"
                                                            min="0"
                                                            value="0"
                                                            oninput="calculateTotal()"/>
@@ -248,12 +249,13 @@
                                              style="display: inline">
                                             <label>
                                                 <input name="petSizeAndHowManyPets[1].petSize" value="중형견"
-                                                hidden="hidden"/>
+                                                       hidden="hidden"/>
                                             </label>
                                             <div>
                                                 <img th:src="@{/images/availablePetSize/middlepet.PNG}" alt="중형견">
                                                 <label>
-                                                    <input type="number" name="petSizeAndHowManyPets[1].howManyPet" id="middlePet"
+                                                    <input type="number" name="petSizeAndHowManyPets[1].howManyPet"
+                                                           id="middlePet"
                                                            min="0"
                                                            value="0"
                                                            oninput="calculateTotal()"/>
@@ -272,7 +274,8 @@
                                             <div>
                                                 <img th:src="@{/images/availablePetSize/largepet.PNG}" alt="대형견">
                                                 <label>
-                                                    <input type="number" name="petSizeAndHowManyPets[2].howManyPet" id="largePet"
+                                                    <input type="number" name="petSizeAndHowManyPets[2].howManyPet"
+                                                           id="largePet"
                                                            min="0"
                                                            value="0"
                                                            oninput="calculateTotal()"/>
@@ -291,7 +294,9 @@
                                 <input type="hidden" name="partner_order_id" id="partner_order_id">
                                 <p id="totalCostDisplay">총 금액 : 0원</p>
 
-                                <button type="submit" id="btn-kakao">결제 및 예약</button>
+                                <div th:if="${#authentication.principal.member.email != dto.getPetSitterId}">
+                                    <button type="submit" id="btn-kakao">결제 및 예약</button>
+                                </div>
                             </form>
                         </div>
 
@@ -304,14 +309,14 @@
     <script>
 
         function calculateTotal() {
-            var total_PetCnt=document.getElementById('total_PetCnt');
-            var item_name=document.getElementById('item_name');
+            var total_PetCnt = document.getElementById('total_PetCnt');
+            var item_name = document.getElementById('item_name');
             const smallPetCnt = parseInt(document.querySelector('input[name="petSizeAndHowManyPets[0].howManyPet"]').value) || 0;
             const middlePetCnt = parseInt(document.querySelector('input[name="petSizeAndHowManyPets[1].howManyPet"]').value) || 0;
             const largePetCnt = parseInt(document.querySelector('input[name="petSizeAndHowManyPets[2].howManyPet"]').value) || 0;
 
             // Calculate the total cost
-            const total = (smallPetCnt*45000 + middlePetCnt*50000 + largePetCnt*55000);
+            const total = (smallPetCnt * 45000 + middlePetCnt * 50000 + largePetCnt * 55000);
             let totalPets = smallPetCnt + middlePetCnt + largePetCnt;
 
             if (totalPets > 6) {
@@ -319,31 +324,24 @@
                 smallPetCnt.value = 0;
                 middlePetCnt.value = 0;
                 largePetCnt.value = 0;
-
             }
 
             // 총합 출력
             document.getElementById('totalCostDisplay').innerText = '총 금액 : ' + total.toLocaleString() + '원';
-            document.getElementById('totalPrice').value=total;
-            total_PetCnt.value=totalPets;
-            if(smallPetCnt)
-            {
-                item_name.value="소형견"
-                if(middlePetCnt || largePetCnt)
-                {
-                    item_name.value="소형견 외..."
+            document.getElementById('totalPrice').value = total;
+            total_PetCnt.value = totalPets;
+            if (smallPetCnt) {
+                item_name.value = "소형견"
+                if (middlePetCnt || largePetCnt) {
+                    item_name.value = "소형견 외..."
                 }
-            }
-            else if(middlePetCnt)
-            {
-                item_name.value="중형견"
-                if(largePetCnt)
-                {
-                    item_name.value="중형견 외..."
+            } else if (middlePetCnt) {
+                item_name.value = "중형견"
+                if (largePetCnt) {
+                    item_name.value = "중형견 외..."
                 }
-            }
-            else
-                item_name.value="대형견"
+            } else
+                item_name.value = "대형견"
 
         }
     </script>
@@ -365,7 +363,8 @@
 
         // 예약 요청을 하기 전에 주문번호를 준다
         const partner_order_id = document.getElementById('partner_order_id');
-        partner_order_id.value=Math.random().toString(36).substr(2, 16);
+        partner_order_id.value = Math.random().toString(36).substr(2, 16);
+
         document.getElementById('petForm').onsubmit = function () {
             return validateInput();
         };
@@ -392,9 +391,7 @@
 
                     // Set minTime for the end timepicker
                     $('#end').timepicker('option', 'minTime', minEndTime);
-                }
-                else
-                {
+                } else {
                     $('#end').prop('disabled', true);
                 }
 
@@ -413,62 +410,62 @@
         });
     </script>
 
-<!--    <script>-->
+    <!--    <script>-->
 
 
-<!--        $("#btn-kakao").click(function () {-->
-<!--            var reservationForm=document.getElementById('reservationForm');-->
-<!--            const smallPetCnt = parseInt(document.getElementById('smallPet').value)-->
-<!--            const middlePetCnt = parseInt(document.getElementById('middlePet').value)-->
-<!--            const largePetCnt = parseInt(document.getElementById('largePet').value)-->
-<!--            var item_name;-->
-<!--            if(smallPetCnt)-->
-<!--            {-->
-<!--                item_name="소형견"-->
-<!--                if(middlePetCnt || largePetCnt)-->
-<!--                {-->
-<!--                    item_name="소형견 외..."-->
-<!--                }-->
-<!--            }-->
-<!--            else if(middlePetCnt)-->
-<!--            {-->
-<!--                item_name="중형견"-->
-<!--                if(largePetCnt)-->
-<!--                {-->
-<!--                    item_name="중형견 외..."-->
-<!--                }-->
-<!--            }-->
-<!--            else-->
-<!--                item_name="대형견"-->
+    <!--        $("#btn-kakao").click(function () {-->
+    <!--            var reservationForm=document.getElementById('reservationForm');-->
+    <!--            const smallPetCnt = parseInt(document.getElementById('smallPet').value)-->
+    <!--            const middlePetCnt = parseInt(document.getElementById('middlePet').value)-->
+    <!--            const largePetCnt = parseInt(document.getElementById('largePet').value)-->
+    <!--            var item_name;-->
+    <!--            if(smallPetCnt)-->
+    <!--            {-->
+    <!--                item_name="소형견"-->
+    <!--                if(middlePetCnt || largePetCnt)-->
+    <!--                {-->
+    <!--                    item_name="소형견 외..."-->
+    <!--                }-->
+    <!--            }-->
+    <!--            else if(middlePetCnt)-->
+    <!--            {-->
+    <!--                item_name="중형견"-->
+    <!--                if(largePetCnt)-->
+    <!--                {-->
+    <!--                    item_name="중형견 외..."-->
+    <!--                }-->
+    <!--            }-->
+    <!--            else-->
+    <!--                item_name="대형견"-->
 
-<!--            const totalPetCnt=smallPetCnt+middlePetCnt+largePetCnt;-->
-<!--            const totalPrice = (smallPetCnt*45000 + middlePetCnt*50000 + largePetCnt*55000)-->
+    <!--            const totalPetCnt=smallPetCnt+middlePetCnt+largePetCnt;-->
+    <!--            const totalPrice = (smallPetCnt*45000 + middlePetCnt*50000 + largePetCnt*55000)-->
 
-<!--            console.log("total : "+totalPrice, "totalPetCnt : "+totalPetCnt);-->
-<!--            $.ajax({-->
-<!--                url: '/petsitter/reservation',-->
-<!--                type: 'post',-->
-<!--                data: {-->
-<!--                    reservationForm,-->
-<!--                    item_name: item_name,-->
-<!--                    quantity: totalPetCnt,-->
-<!--                    total_amount: totalPrice,-->
-<!--                    tax_free_amount: "0",-->
-<!--                },-->
-<!--                success: function (response) {-->
-<!--                    console.log("결제 페이지입니다");-->
-<!--                    alert(response.next_redirect_pc_url); //kakao payment api에서 알아서 응답해주는 url-->
-<!--                    location.href = response.next_redirect_pc_url; // 결제 페이지-->
-<!--                    // reservationForm.submit();-->
-<!--                //-->
-<!--                },-->
-<!--                error: function (xhr, err, status) {-->
-<!--                    console.log(xhr.responseText);-->
-<!--                    alert(err + "이(가) 발생했습니다: " + status);-->
-<!--                }-->
-<!--            });-->
-<!--        });-->
-<!--    </script>-->
+    <!--            console.log("total : "+totalPrice, "totalPetCnt : "+totalPetCnt);-->
+    <!--            $.ajax({-->
+    <!--                url: '/petsitter/reservation',-->
+    <!--                type: 'post',-->
+    <!--                data: {-->
+    <!--                    reservationForm,-->
+    <!--                    item_name: item_name,-->
+    <!--                    quantity: totalPetCnt,-->
+    <!--                    total_amount: totalPrice,-->
+    <!--                    tax_free_amount: "0",-->
+    <!--                },-->
+    <!--                success: function (response) {-->
+    <!--                    console.log("결제 페이지입니다");-->
+    <!--                    alert(response.next_redirect_pc_url); //kakao payment api에서 알아서 응답해주는 url-->
+    <!--                    location.href = response.next_redirect_pc_url; // 결제 페이지-->
+    <!--                    // reservationForm.submit();-->
+    <!--                //-->
+    <!--                },-->
+    <!--                error: function (xhr, err, status) {-->
+    <!--                    console.log(xhr.responseText);-->
+    <!--                    alert(err + "이(가) 발생했습니다: " + status);-->
+    <!--                }-->
+    <!--            });-->
+    <!--        });-->
+    <!--    </script>-->
     <script th:inline="javascript">
 
         const impossibleDays = document.getElementById('impossibleDays');
