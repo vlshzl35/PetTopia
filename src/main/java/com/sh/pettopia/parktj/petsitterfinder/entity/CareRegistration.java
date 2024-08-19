@@ -22,10 +22,10 @@ public class CareRegistration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     private Long postId;
-
-    @Column(name ="pet_id", nullable = false)
+    // 어떤 펫을 맡기는지 알기 위해
+    @Column(name = "pet_id", nullable = false)
     private Long petId;
-//
+    //어떤 회원의 게시글인지 알기위해
     @Column(name = "member_id", nullable = true)
     private Long memberId;
 
@@ -34,7 +34,7 @@ public class CareRegistration {
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDate createdDate;
-    
+
     // @UpdateTimestamp - 엔티티가 업데이트될 때마다 현재 시간을 해당 필드에 자동으로 할당
     @Column(name = "updated_at", nullable = false)
     @UpdateTimestamp
@@ -63,34 +63,33 @@ public class CareRegistration {
     @Column(name = "pet_name", nullable = false)
     private String petName;
 
-    @Column(name ="pet_bith", nullable = false)
+    @Column(name = "pet_bith", nullable = false)
     private LocalDate birth;
 
-    @Column(name ="pet_neutered", nullable = false)
+    @Column(name = "pet_neutered", nullable = false)
     private boolean neutered;
 
-    @Column(name ="pet_profile_url", nullable = true)
+    @Column(name = "pet_profile_url", nullable = true)
     private String profileUrl;
-
 
     @ElementCollection
     @CollectionTable(name = "tbl_pet_vaccination_post", joinColumns = @JoinColumn(name = "postId"))
     private Set<VaccinationType> petVaccinationType;
 
-    @Column(name ="pet_petSociability", nullable = false)
+    @Column(name = "pet_petSociability", nullable = false)
     private String petSociability;
-
-    @Column(name="pet_status", nullable = false)
+    // 실종 혹은 실종아님
+    @Column(name = "pet_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private PetStatus status;
-
+    // 견종
     @Column(name = "pet_breed", nullable = false)
     private String breed;
-
-    @Column(name ="pet_size" , nullable = false)
+    // 중형견, 소형견, 대형견
+    @Column(name = "pet_size", nullable = false)
     @Enumerated(EnumType.STRING)
     private PetSize petSize;
-
+    // 성별
     @Column(name = "pet_gender", nullable = false)
     private PetGender petGender;
 
@@ -103,14 +102,12 @@ public class CareRegistration {
     private String address;
 
 
-
-
-    public void update(PetDetailsUpdateRequestDto dto){
-                this.postId = dto.getPostId();
-                this.address = dto.getAddress();
-                this.requestStartDate = dto.getRequestStartDate();
-                this.requestEndDate = dto.getRequestEndDate();
-                this.requestService = dto.getRequestService();
+    public void update(PetDetailsUpdateRequestDto dto) {
+        this.postId = dto.getPostId();
+        this.address = dto.getAddress();
+        this.requestStartDate = dto.getRequestStartDate();
+        this.requestEndDate = dto.getRequestEndDate();
+        this.requestService = dto.getRequestService();
     }
 
 }

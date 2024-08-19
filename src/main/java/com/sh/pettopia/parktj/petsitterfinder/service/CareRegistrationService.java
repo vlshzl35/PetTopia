@@ -1,11 +1,13 @@
 package com.sh.pettopia.parktj.petsitterfinder.service;
 
+import com.sh.pettopia.choipetsitter.entity.PetSitter;
 import com.sh.pettopia.parktj.petsitterfinder.dto.CareRegistrationDetailResponseDto;
 import com.sh.pettopia.parktj.petsitterfinder.dto.CareRegistrationListResponseDto;
 import com.sh.pettopia.parktj.petsitterfinder.dto.PetDetailsRegistRequestDto;
 import com.sh.pettopia.parktj.petsitterfinder.dto.PetDetailsUpdateRequestDto;
 import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;
 import com.sh.pettopia.parktj.petsitterfinder.repository.CareRegistrationRepository;
+import com.sh.pettopia.parktj.petsitterfinder.repository.ReservationByPetSitterRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ import java.util.List;
 public class CareRegistrationService {
     @Autowired
     private CareRegistrationRepository registrationRepository;
+
+    private ReservationByPetSitterRepository reservationByPetSitterRepository;
+
     public void regist(PetDetailsRegistRequestDto registRequestDto) {
         // dto를 CareRegistration 엔티티로 전환해주고 그 값을 DB에 넣는 코드
         CareRegistration careRegistration = registRequestDto.toCareRegistration();
@@ -73,7 +78,14 @@ public class CareRegistrationService {
 
     }
 
-    public void deleteByPostId(Long postId) {
+    public void deleteByPostId(Long postId)
+    {
         registrationRepository.deleteByPostId(postId);
+    }
+
+    public void saveReservation(PetSitter petSitter)
+    {
+        reservationByPetSitterRepository.saveReservation(petSitter);
+
     }
 }
