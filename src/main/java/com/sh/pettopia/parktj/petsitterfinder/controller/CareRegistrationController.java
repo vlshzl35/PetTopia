@@ -2,6 +2,8 @@ package com.sh.pettopia.parktj.petsitterfinder.controller;
 
 import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
 import com.sh.pettopia.Hojji.pet.service.PetService;
+import com.sh.pettopia.choipetsitter.entity.PetSitter;
+import com.sh.pettopia.choipetsitter.service.PetSitterService;
 import com.sh.pettopia.parktj.petsitterfinder.dto.*;
 import com.sh.pettopia.parktj.petsitterfinder.service.CareRegistrationService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import java.util.List;
 public class CareRegistrationController {
     private final CareRegistrationService careRegistrationService;
     private final PetService petService;
+    private final PetSitterService petSitterService;
 
     // 멤버에 id에 맞는 펫 정보 option 태그에 보여주기 위한 코드
     // 08/13 멤버 session에 저장된 정보로 맞는 정보 찾아오기
@@ -58,6 +61,7 @@ public class CareRegistrationController {
 //        이 부분 댓글에 멤버 정보 포함시키기 위함임
         model.addAttribute("memberInfo", authPrincipal.getMember());
         log.debug("detailDto = {}", detailDto);
+        log.debug("memberInfo = {}", authPrincipal.getMember());
 
         // post를 작성한 작성자의 memberId 와 로그인한 memberId 가 같은지 검증해주는 코드 ( 수정, 삭제 권한)
 
@@ -87,8 +91,6 @@ public class CareRegistrationController {
         careRegistrationService.regist(registRequestDto);
         redirectAttributes.addFlashAttribute("message", "등록이 완료 되었습니다");
         return "redirect:/petsitterfinder/careregistrationlist";
-
-
     }
 
     // detail postId로 조회하는 코드
@@ -114,10 +116,21 @@ public class CareRegistrationController {
         careRegistrationService.deleteByPostId(postId);
         redirectAttributes.addFlashAttribute("message", "성공적으로 게시글이 삭제되었습니다.");
         return "redirect:/petsitterfinder/careregistrationlist";
+    }
+
+    @PostMapping("/reservation")
+    public void reservation(@ModelAttribute ReservationRequestDto reservationRequestDto){
+       log.debug("reservationRequestDto={}", reservationRequestDto);
+       PetSitter petSitter = petSitterService.findOneByPetSitter(reservationRequestDto.getMemberEmail());
+        log.debug("petSitter = {}", petSitter);
+        // 이미 영속성 컨텍스트에 연결되어 있으므로, 추가적인 전환은 불필요
+
+        careRegistrationService.saveReservation(petSitter);
+
+
 
     }
 
-    
 
     /**
      * # 궁금
