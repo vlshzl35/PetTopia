@@ -1,6 +1,5 @@
 package com.sh.pettopia.Hojji.community.posts.entity;
 
-import com.sh.pettopia.Hojji.community.comment.entity.Comment;
 import com.sh.pettopia.Hojji.community.posts.dto.PostUpdateRequestDto;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import jakarta.persistence.*;
@@ -9,8 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Entity

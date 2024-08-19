@@ -120,6 +120,21 @@
         textarea.form-control:focus {
             height: auto; /* 자동으로 높이 조정 */
         }
+
+        /* 댓글 왼쪽 정렬 */
+        .comment-list li .comment-body {
+            float: left;
+        }
+
+        /* 닉네임 & 날짜 스타일 */
+        .post-comment-headers{
+            font-size: 12px; /* 글자 크기 */
+            color: #666; /* 글자 색상 */
+            margin-bottom: 5px; /* 하단 여백 */
+            display: flex;
+            align-items: center;
+            gap: 8px; /* span 요소들 간의 기본 간격 */
+        }
     </style>
 </head>
 <body>
@@ -176,24 +191,35 @@
                         <input type="hidden" name="postId" th:value="${post.postId}">
                     </form>
 
-                    <!-- 댓글 -->
-                    <div class="input-group mb-3">
-                        <textarea class="form-control" placeholder="댓글을 입력해주세요!" aria-label="Recipient's username" aria-describedby="button-addon2"></textarea>
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">등록</button>
-                    </div>
+
 
                     <!-- 댓글 섹션 -->
                     <div class="pt-5 mt-5">
-                        <h3 class="mb-5">댓글</h3>
+                        <h3>댓글</h3>
+
+
+                        <ul class="comment-list" th:if = "${#lists.isEmpty(comments)}">
+                            <li class="comment">🐶첫번째 댓글을 달아주세요!🐶</li>
+                        </ul>
+
+                        <!-- 댓글 -->
+                        <form class="input-group mb-3 commentForm" id = "comment" method = "post" th:action = "@{/community/postDetail}" th:unless = "${#lists.isEmpty(comments)}">
+                            <input type="hidden" name="postId" th:value="${postId}"/> <!-- 게시글 ID 숨겨진 필드 -->
+                            <textarea class="form-control" placeholder="댓글을 입력해주세요!" aria-label="Recipient's username" aria-describedby="button-addon2"></textarea>
+                            <button class="btn btn-custom " type="submit" id="button-addon2">등록</button>
+                        </form>
+
                         <ul class="comment-list">
-                            <li class="comment">
-                                <div class="vcard bio">
-                                    <img src="images/person_1.jpg" alt="Image placeholder">
-                                </div>
+                            <li class="comment" th:each = "comment : ${comments}" >
+<!--                                <div class="vcard bio">-->
+<!--                                    <img src="images/person_1.jpg" alt="회원 이미지가 들어가유">-->
+<!--                                </div>-->
                                 <div class="comment-body">
-                                    <h3>John Doe</h3>
-                                    <div class="meta">April 7, 2020 at 10:05pm</div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
+                                    <div class="post-comment-headers">
+                                        <span th:text = "${comment.nickName}"> |</span>
+                                        <span th:text = "${comment.createdAt}"></span>
+                                    </div>
+                                    <div th:text = "${comment.content}"></div>
                                     <p><a href="#" class="reply" onclick="toggleReplyForm(this)">답글</a></p>
 
                                     <!-- 답글 입력 폼 -->
@@ -269,14 +295,18 @@
             }
         }, false);
 
-
         document.getElementById('deleteButton').addEventListener('click', deletePost);
-
         function deletePost ()  {
             console.log('deletePost 함수 호출');
             confirm('정말 이 게시글을 삭제하시겠습니까?')
             && document.deletePostFrm.submit();
         }
+
+        // 댓글 등록
+        document.querySelector("#comment").addEventListener('submit', (e) => {
+            const reviewSubmitMessage = '${message}';
+            reviewSubmitMessage && alert(reviewSubmitMessage); // 메세지가 존재하면 alert(회원가입 완료) 표시
+        })
 
         // Java 코드에서 addFlashAttribute로 담은 message를 alert를 해주기 위한 코드입니다.
         const message = '[[${message}]]';
