@@ -30,6 +30,15 @@
 
     <div class="container">
         [[${reservation}]]
+        <div>
+            <span>주문회원 </span>
+            <span>예약 요청 날짜 </span>
+            <span>돌범 실행 날짜 </span>
+            <span>사이즈 </span>
+            <span>마리 </span>
+            <span>참고사항 </span>
+
+        </div>
         <div th:each="info , stat : ${reservation}" th:object="${info}">
             <div>
                 주문자 : <span th:value="${info.memberId}"></span>

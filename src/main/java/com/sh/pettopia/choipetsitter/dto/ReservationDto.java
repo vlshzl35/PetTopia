@@ -17,7 +17,7 @@ import java.util.List;
 @ToString
 @Builder
 public class ReservationDto {
-    private String  reservationDay;
+    private String reservationDay;
     private String memberId;
     private String petSitterId;
     private String note;

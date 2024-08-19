@@ -265,7 +265,7 @@ public class PetSitterController {
         dto.setMemberId(principal.getMember().getEmail());
         // 견종이 넘어오는데 0마리인 경우는 null로 들어와서 null 값을 없애는 작업이다
 
-        dto.getPetSizeAndHowManyPets().removeIf(petCheck -> petCheck.getHowManyPet() == null);
+        dto.getPetSizeAndHowManyPets().removeIf(petCheck -> petCheck.getHowManyPet() == 0);
         for (PetSizeAndHowManyPet petDto : dto.getPetSizeAndHowManyPets()) {
             System.out.println(petDto.getPetSize() + ": " + petDto.getHowManyPet());
         }
