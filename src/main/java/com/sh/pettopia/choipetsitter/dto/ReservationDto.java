@@ -17,24 +17,22 @@ import java.util.List;
 @ToString
 @Builder
 public class ReservationDto {
-    private LocalDate reservationDays;
+    private String  reservationDay;
     private String memberId;
     private String petSitterId;
     private String note;
     private LocalTime startTime;
     private LocalTime endTime;
-    @NotNull
     private List<PetSizeAndHowManyPet> petSizeAndHowManyPets;
     private String item_name; // ex) 소형견 외...
     private int total_amount; // 총 금액
     private int tax_free_amount;
     private int quantity;// 몇마리 인지
     private String partner_order_id; // 주문 번호
-
     public ReservationDto entityToDto(Reservation entity)
     {
         return ReservationDto.builder()
-                .reservationDays(entity.getReservationDay())
+                .reservationDay(entity.getReservationDay())
                 .memberId(entity.getMemberId())
                 .petSitterId(entity.getPetSitterId())
                 .note(entity.getNote())
