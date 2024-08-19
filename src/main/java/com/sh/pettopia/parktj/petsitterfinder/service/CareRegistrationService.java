@@ -88,4 +88,9 @@ public class CareRegistrationService {
 //        reservationByPetSitterRepository.saveReservation(petSitter);
 
     }
+
+    public CareRegistration findOneByPostId(Long postId)
+    {
+        return registrationRepository.findOneByPostId(postId);
+    }
 }
