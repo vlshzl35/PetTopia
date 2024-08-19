@@ -47,7 +47,7 @@ public class PayService {
         payParams.add("total_amount", dto.getTotal_amount());
         payParams.add("tax_free_amount", dto.getTax_free_amount());
         payParams.add("approval_url","http://localhost:8080/pay/success?partner_order_id="+dto.getPartner_order_id() ); //결제 성공시 넘어갈 url 핸들러로 간다
-        payParams.add("cancel_url", "http://localhost:8080/pay/cancel"); //결제 취소시 넘어갈 url
+        payParams.add("cancel_url", "http://localhost:8080/pay/cancel?petsitterid="+dto.getPetSitterId()); //결제 취소시 넘어갈 url
         payParams.add("fail_url", "http://localhost:8080/pay/fail"); //결제 실패시 넘어갈 url
 
         HttpEntity<Map> requestEntity = new HttpEntity<>(payParams, this.getheaders());
