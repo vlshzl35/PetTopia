@@ -21,7 +21,7 @@ public abstract class User {
     // Auto_increment 로 자동 생성되는 Id
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE) // Member의 별도 테이블로 관리를 할 예정, 관리자도 똑같이 따로 테이블로 관리를 하면 될 것 같아요!
-    private Long id;
+    private Long id; // userId
 
     // 이메일
     @Column
@@ -36,6 +36,7 @@ public abstract class User {
     private String name;
 
     // 성별
+
     @Column
     @Enumerated(EnumType.STRING) // enum을 string으로 관리
     private Gender gender;

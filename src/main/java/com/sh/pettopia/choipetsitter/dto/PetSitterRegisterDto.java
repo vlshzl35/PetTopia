@@ -28,7 +28,7 @@ public class PetSitterRegisterDto {
     private String address;
     private String postUrl;
     private PetSitterAddress petSitterAddress;
-    private Set<String > impossibleDays;
+    private Set<String> impossibleDays;
 
     public void setAvailable(Set<AvailableService > availableServices, Set<AvailablePetSize > availablePetSizes) {
         this.availablePetSizes = availablePetSizes;

@@ -6,7 +6,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>펫시터의 이름</title>
+    <title>예약 하기</title>
     <link rel="stylesheet" href="https://cdn.mobiscroll.com/4.10.4/css/mobiscroll.min.css">
     <script src="https://cdn.mobiscroll.com/4.10.4/js/mobiscroll.jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -15,6 +15,15 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+
+    <!--    타임피커 필요한 스크립트-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
     <style>
         .selectTime {
             width: 375px;
@@ -26,15 +35,6 @@
             padding-bottom: 32px;
         }
 
-        .selectPet {
-
-        }
-        input[type=number]::-webkit-outer-spin-button,
-        input[type=number]::-webkit-inner-spin-button{
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
         input[type="number"] {
             width: 3em;
         }
@@ -44,6 +44,7 @@
             margin-right: 5px;
         }
 
+
         img {
             width: 150px;
             height: 60px;
@@ -51,6 +52,7 @@
         }
 
         .petSize {
+            display: inline-block;
             width: 150px;
             height: 70px;
             margin: 3%;
@@ -182,11 +184,8 @@
             <div style="padding: 5px">
                 <div style="padding: 5px">
                     <div>
-                        <div>
-                            <p>가능한 날짜</p>
-                        </div>
                         <div style="margin: 10px;" class="align-content-end">
-                            <form th:action="@{/petsitter/reservation}" method="post">
+                            <form th:action="@{/petsitter/reservation}" method="post" id="reservationForm">
                                 <label for="petSitterId" hidden="hidden">
                                     <input type="text" name="petSitterId" id="petSitterId"
                                            th:value="${dto.getPetSitterId}">
@@ -195,74 +194,105 @@
                                     <div class="selectTime">
                                         <div><p>언제 시터가 필요하신가요??</p></div>
                                         <div style="margin-top:20px;">
-                                            <p>예약날짜 : </p>
-                                            <label for="impossibleDays">
-                                            <input type="text" th:value="${dto.impossibleDays}" id="impossibleDays" name="reservationDays" required/>
-                                        </label>
-                                            <label for="startTime">시작 시간 : </label>
-                                            <input id="startTime" type="time" name="startTime" value="" placeholder="시간 선택" required/>
-                                            <label for="endTime"></label>
-                                            <p>종료 시간 : </p><input type="time" name="endTime" id="endTime" placeholder="시간 선택" required>
+                                            <div>
+                                                <p>예약날짜 : </p>
+                                                <label for="impossibleDays">
+                                                    <input type="text" th:value="${dto.impossibleDays}"
+                                                           id="impossibleDays"
+                                                           name="reservationDays" required/>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label for="start">시작 시간</label>
+                                                <input type="text" id="start" placeholder="시간 선택"
+                                                       autocomplete="on"
+                                                       name="startTime" required readonly>
+                                            </div>
+                                            <div>
+                                                <label for="end">종료 시간</label>
+                                                <input type="text" id="end" placeholder="시간 선택" autocomplete="on"
+                                                       name="endTime"
+                                                       disabled required readonly>
+                                            </div>
                                         </div>
                                         <div>
                                             <label for="note"></label>
-                                            <input type="text" name="note" id="note" placeholder="기타사항을 작성해주세요"
+                                            <p>기타 사항</p>
+                                            <input type="text" name="note" id="note" placeholder="예시 : 성격이 온순합니다"
                                                    style="width: 100%">
                                         </div>
                                     </div>
-                                    <p>가능한 애견</p>
                                     <div class="selectTime" style=" display: inline-block;"
                                          id="availablePetSize">
 
                                         <div th:if="${petSize.contains('smallPet')}" class="petSize"
                                              style="display: inline">
-                                            <img th:src="@{/images/availablePetSize/smallpet.PNG}" alt="소형견">
                                             <label>
                                                 <input name="petSizeAndHowManyPets[0].petSize" value="소형견"
-                                                       hidden="hidden">
+                                                hidden="hidden">
                                             </label>
-                                            <label>
-                                                <input type="number" name="petSizeAndHowManyPets[0].howMayPet" min="0">
-                                            </label>
+                                            <div>
+                                                <img th:src="@{/images/availablePetSize/smallpet.PNG}" alt="소형견">
+                                                <label>
+                                                    <input type="number" name="petSizeAndHowManyPets[0].howManyPet" id="smallPet"
+                                                           min="0"
+                                                           value="0"
+                                                           oninput="calculateTotal()"/>
+                                                </label>
+                                            </div>
+                                            <p>45,000원</p>
+
                                         </div>
 
                                         <div th:if="${petSize.contains('middlePet')}" class="petSize"
                                              style="display: inline">
-                                            <img th:src="@{/images/availablePetSize/middlepet.PNG}" alt="중형견">
                                             <label>
                                                 <input name="petSizeAndHowManyPets[1].petSize" value="중형견"
-                                                       hidden="hidden"/>
+                                                hidden="hidden"/>
                                             </label>
-                                            <label>
-                                                <input type="number" name="petSizeAndHowManyPets[1].howMayPet" min="0"/>
-                                            </label>
+                                            <div>
+                                                <img th:src="@{/images/availablePetSize/middlepet.PNG}" alt="중형견">
+                                                <label>
+                                                    <input type="number" name="petSizeAndHowManyPets[1].howManyPet" id="middlePet"
+                                                           min="0"
+                                                           value="0"
+                                                           oninput="calculateTotal()"/>
+                                                </label>
+                                            </div>
+                                            <p>50,000원</p>
 
                                         </div>
 
                                         <div th:if="${petSize.contains('largePet')}" class="petSize"
                                              style="display: inline">
-                                            <img th:src="@{/images/availablePetSize/largepet.PNG}" alt="대형견">
                                             <label>
                                                 <input name="petSizeAndHowManyPets[2].petSize" value="대형견"
                                                        hidden="hidden">
                                             </label>
-                                            <label>
-                                                <input type="number" name="petSizeAndHowManyPets[2].howMayPet" min="0">
-                                            </label>
+                                            <div>
+                                                <img th:src="@{/images/availablePetSize/largepet.PNG}" alt="대형견">
+                                                <label>
+                                                    <input type="number" name="petSizeAndHowManyPets[2].howManyPet" id="largePet"
+                                                           min="0"
+                                                           value="0"
+                                                           oninput="calculateTotal()"/>
+                                                </label>
+                                            </div>
+                                            <p>55,000원</p>
 
                                         </div>
 
                                     </div>
 
                                 </div>
-                                <button type="submit">예약 시작</button>
+                                <input type="hidden" name="total_amount" id="totalPrice" value="0"/>
+                                <input type="hidden" name="item_name" id="item_name">
+                                <input type="hidden" name="quantity" id="total_PetCnt">
+                                <input type="hidden" name="partner_order_id" id="partner_order_id">
+                                <p id="totalCostDisplay">총 금액 : 0원</p>
+
+                                <button type="submit" id="btn-kakao">결제 및 예약</button>
                             </form>
-                            <div>
-
-
-                                <!--                                <button id="btn-kakao">예약 요청</button>-->
-                                <!--                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>-->
-                            </div>
                         </div>
 
 
@@ -272,28 +302,173 @@
         </div>
     </div>
     <script>
-        $("#btn-kakao").click(function () {
-            $.ajax({
-                url: '/pay/ready',
-                type: 'get',
-                data: {
-                    item_name: '대형견',
-                    quantity: "1",
-                    total_amount: "70000",
-                    tax_free_amount: "0",
-                },
-                success: function (response) {
-                    console.log("결제완료 페이지입니다");
-                    alert(response.next_redirect_pc_url); //kakao payment api에서 알아서 응답해주는 url
-                    location.href = response.next_redirect_pc_url; // 결제 페이지
-                },
-                error: function (xhr, err, status) {
-                    console.log(xhr.responseText);
-                    alert(err + "이(가) 발생했습니다: " + status);
+
+        function calculateTotal() {
+            var total_PetCnt=document.getElementById('total_PetCnt');
+            var item_name=document.getElementById('item_name');
+            const smallPetCnt = parseInt(document.querySelector('input[name="petSizeAndHowManyPets[0].howManyPet"]').value) || 0;
+            const middlePetCnt = parseInt(document.querySelector('input[name="petSizeAndHowManyPets[1].howManyPet"]').value) || 0;
+            const largePetCnt = parseInt(document.querySelector('input[name="petSizeAndHowManyPets[2].howManyPet"]').value) || 0;
+
+            // Calculate the total cost
+            const total = (smallPetCnt*45000 + middlePetCnt*50000 + largePetCnt*55000);
+            let totalPets = smallPetCnt + middlePetCnt + largePetCnt;
+
+            if (totalPets > 6) {
+                alert('총 반려견 수는 6마리 이하이어야 합니다.');
+                smallPetCnt.value = 0;
+                middlePetCnt.value = 0;
+                largePetCnt.value = 0;
+
+            }
+
+            // 총합 출력
+            document.getElementById('totalCostDisplay').innerText = '총 금액 : ' + total.toLocaleString() + '원';
+            document.getElementById('totalPrice').value=total;
+            total_PetCnt.value=totalPets;
+            if(smallPetCnt)
+            {
+                item_name.value="소형견"
+                if(middlePetCnt || largePetCnt)
+                {
+                    item_name.value="소형견 외..."
                 }
-            });
+            }
+            else if(middlePetCnt)
+            {
+                item_name.value="중형견"
+                if(largePetCnt)
+                {
+                    item_name.value="중형견 외..."
+                }
+            }
+            else
+                item_name.value="대형견"
+
+        }
+    </script>
+    <script>
+        function validateInput() {
+            // Get the values from the input fields
+            let smallPetValue = parseInt(document.getElementById('smallPetInput').value) || 0;
+            let middlePetValue = parseInt(document.getElementById('middlePetInput').value) || 0;
+            let largePetValue = parseInt(document.getElementById('largePetInput').value) || 0;
+
+            // Check if at least one of the values is greater than 0
+            if (smallPetValue > 0 || middlePetValue > 0 || largePetValue > 0) {
+                return true;  // Allow form submission
+            } else {
+                alert('최소 하나의 반려견 수를 입력해야 합니다.');
+                return false;  // Prevent form submission
+            }
+        }
+
+        // 예약 요청을 하기 전에 주문번호를 준다
+        const partner_order_id = document.getElementById('partner_order_id');
+        partner_order_id.value=Math.random().toString(36).substr(2, 16);
+        document.getElementById('petForm').onsubmit = function () {
+            return validateInput();
+        };
+    </script>
+    <script>
+        // start timepicker
+        $('#start').timepicker({
+            timeFormat: 'HH:mm',
+            interval: 60,
+            minTime: '10',
+            maxTime: '23:00',
+            startTime: '09:00',
+            dynamic: true,
+            dropdown: true,
+            scrollbar: true,
+            zindex: '9999999',
+            change: function (time) {
+                if (time) {
+                    // Enable the end time input
+                    $('#end').prop('disabled', false);
+
+                    // Add 1 hour to the start time
+                    let minEndTime = new Date(time.getTime() + (60 * 60 * 1000));  // Add 1 hour
+
+                    // Set minTime for the end timepicker
+                    $('#end').timepicker('option', 'minTime', minEndTime);
+                }
+                else
+                {
+                    $('#end').prop('disabled', true);
+                }
+
+            }
+
+        });
+        // End timepicker
+        $('#end').timepicker({
+            timeFormat: 'HH:mm',
+            interval: 60,
+            // minTime: '11',
+            maxTime: '23:00',
+            dynamic: true,
+            dropdown: true,
+            scrollbar: true,
         });
     </script>
+
+<!--    <script>-->
+
+
+<!--        $("#btn-kakao").click(function () {-->
+<!--            var reservationForm=document.getElementById('reservationForm');-->
+<!--            const smallPetCnt = parseInt(document.getElementById('smallPet').value)-->
+<!--            const middlePetCnt = parseInt(document.getElementById('middlePet').value)-->
+<!--            const largePetCnt = parseInt(document.getElementById('largePet').value)-->
+<!--            var item_name;-->
+<!--            if(smallPetCnt)-->
+<!--            {-->
+<!--                item_name="소형견"-->
+<!--                if(middlePetCnt || largePetCnt)-->
+<!--                {-->
+<!--                    item_name="소형견 외..."-->
+<!--                }-->
+<!--            }-->
+<!--            else if(middlePetCnt)-->
+<!--            {-->
+<!--                item_name="중형견"-->
+<!--                if(largePetCnt)-->
+<!--                {-->
+<!--                    item_name="중형견 외..."-->
+<!--                }-->
+<!--            }-->
+<!--            else-->
+<!--                item_name="대형견"-->
+
+<!--            const totalPetCnt=smallPetCnt+middlePetCnt+largePetCnt;-->
+<!--            const totalPrice = (smallPetCnt*45000 + middlePetCnt*50000 + largePetCnt*55000)-->
+
+<!--            console.log("total : "+totalPrice, "totalPetCnt : "+totalPetCnt);-->
+<!--            $.ajax({-->
+<!--                url: '/petsitter/reservation',-->
+<!--                type: 'post',-->
+<!--                data: {-->
+<!--                    reservationForm,-->
+<!--                    item_name: item_name,-->
+<!--                    quantity: totalPetCnt,-->
+<!--                    total_amount: totalPrice,-->
+<!--                    tax_free_amount: "0",-->
+<!--                },-->
+<!--                success: function (response) {-->
+<!--                    console.log("결제 페이지입니다");-->
+<!--                    alert(response.next_redirect_pc_url); //kakao payment api에서 알아서 응답해주는 url-->
+<!--                    location.href = response.next_redirect_pc_url; // 결제 페이지-->
+<!--                    // reservationForm.submit();-->
+<!--                //-->
+<!--                },-->
+<!--                error: function (xhr, err, status) {-->
+<!--                    console.log(xhr.responseText);-->
+<!--                    alert(err + "이(가) 발생했습니다: " + status);-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
     <script th:inline="javascript">
 
         const impossibleDays = document.getElementById('impossibleDays');
@@ -305,11 +480,11 @@
             enableTime: false,        // 시간 선택 활성화
             time_24hr: false,         // 24시간 형식 사용
             minDate: 'today',        // 오늘 이전 날짜 선택 비활성화
-            maxDate: new Date().fp_incr(92), // 14 days from now
+            maxDate: new Date().fp_incr(92), // 30 days from now
             // defaultDate: 'today',    // 초기 날짜 설정 (현재 날짜와 시간)
             inline: true, // 상시 출력
             clickOpens: true, // 클릭으로 달력 출력
-            mode: "multiple", // 여러날 선택
+            // mode: "multiple", // 여러날 선택
             disable: dates, // 특정 날짜 비활성화
             locale: 'ko',            // 한국어로 지역화
             onOpen: function (selectedDates, dateStr, instance) {

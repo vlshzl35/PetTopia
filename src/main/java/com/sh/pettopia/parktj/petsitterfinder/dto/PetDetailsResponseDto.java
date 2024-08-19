@@ -1,6 +1,7 @@
 package com.sh.pettopia.parktj.petsitterfinder.dto;
 
 import com.sh.pettopia.Hojji.pet.entity.*;
+import com.sh.pettopia.Hojji.user.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,6 @@ import java.util.Set;
 //게시판에 등록할 정보에 대해 데이터베이스를 설계해야함
 //Option 태그로 petId 선택했을 때 form 에 맞춰 pet의 정보가 한번에 대입될 수 있도록 하는 DTO
 public class PetDetailsResponseDto {
-
     private Long petId;
     private String name;
     private PetSize size;
@@ -31,6 +31,7 @@ public class PetDetailsResponseDto {
     private PetStatus status;
     private Long memberId;
     private String breed;
+
 
     // 08/08 오후 4시 .. getPetId를 널값을 가져옴
     public static PetDetailsResponseDto PetDetailFromPet(Pet pet) {

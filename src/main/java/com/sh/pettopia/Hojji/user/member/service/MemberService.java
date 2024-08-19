@@ -2,7 +2,6 @@ package com.sh.pettopia.Hojji.user.member.service;
 
 import com.sh.pettopia.Hojji.user.member.dto.MemberRegistRequestDto;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
-
 import com.sh.pettopia.Hojji.user.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

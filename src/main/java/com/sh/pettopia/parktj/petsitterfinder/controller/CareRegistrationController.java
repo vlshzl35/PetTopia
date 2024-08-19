@@ -24,33 +24,6 @@ public class CareRegistrationController {
     private final CareRegistrationService careRegistrationService;
     private final PetService petService;
 
-    //  쿼리 파라미터로 postId 받아서 postId 에 해당하는 게시글의 내용만 보여주는 코드
-    @GetMapping("/careregistrationdetails")
-    public void careRegistrationDetails(@AuthenticationPrincipal AuthPrincipal authPrincipal, @RequestParam(value = "postId") Long postId, Model model) {
-        CareRegistrationDetailResponseDto detailDto = careRegistrationService.findAllByPostId(postId);
-        model.addAttribute("detail", detailDto);
-        log.debug("detailDto = {}", detailDto);
-
-        // post를 작성한 작성자의 memberId 와 로그인한 memberId 가 같은지 검증해주는 코드 ( 수정, 삭제 권한)
-
-        Long currentMemberId = authPrincipal.getMember().getId();
-        Long writerMemberId = detailDto.getMemberId();
-
-        boolean isWriter = currentMemberId.equals(writerMemberId);
-        model.addAttribute("isWriter", isWriter);
-        log.debug("isWriter = {}", isWriter);
-    }
-
-
-    // 돌봐주세요 게시글 리스트를 보여주기 위한 코드
-    // lists에 저장된 값을 가져와 보여준다
-    @GetMapping("/careregistrationlist")
-    public void careRegistrationList(Model model) {
-        List<CareRegistrationListResponseDto> careRegistrationListResponseDtos = careRegistrationService.findAll();
-        model.addAttribute("lists", careRegistrationListResponseDtos);
-        log.debug("list = {}", careRegistrationListResponseDtos);
-    }
-
     // 멤버에 id에 맞는 펫 정보 option 태그에 보여주기 위한 코드
     // 08/13 멤버 session에 저장된 정보로 맞는 정보 찾아오기
     // @AuthenticationPrincipal 을 통해 현재 로그인한 회원의 memberId로 그 회원에 맞는 펫 정보 가져오기
@@ -77,6 +50,36 @@ public class CareRegistrationController {
 
     }
 
+    //  쿼리 파라미터로 postId 받아서 postId 에 해당하는 게시글의 내용만 보여주는 코드
+    @GetMapping("/careregistrationdetails")
+    public void careRegistrationDetails(@AuthenticationPrincipal AuthPrincipal authPrincipal, @RequestParam(value = "postId") Long postId, Model model) {
+        CareRegistrationDetailResponseDto detailDto = careRegistrationService.findAllByPostId(postId);
+        model.addAttribute("detail", detailDto);
+//        이 부분 댓글에 멤버 정보 포함시키기 위함임
+        model.addAttribute("memberInfo", authPrincipal.getMember());
+        log.debug("detailDto = {}", detailDto);
+
+        // post를 작성한 작성자의 memberId 와 로그인한 memberId 가 같은지 검증해주는 코드 ( 수정, 삭제 권한)
+
+        Long currentMemberId = authPrincipal.getMember().getId();
+        Long writerMemberId = detailDto.getMemberId();
+
+        boolean isWriter = currentMemberId.equals(writerMemberId);
+        model.addAttribute("isWriter", isWriter);
+        log.debug("isWriter = {}", isWriter);
+    }
+
+
+    // 돌봐주세요 게시글 리스트를 보여주기 위한 코드
+    // lists에 저장된 값을 가져와 보여준다
+    @GetMapping("/careregistrationlist")
+    public void careRegistrationList(Model model) {
+        List<CareRegistrationListResponseDto> careRegistrationListResponseDtos = careRegistrationService.findAll();
+        model.addAttribute("lists", careRegistrationListResponseDtos);
+        log.debug("list = {}", careRegistrationListResponseDtos);
+    }
+
+
     @PostMapping("/careregistrationform")
     public String careRegist(@ModelAttribute PetDetailsRegistRequestDto registRequestDto, RedirectAttributes redirectAttributes) {
         //08/10 박태준 값이 잘 남어오는지 확인
@@ -93,31 +96,141 @@ public class CareRegistrationController {
     @GetMapping("/detailupdate")
     public void updateDetail(@RequestParam(value = "postId") Long postId, Model model) {
         CareRegistrationDetailResponseDto dto = careRegistrationService.findByPostId(postId);
-        model.addAttribute("detailforupdate", dto);
+        model.addAttribute("detailForUpdate", dto);
         log.debug("detailForUpdate = {}", dto);
     }
 
     // detail 수정하는 코드
     @PostMapping("/detailupdate")
-    public String updateDetailSave(@ModelAttribute PetDetailsUpdateRequestDto dto){
+    public String updateDetailSave(@ModelAttribute PetDetailsUpdateRequestDto dto) {
         careRegistrationService.update(dto);
-        log.debug("updateDto={}" ,dto);
+        log.debug("updateDto={}", dto);
         return "redirect:/petsitterfinder/careregistrationdetails?postId=" + dto.getPostId();
     }
 
     @PostMapping("/detailDelete")
-    public String detailDelete(@RequestParam(value = "postId")Long postId, RedirectAttributes redirectAttributes){
+    public String detailDelete(@RequestParam(value = "postId") Long postId, RedirectAttributes redirectAttributes) {
+        log.debug("postId delete할때 받아오는가? 난 모르겄는디 한번 확인해 보겄슝 ={} ", postId);
         careRegistrationService.deleteByPostId(postId);
         redirectAttributes.addFlashAttribute("message", "성공적으로 게시글이 삭제되었습니다.");
         return "redirect:/petsitterfinder/careregistrationlist";
 
     }
 
+    
 
     /**
-     * detailupdate 하는 코드
-     * -
+     * # 궁금
+     *
+     * - RequestMapping으로 쿼리 파라미터를 받아올 수 있는것으로 안다.
+     * - 하지만 detailupdate에서 글을 삭제할때는 form에 있는 postId만을 가져온다.
+     * - url에 있는 쿼리 파라미터를 가져오지 못한다. 이유가 뭘까?
+     * -> post 요청시 쿼리 파라s미터와 폼 데이터의 혼동이 있을 수 있다고 한다.
+     *
+     * ## 더 명확한 해설
+     *
+     * - @RequestParam과 URL 쿼리 파라미터 @RequestParam 은 기본적으로 URL의 쿼리 파라미터에서 값을 가져옴
+     * - 따라서 detailDelete 메서드에서 postId를 받아오려면 url에 쿼리 파라미터가 포함되어 있어야함
+     *
+     * - 하지만 POST 요청에서는 보토 URL 쿼리 파라미터가 아니라 폼 데이터로 값을 전달함
+     * - Post 요청을 처리하는 메서드에서 URL에 쿼리 파라미터가 없을 경우, 그 값을 @RequestParam으로 받아올 수 있음
+     * - 대신 폼 데이터로 해당 값을 전달해야함
      */
+    /**
+     * # 궁금 어떻게 mapping을 caregistrationdetails 만하면 GetMapping 매핑이 되는 것인가..?
+     * <a th:href="|@{/petsitterfinder/careregistrationdetails?postId=}${list.postId}|">
+     *
+     * - 이 코드는 `postId` 값을 URL 파라미터로 전달하면서  /petsitterfinder/careregistrationdetails
+     * 의 경로로 이동한다는 뜻임, postId를 RequestParam으로 받을 수 있음!!
+     *
+     * - 즉 <a> 태그 클릭하면 `postId가 포함된 URL로 이동하고,
+     * - 이 요청은 `@GetMapping`으로 매핑된 메서드로 전달되고, `postId`를 이용하여  필요한 데이터를 조회한 후,
+     * 모델에 데이터를 담아 뷰에 전달하는 코드임
+     *
+     * - `th:href`는 `@{/path}`로 지정된 경로에 `postId`를 추가하여 완성된 URL 을 생성함
+     *
+     *
+     */
+
+    /**
+     * # Ajax로 데이터 받아오는 코드 설명
+     *
+     * <Script></>document.getElementById('petSelect').addEventListener('change', function () {
+     *
+     *     var petId = this.value;
+     *     console.log("선택된 펫 ID : ", petId); </Script>
+     *
+     *     ####  사용자가 `select` 태그에서 펫을 선택할 때 `change` 이벤트 발생, 이 이벤트 핸들러에서 선택된 펫의 `petId`를 가져와 AJAX요청
+     *
+     *    $.ajax({
+     *         url: '/petsitterfinder/request-pet-info',  // 서버에 보낼 요청의 URL
+     *         method: 'get',  // GET 요청
+     *         dataType: 'json',  // 서버에서 받을 데이터 형식
+     *         data: {petId: petId},  // 서버로 보낼 데이터, 쿼리 파라미터로 전송됨
+     *         success(data) {
+     *             $('#petName').val(data.name);
+     *             $('#petAge').val(data.age);
+     *             $('#petGender').val(data.petGender);
+     *             $('#petBirth').val(data.birth);
+     *             $('#petSociability').val(data.socialization);
+     *             $('#petSize').val(data.size);
+     *             $('#petVaccinationType').val(data.vaccinationType);
+     *             $('#petParasitePrevention').val(data.parasitePrevention);
+     *             $('#petBreed').val(data.breed);
+     *             $('#isMissing').val(data.status);
+     *             $('#isNeutered').val(data.neutered);
+     *
+     *  #### 서버로 보낼 데이터를 change 함수를 통해 발생된 petId를 서버로 보내고, 쿼리 파라미터로 전송된다
+     *  이 후 그 값으로 컨트롤러 부터 처리해서 다시 return
+     *
+     *
+     */
+
+    /**
+     *  8/14 궁금
+     *  - 비동기 처리는 화면 전환도 없고, url도 바뀌지 않는데 GetMapping은 왜 필요할까?
+     *
+     *  -> 서버와의 데이터 통신이 필요하기 떄문에 @GetMapping이 필요함
+     *
+     *  ### 데이터 조회:
+     *
+     * - 비동기 요청(주로 AJAX 요청)을 통해 클라이언트는 특정 데이터를 서버에서 가져와 화면의 일부에 동적으로 업데이트 가능
+     * 이때 @GetMapping은 서버 측에서 데이터를 조회하고 반환하는 역할을 함
+     *
+     * - 예를 들어, 사용자가 특정 정보 (ex: 펫정보)를 조회하려고 할 떄, 페이지 전체를 새로 고침하지 않고, 필요한 데이터만 서버에서 가져와 화면의 특정 부분에 표시할 수 있음. 이때 @GetMapping을 사용하여 서버에서 데이터 가져옴
+     *
+     *  ### URL에 의한 데이터 요청:
+     *
+     *  - GET 요청은 URL을 통해 데이터를 요청하는 표준적인 방법임. 클라이언트는 URL에 쿼리 파라미터를 포함시켜 서버에서 특정 데이터를 요청할 수 있음
+     *
+     *  - 예를 들어 Get/request-pet-info?petId=123 같은 요청은 petId가 '123`인 펫의 정보를 요청하는 것임
+     *  서버는 @gGetMapping을 통해 이 요청을 처리하고, 필요한 뎅터를 JSON형태로 반환할 수 있음 -> 클라이언트가 쉽게 데이터 처리
+     *
+     */
+    /**
+     * 8/14
+     * detailupdate 하는 코드
+     * - @RequestParam 어떤 원리로 받아오는 걸까?
+     * - HTTP의 요청 파라미터를 메서드의 매개변수로 바인딩하는데 사용된다.
+     * - 여기서 요청파라미터?
+     * -> 클라이언트가 서버로 요청을 보낼때, URL의 쿼리 문자열, 폼 데이터, 또는 경로 변수등을 통해 데이터를 서버로 전송 가능
+     * Ex) http://example.com/detailDelete?postId=23 이라고 가정할 떄 `postId`는 파라미터의 이름, `123`은 그 값이다.
+     * - 이때 @RequestParma("postId")는 HTTP 요청에서 `postId`라는 이름의 파라미터 값을 메서드의 매개변수로 바인딩 하는 것
+     *
+     * @RequestParam과 POST 요청:
+     * - POST 요청에서 @RequestParam을 통해 값을 가져오려면, 해당 값은 폼 데이터나 쿼리 파라미터로 전송되어야함,
+     * - EX) detailupdate HTML 페이지에서 폼을 통해 `postId`값을 전송할 때 이 값이 서버로 전달 되어야 @RequestParam(`postId`)로
+     * 받아올 수 있음.
+     * - 만약 POST 요청을 보낼 떄 URL 쿼리 파라미터로 postID 가 포함되어 있지 않다면 postId를 받아올 수 없음
+     * - input type = hidden 으로 postId 폼을 만들어 주어야 할듯
+     */
+
+    /**
+     * requestParam을 get과 post 뭔차이
+     * - get 요청에서는 데이터가 url의 쿼리 문자열로 전송 , url 요청은 일반적으로 url 더 길어질 수 있음
+     * - post 요청에서는 데이터가 요청 본문(body) 또는 url의 쿼리 문자열로 전송
+     */
+
 
     /**
      * 게시글 업데이트 하는 mapping
@@ -129,18 +242,11 @@ public class CareRegistrationController {
      * - 결과적으로 postId 값에 다라 사용자에게 보여지는 값이 달라짐
      */
 
-    /**
-     * 08/10 박태준 오류 발생
-     *
-     * Sat Aug 10 16:36:19 KST 2024
-     * There was an unexpected error (type=Internal Server Error, status=500).
-     * Cannot invoke "Object.toString()" because "this.petVaccinationType" is null
-     * java.lang.NullPointerException: Cannot invoke "Object.toString()" because "this.petVaccinationType" is null
-     *
 
-     /**
-     * // 08/09 돌봄 등록글 등록 제출 누르면 값 전달되는 postMapping
+    /**
+     * /08/09 돌봄 등록글 등록 제출 누르면 값 전달되는 postMapping
      * @ModelAttribute?
+     *
      * 컨트롤러에서 모델 데이터를 뷰에 전달하거나, 뷰에서 폼 데이터를 컨트롤러로 바인딩할 대 사용
      * ex) HTML 폼에서 'name' 이라는 인풋 필드가 있으, 컨트롤러에서 @ModelAtrribute 이용하여 객체의 name에 바인딩 가능
      *
@@ -165,9 +271,6 @@ public class CareRegistrationController {
      *  RequestParam을 통해서 petId를 option 태그로 발생되는 petId를 받아온다
      *  받아온 petId를 통해 그 Id에 해당하는 펫 정보 받아오고 Dto로 변환 후 뷰에 출력
      */
-
-    // 08/08 오후 3시 26분 오류
-    //2024-08-08T15:25:15.472+09:00  WARN 14352 --- [pettopia] [nio-8080-exec-9] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'petId' for method parameter type Long is not present]
 
     /**
      * 08/08 오후 5:27 박태준
