@@ -1,16 +1,19 @@
 package com.sh.pettopia.enterprise.controller;
 
+import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
+import com.sh.pettopia.Hojji.user.member.entity.Member;
 import com.sh.pettopia.enterprise.dto.EnterpriseDetailResponseDto;
+import com.sh.pettopia.enterprise.dto.ReviewRegistDto;
 import com.sh.pettopia.enterprise.dto.ReviewResponseDto;
 import com.sh.pettopia.enterprise.service.ReviewService;
 import com.sh.pettopia.enterprise.service.SalonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -28,11 +31,43 @@ public class SalonController {
         EnterpriseDetailResponseDto salonDetail = salonService.findById(entId); // DB에서 ent_id를 검색해 해당하는 컬럼을 Dto에 담고 엔티티로 변환합니다.
         log.debug("salonDetail: {}", salonDetail);
         model.addAttribute("enterpriseDetail", salonDetail); // html에게 salonDetail정보를 주기
+        model.addAttribute("entType", "미용실");
 
-        List<ReviewResponseDto> reviews =  reviewService.findByEntId(entId); // 리뷰 데이터
+        // 리뷰 데이터
+        List<ReviewResponseDto> reviews =  reviewService.findByEntId(entId);
         log.debug("reviews = {}", reviews);
         model.addAttribute( "reviews", reviews);
 
+        // 업체 리뷰 총 개수
+        long reviewCount = reviewService.countByEntId(entId);
+        model.addAttribute("reviewCount", reviewCount);
+
+        // 업체 평균 별점
+        Double averageRating = reviewService.findAverageRatingByEntId(entId);
+        log.debug("averageRating = {}", averageRating);
+        model.addAttribute("averageRating", averageRating);
+
         return "enterprise/detail";
+    }
+
+    // 리뷰 등록
+    @PostMapping("/detail")
+    public String reviewRegist(@RequestParam("id") Long entId, Model model, RedirectAttributes redirectAttributes,
+                               @AuthenticationPrincipal AuthPrincipal authPrincipal, // 인증된 사용자 정
+                               @ModelAttribute ReviewRegistDto reviewRegistDto) {
+
+        // 인증된 사용자 정보에서 회원 정보(Member)에서 사용자 id를 가져옵니다
+        Member member = authPrincipal.getMember();
+        Long userId = member.getId(); // userId 추출
+
+        // Dto에 userId와 entId 설정
+        reviewRegistDto.initializeIds(entId, userId);
+
+        // 리뷰 등록
+        reviewService.reviewRegist(reviewRegistDto);
+        log.debug("reviewRegistDto = {}", reviewRegistDto);
+
+        redirectAttributes.addFlashAttribute("reviewSubmitMessage", "리뷰가 등록되었습니다");
+        return "redirect:/enterprise/salon/detail?id=" + entId;
     }
 }
