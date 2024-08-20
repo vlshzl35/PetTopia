@@ -63,8 +63,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // // 리뷰 삭제 기능
     const deleteButtons = document.querySelectorAll('.deleteReview');
-    const enterpriseType = document.getElementById('enterpriseType').value;
-    const deleteUrl = `/enterprise/${enterpriseType}/deleteReview`;
+    const enterpriseTypeElement = document.getElementById('enterpriseType');
+    let enterpriseType = '';
+
+    if (enterpriseTypeElement) {
+        enterpriseType = enterpriseTypeElement.value;
+    }
 
     deleteButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -72,8 +76,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const reviewId = this.getAttribute('data-review-id'); // 삭제할 리뷰의 ID를 가져옴
                 const entId = new URLSearchParams(window.location.search).get('id'); // 현재 URL에서 업체 ID(entId)를 가져옴
 
+                const deleteUrl = `/enterprise/${enterpriseType}/deleteReview`;
+
                 $.ajax({
-                    // url: `/enterprise/hospital/deleteReview`,  // 컨트롤러의 경로에 맞게 수정
                     url: deleteUrl,  // 컨트롤러의 경로에 맞게 수정
                     method: 'POST',  // POST로 변경
                     data: {
@@ -82,7 +87,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     success: function(response) {
                         alert('리뷰가 삭제되었습니다.');
-                        // alert('deleteMessage');
                         location.reload(); // 페이지 새로고침하여 변경사항 반영
                     },
                     error: function(err) {
@@ -171,4 +175,4 @@ document.addEventListener('DOMContentLoaded', function() {
         alert("리뷰가 등록되었습니다.");
         // alert("message");
     });
-})
+});
