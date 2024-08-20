@@ -185,7 +185,7 @@
                 <div style="padding: 5px">
                     <div>
                         <div style="margin: 10px;" class="align-content-end">
-                            <form th:action="@{/petsitter/reservation}" method="post" id="reservationForm" >
+                            <form th:action="@{/petsitter/reservation}" method="post" id="reservationForm"  >
                                 <label for="petSitterId" hidden="hidden">
                                     <input type="text" name="petSitterId" id="petSitterId"
                                            th:value="${dto.getPetSitterId}">
@@ -199,27 +199,29 @@
                                                 <label for="impossibleDays">
                                                     <input type="text" th:value="${dto.impossibleDays}"
                                                            id="impossibleDays"
-                                                           name="reservationDay" required/>
+                                                           name="reservationDay" required>
                                                 </label>
                                             </div>
                                             <div>
-                                                <label for="start">시작 시간</label>
-                                                <input type="text" id="start" placeholder="시간 선택"
+                                                <label for="startTime">시작 시간</label>
+                                                <input type="text" id="startTime" placeholder="시간 선택"
                                                        autocomplete="on"
                                                        name="startTime" required readonly>
                                             </div>
                                             <div>
-                                                <label for="end">종료 시간</label>
-                                                <input type="text" id="end" placeholder="시간 선택" autocomplete="on"
+                                                <label for="endTime">종료 시간</label>
+                                                <input type="text" id="endTime" placeholder="시간 선택" autocomplete="on"
                                                        name="endTime"
                                                        disabled required readonly>
                                             </div>
                                         </div>
                                         <div>
-                                            <label for="note"></label>
-                                            <p>기타 사항</p>
-                                            <input type="text" name="note" id="note" placeholder="예시 : 성격이 온순합니다"
-                                                   style="width: 100%">
+                                            <span>기타 사항</span>
+                                            <label for="note">
+                                                <input type="text" name="note" id="note" placeholder="예시 : 성격이 온순합니다"
+                                                       style="width: 100%">
+                                            </label>
+
                                         </div>
                                     </div>
                                     <div class="selectTime" style=" display: inline-block;"
@@ -235,13 +237,13 @@
                                                 <img th:src="@{/images/availablePetSize/smallpet.PNG}" alt="소형견">
                                                 <label>
                                                     <input type="number" name="petSizeAndHowManyPets[0].howManyPet"
-                                                           id="smallPet"
+                                                           id="smallPetCnt"
                                                            min="0"
                                                            value="0"
                                                            oninput="calculateTotal()"/>
                                                 </label>
+                                                <span>45,000원</span>
                                             </div>
-                                            <p>45,000원</p>
 
                                         </div>
 
@@ -255,13 +257,13 @@
                                                 <img th:src="@{/images/availablePetSize/middlepet.PNG}" alt="중형견">
                                                 <label>
                                                     <input type="number" name="petSizeAndHowManyPets[1].howManyPet"
-                                                           id="middlePet"
+                                                           id="middlePetCnt"
                                                            min="0"
                                                            value="0"
                                                            oninput="calculateTotal()"/>
                                                 </label>
+                                                <span>50,000원</span>
                                             </div>
-                                            <p>50,000원</p>
 
                                         </div>
 
@@ -274,29 +276,25 @@
                                             <div>
                                                 <img th:src="@{/images/availablePetSize/largepet.PNG}" alt="대형견">
                                                 <label>
+
                                                     <input type="number" name="petSizeAndHowManyPets[2].howManyPet"
-                                                           id="largePet"
+                                                           id="largePetCnt"
                                                            min="0"
                                                            value="0"
                                                            oninput="calculateTotal()"/>
                                                 </label>
+                                                <span>55,000원</span>
                                             </div>
-                                            <p>55,000원</p>
-
+                                            <input type="hidden" name="total_amount" id="totalPrice" value="0">
+                                            <input type="hidden" name="item_name" id="item_name">
+                                            <input type="hidden" name="quantity" id="total_PetCnt">
+                                            <input type="hidden" name="partner_order_id" id="partner_order_id">
+                                            <p id="totalCostDisplay">총 금액 : 0원</p>
                                         </div>
-
                                     </div>
 
                                 </div>
-                                <input type="hidden" name="total_amount" id="totalPrice" value="0"/>
-                                <input type="hidden" name="item_name" id="item_name">
-                                <input type="hidden" name="quantity" id="total_PetCnt">
-                                <input type="hidden" name="partner_order_id" id="partner_order_id">
-                                <p id="totalCostDisplay">총 금액 : 0원</p>
-
-                                <div th:if="${#authentication.principal.member.email != dto.getPetSitterId}">
-                                    <button type="submit" id="btn-kakao">결제 및 예약</button>
-                                </div>
+                                    <button type="button" id="btn-kakao" onclick="validateInput()">결제 및 예약</button>
                             </form>
                         </div>
 
@@ -306,25 +304,58 @@
             </div>
         </div>
     </div>
-    <script>
 
+    <script>
+        function validateInput() {
+            // Get the values from the input fields
+            let smallPetValue = parseInt(document.getElementById('smallPetCnt').value) || 0;
+            let middlePetValue = parseInt(document.getElementById('middlePetCnt').value) || 0;
+            let largePetValue = parseInt(document.getElementById('largePetCnt').value) || 0;
+            var day=document.getElementById('impossibleDays').value;
+            var startTime=document.getElementById('startTime').value;
+            var endTime=document.getElementById('endTime').value;
+
+            if(day ===null)
+            {
+                alert('날짜를 선택해야 합니다');
+                return false;
+            }
+            if(startTime ===null || endTime ===null)
+            {
+                alert('시간을 선택해주세요')
+                return false;
+            }
+            // Check if at least one of the values is greater than 0
+            if (smallPetValue === 0 && middlePetValue === 0 && largePetValue === 0) {
+                alert('최소 하나의 반려견 수를 입력해야 합니다.');
+                return false;  // Prevent form submission
+            } else {
+                const partner_order_id = document.getElementById('partner_order_id');
+                partner_order_id.value = Math.random().toString(36).substr(2, 16);
+                document.getElementById('reservationForm').submit();
+            }
+        }
+
+    </script>
+    <script>
         function calculateTotal() {
             var total_PetCnt = document.getElementById('total_PetCnt');
             var item_name = document.getElementById('item_name');
 
-            let smallPetCnt = parseInt(document.getElementById('smallPet').value) || 0;
-            let middlePetCnt = parseInt(document.getElementById('middlePet').value) || 0;
-            let largePetCnt = parseInt(document.getElementById('largePet').value) || 0;
+            let smallPetCnt = parseInt(document.getElementById('smallPetCnt').value) || 0;
+            let middlePetCnt = parseInt(document.getElementById('middlePetCnt').value) || 0;
+            let largePetCnt = parseInt(document.getElementById('largePetCnt').value) || 0;
 
             // Calculate the total cost
-            const total = (smallPetCnt * 45000 + middlePetCnt * 50000 + largePetCnt * 55000);
+            let total = (smallPetCnt * 45000 + middlePetCnt * 50000 + largePetCnt * 55000);
             let totalPetCnt = smallPetCnt + middlePetCnt + largePetCnt;
 
             if (totalPetCnt > 6) {
                 alert('총 반려견 수는 6마리 이하이어야 합니다.');
-                smallPetCnt.value = 0;
-                middlePetCnt.value = 0;
-                largePetCnt.value = 0;
+                document.getElementById('smallPetCnt').value = 0;
+                document.getElementById('middlePetCnt').value = 0;
+                document.getElementById('largePetCnt').value = 0;
+                total=0;
             }
 
             // 총합 출력
@@ -347,30 +378,6 @@
                 item_name.value = "대형견"
 
         }
-    </script>
-    <script>
-        function validateInput() {
-            // Get the values from the input fields
-            let smallPetValue = parseInt(document.getElementById('smallPet').value) || 0;
-            let middlePetValue = parseInt(document.getElementById('middlePet').value) || 0;
-            let largePetValue = parseInt(document.getElementById('largePet').value) || 0;
-
-            // Check if at least one of the values is greater than 0
-            if (smallPetValue > 0 || middlePetValue > 0 || largePetValue > 0) {
-                return true;  // Allow form submission
-            } else {
-                alert('최소 하나의 반려견 수를 입력해야 합니다.');
-                return false;  // Prevent form submission
-            }
-        }
-
-        // 예약 요청을 하기 전에 주문번호를 준다
-        const partner_order_id = document.getElementById('partner_order_id');
-        partner_order_id.value = Math.random().toString(36).substr(2, 16);
-
-        document.getElementById('petForm').onsubmit = function () {
-            return validateInput();
-        };
     </script>
     <script>
         // start timepicker

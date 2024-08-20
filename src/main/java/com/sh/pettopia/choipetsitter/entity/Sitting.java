@@ -23,7 +23,7 @@ public class Sitting {
 
     @Column(name = "service_date")
     @CreationTimestamp
-    private LocalDate serviceDate; // 실제 요청 서비스를 실행하는 날짜
+    private String serviceDate; // 실제 요청 서비스를 실행하는 날짜
 
     @Column(name = "created_at")
     @CreationTimestamp

@@ -43,6 +43,7 @@ public class PayController {
         System.out.println("partner_order_id = " + partner_order_id);
 
         Order order=payService.findByPartnerOrderId(partner_order_id);
+        System.out.println("order = " + order);
 
         KakaoApproveResponse approveResponse = payService.kakaoPayApprove(pgToken,partner_order_id); //kakaoPay 요청양식에 따라 요청객체 만들어 보내는 메서드(밑에서 구현)
         System.out.println("approveResponse = " + approveResponse);
@@ -53,8 +54,8 @@ public class PayController {
 
     // 결제 진행 중 취소
     @GetMapping("/cancel")
-    public void cancel() {
-
+    public String  cancel(@RequestParam("petsitterid")String petsitterid) {
+        return String.format("redirect:/petsitter/detail/%s",petsitterid);
 //        throw new BusinessLogicException(ExceptionCode.PAY_CANCEL);
     }
 
