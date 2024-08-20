@@ -9,7 +9,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.util.Set;
-
 @Entity(name = "careregistration")
 @Table(name = "tbl_care_registration")
 @Data

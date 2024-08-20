@@ -125,6 +125,7 @@
             <button class="btn btn-primary" th:if="${isWriter}" th:onclick="|location.href = '@{/petsitterfinder/detailupdate(postId=${detail.postId})}'|">수정/삭제</button>
             <input type="hidden" name ="sitterStatus" id ="sitterStatus" th:value="${memberInfo.sitterStatus}">
             <button name= "requestBtn" id="requestBtn" class="btn btn-primary">예약요청</button>
+            <button class="btn btn-primary" th:if="${isWriter}" th:onclick="|location.href = '@{/petsitterfinder/reservation(postId=${detail.postId})}'|">예약 목록 보기</button>
         </div>
     </section>
 
@@ -151,7 +152,6 @@
         <input type="hidden" name="memberEmail" id="memberEmail" th:value="${memberInfo.email}">
 
         <button id="comment-write-btn" class="btn btn-success w-100" onclick="commentWrite()">댓글 작성</button>
-
         <div id="comment-list" class="mt-4">
             <!-- 여기에 댓글 목록이 동적으로 삽입됩니다 -->
 
@@ -292,7 +292,15 @@
                         data:{
                             "memberEmail":memberEmail,
                             "postId":postId
-
+                        },
+                        success: function(res) {
+                            console.log("요청 성공", res);
+                            alert("예약이 성공적으로 요청되었습니다.")
+                            window.location.href = `/petsitterfinder/careregistrationdetails?postId=${postId}`
+                        },
+                        error: function(err) {
+                            console.log("요청 실패", err.responseText);
+                            alert('에러 발생:' +err.responseText)
                         }
                     })
                 }
