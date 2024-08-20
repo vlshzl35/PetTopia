@@ -1,5 +1,6 @@
 package com.sh.pettopia.parktj.petsitterfinder.service;
 
+import com.sh.pettopia.Hojji.community.comment.dto.CommuCommentResponseDto;
 import com.sh.pettopia.parktj.petsitterfinder.dto.CommentDTO;
 import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;
 import com.sh.pettopia.parktj.petsitterfinder.entity.CommentEntity;

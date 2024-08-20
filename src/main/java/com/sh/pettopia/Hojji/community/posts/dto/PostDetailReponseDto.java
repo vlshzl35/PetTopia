@@ -30,6 +30,7 @@ public class PostDetailReponseDto {
     // 작성자
     private String nickName;
 
+    // 작성자 Id
     private Long memberId;
 
     //    // 좋아요 수

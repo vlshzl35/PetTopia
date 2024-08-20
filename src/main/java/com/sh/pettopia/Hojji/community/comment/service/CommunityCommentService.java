@@ -1,10 +1,12 @@
 package com.sh.pettopia.Hojji.community.comment.service;
 
-import com.sh.pettopia.Hojji.community.comment.dto.CommentRegistRequestDto;
+import com.sh.pettopia.Hojji.community.comment.dto.CommuCommentRegistRequestDto;
 
-import com.sh.pettopia.Hojji.community.comment.dto.CommunityCommentResponseDto;
+import com.sh.pettopia.Hojji.community.comment.dto.CommuCommentResponseDto;
 import com.sh.pettopia.Hojji.community.comment.entity.CommunityComment;
 import com.sh.pettopia.Hojji.community.comment.repository.CommunityCommentRepository;
+import com.sh.pettopia.Hojji.community.posts.entity.Post;
+import com.sh.pettopia.Hojji.community.posts.repository.PostRepository;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,31 +22,39 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CommunityCommentService {
     private final CommunityCommentRepository commentRepository;
+    private final PostRepository postRepository;
 
     // 댓글 등록
-    public void registComment(Member member, CommentRegistRequestDto commentRegistDto) {
-        // 1. commentRegistDto를 CommunityComment 테이블에 저장하기 위해 Comment Entity로 변환합니다.
-        CommunityComment comment = commentRegistDto.toCommunityComment();
+    public CommuCommentResponseDto registComment(Member member, CommuCommentRegistRequestDto commentRegistDto) {
+        // 1. postId로 Post 엔티티를 조회합니다.
+        Post post = postRepository.findByPostId(commentRegistDto.getPostId());
+
+        // 2. commentRegistDto를 CommunityComment Entity로 변환하고 Post 객체를 설정합니다.
+        CommunityComment comment = commentRegistDto.toCommunityComment(post);
         log.debug("Comment 내용 = {}", comment.getCommentContent());
 
-        // 2. Comment Writer를 설정합니다.
+        // 3. Comment Writer를 설정합니다.
         comment.setWriter(member);
         log.debug("Comment 작성자 = {}", comment.getMember().getNickName());
 
-        // 3. Comment를 등록합니다.
-        commentRepository.save(comment);
+        // 4. Comment를 등록합니다.
+        CommunityComment savedComment = commentRepository.save(comment);
+
+        // 5. 저장된 Comment 엔티티를 CommuCommentResponseDto로 변환하여 반환합니다.
+        return CommuCommentResponseDto.fromCommunityComment(savedComment);
     }
 
-    // 게시글을 조회한 후, 해당 게시글에 대한 comment를 가져오는 메소드입니다.
-    public List<CommunityCommentResponseDto> findByPostId(Long postId) {
-        // 1. 게시글 Id에 해당하는 모든 comment를 List로 반환받습니다.
-         List<CommunityComment> comments =  commentRepository.findByPost_PostId(postId);
-
-        // 2. Lsit의 모든 Comment 엔티티를 CommentResponseDto로 변환합니다.
-        List<CommunityCommentResponseDto> commentDtos = comments.stream()
-                .map(CommunityCommentResponseDto::fromCommunityComment)
+    // 게시글 ID로 댓글 목록을 가져오는 메소드입니다.
+    public List<CommuCommentResponseDto> findByPostId(Long postId) {
+        List<CommunityComment> comments = commentRepository.findByPost_PostId(postId);
+        return comments.stream()
+                .map(CommuCommentResponseDto::fromCommunityComment)
                 .collect(Collectors.toList());
-        return commentDtos;
-
     }
+
+    // 댓글을 삭제하는 메소드입니다.
+    public void deleteComment(Long id) {
+        commentRepository.deleteById(id);
+    }
+
 }

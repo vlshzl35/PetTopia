@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form class="input-group mb-3 commentForm" id="comment" method="post"
+      th:action="@{/community/postDetail}">
+    <input type="hidden" name="postId" th:value="${postId}"/> <!-- 게시글 ID 숨겨진 필드 -->
+    <textarea class="form-control" placeholder="댓글을 입력해주세요!" aria-label="Recipient's username"
+              aria-describedby="button-addon2" name="content"></textarea>
+    <button class="btn btn-custom " type="submit" id="button-addon2">등록</button>
+</form>
+</body>
+</html>
