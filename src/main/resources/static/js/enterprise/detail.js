@@ -61,6 +61,39 @@ document.addEventListener('DOMContentLoaded', function() {
         alert("전화번호가 복사되었습니다");
     };
 
+    // // 리뷰 삭제 기능
+    const deleteButtons = document.querySelectorAll('.deleteReview');
+    const enterpriseType = document.getElementById('enterpriseType').value;
+    const deleteUrl = `/enterprise/${enterpriseType}/deleteReview`;
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            if (confirm('리뷰를 삭제하시겠습니까?')) {
+                const reviewId = this.getAttribute('data-review-id'); // 삭제할 리뷰의 ID를 가져옴
+                const entId = new URLSearchParams(window.location.search).get('id'); // 현재 URL에서 업체 ID(entId)를 가져옴
+
+                $.ajax({
+                    // url: `/enterprise/hospital/deleteReview`,  // 컨트롤러의 경로에 맞게 수정
+                    url: deleteUrl,  // 컨트롤러의 경로에 맞게 수정
+                    method: 'POST',  // POST로 변경
+                    data: {
+                        id: entId,       // 업체 ID를 전달
+                        reviewId: reviewId  // 리뷰 ID를 전달
+                    },
+                    success: function(response) {
+                        alert('리뷰가 삭제되었습니다.');
+                        // alert('deleteMessage');
+                        location.reload(); // 페이지 새로고침하여 변경사항 반영
+                    },
+                    error: function(err) {
+                        console.log(err);
+                        alert('리뷰 삭제에 실패했습니다. 다시 시도해주세요.');
+                    }
+                });
+            }
+        });
+    });
+
     // ajax로 영수증 네이버 OCR API에 전송하기
     document.fileUploadFrm.onsubmit = (e) => {
         e.preventDefault();
@@ -133,9 +166,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('reviewPopup').style.display = 'none';
     };
 
-    // 리뷰 폼 제출시 message 출력
-    document.querySelector("#reviewForm").addEventListener('submit', (e) => {
-        const reviewSubmitMessage = '${reviewSubmitMessage}';
-        reviewSubmitMessage && alert(reviewSubmitMessage); // 메세지가 존재하면 alert(회원가입 완료) 표시
-    })
-});
+    // 리뷰 폼 제출 message 출력
+    document.querySelector(".reviewForm").addEventListener('submit', (e) => {
+        alert("리뷰가 등록되었습니다.");
+        // alert("message");
+    });
+})

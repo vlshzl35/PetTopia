@@ -33,8 +33,8 @@ public class Review {
     @LastModifiedDate
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime updatedAt; // 마지막 업데이트 일시
-//    @Embedded
-//    private Receipt receipt; // 리뷰에 속한 영수증을 알 수 있다(Recipt의 column이 Review와 같이 생성됨)
+    @Embedded
+    private Receipt receipt; // 리뷰에 속한 영수증을 알 수 있다(Recipt의 column이 Review와 같이 생성됨)
 
 
 }

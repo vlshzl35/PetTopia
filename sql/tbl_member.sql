@@ -12,7 +12,7 @@
 
 INSERT INTO pettopiadb.tbl_member (id, name, nick_name, email, password, phone, address, birth, created_at, profile_image, sitter_status)
 VALUES
-    (1, '김철수', '철수짱', 'lee02@example.com', 'password123', '010-2345-6789', '부산광역시 해운대구', '1992-11-11', '2024-08-13', 'profile2.jpg', 'PENDING'),
+    (1,'김철수', '철수짱', 'lee02@example.com', 'password123', '010-2345-6789', '부산광역시 해운대구', '1992-11-11', '2024-08-13', 'profile2.jpg', 'PENDING'),
     (2, '이영희', '영희짱', 'lee02@example.com', 'password123', '010-2345-6789', '부산광역시 해운대구', '1992-11-11', '2024-08-13', 'profile2.jpg', 'PENDING'),
     (3, '박민수', '민수킹', 'park03@example.com', 'password123', '010-3456-7890', '대구광역시 수성구', '1985-02-14', '2024-08-14', 'profile3.jpg', 'NONE'),
     (4, '최지현', '지현러브', 'choi04@example.com', 'password123', '010-4567-8901', '인천광역시 남동구', '1998-07-30', '2024-08-15', 'profile4.jpg', 'APPROVED'),

@@ -5,6 +5,7 @@ import com.sh.pettopia.enterprise.dto.ReviewResponseDto;
 import com.sh.pettopia.enterprise.entity.Review;
 import com.sh.pettopia.enterprise.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReviewService {
     private final ReviewRepository reviewRepository;
 
@@ -45,5 +47,10 @@ public class ReviewService {
     public void reviewRegist(ReviewRegistDto reviewRegistDto) {
         Review review = reviewRegistDto.toReview();
         review = reviewRepository.save(review); // jpa제공 메서드. review엔티티를 db에 저장하거나, 이미 존재하는 엔티티라면 업데이트합니다.
+    }
+
+    public void deleteById(Long reviewId) {
+        log.debug("Service단 / reviewId = {}", reviewId);
+        reviewRepository.deleteById(reviewId);
     }
 }

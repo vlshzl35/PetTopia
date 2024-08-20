@@ -69,12 +69,17 @@
                 <div th:each="review : ${reviews}" th:unless="${#lists.isEmpty(reviews)}" class="entReview">
                     <div class="review-details">
                         <span id="nickName" th:text="${review.nickName}" style="font-size: 1.2em; font-weight: bold;"></span>
-<!--                        <span id="nickName" th:text="${review.nickName}"></span>-->
                         <span class="review-stars">
                             <span th:each="star : ${#numbers.sequence(1, review.rating.intValue())}">★</span>
                             <span th:if="${review.rating.intValue() < 5}" th:each="emptyStar : ${#numbers.sequence(1, 5 - review.rating.intValue())}">☆</span>
                         </span>
                         <span id="createdAt" th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}">등록일자</span>
+
+                        <!-- 리뷰 삭제 -->
+                        <div th:if="${#authentication.principal.member.id == review.userId}">
+                            <input type="hidden" id="enterpriseType" th:value="${entTypeInEng}" />
+                            <span class="deleteReview" style="color: red;" th:data-review-id="${review.reviewId}">삭제</span>
+                        </div>
                     </div>
                     <div class="review-content" th:text="${review.reviewContent}">리뷰 내용</div>
                 </div>

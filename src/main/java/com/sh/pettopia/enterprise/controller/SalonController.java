@@ -32,6 +32,8 @@ public class SalonController {
         log.debug("salonDetail: {}", salonDetail);
         model.addAttribute("enterpriseDetail", salonDetail); // html에게 salonDetail정보를 주기
         model.addAttribute("entType", "미용실");
+        model.addAttribute("entTypeInEng", "salon");
+
 
         // 리뷰 데이터
         List<ReviewResponseDto> reviews =  reviewService.findByEntId(entId);
@@ -68,6 +70,20 @@ public class SalonController {
         log.debug("reviewRegistDto = {}", reviewRegistDto);
 
         redirectAttributes.addFlashAttribute("reviewSubmitMessage", "리뷰가 등록되었습니다");
+        return "redirect:/enterprise/salon/detail?id=" + entId;
+    }
+
+    // 리뷰 삭제
+    @PostMapping("/deleteReview")
+    public String deleteReview(@RequestParam("id") Long entId, @RequestParam Long reviewId, RedirectAttributes redirectAttributes){
+        log.debug("deleteReview = {}", reviewId);
+
+        // 1. 리뷰Id를 받아 삭제
+        reviewService.deleteById(reviewId);
+
+        // 2. 리뷰 삭제 완료 알림
+        redirectAttributes.addFlashAttribute("deleteMessage", "❇️ 리뷰가 삭제되었습니다.❇️");
+
         return "redirect:/enterprise/salon/detail?id=" + entId;
     }
 }
