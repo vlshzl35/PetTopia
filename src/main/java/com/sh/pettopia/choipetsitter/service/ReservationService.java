@@ -1,6 +1,5 @@
 package com.sh.pettopia.choipetsitter.service;
 
-import com.sh.pettopia.choipetsitter.entity.PetSitter;
 import com.sh.pettopia.choipetsitter.entity.Reservation;
 import com.sh.pettopia.choipetsitter.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +28,10 @@ public class ReservationService {
     }
 
     public List<Reservation> findByPetSitterId(String email) {
-        return reservationRepository.findByPetSitterId(email);
+        return reservationRepository.findByPetSitterIdOrderByReservationDayAsc(email);
+    }
+
+    public void delete(Reservation reservation) {
+        reservationRepository.delete(reservation);
     }
 }

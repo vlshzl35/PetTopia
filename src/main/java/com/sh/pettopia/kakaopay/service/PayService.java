@@ -4,7 +4,6 @@ import com.sh.pettopia.choipetsitter.dto.ReservationDto;
 import com.sh.pettopia.choipetsitter.entity.Order;
 import com.sh.pettopia.choipetsitter.entity.Reservation;
 import com.sh.pettopia.choipetsitter.repository.OrderRepository;
-import com.sh.pettopia.choipetsitter.repository.PayRepository;
 import com.sh.pettopia.choipetsitter.repository.ReservationRepository;
 import com.sh.pettopia.kakaopay.dto.KakaoApproveResponse;
 import com.sh.pettopia.kakaopay.dto.KakaoCancelResponse;
@@ -40,14 +39,14 @@ public class PayService {
         log.info("payservice / kakaoPayReady");
         MultiValueMap<String,Object> payParams = new LinkedMultiValueMap<>();
         payParams.add("cid", cid); //테스트 결제는 가맹점 코드로 'TC0ONETIME'를 사용
-        payParams.add("partner_order_id", dto.getPartner_order_id()); //일단 아무값이나 hard coding.
+        payParams.add("partner_order_id", dto.getPartnerOrderId()); //일단 아무값이나 hard coding.
         payParams.add("partner_user_id", dto.getPetSitterId()); //일단 아무값이나 hard coding.
         payParams.add("item_name", dto.getItem_name());
         payParams.add("quantity", dto.getQuantity());
         payParams.add("total_amount", dto.getTotal_amount());
         payParams.add("tax_free_amount", dto.getTax_free_amount());
-        payParams.add("approval_url","http://localhost:8080/pay/success?partner_order_id="+dto.getPartner_order_id() ); //결제 성공시 넘어갈 url 핸들러로 간다
-        payParams.add("cancel_url", "http://localhost:8080/pay/cancel?petsitterid="+dto.getPetSitterId()); //결제 취소시 넘어갈 url
+        payParams.add("approval_url","http://localhost:8080/pay/success?partner_order_id="+dto.getPartnerOrderId() ); //결제 성공시 넘어갈 url 핸들러로 간다
+        payParams.add("cancel_url", "http://localhost:8080/pay/cancel?partner_order_id="+dto.getPartnerOrderId()); //결제 취소시 넘어갈 url
         payParams.add("fail_url", "http://localhost:8080/pay/fail"); //결제 실패시 넘어갈 url
 
         HttpEntity<Map> requestEntity = new HttpEntity<>(payParams, this.getheaders());
