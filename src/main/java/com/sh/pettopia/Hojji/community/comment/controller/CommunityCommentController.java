@@ -18,36 +18,34 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class CommunityCommentController {
     private final CommunityCommentService communityCommentService;
-//    @GetMapping("/postDetail")
-//    public void registComment(
-//            @RequestParam Long postId,
-//            Model model) {
-//        List<CommunityCommentResponseDto> comments = communityCommentService.findByPostId(postId);
-//        log.debug("comments = {}", comments);
-//        model.addAttribute("comments", comments);
-//    }
-
     // 1. 댓글 등록하는 메소드입니다.
-    @PostMapping("/postDetail/{id}/comments")
+    @PostMapping("/postDetail/{postId}/comments")
     public ResponseEntity<CommuCommentResponseDto> registComment(
-            @PathVariable Long id,
+            @PathVariable Long postId,
             // AuthPrincipal : 인증된 객체의 정보가 담겨있음
             @AuthenticationPrincipal AuthPrincipal authPrincipal,
             @RequestBody CommuCommentRegistRequestDto commuCommentRegistRequestDto
-            ) {
+    ) {
         // 1. 현재 로그인 된 사용자를 반환받습니다.
         log.debug("현재 로그인된 사용자 = {}", authPrincipal.getMember());
         Member member = authPrincipal.getMember();
 
-        
-        // 2. postId를 Dto에 설정합니다.
-        log.debug("현재 게시글 id셋팅 전 = {}",commuCommentRegistRequestDto);
-        commuCommentRegistRequestDto.setPostId(id);
-        log.debug("현재 게시글 id셋팅 후 = {}",commuCommentRegistRequestDto.getPostId());
+        // Post Id를 Dto에 설정합니다.
+        commuCommentRegistRequestDto.setPostId(postId);
 
-        // 3. member와 postRegistDto로 게시글을 등록한 후, 등록된 게시글의 ID를 반환받습니다.
+        // 2. member와 commentRequestDto를 service단에 넘겨줍니다.
         CommuCommentResponseDto newComment = communityCommentService.registComment(member, commuCommentRegistRequestDto);
-        log.debug("commuRequestDto = {}", newComment);
+        log.debug("댓글 등록하는 서비스 완료 = {}", newComment);
+
+
+//        // 2. postId를 Dto에 설정합니다.
+//        log.debug("현재 게시글 id셋팅 전 = {}",commuCommentRegistRequestDto);
+//        commuCommentRegistRequestDto.setPostId(id);
+//        log.debug("현재 게시글 id셋팅 후 = {}",commuCommentRegistRequestDto.getPostId());
+//
+//        // 3. member와 postRegistDto로 게시글을 등록한 후, 등록된 게시글의 ID를 반환받습니다.
+//        CommuCommentResponseDto newComment = communityCommentService.registComment(member, commuCommentRegistRequestDto);
+//        log.debug("commuRequestDto = {}", newComment);
 
         // 4. 새로 등록된 댓글 정보를 JSON 형식으로 반환합니다.
         return ResponseEntity.ok(newComment);
