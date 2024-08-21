@@ -34,4 +34,13 @@ public class ReservationService {
     public void delete(Reservation reservation) {
         reservationRepository.delete(reservation);
     }
+
+    public List<Reservation> findByMemberId(String memberId) // memberId=memberEmail
+    {
+        return reservationRepository.findByMemberId(memberId);
+    }
+
+    public List<Reservation> findByPetSitterIdAndReservationStatusNotReady(String petSitterId) {
+        return reservationRepository.findByPetSitterIdAndReservationStatusNotOk(petSitterId);
+    }
 }
