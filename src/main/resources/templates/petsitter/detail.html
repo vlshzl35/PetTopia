@@ -7,8 +7,6 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>예약 하기</title>
-    <link rel="stylesheet" href="https://cdn.mobiscroll.com/4.10.4/css/mobiscroll.min.css">
-    <script src="https://cdn.mobiscroll.com/4.10.4/js/mobiscroll.jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!--    flatdatepicker-->
@@ -38,12 +36,6 @@
         input[type="number"] {
             width: 3em;
         }
-
-        .totalPrice {
-            margin-left: 5px;
-            margin-right: 5px;
-        }
-
 
         img {
             width: 150px;
@@ -112,8 +104,7 @@
     </section>
     <div class="container" th:object="${dto}">
         <div style="display: flex;">
-            <div style="padding-right: 30px">
-                <h2>여기는 포트폴리오를 작성하는 공간입니다</h2>
+            <div style="padding-right: 30px">`
                 <div style="display: flex">
                     <h4 th:text="${dto.getPetSitterId}" name="petSitterId">여기는 사용자의 이름이 들어옵니다</h4>
                     <div style="overflow:scroll; width:500px; height:350px;">
@@ -128,7 +119,7 @@
                         <img th:src="@{/images/License.PNG}" alt="증명서">
                     </div>
                     <div>
-                        <p>소개 글</p>
+                        <h3>소개합니다.</h3>
                         <p th:text="${dto.getMainIntroduce}"></p>
                     </div>
                     <div>
@@ -197,7 +188,7 @@
                                             <div>
                                                 <p>예약날짜 : </p>
                                                 <label for="impossibleDays">
-                                                    <input type="text" th:value="${dto.impossibleDays}"
+                                                    <input type="text"
                                                            id="impossibleDays"
                                                            name="reservationDay" required>
                                                 </label>
@@ -205,12 +196,11 @@
                                             <div>
                                                 <label for="startTime">시작 시간</label>
                                                 <input type="text" id="startTime" placeholder="시간 선택"
-                                                       autocomplete="on"
                                                        name="startTime" required readonly>
                                             </div>
                                             <div>
                                                 <label for="endTime">종료 시간</label>
-                                                <input type="text" id="endTime" placeholder="시간 선택" autocomplete="on"
+                                                <input type="text" id="endTime" placeholder="시간 선택"
                                                        name="endTime"
                                                        disabled required readonly>
                                             </div>
@@ -235,13 +225,12 @@
                                             </label>
                                             <div>
                                                 <img th:src="@{/images/availablePetSize/smallpet.PNG}" alt="소형견">
-                                                <label>
-                                                    <input type="number" name="petSizeAndHowManyPets[0].howManyPet"
-                                                           id="smallPetCnt"
-                                                           min="0"
-                                                           value="0"
-                                                           oninput="calculateTotal()"/>
-                                                </label>
+                                                <label for="smallPetCnt"></label>
+                                                <input type="number" name="petSizeAndHowManyPets[0].howManyPet"
+                                                       id="smallPetCnt"
+                                                       min="0"
+                                                       value="0"
+                                                       oninput="calculateTotal()"/>
                                                 <span>45,000원</span>
                                             </div>
 
@@ -255,13 +244,13 @@
                                             </label>
                                             <div>
                                                 <img th:src="@{/images/availablePetSize/middlepet.PNG}" alt="중형견">
-                                                <label>
-                                                    <input type="number" name="petSizeAndHowManyPets[1].howManyPet"
-                                                           id="middlePetCnt"
-                                                           min="0"
-                                                           value="0"
-                                                           oninput="calculateTotal()"/>
+                                                <label for="middlePetCnt">
                                                 </label>
+                                                <input type="number" name="petSizeAndHowManyPets[1].howManyPet"
+                                                       id="middlePetCnt"
+                                                       min="0"
+                                                       value="0"
+                                                       oninput="calculateTotal()"/>
                                                 <span>50,000원</span>
                                             </div>
 
@@ -275,26 +264,27 @@
                                             </label>
                                             <div>
                                                 <img th:src="@{/images/availablePetSize/largepet.PNG}" alt="대형견">
-                                                <label>
+                                                <label for="largePetCnt">
 
-                                                    <input type="number" name="petSizeAndHowManyPets[2].howManyPet"
-                                                           id="largePetCnt"
-                                                           min="0"
-                                                           value="0"
-                                                           oninput="calculateTotal()"/>
                                                 </label>
+                                                <input type="number" name="petSizeAndHowManyPets[2].howManyPet"
+                                                       id="largePetCnt"
+                                                       min="0"
+                                                       value="0"
+                                                       oninput="calculateTotal()"/>
                                                 <span>55,000원</span>
                                             </div>
                                             <input type="hidden" name="total_amount" id="totalPrice" value="0">
                                             <input type="hidden" name="item_name" id="item_name">
                                             <input type="hidden" name="quantity" id="total_PetCnt">
                                             <input type="hidden" name="partner_order_id" id="partner_order_id">
-                                            <p id="totalCostDisplay">총 금액 : 0원</p>
+                                            <h4 id="totalCostDisplay">총 금액 : 0원</h4>
                                         </div>
                                     </div>
-
                                 </div>
+                                <div th:if="${#authentication.principal.member.email != dto.getPetSitterId}">
                                     <button type="button" id="btn-kakao" onclick="validateInput()">결제 및 예약</button>
+                                </div>
                             </form>
                         </div>
 
@@ -314,13 +304,14 @@
             var day=document.getElementById('impossibleDays').value;
             var startTime=document.getElementById('startTime').value;
             var endTime=document.getElementById('endTime').value;
+            console.log("day : "+day, "startTime : "+startTime, "endTime : "+endTime);
 
-            if(day ===null)
+            if(day.innerText ==='')
             {
                 alert('날짜를 선택해야 합니다');
                 return false;
             }
-            if(startTime ===null || endTime ===null)
+            if(startTime ==='' || endTime ==='')
             {
                 alert('시간을 선택해주세요')
                 return false;
@@ -381,7 +372,7 @@
     </script>
     <script>
         // start timepicker
-        $('#start').timepicker({
+        $('#startTime').timepicker({
             timeFormat: 'HH:mm',
             interval: 60,
             minTime: '10',
@@ -394,7 +385,7 @@
             change: function (time) {
                 if (time) {
                     // Enable the end time input
-                    $('#end').prop('disabled', false);
+                    $('#endTime').prop('disabled', false);
 
                     // Add 1 hour to the start time
                     let minEndTime = new Date(time.getTime() + (60 * 60 * 1000));  // Add 1 hour
@@ -409,10 +400,10 @@
 
         });
         // End timepicker
-        $('#end').timepicker({
+        $('#endTime').timepicker({
             timeFormat: 'HH:mm',
             interval: 60,
-            minTime: '11',
+            // minTime: '11',
             maxTime: '23:00',
             dynamic: true,
             dropdown: true,
@@ -420,62 +411,6 @@
         });
     </script>
 
-    <!--    <script>-->
-
-
-    <!--        $("#btn-kakao").click(function () {-->
-    <!--            var reservationForm=document.getElementById('reservationForm');-->
-    <!--            const smallPetCnt = parseInt(document.getElementById('smallPet').value)-->
-    <!--            const middlePetCnt = parseInt(document.getElementById('middlePet').value)-->
-    <!--            const largePetCnt = parseInt(document.getElementById('largePet').value)-->
-    <!--            var item_name;-->
-    <!--            if(smallPetCnt)-->
-    <!--            {-->
-    <!--                item_name="소형견"-->
-    <!--                if(middlePetCnt || largePetCnt)-->
-    <!--                {-->
-    <!--                    item_name="소형견 외..."-->
-    <!--                }-->
-    <!--            }-->
-    <!--            else if(middlePetCnt)-->
-    <!--            {-->
-    <!--                item_name="중형견"-->
-    <!--                if(largePetCnt)-->
-    <!--                {-->
-    <!--                    item_name="중형견 외..."-->
-    <!--                }-->
-    <!--            }-->
-    <!--            else-->
-    <!--                item_name="대형견"-->
-
-    <!--            const totalPetCnt=smallPetCnt+middlePetCnt+largePetCnt;-->
-    <!--            const totalPrice = (smallPetCnt*45000 + middlePetCnt*50000 + largePetCnt*55000)-->
-
-    <!--            console.log("total : "+totalPrice, "totalPetCnt : "+totalPetCnt);-->
-    <!--            $.ajax({-->
-    <!--                url: '/petsitter/reservation',-->
-    <!--                type: 'post',-->
-    <!--                data: {-->
-    <!--                    reservationForm,-->
-    <!--                    item_name: item_name,-->
-    <!--                    quantity: totalPetCnt,-->
-    <!--                    total_amount: totalPrice,-->
-    <!--                    tax_free_amount: "0",-->
-    <!--                },-->
-    <!--                success: function (response) {-->
-    <!--                    console.log("결제 페이지입니다");-->
-    <!--                    alert(response.next_redirect_pc_url); //kakao payment api에서 알아서 응답해주는 url-->
-    <!--                    location.href = response.next_redirect_pc_url; // 결제 페이지-->
-    <!--                    // reservationForm.submit();-->
-    <!--                //-->
-    <!--                },-->
-    <!--                error: function (xhr, err, status) {-->
-    <!--                    console.log(xhr.responseText);-->
-    <!--                    alert(err + "이(가) 발생했습니다: " + status);-->
-    <!--                }-->
-    <!--            });-->
-    <!--        });-->
-    <!--    </script>-->
     <script th:inline="javascript">
 
         const impossibleDays = document.getElementById('impossibleDays');
@@ -508,6 +443,7 @@
             // altFormat: 'F j, Y H:i', // 추가 입력란의 날짜 및 시간 형식
         });
     </script>
+
     <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 </main>
