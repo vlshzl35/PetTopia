@@ -1,7 +1,9 @@
 package com.sh.pettopia.kakaopay.controller;
 
+import com.sh.pettopia.Hojji.pet.service.PetService;
 import com.sh.pettopia.choipetsitter.entity.Order;
 import com.sh.pettopia.choipetsitter.entity.Reservation;
+import com.sh.pettopia.choipetsitter.service.ReservationService;
 import com.sh.pettopia.kakaopay.dto.KakaoApproveResponse;
 import com.sh.pettopia.kakaopay.dto.KakaoCancelResponse;
 import com.sh.pettopia.kakaopay.service.PayService;
@@ -13,14 +15,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @Slf4j
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/pay")
 public class PayController {
     private final PayService payService;
+    private PetService petService;
+    private ReservationService reservationService;
 
 //    @GetMapping("/ready")
 //    public @ResponseBody KakaoPayReadyResponse kakaoPayReady(@RequestParam Map<String, Object> params) {
@@ -54,8 +56,12 @@ public class PayController {
 
     // 결제 진행 중 취소
     @GetMapping("/cancel")
-    public String  cancel(@RequestParam("petsitterid")String petsitterid) {
-        return String.format("redirect:/petsitter/detail/%s",petsitterid);
+    public String  cancel(@RequestParam("partner_order_id")String partnerOrderId) {
+        Reservation reservation=reservationService.findByPartnerOrderId(partnerOrderId);
+        reservationService.delete(reservation);
+        String petSitterId=reservation.getMemberId();
+
+        return String.format("redirect:/petsitter/detail/%s",petSitterId);
 //        throw new BusinessLogicException(ExceptionCode.PAY_CANCEL);
     }
 
