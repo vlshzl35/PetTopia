@@ -64,7 +64,7 @@ public class ReviewRegistDto {
                         this.entName, // 업체명
                         convertedPaymentDate, // 변환된 결제일자
                         Integer.parseInt(this.totalPrice.replace(",", "")) // 쉼표를 제거하고 정수로 변환한 총 결제금액
-                        )) 
+                        ))
                 .build();
     }
 
