@@ -15,13 +15,22 @@
   2. 컨트롤+R = 현재페이지 찾아바꾸기 입니다
 
   -->
-<style>
-	img{
-		width: 500px;
-		height: 500px;
-	}
+    <style>
+        .image-box {
+            width: 300px;
+            height: 260px;
+            overflow: hidden;
+            margin: 0 auto;
+            padding-top: 10px;
+        }
 
-</style>
+        .image-thumbnail {
+            width: 300px;
+            height: 250px;
+            object-fit: cover;
+        }
+
+    </style>
 </head>
 <body>
 <div layout:fragment="main" class="page-body">
@@ -31,11 +40,12 @@
         <div class="container">
             <div class="row no-gutters slider-text align-items-end">
                 <div class="col-md-9 ftco-animate pb-5">
-                    <p class="breadcrumbs mb-2"><span class="mr-2"><a th:href="@{/}">Home  <i class="ion-ios-arrow-forward"></i></a></span>
-						<span>펫시터
+                    <p class="breadcrumbs mb-2"><span class="mr-2"><a th:href="@{/}">Home  <i
+                            class="ion-ios-arrow-forward"></i></a></span>
+                        <span>펫시터
 							<i class="ion-ios-arrow-forward"></i>
 						</span>
-					</p>
+                    </p>
                     <h1 class="mb-0 bread">펫시터 리스트</h1>
                 </div>
             </div>
@@ -44,39 +54,41 @@
 
     <section class="ftco-section bg-light">
         <div class="container">
-<!--            [[${petSitterList}]]-->
-            <div  style="display:flex; border-bottom: #0b0b0b 1px solid; border-top: 20px; padding-bottom: 30px; "  >
+            <!--            [[${petSitterList}]]-->
+            <div style="display:flex; border-bottom: #0b0b0b 1px solid; border-top: 20px; padding-bottom: 30px; ">
                 <label for="searchAddress">
                     <input type="text" placeholder="주소를 입력해주세요" id="searchAddress">
                 </label>
                 <div>
-                    <button type="button" onclick="alert('검색합니다')" style="width: 30px; height: 30px; background-image: url(/images/searchbtn.PNG);" >
+                    <button type="button" onclick="alert('검색합니다')"
+                            style="width: 30px; height: 30px; background-image: url(/images/searchbtn.PNG);">
                     </button> <!--여기서 동네 조건 검색을 한다-->
                 </div>
             </div>
-            <div class="row" >
-                <div class="col-md-6 col-lg-3 ftco-animate" th:each="petSitter, stat : ${petSitterList}" th:object="${petSitter}" >
-					<a th:href="@{|/petsitter/detail/*{petSitterId}|}"><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
-                    <div class="staff">
-                        <div class="img-wrap d-flex align-items-stretch">
-							<div >
-                                <div >
-                                    <img th:src="${petSitter.mainImageUrl}" alt="Profile Image" />
+            <div class="row">
+                <div class="col-md-6 col-lg-3 ftco-animate" th:each="petSitter, stat : ${petSitterList}"
+                     th:object="${petSitter}">
+                    <a th:href="@{|/petsitter/detail/*{petSitterId}|}"><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
+                        <div class="staff">
+                            <div class="img-wrap d-flex align-items-stretch">
+                                <div class="image-box">
+                                    <img class="image-thumbnail" th:src="${petSitter.mainImageUrl}"
+                                         alt="Profile Image"/>
                                 </div>
-							</div>
-                        </div>
-                        <div class=" pt-3 px-3 pb-4">
-							<span class="position mb-2" th:text="${petSitter.petSitterAddress.address}">사용자 주소</span>
-							<div>
-								<span id="starRating">별점 : 4.5</span>
-								<span id="review">후기 : 100개</span>
-							</div>
-                            <div class="faded">
-                                <p th:text="${petSitter.oneLineIntroduce}"></p>
+                            </div>
+                            <div class=" pt-3 px-3 pb-4">
+                                <span class="position mb-2"
+                                      th:text="${petSitter.petSitterAddress.address}">사용자 주소</span>
+                                <div>
+                                    <span id="starRating">별점 : 4.5</span>
+                                    <span id="review">후기 : 100개</span>
+                                </div>
+                                <div class="faded">
+                                    <p th:text="${petSitter.oneLineIntroduce}"></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-					</a>
+                    </a>
                 </div>
 
             </div>

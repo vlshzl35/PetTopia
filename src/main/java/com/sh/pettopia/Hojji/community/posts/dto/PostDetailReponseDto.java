@@ -1,14 +1,12 @@
 package com.sh.pettopia.Hojji.community.posts.dto;
 
 import com.sh.pettopia.Hojji.community.posts.entity.Category;
-import com.sh.pettopia.Hojji.community.comment.entity.Comment;
 import com.sh.pettopia.Hojji.community.posts.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -32,6 +30,7 @@ public class PostDetailReponseDto {
     // 작성자
     private String nickName;
 
+    // 작성자 Id
     private Long memberId;
 
     //    // 좋아요 수

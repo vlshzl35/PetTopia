@@ -2,12 +2,15 @@ package com.sh.pettopia.Hojji.community.posts.controller;
 
 import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
 import com.sh.pettopia.Hojji.common.paging.PageCriteria;
+import com.sh.pettopia.Hojji.community.comment.dto.CommuCommentResponseDto;
+import com.sh.pettopia.Hojji.community.comment.service.CommunityCommentService;
 import com.sh.pettopia.Hojji.community.posts.dto.PostListResponseDto;
 import com.sh.pettopia.Hojji.community.posts.dto.PostDetailReponseDto;
 import com.sh.pettopia.Hojji.community.posts.dto.PostRegistRequestDto;
 import com.sh.pettopia.Hojji.community.posts.dto.PostUpdateRequestDto;
 import com.sh.pettopia.Hojji.community.posts.service.PostService;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
+import com.sh.pettopia.parktj.petsitterfinder.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,12 +23,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/community")
 @RequiredArgsConstructor
 @Slf4j
 public class PostController {
     private final PostService postService;
+    private final CommunityCommentService commentService;
 
     // 게시글 목록 조회
     @GetMapping("/postList")
@@ -61,10 +67,16 @@ public class PostController {
     // 1개의 게시글 상세 조회
     @GetMapping("/postDetail")
     public void postDetail(@RequestParam Long postId, Model model) {
+        // 1. 게시글 정보를 가져옵니다.
         PostDetailReponseDto postReponseDto = postService.findByPostId(postId);
         log.debug("GET / postDetail / postDto = {}", postReponseDto);
 
+        //2. 댓글 목록을 가져옵니다.
+        List<CommuCommentResponseDto> comments = commentService.findByPostId(postId);
+
+        // 3. Model에 post와 댓글 목록을 추가합니다.
         model.addAttribute("post", postReponseDto);
+        model.addAttribute("comments", comments);
     }
 
     // 게시글 등록 폼 조회

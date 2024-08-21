@@ -7,7 +7,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -32,10 +31,10 @@ public class Reservation {
     private String reservationDay; // 예약 날짜
 
     @Column(name = "start_time")
-    private LocalTime startTime; // 예약 시작시간
+    private LocalTime startTime; // 돌봄 시작시간
 
     @Column(name = "end_time")
-    private LocalTime endTime; // 예약 종료시간
+    private LocalTime endTime; // 돌봄 종료시간
 
     @Column(name = "note")
     private String note; // 참고사항
@@ -75,7 +74,7 @@ public class Reservation {
     {
         return Reservation.builder()
                 .reservationDay(dto.getReservationDay())
-                .partnerOrderId(dto.getPartner_order_id())
+                .partnerOrderId(dto.getPartnerOrderId())
                 .startTime(dto.getStartTime())
                 .endTime(dto.getEndTime())
                 .petSitterId(dto.getPetSitterId())

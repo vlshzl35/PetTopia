@@ -1,6 +1,6 @@
 package com.sh.pettopia.Hojji.community.posts.entity;
 
-import com.sh.pettopia.Hojji.community.comment.entity.Comment;
+import com.sh.pettopia.Hojji.community.comment.entity.CommunityComment;
 import com.sh.pettopia.Hojji.community.posts.dto.PostUpdateRequestDto;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import jakarta.persistence.*;
@@ -63,6 +63,9 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommunityComment> comments = new ArrayList<>();
 
 
     // 게시글 작성자를 셋팅하는 메소드입니다.
