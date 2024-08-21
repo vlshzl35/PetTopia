@@ -10,5 +10,5 @@ import java.util.List;
 public interface ReservationRepository extends JpaRepository<Reservation,String > {
     Reservation findByPartnerOrderId(String partnerOrderId);
 
-    List<Reservation> findByPetSitterId(String petSitterId);
+    List<Reservation> findByPetSitterIdOrderByReservationDayAsc(String petSitterId);
 }
