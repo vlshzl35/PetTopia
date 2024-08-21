@@ -11,19 +11,22 @@
             align-self: center;
             border: 1px solid black;
             border-collapse: collapse;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 <div>
-    <a th:href="@{/petsitter/sittinglist}" class="btn btn-primary" onClick="window.close()">목록보기</a>
+    <a class="btn btn-primary" onClick="window.close()">목록보기</a>
     <br><br>
     <h5>돌봄 상세</h5>
     <div th:object="${sittinginfo}">
-        <table  class="table">
+        회원 : <span th:text="${sittinginfo.memberId}"></span>
+    </div>
+    <div th:object="${sittinginfo}">
+        <table cellpadding="10px" class="table">
             <thead>
             <tr>
-                <th>주문회원</th>
                 <th>요청 날짜</th>
                 <th>예약 날짜</th>
                 <th>시작, 종료</th>
@@ -33,7 +36,6 @@
             </thead>
             <tbody>
             <tr>
-                <td th:text="${sittinginfo.memberId}"></td>
                 <td th:text="${#temporals.format(sittinginfo.createdAt, 'yyyy-MM-dd/a hh:mm')}"></td>
                 <td th:text="${sittinginfo.serviceDate}" name="reservationDay"></td>
                 <td>
@@ -50,7 +52,7 @@
             </tr>
             </tbody>
         </table>
-        <div>
+        <div class="table">
             <h2>참고 사항</h2>
             <div>
                 <p th:text="${sittinginfo.note}"></p>
