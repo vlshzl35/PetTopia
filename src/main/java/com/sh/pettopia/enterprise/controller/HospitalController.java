@@ -58,14 +58,14 @@ public class HospitalController {
                                @AuthenticationPrincipal AuthPrincipal authPrincipal, // 인증된 사용자 정
                                @ModelAttribute ReviewRegistDto reviewRegistDto) {
 
-        // 인증된 사용자 정보에서 회원 정보(Member)에서 사용자 id를 가져옵니다
+        // 1. 인증된 사용자 정보(AuthPrincipal)에서 회원 정보(Member)에서 사용자 id를 가져옵니다
         Member member = authPrincipal.getMember();
         Long userId = member.getId(); // userId 추출
 
-        // Dto에 userId와 entId 설정
+        // 2. Dto에 userId와 entId 주입
         reviewRegistDto.initializeIds(entId, userId);
 
-        // 리뷰 등록
+        // 3. 리뷰 등록 (OCR로 읽어온 Receipt 정보 포함)
         reviewService.reviewRegist(reviewRegistDto);
         log.debug("reviewRegistDto = {}", reviewRegistDto);
 

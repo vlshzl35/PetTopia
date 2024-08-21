@@ -28,12 +28,12 @@ public class SalonController {
 
     @GetMapping("/detail")
     public String detail(@RequestParam("id") Long entId, Model model) {
+        // DB에서 ent_id를 검색해 해당하는 컬럼을 Dto에 담고 엔티티로 변환합니다.
         EnterpriseDetailResponseDto salonDetail = salonService.findById(entId); // DB에서 ent_id를 검색해 해당하는 컬럼을 Dto에 담고 엔티티로 변환합니다.
         log.debug("salonDetail: {}", salonDetail);
         model.addAttribute("enterpriseDetail", salonDetail); // html에게 salonDetail정보를 주기
         model.addAttribute("entType", "미용실");
         model.addAttribute("entTypeInEng", "salon");
-
 
         // 리뷰 데이터
         List<ReviewResponseDto> reviews =  reviewService.findByEntId(entId);
