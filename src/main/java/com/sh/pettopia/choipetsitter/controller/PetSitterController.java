@@ -3,10 +3,13 @@ package com.sh.pettopia.choipetsitter.controller;
 import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
 import com.sh.pettopia.choipetsitter.dto.PetSitterRegisterDto;
 import com.sh.pettopia.choipetsitter.dto.ReservationDto;
+import com.sh.pettopia.choipetsitter.dto.ReviewDto;
+import com.sh.pettopia.choipetsitter.dto.SittingDto;
 import com.sh.pettopia.choipetsitter.entity.*;
 import com.sh.pettopia.choipetsitter.service.PetSitterService;
 import com.sh.pettopia.choipetsitter.service.ReservationService;
 import com.sh.pettopia.choipetsitter.service.SittingService;
+import com.sh.pettopia.enterprise.entity.Review;
 import com.sh.pettopia.kakaopay.dto.KakaoPayReadyResponse;
 import com.sh.pettopia.kakaopay.service.PayService;
 import com.sh.pettopia.ncpTest.FileDto;
@@ -102,6 +105,8 @@ public class PetSitterController {
         Set<String> petServiceList = new HashSet<>();
         Set<String> petSizeList = new HashSet<>();
         List<String> profileImg = new ArrayList<>();
+
+        ReviewDto reviewDto=new ReviewDto();
 
         for (AvailableService service : petSitter.getAvailableService()) {
             petServiceList.add(service.getPetService());
@@ -328,8 +333,7 @@ public class PetSitterController {
 
     @GetMapping("reservationlist")
     public void reservationList(Model model, @AuthenticationPrincipal AuthPrincipal principal) {
-        List<Reservation> reservationList = reservationService.findByPetSitterId(principal.getMember().getEmail());
-//        List<ReservationDto> reservationDto=new ReservationDto().entityToDto(reservation);
+        List<Reservation> reservationList = reservationService.findByPetSitterIdAndReservationStatusNotReady(principal.getMember().getEmail());
 
         List<ReservationDto> reservationDtoList = new ArrayList<>();
         for (Reservation reservation1 : reservationList) {
@@ -402,13 +406,33 @@ public class PetSitterController {
     {
         log.info("GET /petsittersitting/detail/{}",partnerOrderId);
 
-        Sitting sittingInfo=sittingService.findByPartnerOrderId(partnerOrderId);
-        System.out.println("sittingInfo = " + sittingInfo);
-        model.addAttribute("sittinginfo",sittingInfo);
+        Sitting sitting=sittingService.findByPartnerOrderId(partnerOrderId);
+        Reservation reservation=reservationService.findByPartnerOrderId(partnerOrderId);
+
+        SittingDto sittingDto=new SittingDto().entityToDto(sitting);
+        sittingDto.setTotal_amount(reservation.getTotalPrice());
+
+        System.out.println("sittingEntity = " + sitting);
+        System.out.println("sittingDto = " + sittingDto);
+        model.addAttribute("sittinginfo",sittingDto);
 
         return "petsitter/sittingdetail";
 
     }
+
+    @PostMapping("/sitting")
+    public String sittingStatus(@ModelAttribute SittingDto dto)
+    {
+        log.info("POST /petsitter/sitting ");
+
+        Sitting sitting=sittingService.findByPartnerOrderId(dto.getPartnerOrderId()); // 고유 번호로 sitting 내용을 가져오고
+        sitting.changeSittingStatus(dto.getSittingStatus()); // 어떤 상태인지 저장을 한다, start_sitting, complete_sitting
+        sittingService.save(sitting);
+
+        System.out.println("sitting / dto = " + dto);
+        return "redirect:/petsitter/sittinglist";
+    }
+
 
 
 }

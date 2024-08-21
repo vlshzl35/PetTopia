@@ -33,6 +33,7 @@ public class HospitalController {
         log.debug("hospitalDetail = {}", hospitalDetail);
         model.addAttribute("enterpriseDetail", hospitalDetail);
         model.addAttribute("entType", "병원");
+        model.addAttribute("entTypeInEng", "hospital");
 
         // 리뷰 데이터
         List<ReviewResponseDto> reviews = reviewService.findByEntId(entId);
@@ -51,26 +52,38 @@ public class HospitalController {
         return "enterprise/detail";
     }
 
-    // 리뷰 등록
+    // 리뷰등록
     @PostMapping("/detail")
     public String reviewRegist(@RequestParam("id") Long entId, Model model, RedirectAttributes redirectAttributes,
                                @AuthenticationPrincipal AuthPrincipal authPrincipal, // 인증된 사용자 정
                                @ModelAttribute ReviewRegistDto reviewRegistDto) {
 
-        // 인증된 사용자 정보에서 회원 정보(Member)에서 사용자 id를 가져옵니다
+        // 1. 인증된 사용자 정보(AuthPrincipal)에서 회원 정보(Member)에서 사용자 id를 가져옵니다
         Member member = authPrincipal.getMember();
         Long userId = member.getId(); // userId 추출
 
-        // Dto에 userId와 entId 설정
+        // 2. Dto에 userId와 entId 주입
         reviewRegistDto.initializeIds(entId, userId);
 
-        // 리뷰 등록
+        // 3. 리뷰 등록 (OCR로 읽어온 Receipt 정보 포함)
         reviewService.reviewRegist(reviewRegistDto);
         log.debug("reviewRegistDto = {}", reviewRegistDto);
 
-        // 리뷰 삭제
-
         redirectAttributes.addFlashAttribute("reviewSubmitMessage", "리뷰가 등록되었습니다");
+        return "redirect:/enterprise/hospital/detail?id=" + entId;
+    }
+
+    // 리뷰 삭제
+    @PostMapping("/deleteReview")
+    public String deleteReview(@RequestParam("id") Long entId, @RequestParam Long reviewId, RedirectAttributes redirectAttributes){
+        log.debug("deleteReview = {}", reviewId);
+
+        // 1. 리뷰Id를 받아 삭제
+        reviewService.deleteById(reviewId);
+
+        // 2. 리뷰 삭제 완료 알림
+        redirectAttributes.addFlashAttribute("deleteMessage", "❇️ 리뷰가 삭제되었습니다.❇️");
+
         return "redirect:/enterprise/hospital/detail?id=" + entId;
     }
 }

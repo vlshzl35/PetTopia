@@ -26,5 +26,4 @@ public class EnterpriseController {
     public void detail() {
     }
 
-
 }

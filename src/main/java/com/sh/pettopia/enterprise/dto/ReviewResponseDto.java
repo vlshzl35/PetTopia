@@ -8,10 +8,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+// DQL
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReviewResponseDto {
+    private Long reviewId;
     private Long userId;
     private String nickName; // tbl_member에서 가져올 것
     private double rating; // 별점
@@ -22,6 +24,7 @@ public class ReviewResponseDto {
     // DQL : Entity -> Dto 반환
     public static ReviewResponseDto fromReview(Review review, String nickName) {
         return new ReviewResponseDto(
+                review.getReviewId(),
                 review.getUserId(),
                 nickName,
                 review.getRating(),
