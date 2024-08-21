@@ -21,7 +21,16 @@ public class ReservationByPetSitter {
 
     @Column(name = "reservation_status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private ReservationStatus reservationStatus;}
+    private ReservationStatus reservationStatus;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "petsitter_id", nullable = false)
+    private PetSitter petSitter;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", nullable = false)
+    private CareRegistration careRegistration;
+
 
 //    @Column(name = "petSitter")
 
@@ -54,5 +63,11 @@ public class ReservationByPetSitter {
 
 //    public static ReservationByPetSitter toReservationEntity(PetSitter petSitter) {
 //        ReservationByPetSitter reservationByPetSitter = new ReservationByPetSitter();
-//        reservationByPetSitter.setPetSitterEmail(petSitter.getPetSitterId());
 //
+//        reservationByPetSitter.setPetSitter(petSitter);
+//
+//
+//    }
+}
+
+
