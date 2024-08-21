@@ -5,6 +5,7 @@ import com.sh.pettopia.Hojji.pet.service.PetService;
 import com.sh.pettopia.choipetsitter.entity.PetSitter;
 import com.sh.pettopia.choipetsitter.service.PetSitterService;
 import com.sh.pettopia.parktj.petsitterfinder.dto.*;
+import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;
 import com.sh.pettopia.parktj.petsitterfinder.service.CareRegistrationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -122,9 +123,10 @@ public class CareRegistrationController {
     public void reservation(@ModelAttribute ReservationRequestDto reservationRequestDto){
        log.debug("reservationRequestDto={}", reservationRequestDto);
        PetSitter petSitter = petSitterService.findOneByPetSitter(reservationRequestDto.getMemberEmail());
+       CareRegistration careRegistration = careRegistrationService.findOneByPostId(reservationRequestDto.getPostId());
         log.debug("petSitter = {}", petSitter);
+        log.debug("careRegistration = {}", careRegistration);
         // 이미 영속성 컨텍스트에 연결되어 있으므로, 추가적인 전환은 불필요
-
         careRegistrationService.saveReservation(petSitter);
 
 
