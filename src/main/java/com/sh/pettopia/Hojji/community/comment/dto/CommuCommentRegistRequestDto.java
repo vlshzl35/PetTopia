@@ -9,14 +9,14 @@ import java.time.LocalDateTime;
 
 @Data
 public class CommuCommentRegistRequestDto {
-    private Long postId;
+//    private Long postId;
     private String content;
 
     public CommunityComment toCommunityComment(Post post, Member member) {
         return CommunityComment.builder()
                 .member(member)
                 .post(post)
-                .commentContent(content)
+                .commentContent(this.content)
                 .createdAt(LocalDateTime.now())
                 .build();
     }

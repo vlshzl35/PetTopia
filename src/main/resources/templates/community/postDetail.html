@@ -206,11 +206,11 @@
                         </ul>
 
                         <form class="input-group mb-3 commentForm" id="comment-regist" method="post"
-                              th:action="@{|/community/postDetail/${postId}/comments|}">
-                            <input type="hidden" name="postId" th:value="${post.postId}">
-                            <textarea class="form-control" placeholder="댓글을 입력해주세요!"
+                              th:action="@{/community/postDetail}">
+                            <input type="hidden" name="postId" id="commentPostId" th:value="${post.postId}">
+                            <textarea class="form-control" placeholder="댓글을 입력해주세요!" id="comment"
                                       aria-label="Recipient's username"
-                                      aria-describedby="button-addon2" name="content"></textarea>
+                                      aria-describedby="button-addon2" name="content" required></textarea>
                             <button class="btn btn-custom" type="submit" id="button-addon2">등록</button>
                         </form>
 
@@ -295,67 +295,97 @@
             confirm('정말 이 게시글을 삭제하시겠습니까?') && document.deletePostFrm.submit();
         }
 
-        document.getElementById('comment-regist').addEventListener('click', function (event) {
-            event.preventDefault();
+        document.getElementById('comment-regist').onclick = () => {
+            const content = document.getElementById('comment').value;
+            const postId = document.getElementById('commentPostId').value;
 
-            const postId = document.querySelector('input[name="postId"]').value;
-            console.log(postId); // 이 부분으로 postId가 올바르게 설정되는지 확인
-            const commentContent = document.querySelector('textarea.form-control').value;
-
-            if (commentContent === '') {
-                alert('댓글 내용을 입력해주세요.');
-                return;
-            }
-
-            fetch(`/community/postDetail/${postId}/comments`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
+            $.ajax({
+                url : '/community/postDetail',
+                method : 'post',
+                data : {
+                    content : content
                 },
-                body: JSON.stringify({
-                    postId: postId,
-                    content: commentContent
-                })
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                success: function (res) {
+                    if (res == null) {
+                        console.log('등록된 댓글이 없습니다.');
                     }
-                    return response.json();
-                })
-                .then(comment => {
-                    const createdAt = new Date(comment.createdAt);
-                    const year = createdAt.getFullYear();
-                    const month = String(createdAt.getMonth() + 1).padStart(2, '0');
-                    const day = String(createdAt.getDate()).padStart(2, '0');
-                    const hours = String(createdAt.getHours()).padStart(2, '0');
-                    const minutes = String(createdAt.getMinutes()).padStart(2, '0');
-                    const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
+                    else {
+                        console.log('댓글 등록 완료');
+                    }
+                },
+                error : function (res) {
+                    console.log('에러 발생');
+                },
+                complete (){
+                    console.log('댓글 등록 완료/에러');
+                }
+            });
+        }
 
-                    const commentList = document.querySelector('.comment-list');
-                    const newComment = document.createElement('li');
-                    newComment.classList.add('comment');
-                    newComment.innerHTML = `
-                    <div class="comment-body">
-                        <div class="post-comment-headers">
-                            <span>${comment.nickName}</span>
-                            <span>|</span>
-                            <span>${formattedDate}</span>
-                        </div>
-                        <div>${comment.content}</div>
-                        <button class="btn btn-danger btn-sm delete-comment" data-id="${comment.id}">삭제</button>
-                    </div>
-                `;
-                    commentList.appendChild(newComment);
-                    document.querySelector('textarea.form-control').value = '';
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('댓글 등록에 실패했습니다.');
-                });
-        });
+        // document.getElementById('comment-regist').addEventListener('click', function (event) {
+        //     event.preventDefault();
+        //
+        //     const postId = document.querySelector('input[name="postId"]').value;
+        //     console.log(postId); // 이 부분으로 postId가 올바르게 설정되는지 확인
+        //     const commentContent = document.querySelector('textarea.form-control').value;
+        //
+        //     if (commentContent === '') {
+        //         alert('댓글 내용을 입력해주세요.');
+        //         return;
+        //     }
+        //
+        //     fetch(`/community/postDetail/${postId}/comments`, {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify({
+        //             postId: postId,
+        //             content: commentContent
+        //         })
+        //     })
+        //         .then(response => {
+        //             console.log(response.status);  // 이 부분으로 상태 코드 확인
+        //
+        //             if (!response.ok) {
+        //                 throw new Error('Network response was not ok');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(comment => {
+        //             const createdAt = new Date(comment.createdAt);
+        //             const year = createdAt.getFullYear();
+        //             const month = String(createdAt.getMonth() + 1).padStart(2, '0');
+        //             const day = String(createdAt.getDate()).padStart(2, '0');
+        //             const hours = String(createdAt.getHours()).padStart(2, '0');
+        //             const minutes = String(createdAt.getMinutes()).padStart(2, '0');
+        //             const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
+        //
+        //             const commentList = document.querySelector('.comment-list');
+        //             const newComment = document.createElement('li');
+        //             newComment.classList.add('comment');
+        //             newComment.innerHTML = `
+        //             <div class="comment-body">
+        //                 <div class="post-comment-headers">
+        //                     <span>${comment.nickName}</span>
+        //                     <span>|</span>
+        //                     <span>${formattedDate}</span>
+        //                 </div>
+        //                 <div>${comment.content}</div>
+        //                 <button class="btn btn-danger btn-sm delete-comment" data-id="${comment.id}">삭제</button>
+        //             </div>
+        //         `;
+        //             commentList.appendChild(newComment);
+        //             document.querySelector('textarea.form-control').value = '';
+        //         })
+        //         .catch(error => {
+        //             console.error('Error:', error);
+        //             alert('댓글 등록에 실패했습니다.');
+        //         });
+        // });
 
         document.addEventListener('click', function (event) {
+
             if (event.target && event.target.classList.contains('delete-comment')) {
                 if (confirm('댓글을 삭제하시겠습니까?')) {
                     event.target.closest('form').submit();
