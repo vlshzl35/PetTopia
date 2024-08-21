@@ -1,6 +1,7 @@
 package com.sh.pettopia.parktj.petsitterfinder.controller;
 
 import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
+import com.sh.pettopia.Hojji.pet.entity.Pet;
 import com.sh.pettopia.Hojji.pet.service.PetService;
 import com.sh.pettopia.choipetsitter.entity.PetSitter;
 import com.sh.pettopia.choipetsitter.entity.Reservation;
@@ -40,7 +41,7 @@ public class CareRegistrationController {
     @GetMapping("/careregistrationform")
     public void careRegistrationForm(@AuthenticationPrincipal AuthPrincipal authPrincipal, Model model) {
         List<PetDetailsResponseDto> pets = petService.findAllByMemberId(authPrincipal.getMember().getId());
-        log.debug("pets = {}", pets);
+        System.out.println("펫 정보 잘 가져오는지 확인해보겠습니다" + pets.stream().toList());
         model.addAttribute("pets", pets);
     }
 
