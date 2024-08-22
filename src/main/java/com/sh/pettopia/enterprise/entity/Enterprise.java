@@ -16,9 +16,11 @@ public abstract class Enterprise {
     @GeneratedValue(strategy = GenerationType.TABLE) // 상속.TABLE_PER_CLASS이면, IDENTITY 전략은 사용할수 없다.
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "enterprise_seq")
 //    @SequenceGenerator(name = "enterprise_seq", sequenceName = "enterprise_seq", allocationSize = 1)
-    private Long entId; // 사업자 등록번호 (하지만 우리는 auto_increment)
+    private Long entId; // 업체번호
     @Column(nullable = false)
     private String entName; // 업체명
+    @Column(nullable = false)
+    private String bizNum; // 사업자등록번호
     @Column(nullable = false)
     private String entPhone; // 전화번호
     @Column(nullable = false)

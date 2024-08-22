@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700,800&display=swap"
+          rel="stylesheet">
+
+
+    <link rel="stylesheet" href="/css/animate.css">
+
+    <link rel="stylesheet" href="/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/css/magnific-popup.css">
+
+
+    <link rel="stylesheet" href="/css/datepicker/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="/css/jquery.timepicker.css">
+
+    <link rel="stylesheet" href="/css/flaticon.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        .flash-message {
+            display: none; /* 기본적으로 숨겨둠 */
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1050; /* 팝업창을 맨 위에 표시 */
+            padding: 15px 30px;
+            background-color: #28a745; /* 성공 메시지 색상 */
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .flash-message.show {
+            display: block; /* show 클래스가 추가되면 표시 */
+            opacity: 1;
+        }
+
+        .flash-message.hide {
+            opacity: 0; /* hide 클래스가 추가되면 사라지기 */
+        }
+    </style>
+
+</head>
+<body>
+
+
+<div layout:fragment="main" class="container">
+    <!-- 로그인 모달 -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">로그인</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    로그인 페이지로 이동하시겠습니까?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" id="confirmLogin">확인</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center mb-5">
+                    <h1 class="heading-section"><strong>로그인</strong></h1>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="wrapper">
+
+                        <div class="row no-gutters">
+                            <div class="col-md">
+                                <div class="contact-wrap w-100 p-md-5 p-4">
+                                    <form th:action="@{/auth/login}" th:method="post" id="contactForm"
+                                          name="contactForm" class="contactForm">
+                                        <!-- 아이디 -->
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label"><h2>아이디</h2>
+                                            </label>
+                                            <input type="text" class="form-control" id="exampleFormControlInput1"
+                                                   placeholder="아이디를 입력해주세요" name="username" required>
+                                        </div>
+
+                                        <!-- 비밀번호 -->
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput2" class="form-label"><h2>비밀번호</h2>
+                                            </label>
+                                            <input type="password" class="form-control" id="exampleFormControlInput2"
+                                                   placeholder="비밀번호를 입력해주세요" name="password" required>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+
+                                            <div class="">
+                                                <input type="checkbox" name="remember"> 아이디 저장
+                                            </div>
+
+                                            <div class="">
+                                                <label class="label">아이디 찾기 | 비밀번호 찾기</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <input type="submit" value="로그인" class="btn btn-primary">
+                                                    <div class="submitting"></div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <div>
+                                        <a th:href="@{/member/termsOfService}">
+                                            <input type="button" style="color : black" value="회원 가입"
+                                                   class="btn btn-light">
+                                            <div class="submitting"></div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen">
+        <svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                    stroke="#F96D00"/>
+        </svg>
+    </div>
+    <!-- jQuery, Bootstrap JS 추가 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script layout:fragment="js">
+        $(document).ready(function () {
+            const flashMessage = $('#flashMessage');
+
+            if (flashMessage.length) {
+                // 플래시 메시지가 있으면 show 클래스를 추가하여 표시
+                flashMessage.addClass('show');
+
+                // 일정 시간 후 hide 클래스를 추가하여 서서히 사라지도록 설정
+                setTimeout(function () {
+                    flashMessage.addClass('hide');
+
+                    // 완전히 사라진 후 display를 none으로 설정
+                    setTimeout(function () {
+                        flashMessage.removeClass('show').removeClass('hide');
+                    }, 500);
+                }, 5000); // 5초 동안 표시
+            }
+        });
+
+
+        $(document).ready(function () {
+            // 페이지 로드 시 모달 창을 띄웁니다.
+            $('#loginModal').modal('show');
+
+            // "확인" 버튼 클릭 시 로그인 페이지로 이동합니다.
+            $('#confirmLogin').click(function () {
+                window.location.href = '/auth/login';  // 실제 로그인 페이지 경로로 변경
+            });
+        });
+    </script>
+</div>
+
+</body>
+</html>

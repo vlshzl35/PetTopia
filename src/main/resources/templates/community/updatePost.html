@@ -300,7 +300,20 @@
         }
     }
 
-
+    function filterPosts(category) {
+        var posts = document.getElementsByClassName('post-item');
+        for (var i = 0; i < posts.length; i++) {
+            if (category === 'all') {
+                posts[i].style.display = 'flex';
+            } else {
+                if (posts[i].getAttribute('data-category') === category) {
+                    posts[i].style.display = 'flex';
+                } else {
+                    posts[i].style.display = 'none';
+                }
+            }
+        }
+    }
 
 </script>
 </body>

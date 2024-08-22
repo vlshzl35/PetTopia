@@ -80,8 +80,8 @@ public class CommunityCommentService {
     }
 
     // 댓글을 삭제하는 메소드입니다.
-    public void deleteComment(Long id) {
-        commentRepository.deleteById(id);
+    public void deleteComment(Long commentId) {
+        commentRepository.deleteById(commentId);
     }
 
 }

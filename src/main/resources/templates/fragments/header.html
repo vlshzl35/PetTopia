@@ -27,6 +27,7 @@
 
                     </div>
                     <div sec:authorize="isAuthenticated()" class="header-links d-flex align-items-center">
+                        <p th:text="${#authentication.principal.member.name + ' 님, 반갑습니다🐶'}" style="margin: 0 5px; color: white"></p>
                         <form th:action="@{/auth/logout}" method="post">
                             <input type="submit" value="로그아웃" style="border: none; background: none; color: white; cursor:pointer">
                         </form>
@@ -52,7 +53,6 @@
                     <li class="nav-item"><a th:href="@{/petsitter/petsittingmain}" class="nav-link">펫시팅</a></li>
                     <li class="nav-item"><a th:href="@{/enterprise/location}" class="nav-link">병원 • 약국 • 미용실</a></li>
                     <li class="nav-item"><a th:href="@{/community/postList}" class="nav-link">커뮤니티</a></li>
-                    <li class="nav-item"><a th:href="@{/community/postList}" class="nav-link">실종 • 알림 서비스</a></li>
                     <li class="nav-item"><a sec:authorize="hasRole('SITTER')" th:href="@{/petsitter/startjob}" class="nav-link">일 시작</a></li>
                 </ul>
             </div>
