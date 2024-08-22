@@ -32,14 +32,15 @@
         }
 
         .petProfile {
-            width: 40%;
+            width: 30%;
+            height: 30%;
             text-align: center;
         }
 
         .petProfile img {
             width: 100%;
-            height: auto;
-            border-radius: 8px;
+            height: 50%;
+            border-radius: 90px;
         }
 
         .map-spot {
@@ -134,7 +135,7 @@
     <!-- 펫 프로필 영역 -->
     <section class="petProfile">
         <h2>☺️우리 강아지에요☺️</h2>
-        <img src="/images/KakaoTalk_20240527_201110282.jpg" alt="강아지 사진">
+        <img th:src="${detail.profile}" alt="강아지 사진" >
     </section>
 
     <!-- 지도 표시 영역 -->

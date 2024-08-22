@@ -69,7 +69,7 @@ public class CareRegistration {
     private boolean neutered;
 
     @Column(name = "pet_profile_url", nullable = true)
-    private String profileUrl;
+    private String profile;
 
     @ElementCollection
     @CollectionTable(name = "tbl_pet_vaccination_post", joinColumns = @JoinColumn(name = "postId"))

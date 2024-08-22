@@ -44,7 +44,7 @@ public class PetDetailsRegistRequestDto {
                 .petGender(this.petGender)
                 .birth(this.petBirth)
                 .neutered(this.isNeutered)
-                .profileUrl(this.profile != null ? this.profile : "")
+                .profile(this.profile)
                 .petVaccinationType(this.petVaccinationType)
                 .petParasitePrevention(this.petParasitePrevention)
                 .petSociability(this.petSociability)

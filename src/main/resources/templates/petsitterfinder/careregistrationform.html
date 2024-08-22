@@ -133,15 +133,19 @@
                     <label>펫 선택:</label>
                     <select id="petSelect" name="petId" class="form-select">
                         <option disabled selected value="">돌보실 펫을 선택해 주세요.</option>
-                        <option th:each="pet : ${pets}" th:text="${pet.name}" th:value="${pet.petId}"></option>
+                        <option th:each="pet : ${pets}" th:text="${pet.name}" th:value="${pet.petId}" data-file ="${pet.profile}" ></option>
                     </select>
                 </div>
+
+
+                <input type="text" name="profile" id="profile" style="display: none">
+
+
 
                 <script>
                     document.getElementById('petSelect').addEventListener('change', function () {
                         var petId = this.value;
                         console.log("선택된 펫 ID : ", petId);
-
                         $.ajax({
                             url: '[[@{/petsitterfinder/request-pet-info}]]',
                             method: 'get',
@@ -160,14 +164,13 @@
                                 $('#petBreed').val(data.breed);
                                 $('#isMissing').val(data.status);
                                 $('#isNeutered').val(data.neutered);
+                                $('#profile').val(data.profile)
                             }
                         });
-
                     });
                 </script>
-
                 <div class="form-group text-center">
-                    <img id="profileImage" alt="profile" name="profileImage" src="" class="rounded-circle"
+                    <img id="profileImage" alt="profileImage" name="profileImage" src="" class="rounded-circle"
                     onerror="this.onerror=null;this.src='/images/sample/cutyBoy.png';">
                 </div>
 
@@ -220,6 +223,7 @@
                     <label for="isNeutered">중성화 여부:</label>
                     <input id="isNeutered" name="isNeutered" type="text" class="form-control">
                 </div>
+
             </div>
 
             <div class="right-column">
