@@ -62,6 +62,7 @@ public class CareRegistrationListResponseDto {
                 .petName(careRegistration.getPetName())
                 .address(careRegistration.getAddress())
                 .requestService(careRegistration.getRequestService())
+                .profile(careRegistration.getProfile())
                 .build();
 
 
