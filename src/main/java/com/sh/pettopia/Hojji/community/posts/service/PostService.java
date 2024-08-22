@@ -26,7 +26,7 @@ public class PostService {
 
         // Page 객체에는 Content의 요소를 순회하면서 각 요소를 DTO로 변환할 수 있는 map 메소드를 제공합니다.
         Page<Post> communityPage = q != null ?
-                                        postRepository.findByContent(q, pageable) :
+                                        postRepository.findByTitleContaining(q, pageable) :
                                         postRepository.findAll(pageable);
         return communityPage.map(PostListResponseDto::fromPost);
     }

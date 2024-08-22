@@ -13,8 +13,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/community")
@@ -22,48 +25,15 @@ import java.util.List;
 @Slf4j
 public class CommunityCommentController {
     private final CommunityCommentService communityCommentService;
-//    // 1. 댓글 등록하는 메소드입니다.
-//    @PostMapping("/postDetail/{postId}/comments")
-//    public ResponseEntity<CommuCommentResponseDto> registComment(
-//            @PathVariable Long postId,
-//            // AuthPrincipal : 인증된 객체의 정보가 담겨있음
-//            @AuthenticationPrincipal AuthPrincipal authPrincipal,
-//            @RequestBody CommuCommentRegistRequestDto commuCommentRegistRequestDto
-//    ) {
-//        // 1. 현재 로그인 된 사용자를 반환받습니다.
-//        log.debug("현재 로그인된 사용자 = {}", authPrincipal.getMember());
-//        Member member = authPrincipal.getMember();
-//        log.debug("댓글 등록 요청자: {}, 게시물 작성자: {}", member.getId(), postId);
-//
-//
-//        // Post Id를 Dto에 설정합니다.
-//        commuCommentRegistRequestDto.setPostId(postId);
-//
-//        // 2. member와 commentRequestDto를 service단에 넘겨줍니다.
-//        CommuCommentResponseDto newComment = communityCommentService.registComment(member, commuCommentRegistRequestDto);
-//        log.debug("댓글 등록하는 서비스 완료 = {}", newComment);
-//
-//
-////        // 2. postId를 Dto에 설정합니다.
-////        log.debug("현재 게시글 id셋팅 전 = {}",commuCommentRegistRequestDto);
-////        commuCommentRegistRequestDto.setPostId(id);
-////        log.debug("현재 게시글 id셋팅 후 = {}",commuCommentRegistRequestDto.getPostId());
-////
-////        // 3. member와 postRegistDto로 게시글을 등록한 후, 등록된 게시글의 ID를 반환받습니다.
-////        CommuCommentResponseDto newComment = communityCommentService.registComment(member, commuCommentRegistRequestDto);
-////        log.debug("commuRequestDto = {}", newComment);
-//
-//        // 4. 새로 등록된 댓글 정보를 JSON 형식으로 반환합니다.
-//        return ResponseEntity.ok(newComment);
-//    }
 
+    // 댓글 등록하는 메소드입니다.
     @PostMapping("/postDetail")
-    public String registComment(
+    @ResponseBody // 반환값을 Json 형식으로 클라이언트로 전달하기 위해 @ResponseBody를 사용합니다.
+    public ResponseEntity<CommuCommentResponseDto> registComment(
             @RequestParam Long postId,
             // AuthPrincipal : 인증된 객체의 정보가 담겨있음
             @AuthenticationPrincipal AuthPrincipal authPrincipal,
-            @ModelAttribute CommuCommentRegistRequestDto commuCommentRegistRequestDto,
-            Model model
+            @ModelAttribute CommuCommentRegistRequestDto commuCommentRegistRequestDto // 클라이언트로부터 받은 댓글 등록 요청 데이터를 DTO로 매핑
     ) {
         // 1. 현재 로그인 된 사용자를 반환받습니다.
         log.debug("현재 로그인된 사용자 = {}", authPrincipal.getMember());
@@ -71,18 +41,22 @@ public class CommunityCommentController {
 
         log.debug("댓글 등록 요청자: {}, 게시물 id: {}", member.getId(), postId);
 
-
-        // 2. member와 commentRequestDto를 service단에 넘겨줍니다.
+        // 2. 댓글 등록 서비스를 호출합니다 : 해당 게시물에 댓글을 등록하고, 등록된 댓글 정보를 반환합니다.
         CommuCommentResponseDto newComment = communityCommentService.registComment(postId, member, commuCommentRegistRequestDto);
         log.debug("댓글 등록하는 서비스 완료 = {}", newComment);
-        model.addAttribute(newComment);
-        return "redirect:/community/postDetail?postId=" + postId;
+
+        // 3. JSON으로 응답을 반환합니다 : 클라이언트에 등록된 댓글 정보를 JSON 형식으로 반환
+        return ResponseEntity.ok(newComment);
     }
 
     // 댓글 삭제
     @PostMapping("/comments/deleteComment")
-    public String deleteComment(@RequestParam Long id, @RequestParam Long postId) {
-        communityCommentService.deleteComment(id);
+    public String deleteComment(@RequestParam Long postId, @RequestParam Long commentId, RedirectAttributes redirectAttributes) {
+
+        log.debug("commentId = {}", commentId);
+
+        // 1. 댓글 Id를 받아 삭제합니다.
+        communityCommentService.deleteComment(commentId);
         return "redirect:/community/postDetail?postId=" + postId;
     }
 }

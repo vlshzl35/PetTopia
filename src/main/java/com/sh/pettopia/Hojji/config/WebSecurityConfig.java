@@ -38,7 +38,9 @@ public class WebSecurityConfig {
             // 특수한 경우부터 보편적인 경우 순으로 작성했습니다.
             registry
                     // 누구나 허용
-                    .requestMatchers("/", "/index.html","/ocrUpload", "/petsitter/petsittingmain", "/petsitter/list", "/petsitterfinder/careregistrationlist", "/enterprise/location",
+                    .requestMatchers("/", "/index.html","/ocrUpload",
+                            "/petsitter/petsittingmain", "/petsitter/list", "/petsitterfinder/careregistrationlist",
+                            "/enterprise/location",
                             "/community/postList").permitAll()
 
                     // 로그인 안 한 사용자에게 허용되는 페이지
