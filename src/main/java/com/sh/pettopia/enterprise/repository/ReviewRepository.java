@@ -33,5 +33,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             r.entId = :entId
     """)
     Double findAverageRatingByEntId(Long entId);
+
+    // 리뷰 등록할 업체와 영수증의 업체가 동일한지 검사
+
 }
 

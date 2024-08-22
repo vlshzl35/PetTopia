@@ -26,6 +26,7 @@ public class ReviewRegistDto {
     private String paymentDate; // 결제일자
     private String totalPrice; // 총 결제금액
 
+
     // ReviewRegistDto -> Review 엔티티 변환
     public Review toReview(){
         LocalDate convertedPaymentDate = null;

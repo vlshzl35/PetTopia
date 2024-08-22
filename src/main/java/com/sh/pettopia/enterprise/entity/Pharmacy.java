@@ -18,8 +18,8 @@ import java.util.List;
 public class Pharmacy extends Enterprise {
     private String drugInfo; // 판매하는 동물약품 정보
 
-    public Pharmacy(Long entId, String entName, String entPhone, String entAddress, String officeHours, String entUrl, String introduction, String drugInfo) {
-        super(entId, entName, entPhone, entAddress, officeHours, entUrl, introduction);
+    public Pharmacy(Long entId, String entName, String bizNum, String entPhone, String entAddress, String officeHours, String entUrl, String introduction, String drugInfo) {
+        super(entId, entName, bizNum, entPhone, entAddress, officeHours, entUrl, introduction);
         this.drugInfo = drugInfo;
     }
 }

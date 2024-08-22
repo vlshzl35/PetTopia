@@ -3,7 +3,10 @@ package com.sh.pettopia.enterprise.service;
 import com.sh.pettopia.enterprise.dto.ReviewRegistDto;
 import com.sh.pettopia.enterprise.dto.ReviewResponseDto;
 import com.sh.pettopia.enterprise.entity.Review;
+import com.sh.pettopia.enterprise.repository.HospitalRepository;
+import com.sh.pettopia.enterprise.repository.PharmacyRepository;
 import com.sh.pettopia.enterprise.repository.ReviewRepository;
+import com.sh.pettopia.enterprise.repository.SalonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ReviewService {
     private final ReviewRepository reviewRepository;
+    private final HospitalService hospitalService;
+    private final PharmacyService pharmacyService;
+    private final SalonService salonService;
 
     // 리뷰 보여주기에 필요한 컬럼을 엔티티 -> Dto로 반환
     public List<ReviewResponseDto> findByEntId(Long entId) {
@@ -35,18 +41,10 @@ public class ReviewService {
         return reviewDtos;
     }
 
-    // 업체 당 리뷰 총 개수
-    public long countByEntId(Long entId) {
-        return reviewRepository.countByEntId(entId);
-    }
-
-    // 업체 평균 별점
-    public Double findAverageRatingByEntId(Long entId){
-        return reviewRepository.findAverageRatingByEntId(entId);
-    }
-
     // 리뷰 등록 (ReceiptVo정보도 함꼐 등록)
     public void reviewRegist(ReviewRegistDto reviewRegistDto) {
+        
+        // 실제 리뷰 등록
         Review review = reviewRegistDto.toReview();
         review = reviewRepository.save(review); // jpa제공 메서드. review엔티티를 db에 저장하거나, 이미 존재하는 엔티티라면 업데이트합니다.
     }
@@ -55,5 +53,15 @@ public class ReviewService {
     public void deleteById(Long reviewId) {
         log.debug("Service단 / reviewId = {}", reviewId);
         reviewRepository.deleteById(reviewId);
+    }
+
+    // 업체 당 리뷰 총 개수
+    public long countByEntId(Long entId) {
+        return reviewRepository.countByEntId(entId);
+    }
+
+    // 업체 평균 별점
+    public Double findAverageRatingByEntId(Long entId){
+        return reviewRepository.findAverageRatingByEntId(entId);
     }
 }
