@@ -28,7 +28,7 @@ public class SittingDto {
     private int total_amount;
     private SittingStatus sittingStatus;
     private LocalDateTime updatedAt; // 상태값이 바뀔때 저장
-
+    private boolean reviewCheck; // 해당 주문 번호에 대해서 리뷰를 과거에 했는지 안했는지 알아보기 위한 코드
     public SittingDto entityToDto(Sitting entity)
     {
         return SittingDto.builder()
@@ -41,6 +41,7 @@ public class SittingDto {
                 .memberId(entity.getMemberId())
                 .petSitterId(entity.getPetSitterId())
                 .sittingStatus(entity.getSittingStatus())
+                .reviewCheck(entity.isReviewCheck())
                 .createdAt(entity.getCreatedAt()).build();
     }
 

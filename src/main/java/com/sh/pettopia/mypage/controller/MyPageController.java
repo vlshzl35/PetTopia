@@ -3,11 +3,14 @@ package com.sh.pettopia.mypage.controller;
 
 import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
+import com.sh.pettopia.choipetsitter.dto.PetSitterReviewDto;
 import com.sh.pettopia.choipetsitter.dto.ReservationDto;
 import com.sh.pettopia.choipetsitter.dto.SittingDto;
+import com.sh.pettopia.choipetsitter.entity.PetSitterReview;
 import com.sh.pettopia.choipetsitter.entity.Reservation;
 import com.sh.pettopia.choipetsitter.entity.Sitting;
 import com.sh.pettopia.choipetsitter.repository.ReservationRepository;
+import com.sh.pettopia.choipetsitter.service.PetSitterReviewService;
 import com.sh.pettopia.choipetsitter.service.ReservationService;
 import com.sh.pettopia.choipetsitter.service.SittingService;
 import com.sh.pettopia.mypage.dto.ProfileUpdateRequestDto;
@@ -31,6 +34,7 @@ public class MyPageController {
     private final MyPageService myPageService;
     private final ReservationService reservationService;
     private final SittingService sittingService;
+    private final PetSitterReviewService petSitterReviewService;
     @GetMapping("/mypage")
     public void mypage(@AuthenticationPrincipal AuthPrincipal authPrincipal,
                        Model model) {
@@ -59,17 +63,19 @@ public class MyPageController {
 
         // 돌봄 서비스가 완료 및 완료 승인을 대기 하는 리스트가 존재한다
         List<Sitting> completeSittingList=sittingService.findAllBySittingStatusIsComplete(authPrincipal.getMember().getEmail());
-        System.out.println("completeSittingEntityList = " + completeSittingList);
         List<SittingDto> completeSittingDtoList=new ArrayList<>();
         for(Sitting sittingEntity : completeSittingList)
         {
             completeSittingDtoList.add(new SittingDto().entityToDto(sittingEntity));
         }
+
+        System.out.println("completeSittingEntityList = " + completeSittingList);
+
         System.out.println("completeSittingDtoList = " + completeSittingDtoList);
 
-        model.addAttribute("reservationDtoList",reservationDtoList);
-        model.addAttribute("sittingDtoList",sittingDtoList);
-        model.addAttribute("completeSittingDtoList",completeSittingDtoList);
+        model.addAttribute("reservationDtoList",reservationDtoList); // 예약 중인 속성
+        model.addAttribute("sittingDtoList",sittingDtoList); // 돌봄 진행중인 속성
+        model.addAttribute("completeSittingDtoList",completeSittingDtoList); // 돌봄 승인 대기 및 완료된 속성
         model.addAttribute("member", member);
     }
 

@@ -56,4 +56,5 @@ public class ReviewService {
         log.debug("Service단 / reviewId = {}", reviewId);
         reviewRepository.deleteById(reviewId);
     }
+
 }

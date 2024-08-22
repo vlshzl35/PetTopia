@@ -40,8 +40,8 @@
         </thead>
         <tbody>
         <tr th:each="sitting , stat : ${sittinglist}" th:object="${sitting}">
-            [[${sitting}]]
-            [[${sitting.petSizeAndHowManyPets}]]
+<!--            [[${sitting}]]-->
+<!--            [[${sitting.petSizeAndHowManyPets}]]-->
             <form id="reservationForm" method="post" th:object="${sitting}">
                 <label>
                     <input type="hidden" th:value="${sitting.partnerOrderId}" name="partnerOrderId">

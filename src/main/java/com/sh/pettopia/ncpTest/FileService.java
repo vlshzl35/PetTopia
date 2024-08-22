@@ -40,7 +40,7 @@ public class FileService {
 
     //NOTICE: filePath의 맨 앞에 /는 안붙여도됨. ex) history/images
     public List<FileDto> uploadFiles(List<MultipartFile> multipartFiles, String filePath) {
-
+        log.info("FileService / uploadFiles");
         List<FileDto> s3files = new ArrayList<>();
 
         for (MultipartFile multipartFile : multipartFiles) {
@@ -116,6 +116,7 @@ public class FileService {
         return uploadFiles(multipartFiles,filePath);  // ncp 버킷에 filePath 경로의 디렉토리에 올라감(없으면 생성함)
 
     }
+
 
     public void deleteImage(String petSitterEmail, String directory, String fileName)
     {

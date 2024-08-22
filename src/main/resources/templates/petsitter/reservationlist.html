@@ -43,7 +43,7 @@
         </thead>
         <tbody>
         <tr th:each="info , stat : ${reservationDtoList}" th:object="${reservationDtoList}">
-            [[${info.partnerOrderId}]]
+<!--            [[${info.partnerOrderId}]]-->
             <form id="reservationForm" method="post" th:object="${info}">
                 <label>
                     <input type="hidden" th:value="${info.partnerOrderId}" name="partnerOrderId">

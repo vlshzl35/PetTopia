@@ -33,5 +33,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             r.entId = :entId
     """)
     Double findAverageRatingByEntId(Long entId);
+
 }
 
