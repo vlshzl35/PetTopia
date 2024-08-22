@@ -27,6 +27,7 @@
 
                     </div>
                     <div sec:authorize="isAuthenticated()" class="header-links d-flex align-items-center">
+                        <p th:text="${#authentication.principal.member.name + ' 님, 반갑습니다🐶'}" style="margin: 0 5px; color: white"></p>
                         <form th:action="@{/auth/logout}" method="post">
                             <input type="submit" value="로그아웃" style="border: none; background: none; color: white; cursor:pointer">
                         </form>
