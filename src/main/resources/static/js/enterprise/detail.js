@@ -224,26 +224,84 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
-    // 리뷰 등록 폼 제출 시 데이터 검증
+    // // 리뷰 등록 폼 제출 시 데이터 검증
+    // document.querySelector(".reviewForm").addEventListener('submit', (e) => {
+    //     e.preventDefault();
+    //
+    //     if (validateOcrData()) {
+    //         const form = e.target;
+    //
+    //         const reviewData = {
+    //             entName: form.querySelector('input[name="entName"]').value,
+    //             bizNum: form.querySelector('input[name="bizNum"]').value,
+    //             paymentDate: form.querySelector('input[name="paymentDate"]').value,
+    //             totalPrice: form.querySelector('input[name="totalPrice"]').value,
+    //         };
+    //
+    //         console.log("등록한 리뷰 정보: ", reviewData); // 데이터가 제대로 변환되었는지 확인
+    //         alert("리뷰가 등록되었습니다.");
+    //
+    //         form.submit(); // 서버로 폼 제출
+    //     }
+    // });
     document.querySelector(".reviewForm").addEventListener('submit', (e) => {
-        e.preventDefault();
+        // OCR로 읽어온 데이터를 가져오기
+        const form = e.target;
+        const reviewData = {
+            entId: form.querySelector('input[name="entId"]').value,
+            userId: form.querySelector('input[name="userId"]').value,
+            rating: parseInt(form.querySelector('input[name="rating"]:checked').value),
+            reviewContent: form.querySelector('textarea[name="reviewContent"]').value,
+            bizNum: form.querySelector('input[name="bizNum"]').value.replace(/-/g, ""), // 사업자번호에서 "-" 제거
+            entName: form.querySelector('input[name="entName"]').value,
+            paymentDate: parseDate(form.querySelector('input[name="paymentDate"]').value), // 날짜 포맷 변환
+            totalPrice: parseInt(form.querySelector('input[name="totalPrice"]').value.replace(/,/g, "")) // 쉼표 제거 후 정수로 변환
+        };
 
-        if (validateOcrData()) {
-            const form = e.target;
+        console.log("전처리된 리뷰 데이터: ", reviewData);
 
-            const reviewData = {
-                entName: form.querySelector('input[name="entName"]').value,
-                bizNum: form.querySelector('input[name="bizNum"]').value,
-                paymentDate: form.querySelector('input[name="paymentDate"]').value,
-                totalPrice: form.querySelector('input[name="totalPrice"]').value,
-            };
-
-            console.log("등록한 리뷰 정보: ", reviewData); // 데이터가 제대로 변환되었는지 확인
-            alert("리뷰가 등록되었습니다.");
-
-            form.submit(); // 서버로 폼 제출
-        }
+        // 중복 영수증 확인을 위한 Ajax 요청
+        $.ajax({
+            url: '/enterprise/hospital/checkReceipt',
+            method: 'POST',
+            data: JSON.stringify(reviewData),
+            contentType: 'application/json',
+            success: function (isDuplicate) {
+                if (isDuplicate) {
+                    alert('중복된 영수증입니다. 리뷰를 등록할 수 없습니다.');
+                } else {
+                    alert('리뷰가 등록되었습니다.');
+                    form.submit(); // 중복이 아닌 경우 폼 제출
+                }
+            },
+            error: function (err) {
+                console.log(err);
+                alert('영수증 중복 확인 중 오류가 발생했습니다.');
+            }
+        });
     });
+
+// 날짜 포맷을 변환하는 함수 (Java에서의 전처리 로직과 동일)
+    function parseDate(dateStr) {
+        const formatter1 = /^\d{4}-\d{2}-\d{2}$/; // yyyy-MM-dd
+        const formatter2 = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/; // yyyy-MM-dd HH:mm
+        const formatter3 = /^\d{4}년 \d{1,2}월 \d{1,2}일$/; // yyyy년 M월 d일
+
+        let date;
+
+        if (formatter1.test(dateStr)) {
+            date = new Date(dateStr);
+        } else if (formatter2.test(dateStr)) {
+            date = new Date(dateStr.replace(' ', 'T'));
+        } else if (formatter3.test(dateStr)) {
+            const parts = dateStr.match(/(\d{4})년 (\d{1,2})월 (\d{1,2})일/);
+            date = new Date(parts[1], parts[2] - 1, parts[3]);
+        } else {
+            throw new Error("지원되지 않는 날짜 형식입니다: " + dateStr);
+        }
+
+        return date.toISOString().split('T')[0]; // yyyy-MM-dd 형식으로 반환
+    }
 
     // 리뷰등록 모달 닫기 버튼 핸들링
     document.querySelector('#closeBtn2').onclick = function() {
