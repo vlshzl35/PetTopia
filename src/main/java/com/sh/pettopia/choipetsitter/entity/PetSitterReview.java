@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 @Builder
 public class PetSitterReview {
     @Id
-    @GeneratedValue(strategy =GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "partner_order_id")
+    private String partnerOrderId; // 주문 번호
 
     @Column(name = "review_text") // 리뷰 내용
     private String reviewText;
@@ -43,6 +43,7 @@ public class PetSitterReview {
 
     @Column(name = "petsitter_id")
     private String petSitterId;
+
 
     public void changeReviewText(String reviewText)
     {

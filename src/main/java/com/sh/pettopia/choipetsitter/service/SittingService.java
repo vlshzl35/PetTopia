@@ -28,4 +28,18 @@ public class SittingService {
     public List<Sitting> findAllByOrderByServiceDateAsc() {
         return sittingRepository.findAllByOrderByServiceDateAsc();
     }
+
+    public List<Sitting> findByMemberId(String memberId) {
+        return sittingRepository.findByMemberId(memberId);
+    }
+
+    public List<Sitting> findAllBySittingStatusIsComplete(String memberId)
+    {
+        return sittingRepository.findAllBySittingStatusIsCompleteOrWating(memberId);
+    }
+
+    public List<Sitting> findAllBySittingStatusIsReadyOrStart(String memberId)
+    {
+        return sittingRepository.findAllBySittingStatusIsReadyOrStart(memberId);
+    }
 }

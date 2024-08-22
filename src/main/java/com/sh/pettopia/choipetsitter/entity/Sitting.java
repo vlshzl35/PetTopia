@@ -23,8 +23,8 @@ import java.util.List;
 @Builder
 public class Sitting {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "partner_order_id")
+    private String partnerOrderId; // 주문 번호
 
     @Column(name = "service_date")
     private String  serviceDate; // 실제 요청 서비스를 실행하는 날짜
@@ -32,6 +32,9 @@ public class Sitting {
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt; // 예약을 수락한 날짜
+
+    @Column(name = "note")
+    private String note; // 참고사항
 
     @Column(name = "updated_at")
     @UpdateTimestamp
@@ -56,9 +59,6 @@ public class Sitting {
     @Column(name = "end_time")
     private LocalTime endTime; // 예약 종료시간
 
-    @Column(name = "partner_order_id")
-    private String partnerOrderId; // 주문 번호
-
     @Column(name = "petsize_and_howmany")
     @ElementCollection
     private List<PetSizeAndHowManyPet> petSizeAndHowManyPets; // 어떤 견종을 몇마리 할 것인지
@@ -81,6 +81,7 @@ public class Sitting {
                 .startTime(dto.getStartTime())
                 .endTime(dto.getEndTime())
                 .partnerOrderId(dto.getPartnerOrderId())
+                .note(dto.getNote())
                 .build();
     }
 

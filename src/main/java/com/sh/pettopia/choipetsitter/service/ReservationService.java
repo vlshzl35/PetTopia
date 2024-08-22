@@ -2,6 +2,7 @@ package com.sh.pettopia.choipetsitter.service;
 
 import com.sh.pettopia.choipetsitter.entity.Reservation;
 import com.sh.pettopia.choipetsitter.repository.ReservationRepository;
+import com.sh.pettopia.parktj.petsitterfinder.entity.ReservationByPetSitter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,4 +35,14 @@ public class ReservationService {
     public void delete(Reservation reservation) {
         reservationRepository.delete(reservation);
     }
+
+    public List<Reservation> findByMemberId(String memberId) // memberId=memberEmail
+    {
+        return reservationRepository.findByMemberId(memberId);
+    }
+
+    public List<Reservation> findByPetSitterIdAndReservationStatusNotReady(String petSitterId) {
+        return reservationRepository.findByPetSitterIdAndReservationStatusNotOk(petSitterId);
+    }
+
 }

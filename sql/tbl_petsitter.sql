@@ -1,4 +1,6 @@
-insert into pettopiadb.tbl_petsitter (id, created_at, introduce, address, detail_address, extra_address, postcode, post_url, update_at, profile_img)
+
+
+insert into pettopiadb.tbl_petsitter (petsitter_id, created_at, introduce, address, detail_address, extra_address, postcode, post_url, update_at, profile_img)
 values  ('c@c', null, '최창욱입니다', '서울 강동구 고덕로61길 37', '', ' (고덕동, 현대아파트)', '05234', null, null, null),
         ('c1@c', null, '삼성동입니다', '서울 강남구 봉은사로 403', '', ' (삼성동)', '06097', null, null, null),
         ('c10@c', null, '며칠 서 잇을께요', '1', '', '', '', null, null, null),

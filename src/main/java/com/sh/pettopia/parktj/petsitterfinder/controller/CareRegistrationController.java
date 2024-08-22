@@ -1,13 +1,20 @@
 package com.sh.pettopia.parktj.petsitterfinder.controller;
 
 import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
+import com.sh.pettopia.Hojji.pet.entity.Pet;
 import com.sh.pettopia.Hojji.pet.service.PetService;
 import com.sh.pettopia.choipetsitter.entity.PetSitter;
+import com.sh.pettopia.choipetsitter.entity.Reservation;
 import com.sh.pettopia.choipetsitter.service.PetSitterService;
+import com.sh.pettopia.choipetsitter.service.ReservationService;
 import com.sh.pettopia.parktj.petsitterfinder.dto.*;
+import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;
+import com.sh.pettopia.parktj.petsitterfinder.entity.ReservationByPetSitter;
+import com.sh.pettopia.parktj.petsitterfinder.entity.ReservationStatus;
 import com.sh.pettopia.parktj.petsitterfinder.service.CareRegistrationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -26,6 +33,7 @@ public class CareRegistrationController {
     private final CareRegistrationService careRegistrationService;
     private final PetService petService;
     private final PetSitterService petSitterService;
+    private final ReservationService reservationService;
 
     // 멤버에 id에 맞는 펫 정보 option 태그에 보여주기 위한 코드
     // 08/13 멤버 session에 저장된 정보로 맞는 정보 찾아오기
@@ -33,7 +41,7 @@ public class CareRegistrationController {
     @GetMapping("/careregistrationform")
     public void careRegistrationForm(@AuthenticationPrincipal AuthPrincipal authPrincipal, Model model) {
         List<PetDetailsResponseDto> pets = petService.findAllByMemberId(authPrincipal.getMember().getId());
-        log.debug("pets = {}", pets);
+        System.out.println("펫 정보 잘 가져오는지 확인해보겠습니다" + pets.stream().toList());
         model.addAttribute("pets", pets);
     }
 
@@ -119,17 +127,74 @@ public class CareRegistrationController {
     }
 
     @PostMapping("/reservation")
-    public void reservation(@ModelAttribute ReservationRequestDto reservationRequestDto){
+    public ResponseEntity<String>  reservation(
+            @ModelAttribute ReservationRequestDto reservationRequestDto,
+            RedirectAttributes redirectAttributes){
+
        log.debug("reservationRequestDto={}", reservationRequestDto);
        PetSitter petSitter = petSitterService.findOneByPetSitter(reservationRequestDto.getMemberEmail());
+       CareRegistration careRegistration = careRegistrationService.findOneByPostId(reservationRequestDto.getPostId());
         log.debug("petSitter = {}", petSitter);
         // 이미 영속성 컨텍스트에 연결되어 있으므로, 추가적인 전환은 불필요
+        ReservationByPetSitter reservationInfo =ReservationByPetSitter.toReservationEntity(petSitter,careRegistration);
 
-        careRegistrationService.saveReservation(petSitter);
-
+        String currentPetSitterId = petSitter.getPetSitterId();
+        Long currentPostId = careRegistration.getPostId();
+        try {
+            careRegistrationService.save(reservationInfo, currentPetSitterId, currentPostId);
+            return ResponseEntity.ok("예약이 성공적으로 완료됨");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @GetMapping("/reservation")
+    public void reservationList(@RequestParam(value = "postId") Long postId, Model model) {
+        // 게시글을 작성한 사람, 로그인한 사람 ID비교해서 권한 주는 것은 수정/삭제 권환과 동일함
+       List<ReservationResponseDto> reservationResponseDtoList = careRegistrationService.findReservationByPostId(postId);
+//       reservationResponseDtoList.stream().map(ReservationResponseDto::getStatus)
+//                       .forEach(status -> model.addAttribute("status", status));
+        System.out.println("이거 어떻게 된건지 공부가 필요하다... " + reservationResponseDtoList);
+        model.addAttribute("reservationResponseDtoList", reservationResponseDtoList);
 
 
     }
+
+    @PostMapping("/reservation/{reservationId}/advance-status")
+    public ResponseEntity<ReservationResponseDto> advanceReservationStatus(@PathVariable Long reservationId){
+        try {
+            ReservationByPetSitter updateReservation = careRegistrationService.advanceReservationStatus(reservationId);
+            ReservationResponseDto responseDto = ReservationResponseDto.fromReservations(updateReservation);
+            return ResponseEntity.ok(responseDto);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ReservationResponseDto(e.getMessage()));
+        }
+    }
+
+    @PostMapping("/reservation/{reservationId}/reject")
+    public String reservationReject(@PathVariable Long reservationId, @RequestParam Long postId , RedirectAttributes redirectAttributes, Model model) {
+        try {
+             careRegistrationService.rejectReservation(reservationId);
+            redirectAttributes.addFlashAttribute("message", "요청이 거절 되었습니다.");
+        }
+        catch(IllegalStateException e){
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+        }
+
+
+
+        return "redirect:/petsitterfinder/reservation?postId="+postId;
+
+
+    }
+    /**
+     * redirectFlashAttribute 사용될때에는 model.addAttribyte사용 불가능함 따라서
+     * redirectAttribute 할때 값 보내고, input으로 해서 직접 값 받아봐라 맞는지 아닌지
+     */
+
+    /**
+     * @PathVariable 어노테이션은 URL 경로에 포함된 값을 메서드 매개변수에 바인딩하는데 사용됨
+     * 예를 들어, URL의 일부를 변수로 받아서 처리하고자 할때 유용함
+     */
 
 
     /**

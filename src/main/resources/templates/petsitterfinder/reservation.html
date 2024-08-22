@@ -1,12 +1,166 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/default}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>예약 목록</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* 헤더 스타일 명시 */
+        .navbar {
+            background-color: #ffffff !important; /* 흰색 배경 */
+            padding: 10px 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 헤더 그림자 */
+        }
+
+        .navbar .nav-link, .navbar-brand {
+            color: #000000 !important; /* 검정색 텍스트 */
+            font-weight: bold;
+        }
+
+        .navbar .nav-link:hover {
+            color: #28a745 !important; /* 녹색 텍스트 */
+        }
+
+        /* 테이블 스타일 */
+        .table-hover tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table-striped > tbody > tr:nth-of-type(odd) {
+            background-color: #f9f9f9;
+        }
+
+        /* 버튼 스타일 */
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        /* 전체적인 레이아웃 패딩 */
+        .container {
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+    </style>
 </head>
 <body>
-<h1>예약 페이지 하나 만들겠소</h1>
-선우야 나 곧 회의인데 그러면 여기서 혼자하고 있을거야?
+<div layout:fragment="main" class="page-body">
+    <div class="container">
+        <h2 class="mb-4 text-center">예약 목록</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
 
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">예약 ID</th>
+                    <th scope="col">펫시터 ID</th>
+                    <th scope="col">포스트 ID</th>
+                    <th scope="col">상태</th>
+                    <th scope="col">예약 날짜</th>
+                    <th scope="col">현재 돌봄진행 상태</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- 예약 목록 데이터가 여기에 들어갑니다 -->
+                <tr th:each="reservation, iterStat : ${reservationResponseDtoList}"
+                    th:data-reservation-id=${reservation.reservationId}>
+                    <th scope="row" th:text="${iterStat.index + 1}"></th>
+                    <td th:text="${reservation.reservationId}"></td>
+                    <td >
+                        <a th:href="@{/petsitter/detail/{petsitterId}(petsitterId=${reservation.petSitterId})}" th:text="${reservation.petSitterId}"></a>
+                    </td>
+                    <td th:text="${reservation.postId}"></td>
+                    <td th:text="${reservation.status}"></td>
+                    <td th:text="${reservation.createdDate}"></td>
+                    <td>
+                        <!--              버튼 눌렀을 때 상태변경 요청하는 함수 호출-->
+<!--                       창욱이형이 알려준 코드로 해결된거 기록하기!!! -->
+                        <div class="d-flex justify-content-between">
+                        <button  th:if="${reservation.status.getReservationStatus() != '요청거절'}" class="btn btn-sm btn-primary me-2"  th:text="${reservation.status}"  th:onclick="'advanceReservationStatus('+ ${reservation.reservationId} +')'"></button>
+                        <form th:action="@{/petsitterfinder/reservation/{reservationId}/reject(reservationId=${reservation.reservationId})}" method="post" onsubmit="return confirm('정말 거절하시겠습니까?')">
+                            <input type="hidden" name="postId" th:value="${reservation.postId}"/>
+                        <button class="btn btn-sm btn-danger" type = "submit" >예약요청 거절</button>
+                        </form>
+                        </div>
+                    </td>
+
+                </tr>
+
+                <!-- 추가적인 예약 목록은 여기에 계속 추가될 수 있습니다 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen">
+        <svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                    stroke="#F96D00"/>
+        </svg>
+    </div>
+    <script>
+        // 버튼의 onclick함수의 이름과 동일하게 작성해준다. // 상태변경 AJAX 코드
+        function advanceReservationStatus(reservationId) {
+            console.log(reservationId)
+            $.ajax({
+                    type: "POST",
+                    url: `/petsitterfinder/reservation/${reservationId}/advance-status`,
+                    success: function (res) {
+                        const confirmation = confirm(res.status + " 상태로 변경 하시겠습니까? ")
+                        if (confirmation) {
+                            alert(res.status + " 으로 변경되었습니다. \n😀다음 상태로 진행하시려면 현재 상태를 다시 클릭해주세요😀");
+                            location.reload(); // 페이지를 새로고침하여 변경 사항을 반영함
+                        }
+
+                    }, error: function (err) {
+                        if (err.status === 409) {
+                            //   return ResponseEntity.status(HttpStatus.CONFLICT).body(new ReservationResponseDto(e.getMessage()));
+                            alert("이미 돌봄이 완료된 건 입니다.🥲")
+                        } else {
+                            alert("상태 변경 실패")
+                        }
+
+                    }
+
+                }
+            )
+
+            // 어떤 아이디인지 받기 위해서
+
+            function refuseRequest(reservationId) {
+                console.log(reservationId)
+                $.ajax({
+                    type: "POST",
+                    url: `/petsitterfinder/reservation/${reservationId}/deleteRequest`,
+                    success: function (res) {
+                    },
+                    error: function (err) {
+
+                    }
+                })
+            }
+        }
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        const message = '[[${message}]]';
+        message && alert(message);
+    </script>
+</div>
 </body>
 </html>

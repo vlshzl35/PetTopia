@@ -34,12 +34,14 @@
             <th>예약 날짜</th>
             <th>시작, 종료</th>
             <th>사이즈</th>
-            <th>상태변경</th>
+            <th>상태 변경</th>
+            <th>돌봄 상태</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="sitting , stat : ${sittinglist}" th:object="${sitting}">
             [[${sitting}]]
+            [[${sitting.petSizeAndHowManyPets}]]
             <form id="reservationForm" method="post" th:object="${sitting}">
                 <label>
                     <input type="hidden" th:value="${sitting.partnerOrderId}" name="partnerOrderId">
@@ -57,56 +59,36 @@
                     <span th:text="${sitting.endTime}" name="endTime"></span>
                 </td>
                 <td>
-                    <div th:each="sizehowmany:${sitting.petSizeAndHowManyPets}">
+                    <div th:each="sizehowmany,stat :${sitting.petSizeAndHowManyPets}">
                         <span th:text="${sizehowmany.petSize}" name="petSize"></span>
                         <span th:text="${sizehowmany.howManyPet}"></span>
                     </div>
                 </td>
                 <td>
                     <div>
-                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'StandbySitting'"
-                              th:text="돌봄대기"></span>
-                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'SITTING_STATUS'"
-                              th:text="돌봄 중"></span>
-                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'COMPLETED_SITTING'"
-                              th:text="돌봄 완료" id="completedSitting"></span>
+                        <button type="submit" th:formaction="@{/petsitter/sitting}" class="btn btn-primary" th:if="${sitting.sittingStatus.getSittingStatus()} == 'StandbySitting'"
+                                th:text="돌봄시작" id="startButton" value="START_SITTING" name="sittingStatus" ></button>
+                        <button type="submit" th:formaction="@{/petsitter/sitting}" class="btn btn-primary" th:if="${sitting.sittingStatus.getSittingStatus()} == 'START_SITTING'"
+                                th:text="돌봄완료" id="completeButton" value="COMPLETED_SITTING" name="sittingStatus"></button>
                     </div>
+                </td>
+                <td>
                     <div>
-                        <button type="submit" th:formaction="@{/petsitter/reservationOk}" class="btn"
-                                th:if="${sitting.sittingStatus.getSittingStatus()} == 'StandbySitting'"
-                                th:text="돌봄시작" id="startButton"></button>
-                        <button type="submit" th:formaction="@{/petsitter/reservationOk}" class="btn"
-                                th:if="${sitting.sittingStatus.getSittingStatus()} == 'SITTING_STATUS'"
-                                th:text="돌봄완료" id="completeButton"></button>
+                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'StandbySitting'"
+                              th:text="돌봄대기" ></span>
+                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'START_SITTING'"
+                              th:text="돌봄중"></span>
+                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'WAITING_MEMBER_CHECK'"
+                              th:text="승인대기중" id="completedSitting"></span>
+                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'COMPLETED_SITTING'"
+                              th:text="돌봄완료"></span>
                     </div>
+
                 </td>
             </form>
         </tr>
         </tbody>
     </table>
-    <script>
-        window.onload = function () {
-            // '돌봄 완료' 상태인지 확인합니다.
-            const completedSittingSpan = document.getElementById('completedSitting');
-
-            // 만약 '돌봄 완료' 상태가 존재하면, 버튼을 비활성화합니다.
-            if (completedSittingSpan) {
-                const startButton = document.getElementById('startButton');
-                const completeButton = document.getElementById('completeButton');
-
-                // 각 버튼이 존재할 경우 비활성화합니다.
-                if (startButton) {
-                    startButton.disabled = true;
-                    startButton.classList.add("btn-disabled");  // 필요한 경우 스타일을 추가합니다.
-                }
-
-                if (completeButton) {
-                    completeButton.disabled = true;
-                    completeButton.classList.add("btn-disabled");  // 필요한 경우 스타일을 추가합니다.
-                }
-            }
-        }
-    </script>
 </div>
 
 </body>

@@ -52,24 +52,19 @@ public class CommentController {
     @GetMapping("/list")
     public ResponseEntity<Page<CommentDTO>> findAll(
             @RequestParam(value = "postId") Long postId,
-            @PageableDefault(page = 1, size = 5) Pageable pageable,
-            Model model) {
+            @PageableDefault(page = 1, size = 5) Pageable pageable
+            // 1부터 시작하는 인덱스, 한 페이지에 최대 5개의 데이터를 보여준다.
+            // 정렬 (`sort`)
+    ) {
             log.info("GET/comment/list?page={}", pageable.getPageNumber());
             pageable = PageRequest.of(
                     pageable.getPageNumber() -1,
-                    pageable.getPageSize());
+                                pageable.getPageSize());
 
         System.out.println("postId = " + postId);
         Page <CommentDTO> commentDTOPage = commentService.findAll(postId, pageable);
-
-        int page = commentDTOPage.getNumber();
-        int limit = commentDTOPage.getSize();
-        int totalCount = (int) commentDTOPage.getTotalElements();
-        String url ="/careregistrationdetails";
-//        String url = "/comment/list?postId=" + postId + "&page=" + page;
-        model.addAttribute("pageCriteria", new PageCriteria(page, limit, totalCount, url));
-
-        return new ResponseEntity<>(commentDTOPage, HttpStatus.OK);
+        System.out.println("commentDTOPage = " + commentDTOPage);
+        return new ResponseEntity<>(commentDTOPage, HttpStatus.OK); // 이 객체는 요청한 페이지의 데이터뿐만 아니라, 페이징 정보도 함께 포함됨
 
 
     }
@@ -77,6 +72,22 @@ public class CommentController {
 
 
 }
+/**
+ * Pageable 은 데이터 정렬 기준을 설정할 수 있음.
+ * PageRequest.of(0, 10, Sort.by("name").ascending())`은 첫 번째 페이지에서 이름을 기준으로 오름차순으로 정렬된 10개의 데이터를 가져옴
+ * ### Pageable 인터페이스의 주요 메서드
+ * - getPageNumber(): 현재 페이지 번호를 반환
+ * - getPageSize(): 한 페이지의 데이터 개수를 반환한다.
+ * - getSort(): 정렬 기준을 반환한다.
+ * - of() : 정적 메서드로, 페이지 번호, 크기 , 정렬 기준 등을 지정하여 PageRequest 객체를 생성한다.
+ *
+ * Page 인터페이스
+ *
+ * Spring Data JPA에서 페이징된 데이터를 반환할 때 사용하는 인터페이스임.
+ * Page<T>는 페이징된 데이터와 함께 페이지 정보(현재 페이지, 총 페이지 수, 총 데이터 수등)을 포함함.
+ * - getContent(): 현재 페이지의 데이터를 `List<T>로 반환
+ */
+
 /**
  * @ResponseBody 어노테이션에 대한 설명
  * - 컨트롤러의 메서드가 반환하는 데이터를 HTTP 응답 본문 (BODY) 에 직접 쓰도록 지시함.

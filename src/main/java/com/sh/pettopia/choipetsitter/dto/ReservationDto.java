@@ -23,11 +23,15 @@ public class ReservationDto {
     private LocalTime startTime;
     private LocalTime endTime;
     private List<PetSizeAndHowManyPet> petSizeAndHowManyPets;
+
+    // 아래 5줄은 카카오 페이 할 떄 필요함
     private String item_name; // ex) 소형견 외...
     private int total_amount; // 총 금액
     private int tax_free_amount;
     private int quantity;// 몇마리 인지
     private String partnerOrderId; // 주문 번호
+
+
     private LocalDateTime createdAt;
     private ReservationStatus reservationStatus;
     public ReservationDto entityToDto(Reservation entity)

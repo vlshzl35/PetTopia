@@ -11,20 +11,28 @@
             align-self: center;
             border: 1px solid black;
             border-collapse: collapse;
+            text-align: center;
         }
 
     </style>
 </head>
 <body>
 <div>
-    <a th:href="@{/petsitter/reservationlist}" class="btn btn-primary" onClick="window.close()">목록보기</a>
+    <a class="btn btn-primary" onClick="window.close()">목록보기</a>
     <br><br>
     <h5>돌봄 상세</h5>
+<!--    보는 사람 == 펫시터 회원의 회원의 아이디를 보여준다-->
+    <div th:object="${reservationinfo}" th:if="${#authentication.principal.member.email == reservationinfo.getPetSitterId}">
+        회원 : <span th:text="${reservationinfo.memberId}"></span>
+    </div>
+<!--    보는 사람 != 펫시터 그럼 펫시터의 아이디를 보여준다 -->
+    <div th:object="${reservationinfo}" th:if="${#authentication.principal.member.email != reservationinfo.getPetSitterId}">
+        펫시터 : <span th:text="${reservationinfo.petSitterId}"></span>
+    </div>
     <div th:object="${reservationinfo}">
         <table cellpadding="10px" class="table">
             <thead>
             <tr>
-                <th>주문회원</th>
                 <th>요청 날짜</th>
                 <th>예약 날짜</th>
                 <th>시작, 종료</th>
@@ -34,7 +42,6 @@
             </thead>
             <tbody>
             <tr>
-                <td th:text="${reservationinfo.memberId}"></td>
                 <td th:text="${#temporals.format(reservationinfo.createdAt, 'yyyy-MM-dd/a hh:mm')}"></td>
                 <td th:text="${reservationinfo.reservationDay}" name="reservationDay"></td>
                 <td>
@@ -51,7 +58,7 @@
             </tr>
             </tbody>
         </table>
-        <div>
+        <div class="table">
             <h2>참고 사항</h2>
             <div style="border: solid 1px black">
                 <p th:text="${reservationinfo.note}"></p>
