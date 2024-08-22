@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var copyText = document.getElementById("entPhone").innerText;
 
         var tempInput = document.createElement("input");
-        tempInput.style = "position: absolute; left: -1000px; top: -1000px";
+        tempInput.style = "positionx: absolute; left: -1000px; top: -1000px";
         tempInput.value = copyText;
         document.body.appendChild(tempInput);
 
@@ -61,13 +61,50 @@ document.addEventListener('DOMContentLoaded', function() {
         alert("전화번호가 복사되었습니다");
     };
 
+    // 리뷰 삭제 기능
+    const deleteButtons = document.querySelectorAll('.deleteReview');
+    const enterpriseTypeElement = document.getElementById('enterpriseType');
+    let enterpriseType = '';
+
+    if (enterpriseTypeElement) {
+        enterpriseType = enterpriseTypeElement.value;
+    }
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            if (confirm('리뷰를 삭제하시겠습니까?')) {
+                const reviewId = this.getAttribute('data-review-id'); // 삭제할 리뷰의 ID를 가져옴
+                const entId = new URLSearchParams(window.location.search).get('id'); // 현재 URL에서 업체 ID(entId)를 가져옴
+
+                const deleteUrl = `/enterprise/${enterpriseType}/deleteReview`;
+
+                $.ajax({
+                    url: deleteUrl,  // 컨트롤러의 경로에 맞게 수정
+                    method: 'POST',  // POST로 변경
+                    data: {
+                        id: entId,       // 업체 ID를 전달
+                        reviewId: reviewId  // 리뷰 ID를 전달
+                    },
+                    success: function(response) {
+                        alert('리뷰가 삭제되었습니다.');
+                        location.reload(); // 페이지 새로고침하여 변경사항 반영
+                    },
+                    error: function(err) {
+                        console.log(err);
+                        alert('리뷰 삭제에 실패했습니다. 다시 시도해주세요.');
+                    }
+                });
+            }
+        });
+    });
+
     // ajax로 영수증 네이버 OCR API에 전송하기
     document.fileUploadFrm.onsubmit = (e) => {
         e.preventDefault();
 
         // multipart/form-data 비동기 요청
         const frmData = new FormData(e.target);
-        frmData.append('type', 'general');  // type파라미터에 general(일반) value넣기
+        frmData.append('type', 'document'); // OCR type파라미터에 document(특화) value넣기
 
         console.log('type = ', frmData.get('type'));
         console.log('file = ', frmData.get('file'));
@@ -78,16 +115,55 @@ document.addEventListener('DOMContentLoaded', function() {
             url: apiUrl, // url: `[[@{/ocrUpload}]]`,
             method: 'post',
             data: frmData,
-            contentType: false, // multipart/form-data 설정
-            processData: false, // multipart/form-data 설정
+            contentType: false, // multipart/form-data 관련 필수 설정
+            processData: false, // multipart/form-data 관련 필수 설정
             success(response) {
                 console.log(response);
                 const {message, data} = response;
                 alert(message);
                 const _data = JSON.parse(data);
-                console.log(_data);
+                console.log(_data); // OCR로 읽어온 영수증 정보 출력
 
-                // 리뷰등록 팝업 열기
+                // 데이터 구조에서 필요한 정보를 추출
+                const {
+                    images: [
+                        {
+                            receipt: {
+                                result: {
+                                    storeInfo: { name, bizNum },
+                                    paymentInfo: { date },
+                                    totalPrice: { price }
+                                }
+                            }
+                        }
+                    ]
+                } = _data;
+
+                // HTML에 출력
+                const target = document.getElementById('target');
+                target.innerHTML = `
+                    <p><strong>업체명:</strong> ${name.text}</p>
+                    <p><strong>사업자 번호:</strong> ${bizNum.text}</p>
+                    <p><strong>결제일자:</strong> ${date.text}</p>
+                    <p><strong>총 결제금액:</strong> ${price.text}</p>
+                `;
+
+                // Fill hidden form fields with OCR data
+                const entNameField = document.querySelector('.reviewForm input[name="entName"]');
+                const bizNumField = document.querySelector('.reviewForm input[name="bizNum"]');
+                const paymentDateField = document.querySelector('.reviewForm input[name="paymentDate"]');
+                const totalPriceField = document.querySelector('.reviewForm input[name="totalPrice"]');
+
+                console.log('entNameField:', entNameField);
+                console.log('bizNumField:', bizNumField);
+                console.log('paymentDateField:', paymentDateField);
+                console.log('totalPriceField:', totalPriceField);
+
+                if (entNameField) entNameField.value = name.text;
+                if (bizNumField) bizNumField.value = bizNum.text;
+                if (paymentDateField) paymentDateField.value = date.text;
+                if (totalPriceField) totalPriceField.value = price.text;
+
                 // 영수증 인증 섹션 숨기기 & 초기화
                 // 1. upload팝업을 숨깁니다.
                 document.getElementById('uploadPopup').style.display = 'none';
@@ -98,11 +174,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 // 리뷰 작성 폼 표시
                 document.getElementById('reviewPopup').style.display = 'block';
             },
-            error: function(err) {
+            // // error: function(err) {
+            // //     console.log(err);
+            // // },
+
+            error(err) {
                 console.log(err);
+                alert('OCR 처리 중 오류가 발생했습니다.');
             },
             complete: function() {
-                e.target.reset(); // 폼 초기화
+                e.target.reset(); // 폼 초기화 (오류날수도 있음)
             }
         })
     };
@@ -133,9 +214,19 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('reviewPopup').style.display = 'none';
     };
 
-    // 리뷰 폼 제출시 message 출력
-    document.querySelector("#reviewForm").addEventListener('submit', (e) => {
-        const reviewSubmitMessage = '${reviewSubmitMessage}';
-        reviewSubmitMessage && alert(reviewSubmitMessage); // 메세지가 존재하면 alert(회원가입 완료) 표시
-    })
+    // 리뷰등록폼 제출
+    document.querySelector(".reviewForm").addEventListener('submit', (e) => {
+
+        const form = e.target;
+
+        const reviewData = {
+            entName: form.querySelector('input[name="entName"]').value,
+            bizNum: form.querySelector('input[name="bizNum"]').value,
+            paymentDate: form.querySelector('input[name="paymentDate"]').value,
+            totalPrice: form.querySelector('input[name="totalPrice"]').value,
+        };
+
+        console.log("Parsed review data: ", reviewData); // 데이터가 제대로 변환되었는지 확인
+        alert("리뷰가 등록되었습니다.");
+    });
 });

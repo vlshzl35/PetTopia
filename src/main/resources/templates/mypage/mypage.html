@@ -1,8 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{layout/default}">
 <head>
     <title>MyPage</title>
+    <style>
+        tbody {
+            height: 200px; /* Set the desired height for scrolling */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        table {
+
+            text-align: center;
+        }
+
+    </style>
     <script>
         function showSection(sectionId) {
             // 모든 섹션을 숨기기
@@ -16,7 +28,7 @@
             section.style.display = 'block';
 
             // 선택된 섹션으로 스크롤 이동
-            section.scrollIntoView({ behavior: 'smooth' });
+            section.scrollIntoView({behavior: 'smooth'});
         }
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -52,16 +64,22 @@
                         <!-- 버튼 추가 영역 -->
                         <div class="row mb-5 justify-content-center">
                             <div class="col-md-3">
-                                <button class="btn btn-primary w-100" onclick="showSection('editProfileSection')">회원정보 수정</button>
+                                <button class="btn btn-primary w-100" onclick="showSection('editProfileSection')">회원정보
+                                    수정
+                                </button>
                             </div>
                             <div class="col-md-3">
-                                <button class="btn btn-primary w-100" onclick="showSection('petProfileSection')">펫 프로필</button>
+                                <button class="btn btn-primary w-100" onclick="showSection('petProfileSection')">펫 프로필
+                                </button>
                             </div>
                             <div class="col-md-3">
-                                <button class="btn btn-primary w-100" onclick="showSection('usageHistorySection')">이용내역</button>
+                                <button class="btn btn-primary w-100" onclick="showSection('usageHistorySection')">
+                                    이용내역
+                                </button>
                             </div>
                             <div class="col-md-3">
-                                <button class="btn btn-primary w-100" onclick="showSection('petSitterSection')">펫시터</button>
+                                <button class="btn btn-primary w-100" onclick="showSection('petSitterSection')">펫시터
+                                </button>
                             </div>
                         </div>
                         <!-- 버튼 추가 영역 끝 -->
@@ -71,21 +89,24 @@
                             <form id="profileUpdateForm" method="post">
                                 <!-- 사용자에게 보이지 않는 ID를 저장하는 숨겨진 필드 -->
                                 <input type="hidden" name="id" th:value="${member.id}">
-<!--                                <div class="form-group">-->
-<!--                                    <label for="email">이메일:</label>-->
-<!--                                    <input type="email" class="form-control" id="email" th:value="${member.email}" readonly>-->
-<!--                                </div>-->
+                                <!--                                <div class="form-group">-->
+                                <!--                                    <label for="email">이메일:</label>-->
+                                <!--                                    <input type="email" class="form-control" id="email" th:value="${member.email}" readonly>-->
+                                <!--                                </div>-->
                                 <div class="form-group">
-                                    <label>주소:</label>
-                                    <input type="text" class="form-control" name="address" th:value="${member.address}" required>
+                                    <label for="profileAddress">주소:</label>
+                                    <input type="text" class="form-control" name="address" th:value="${member.address}" id="profileAddress"
+                                           required>
                                 </div>
                                 <div class="form-group">
-                                    <label>연락처:</label>
-                                    <input type="text" class="form-control" name="phone" th:value="${member.phone}" required>
+                                    <label for="profilePhone">연락처:</label>
+                                    <input type="text" class="form-control" name="phone" th:value="${member.phone}" id="profilePhone"
+                                           required>
                                 </div>
                                 <div class="form-group">
-                                    <label>닉네임:</label>
-                                    <input type="text" class="form-control" name="nickName" th:value="${member.nickName}" required>
+                                    <label for="profileNickName">닉네임:</label>
+                                    <input type="text" class="form-control" name="nickName" id="profileNickName"
+                                           th:value="${member.nickName}" required>
                                 </div>
                                 <button type="submit" class="btn btn-primary">수정하기</button>
                             </form>
@@ -93,40 +114,40 @@
 
                         <div id="petProfileSection" style="display:none;">
                             <h3>펫 프로필</h3>
-<!--                            <form>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label for="petPhoto">펫 사진:</label>-->
-<!--                                    <input type="file" class="form-control-file" id="petPhoto">-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label for="petName">펫 이름:</label>-->
-<!--                                    <input type="text" class="form-control" id="petName" placeholder="펫 이름을 입력하세요">-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label for="species">종:</label>-->
-<!--                                    <input type="text" class="form-control" id="species" placeholder="종을 입력하세요">-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label for="petGender">성별:</label>-->
-<!--                                    <select class="form-control" id="petGender">-->
-<!--                                        <option>남</option>-->
-<!--                                        <option>여</option>-->
-<!--                                    </select>-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label for="petBirthday">생일:</label>-->
-<!--                                    <input type="date" class="form-control" id="petBirthday">-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label for="weight">몸무게:</label>-->
-<!--                                    <input type="number" class="form-control" id="weight" placeholder="몸무게를 입력하세요">-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label for="character">성향:</label>-->
-<!--                                    <textarea class="form-control" id="character" rows="3" placeholder="성향을 입력하세요"></textarea>-->
-<!--                                </div>-->
-<!--                                <button type="submit" class="btn btn-primary">저장하기</button>-->
-<!--                            </form>-->
+                            <!--                            <form>-->
+                            <!--                                <div class="form-group">-->
+                            <!--                                    <label for="petPhoto">펫 사진:</label>-->
+                            <!--                                    <input type="file" class="form-control-file" id="petPhoto">-->
+                            <!--                                </div>-->
+                            <!--                                <div class="form-group">-->
+                            <!--                                    <label for="petName">펫 이름:</label>-->
+                            <!--                                    <input type="text" class="form-control" id="petName" placeholder="펫 이름을 입력하세요">-->
+                            <!--                                </div>-->
+                            <!--                                <div class="form-group">-->
+                            <!--                                    <label for="species">종:</label>-->
+                            <!--                                    <input type="text" class="form-control" id="species" placeholder="종을 입력하세요">-->
+                            <!--                                </div>-->
+                            <!--                                <div class="form-group">-->
+                            <!--                                    <label for="petGender">성별:</label>-->
+                            <!--                                    <select class="form-control" id="petGender">-->
+                            <!--                                        <option>남</option>-->
+                            <!--                                        <option>여</option>-->
+                            <!--                                    </select>-->
+                            <!--                                </div>-->
+                            <!--                                <div class="form-group">-->
+                            <!--                                    <label for="petBirthday">생일:</label>-->
+                            <!--                                    <input type="date" class="form-control" id="petBirthday">-->
+                            <!--                                </div>-->
+                            <!--                                <div class="form-group">-->
+                            <!--                                    <label for="weight">몸무게:</label>-->
+                            <!--                                    <input type="number" class="form-control" id="weight" placeholder="몸무게를 입력하세요">-->
+                            <!--                                </div>-->
+                            <!--                                <div class="form-group">-->
+                            <!--                                    <label for="character">성향:</label>-->
+                            <!--                                    <textarea class="form-control" id="character" rows="3" placeholder="성향을 입력하세요"></textarea>-->
+                            <!--                                </div>-->
+                            <!--                                <button type="submit" class="btn btn-primary">저장하기</button>-->
+                            <!--                            </form>-->
                             <div>
                                 <h4>등록된 펫</h4>
                                 <table class="table">
@@ -152,34 +173,126 @@
                                     </tbody>
                                 </table>
                                 <a th:href="@{/pet/registPet}">
-                                    <button class="btn btn-primary btn-lg" style="background-color: #28a745; border: none; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
+                                    <button class="btn btn-primary btn-lg"
+                                            style="background-color: #28a745; border: none; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
                                         추가 등록하기
                                     </button>
                                 </a>
 
                             </div>
                         </div>
+
+
                         <div id="usageHistorySection" style="display:none;">
-                            <h3>이용내역</h3>
+
                             <!-- 현재 진행중인 내역 -->
                             <div id="currentUsageSection">
-                                <h4>현재 진행중인 내역</h4>
+                                <h4>현재 요청한 내역</h4>
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th scope="col">예약번호</th>
-                                        <th scope="col">날짜</th>
-                                        <th scope="col">서비스</th>
-                                        <th scope="col">상태</th>
+                                        <th></th>
+                                        <th scope="col">펫시터</th>
+                                        <th scope="col">서비스 날짜</th>
+                                        <th scope="col">견종, 마리</th>
+                                        <th scope="col">시작, 종료</th>
+                                        <th>상태변경</th>
+                                        <th>상태</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    <form id="reservationForm" method="post" th:object="${reservationDtoList}">
+                                        <tr th:each="reservationDto ,stat :${reservationDtoList}"
+                                            th:object="${reservationDto}">
+                                            <label>
+                                                <input type="hidden" th:value="${reservationDto.partnerOrderId}"
+                                                       name="partnerOrderId">
+                                            </label>
+
+                                            <td>
+                                                <a th:href="@{|/petsitter/reservationdetail/${reservationDto.partnerOrderId}|}"
+                                                   onclick="window.open(this.href, '_blank', 'left=2000%,top=800%, width=900, height=700'); return false;">자세히</a>
+                                            </td>
+                                            <td th:text="${reservationDto.petSitterId}"></td>
+                                            <td th:text="${reservationDto.reservationDay}"></td>
+                                            <td>
+                                                <div th:each="sizehowmany:${reservationDto.petSizeAndHowManyPets}">
+                                                    <span th:text="${sizehowmany.petSize}" name="petSize"></span>
+                                                    <span th:text="${sizehowmany.howManyPet}"></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span th:text="${reservationDto.startTime}" name="startTime"></span>
+                                                <span th:text="${reservationDto.endTime}" name="endTime"></span>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <button type="submit"
+                                                            th:formaction="@{/petsitter/reservationCancel}"
+                                                            th:if="${reservationDto.reservationStatus.getReservationStatus()} != 'cancel'"
+                                                            th:text="예약취소" value="COMPLETED_SITTING" class="btn btn-danger"
+                                                            name="sittingStatus"></button>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span th:if="${reservationDto.reservationStatus.getReservationStatus()} == 'ready'"
+                                                      th:text="예약대기"></span>
+                                                <span th:if="${reservationDto.reservationStatus.getReservationStatus()} == 'OK'"
+                                                      th:text="예약승인"></span>
+                                                <span th:if="${reservationDto.reservationStatus.getReservationStatus()} == 'cancel'"
+                                                      th:text="예약취소" class="btn btn-danger"></span>
+
+                                            </td>
+                                        </tr>
+                                    </form>
+                                    <!-- 다른 진행중인 내역 추가 -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div id="sittingForm">
+                                <h4>진행중인 돌봄</h4>
+                                <table class="table">
+                                    <thead>
                                     <tr>
-                                        <th scope="row">1</th>
-                                        <td>2024-08-01</td>
-                                        <td>펫 산책</td>
-                                        <td>진행중</td>
+                                        <th></th>
+                                        <th scope="col">펫시터</th>
+                                        <th scope="col">서비스 날짜</th>
+                                        <th scope="col">견종, 마리</th>
+                                        <th scope="col">시작, 종료</th>
+                                        <th>돌봄상태</th>
                                     </tr>
+                                    </thead>
+                                    <tbody>
+                                    <form method="post" th:object="${sittingDtoList}">
+                                        <tr th:each="sittingDto ,stat :${sittingDtoList}"
+                                            [[${sittingDto.stat}]]
+                                            th:object="${sittingDto}">
+                                            <label>
+                                                <input type="hidden" th:value="${sittingDto.partnerOrderId}"
+                                                       name="partnerOrderId">
+                                            </label>
+
+                                            <td>
+                                                <a th:href="@{|/petsitter/reservationdetail/${sittingDto.partnerOrderId}|}"
+                                                   onclick="window.open(this.href, '_blank', 'left=2000%,top=800%, width=900, height=700'); return false;">자세히</a>
+                                            </td>
+                                            <td th:text="${sittingDto.petSitterId}"></td>
+                                            <td th:text="${sittingDto.serviceDate}"></td>
+                                            <td>
+                                                <div th:each="sizehowmany, stat:${sittingDto.petSizeAndHowManyPets}">
+                                                    <span th:text="${sizehowmany.petSize}" name="petSize"></span>
+                                                    <span th:text="${sizehowmany.howManyPet}"></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span th:text="${sittingDto.startTime}" name="startTime"></span>
+                                                <span th:text="${sittingDto.endTime}" name="endTime"></span>
+                                            </td>
+                                            <td th:text="${sittingDto.sittingStatus.getSittingStatus()}"> </td>
+
+                                        </tr>
+                                    </form>
                                     <!-- 다른 진행중인 내역 추가 -->
                                     </tbody>
                                 </table>
@@ -190,20 +303,45 @@
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th scope="col">예약번호</th>
-                                        <th scope="col">날짜</th>
-                                        <th scope="col">서비스</th>
-                                        <th scope="col">상태</th>
+                                        <th></th>
+                                        <th scope="col">펫시터</th>
+                                        <th scope="col">서비스 날짜</th>
+                                        <th>상태</th>
+                                        <th>리뷰</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>2024-07-01</td>
-                                        <td>펫 미용</td>
-                                        <td>완료</td>
-                                    </tr>
-                                    <!-- 다른 완료된 내역 추가 -->
+                                    <form id="completeForm" method="post" th:object="${completeSittingDto}">
+                                        <tr th:each="completeSittingDto ,stat :${completeSittingDtoList}"
+                                            th:object="${completeSittingDto}">
+                                            <label>
+                                                <input type="hidden" th:value="${completeSittingDto.partnerOrderId}"
+                                                       name="partnerOrderId">
+                                            </label>
+                                            <td>
+                                                <a th:href="@{|/petsitter/reservationdetail/${completeSittingDto.partnerOrderId}|}"
+                                                   onclick="window.open(this.href, '_blank', 'left=2000%,top=800%, width=900, height=700'); return false;">자세히</a>
+                                            </td>
+                                            <td th:text="${completeSittingDto.petSitterId}"></td>
+                                            <td th:text="${completeSittingDto.serviceDate}"></td>
+                                            <td>
+                                              <span th:if="${completeSittingDto.sittingStatus.getSittingStatus()} == 'COMPLETED_SITTING'"
+                                              th:text="'돌봄 완료'"></span>
+                                                    <button type="submit"
+                                                            th:formaction="@{/petsitter/reservationCancel}"
+                                                            class="btn btn-primary"
+                                                            th:if="${completeSittingDto.sittingStatus.getSittingStatus()} == 'WAITING_MEMBER_CHECK'"
+                                                            th:text="돌봄대기승인" id="completeButton" value="COMPLETED_SITTING"
+                                                            name="sittingStatus"></button>
+                                            </td>
+                                            <td>
+
+                                                <button type="submit" th:formaction="@{/petsitter/review}" th:if="${completeSittingDto.sittingStatus.getSittingStatus()} == 'COMPLETED_SITTING'">리뷰</button>
+
+                                            </td>
+                                        </tr>
+                                    </form>
+                                    <!-- 다른 진행중인 내역 추가 -->
                                     </tbody>
                                 </table>
                             </div>
@@ -240,7 +378,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="currentJob">현재 하는 일:</label>
-                                    <input type="text" class="form-control" id="currentJob" placeholder="현재 하는 일을 입력하세요">
+                                    <input type="text" class="form-control" id="currentJob"
+                                           placeholder="현재 하는 일을 입력하세요">
                                 </div>
                                 <div class="form-group">
                                     <label for="petExperience">반려 경험 유무:</label>
