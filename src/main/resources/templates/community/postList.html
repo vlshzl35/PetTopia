@@ -31,7 +31,7 @@
             border: 1px solid #e0e0e0;
             border-radius: 5px;
             background-color: #fff;
-            display: flex;
+            /*display: flex;*/
             justify-content: space-between;
             align-items: center;
         }
@@ -75,27 +75,85 @@
 
         .badge {
             color: white;
+            padding : 8px 10px;
+            border-radius: 10px;
+        }
+
+        .badge-category{
+            font-size: 15px;
         }
 
         .badge-category-share {
-            background-color: #71afff;
+            background-color: rgb(237, 79, 63, 0.7);
         }
 
         .badge-category-friends {
-            background-color: #46ad58;
+            background-color: rgba(85, 189, 68, 0.8);
+
         }
 
         .badge-category-free {
-            background-color: #ffd240;
+            background-color: rgb(255, 181, 0.8);
         }
 
-        .badge-category-notice {
-            background-color: #ff5362;
-        }
+        /*.badge-category-notice {*/
+        /*    background-color: #ff5362;*/
+        /*}*/
 
         .postTitle {
             color: black;
         }
+
+        /* 추가된 CSS */
+        table.table-hover th, table.table-hover td {
+            text-align: center; /* 모든 텍스트를 가운데 정렬 */
+            vertical-align: middle; /* 수직 방향으로 가운데 정렬 */
+        }
+
+        .table-hover th {
+            font-weight: bold;
+        }
+
+        .table-hover td {
+            padding: 12px 8px; /* 셀 내부 여백 */
+        }
+
+        /* 게시글 제목 스타일 */
+        .postTitle {
+            display: block;
+            text-align: left; /* 제목은 좌측 정렬 */
+            color: #333; /* 제목 텍스트 색상 */
+        }
+
+        .table-container {
+            margin-top: 20px;
+            overflow-x: auto; /* 테이블이 너무 넓어지면 가로 스크롤 가능하게 */
+            border-radius: 5px;
+        }
+
+        /* 카테고리 버튼 스타일 */
+        .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+            color: white;
+            background-color: #00bd56;
+            border-color: #dee2e6 #dee2e6 #fff;
+            outline: none; /* 테두리 제거 */
+            box-shadow: none; /* 그림자 제거 */
+        }
+
+        .nav-tabs .nav-link {
+            outline: none; /* 기본 테두리 제거 */
+            box-shadow: none; /* 기본 그림자 제거 */
+            background-color: white;
+            border-color: #e4f6e4;
+            color: #004e23;
+        }
+
+        /* 검색어 입력창 스타일*/
+        .custom-input {
+            height: 44px !important;
+            width: 300px;
+        }
+
     </style>
 </head>
 <body>
@@ -121,53 +179,51 @@
                 <div class="col-md-12">
                     <h2 class="heading-section mb-4">커뮤니티</h2>
 
+                    <!-- 카테고리 버튼과 검색 버튼을 양쪽 끝에 배열 -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <!-- 카테고리 버튼 -->
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
 
-                    <!-- 카테고리 버튼 -->
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
-                                    data-bs-target="#home-tab-pane" type="button" role="tab"
-                                    aria-controls="home-tab-pane" aria-selected="true">전체
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
-                                    data-bs-target="#profile-tab-pane" type="button" role="tab"
-                                    aria-controls="profile-tab-pane" aria-selected="false">자유
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab"
-                                    data-bs-target="#contact-tab-pane" type="button" role="tab"
-                                    aria-controls="contact-tab-pane" aria-selected="false">강아지 친구 찾기
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="disabled-tab" data-bs-toggle="tab"
-                                    data-bs-target="#disabled-tab-pane" type="button" role="tab"
-                                    aria-controls="disabled-tab-pane" aria-selected="false" disabled>나눔
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <form class="row">
-                                <div class="col-auto">
-                                    <input class="form-control" type="search" placeholder="검색어를 입력하세요"
-                                           aria-label="Search"
-                                           name="q" th:value="${param.q}">
-                                </div>
-                                <div>
-                                    <button class="btn btn-outline-success" type="submit">검색</button>
-                                </div>
-                            </form>
-                        </li>
-                    </ul>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" data-category="ALL" onclick="setCategory('ALL', this)">
+                                    전체
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-category="FREE" onclick="setCategory('FREE', this)">자유
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-category="FRIENDS" onclick="setCategory('FRIENDS', this)">
+                                    강아지 친구 찾기
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-category="SHARE" onclick="setCategory('SHARE', this)">나눔
+                                </button>
+                            </li>
+                            <input type="hidden" name="category" id="categoryInput" value="ALL">
+                        </ul>
+
+                        <!-- 검색 버튼 -->
+                        <form class="d-flex align-items-center search">
+                            <div class="col-auto">
+                                <input class="form-control custom-input" type="search" placeholder="제목을 입력하세요"
+                                       aria-label="Search" name="q" th:value="${param.q}">
+                            </div>
+                            <div>
+                                <button class="btn btn-outline-success" type="submit">검색</button>
+                            </div>
+                        </form>
+                    </div>
 
 
                     <!-- 공지사항 -->
                     <div class="alert alert-info" role="alert">
-                        📢 <a href="#">펫트라슈 6월 후기 어워드 당첨자 발표!!!</a>
+                        📢 <a href="#">펫트라슈 8월 후기 어워드 당첨자 발표!!!</a>
                     </div>
 
+                    <!-- 게시물 리스트 -->
                     <div class="table-container my-3">
                         <table class="table table-hover">
                             <thead class="thead-light">
@@ -180,8 +236,9 @@
                                 <th>조회수</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr th:each="post, iterstat : ${posts}">
+                            <tbody id="postList" class="post-item">
+                            <tr th:each="post, iterstat : ${posts}"
+                                th:data-category="${post.category.toString().toUpperCase()}" class="post-item">
                                 <!--/*
                                 pageCriteria.page : 현재 페이지 번호
                                 pageCriteria.itemsPerPage : 페이지 당 항목 수
@@ -190,7 +247,7 @@
                                  */-->
                                 <td th:text="${(pageCriteria.page - 1) * pageCriteria.limit + iterstat.index + 1}"></td>
                                 <td>
-                                    <span th:text="${post.category}"
+                                    <span th:text="${post.category.displayName}"
                                           th:classappend="|badge badge-category badge-category-${post.category.toString().toLowerCase()}|">
                                     </span>
                                 </td>
@@ -202,6 +259,7 @@
                                 <td>[[${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm') }]]</td>
                                 <td th:text="${post.views != null ? post.views : 0}"></td> <!-- null값이면 0으로 출력 -->
                             </tr>
+
                             </tbody>
                         </table>
                     </div>
@@ -241,6 +299,7 @@
                     </nav>
                 </div>
             </div>
+        </div>
     </section>
 
     <!-- loader -->
@@ -252,27 +311,42 @@
         </svg>
     </div>
 
-
     <!--/* fragment 적용시, javaScript 코드가 fragment = "main"안에 있어야 한다! */-->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-        function filterPosts(category) {
-            var posts = document.getElementsByClassName('post-item');
+        function setCategory(category, element) {
+            document.getElementById('categoryInput').value = category;
+            filterPosts();
+
+            // 모든 카테고리 버튼에서 'active' 클래스 제거
+            const buttons = document.querySelectorAll('.nav-link');
+            buttons.forEach(function (btn) {
+                btn.classList.remove('active');
+            });
+
+            // 선택된 버튼에 'active' 클래스 추가
+            element.classList.add('active');
+        }
+
+        function filterPosts() {
+            var category = document.getElementById('categoryInput').value;
+            var posts = document.getElementById('postList').getElementsByClassName('post-item');
             for (var i = 0; i < posts.length; i++) {
-                if (category === 'all') {
-                    posts[i].style.display = 'flex';
+                var postCategory = posts[i].getAttribute('data-category');
+                if (category === "ALL" || category === postCategory) {
+                    posts[i].style.display = "";
                 } else {
-                    if (posts[i].getAttribute('data-category') === category) {
-                        posts[i].style.display = 'flex';
-                    } else {
-                        posts[i].style.display = 'none';
-                    }
+                    posts[i].style.display = "none";
                 }
             }
         }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            filterPosts(); // 페이지 로드 시 초기화
+        });
 
         // Java 코드에서 addFlashAttribute로 담은 message를 alert를 해주기 위한 코드입니다.
         const message = '[[${message}]]';

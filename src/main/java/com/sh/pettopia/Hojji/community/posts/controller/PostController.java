@@ -10,7 +10,6 @@ import com.sh.pettopia.Hojji.community.posts.dto.PostRegistRequestDto;
 import com.sh.pettopia.Hojji.community.posts.dto.PostUpdateRequestDto;
 import com.sh.pettopia.Hojji.community.posts.service.PostService;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
-import com.sh.pettopia.parktj.petsitterfinder.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
