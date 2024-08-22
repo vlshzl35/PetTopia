@@ -112,8 +112,8 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="phone">핸드폰 번호 *</label>
-                                    <input type="text" class="form-control" id="phone" placeholder="핸드폰 번호 입력"
-                                           name="phone" required>
+                                    <input type="tel" class="form-control" id="phone" placeholder="핸드폰 번호 입력"
+                                           name="phone" required oninput="validatePhoneInput(this)">
                                 </div>
                             </div>
                             <div class="form-row">
@@ -246,6 +246,7 @@
             }
         }
 
+        // 사진 미리보기 코드입니다.
         function previewImage(event) {
             const reader = new FileReader();  // FileReader 객체 생성
             reader.onload = function() {
@@ -257,6 +258,7 @@
             }
         }
 
+        // 우편번호 찾는 코드입니다.
         function sample6_execDaumPostcode() {
             new daum.Postcode({
                 oncomplete: function (data) {
@@ -289,6 +291,18 @@
                     document.getElementById("sample6_detailAddress").focus();
                 }
             }).open();
+        }
+
+        // 핸드폰 번호 입력시, 숫자만 입력 가능함을 알려주는 코드입니다.
+        function validatePhoneInput(input) {
+        const originalValue = input.value;
+        const sanitizedValue = originalValue.replace(/[^0-9]/g, '');
+
+        if (originalValue !== sanitizedValue) {
+            alert('숫자만 입력 가능합니다.');
+        }
+
+        input.value = sanitizedValue;
         }
     </script>
 </div>
