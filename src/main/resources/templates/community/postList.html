@@ -75,23 +75,30 @@
 
         .badge {
             color: white;
+            padding : 8px 10px;
+            border-radius: 10px;
+        }
+
+        .badge-category{
+            font-size: 15px;
         }
 
         .badge-category-share {
-            background-color: #71afff;
+            background-color: rgb(237, 79, 63, 0.7);
         }
 
         .badge-category-friends {
-            background-color: #46ad58;
+            background-color: rgba(85, 189, 68, 0.8);
+
         }
 
         .badge-category-free {
-            background-color: #ffd240;
+            background-color: rgb(255, 181, 0.8);
         }
 
-        .badge-category-notice {
-            background-color: #ff5362;
-        }
+        /*.badge-category-notice {*/
+        /*    background-color: #ff5362;*/
+        /*}*/
 
         .postTitle {
             color: black;
@@ -121,6 +128,7 @@
         .table-container {
             margin-top: 20px;
             overflow-x: auto; /* 테이블이 너무 넓어지면 가로 스크롤 가능하게 */
+            border-radius: 5px;
         }
 
         /* 카테고리 버튼 스타일 */
@@ -132,7 +140,7 @@
             box-shadow: none; /* 그림자 제거 */
         }
 
-        .nav-tabs .nav-link{
+        .nav-tabs .nav-link {
             outline: none; /* 기본 테두리 제거 */
             box-shadow: none; /* 기본 그림자 제거 */
             background-color: white;
@@ -140,8 +148,10 @@
             color: #004e23;
         }
 
+        /* 검색어 입력창 스타일*/
         .custom-input {
             height: 44px !important;
+            width: 300px;
         }
 
     </style>
@@ -169,42 +179,48 @@
                 <div class="col-md-12">
                     <h2 class="heading-section mb-4">커뮤니티</h2>
 
-                    <!-- 카테고리 버튼 -->
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <!-- 카테고리 버튼과 검색 버튼을 양쪽 끝에 배열 -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <!-- 카테고리 버튼 -->
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
 
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" data-category="ALL" onclick="setCategory('ALL', this)">전체</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" data-category="FREE" onclick="setCategory('FREE', this)">자유</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" data-category="FRIENDS" onclick="setCategory('FRIENDS', this)">강아지 친구 찾기</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" data-category="SHARE" onclick="setCategory('SHARE', this)">나눔</button>
-                        </li>
-                        <input type="hidden" name="category" id="categoryInput" value="ALL">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" data-category="ALL" onclick="setCategory('ALL', this)">
+                                    전체
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-category="FREE" onclick="setCategory('FREE', this)">자유
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-category="FRIENDS" onclick="setCategory('FRIENDS', this)">
+                                    강아지 친구 찾기
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-category="SHARE" onclick="setCategory('SHARE', this)">나눔
+                                </button>
+                            </li>
+                            <input type="hidden" name="category" id="categoryInput" value="ALL">
+                        </ul>
 
-                        <li class="nav-item">
-                            <form class="row">
-                                <div class="col-auto">
-                                    <input class="form-control custom-input" type="search" placeholder="제목을 입력하세요"
-                                           aria-label="Search" name="q" th:value="${param.q}">
-                                </div>
-                                <div>
-                                    <button class="btn btn-outline-success" type="submit">검색</button>
-                                </div>
-                            </form>
-                        </li>
-
-
-                    </ul>
+                        <!-- 검색 버튼 -->
+                        <form class="d-flex align-items-center search">
+                            <div class="col-auto">
+                                <input class="form-control custom-input" type="search" placeholder="제목을 입력하세요"
+                                       aria-label="Search" name="q" th:value="${param.q}">
+                            </div>
+                            <div>
+                                <button class="btn btn-outline-success" type="submit">검색</button>
+                            </div>
+                        </form>
+                    </div>
 
 
                     <!-- 공지사항 -->
                     <div class="alert alert-info" role="alert">
-                        📢 <a href="#">펫트라슈 6월 후기 어워드 당첨자 발표!!!</a>
+                        📢 <a href="#">펫트라슈 8월 후기 어워드 당첨자 발표!!!</a>
                     </div>
 
                     <!-- 게시물 리스트 -->
@@ -220,8 +236,9 @@
                                 <th>조회수</th>
                             </tr>
                             </thead>
-                            <tbody id = "postList">
-                            <tr th:each="post, iterstat : ${posts}" th:data-category="${post.category.toString().toUpperCase()}" class="post-item">
+                            <tbody id="postList" class="post-item">
+                            <tr th:each="post, iterstat : ${posts}"
+                                th:data-category="${post.category.toString().toUpperCase()}" class="post-item">
                                 <!--/*
                                 pageCriteria.page : 현재 페이지 번호
                                 pageCriteria.itemsPerPage : 페이지 당 항목 수
@@ -230,7 +247,7 @@
                                  */-->
                                 <td th:text="${(pageCriteria.page - 1) * pageCriteria.limit + iterstat.index + 1}"></td>
                                 <td>
-                                    <span th:text="${post.category}"
+                                    <span th:text="${post.category.displayName}"
                                           th:classappend="|badge badge-category badge-category-${post.category.toString().toLowerCase()}|">
                                     </span>
                                 </td>
@@ -306,7 +323,7 @@
 
             // 모든 카테고리 버튼에서 'active' 클래스 제거
             const buttons = document.querySelectorAll('.nav-link');
-            buttons.forEach(function(btn) {
+            buttons.forEach(function (btn) {
                 btn.classList.remove('active');
             });
 
@@ -327,7 +344,7 @@
             }
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             filterPosts(); // 페이지 로드 시 초기화
         });
 
