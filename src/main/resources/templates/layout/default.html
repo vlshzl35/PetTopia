@@ -22,29 +22,64 @@
 <body>
 
 <header th:replace="~{fragments/header::headerFragment}"></header>
-<main layout:fragment="main"></main>
+
+<main layout:fragment="main">
+    <!-- 로그인 모달 -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center">
+                    <h1 class="modal-title login-header" id="loginModalLabel">로그인</h1>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="width: auto">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/auth/login}" th:method="post" id="contactForm" name="contactForm" class="contactForm">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label"><h3>아이디</h3></label>
+                            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="아이디를 입력해주세요" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput2" class="form-label"><h3>비밀번호</h3></label>
+                            <input type="password" class="form-control" id="exampleFormControlInput2" placeholder="비밀번호를 입력해주세요" name="password" required>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div class="">
+                                <input type="checkbox" name="remember"> 아이디 저장
+                            </div>
+                            <div class="">
+                                <label class="label">아이디 찾기 | 비밀번호 찾기</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="submit" value="로그인" class="btn btn-primary">
+                                    <div class="submitting"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div>
+                        <a th:href="@{/member/termsOfService}">
+                            <input type="button" style="color : black" value="회원 가입" class="btn btn-light">
+                            <div class="submitting"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/common.js"></script>
+
+</main>
+
 <footer th:replace="~{fragments/footer::footerFragment}"></footer>
 
 <script layout:fragment="js"></script>
 
-<!--<script layout:fragment="js" th:src="@{/js/jquery.min.js}"></script>-->
-<!--<script layout:fragment="js" th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>-->
-<!--<script layout:fragment="js" th:src="@{/js/popper.min.js}"></script>-->
-<!--<script layout:fragment="js" th:src="@{/js/bootstrap.min.js}"></script>-->
-<!--<script layout:fragment="js" th:src="@{/js/jquery.easing.1.3.js}"></script>-->
-<!--<script layout:fragment="js" th:src="@{/js/jquery.waypoints.min.js}"></script>-->
-<!--<script layout:fragment="js" th:src="@{/js/jquery.stellar.min.js}"></script>-->
-<!--<script layout:fragment="js" th:src="@{/js/jquery.animateNumber.min.js}"></script>-->
-<!--<script layout:fragment="js" th:src="@{/js/bootstrap-datepicker.js}"></script>-->
-<!--<script layout:fragment="js" th:src="@{/js/jquery.timepicker.min.js}"></script>-->
-<!--<script layout:fragment="js" th:src="@{/js/owl.carousel.min.js}"></script>-->
-<!--<script layout:fragment="js" th:src="@{/js/jquery.magnific-popup.min.js}"></script>-->
-<!--<script layout:fragment="js" th:src="@{/js/scrollax.min.js}"></script>-->
-
-<!--<script layout:fragment="js" th:src="@{/js/kakao-map.js}"></script>-->
-<!--<script layout:fragment="js" th:src="@{/js/main.js}"></script>-->
-
-
+<!-- 스크립트 부분 -->
 <script src="/js/jquery.min.js"></script>
 <script src="/js/jquery-migrate-3.0.1.min.js"></script>
 <script src="/js/popper.min.js"></script>
@@ -61,5 +96,17 @@
 
 <script src="/js/kakao-map.js"></script>
 <script src="/js/main.js"></script>
+
+<!-- 로그인 모달 자동 실행 -->
+<script>
+    $(document).ready(function(){
+        const urlParams = new URLSearchParams(window.location.search);
+        const loginRequired = urlParams.get('loginRequired');
+        if (loginRequired) {
+            $('#loginModal').modal('show');
+        }
+    });
+</script>
+
 </body>
 </html>
