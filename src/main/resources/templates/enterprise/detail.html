@@ -14,6 +14,7 @@
             <div class="hos_info">
                 <div class="hos_info_top">
                     <h2 id="entName" th:text="${enterpriseDetail.entName}"></h2>
+                    <input id="bizNum" type="hidden" th:value="${enterpriseDetail.bizNum}"/>
                     <p th:utext="${entType} + ' | <span style=&quot;color: gold;&quot;>★</span> ' + (${averageRating} != null ? ${averageRating} : 0.0)"></p>
                 </div>
                 <div>

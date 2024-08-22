@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EnterpriseDetailResponseDto {
-    private String entName;
+    private String entName; // 업체명
+    private String bizNum; // 사업자번호
     private String entPhone; // 전화번호
     private String entAddress; // 주소
     private String officeHours; // 영업시간 09:00-18:00 형식으로 쓰기
@@ -24,6 +25,7 @@ public class EnterpriseDetailResponseDto {
     public static EnterpriseDetailResponseDto fromEnterprise(Enterprise enterprise) {
         return new EnterpriseDetailResponseDto(
                 enterprise.getEntName(),
+                enterprise.getBizNum(),
                 enterprise.getEntPhone(),
                 enterprise.getEntAddress(),
                 enterprise.getOfficeHours(),
@@ -36,6 +38,7 @@ public class EnterpriseDetailResponseDto {
     public static EnterpriseDetailResponseDto fromHospital(Hospital hospital) {
         return new EnterpriseDetailResponseDto(
                 hospital.getEntName(),
+                hospital.getBizNum(),
                 hospital.getEntPhone(),
                 hospital.getEntAddress(),
                 hospital.getOfficeHours(),
@@ -47,6 +50,7 @@ public class EnterpriseDetailResponseDto {
     public static EnterpriseDetailResponseDto fromSalon(Salon salon) {
         return new EnterpriseDetailResponseDto(
                 salon.getEntName(),
+                salon.getBizNum(),
                 salon.getEntPhone(),
                 salon.getEntAddress(),
                 salon.getOfficeHours(),

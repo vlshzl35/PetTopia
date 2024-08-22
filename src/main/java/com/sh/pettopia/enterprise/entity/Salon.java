@@ -18,7 +18,7 @@ import java.util.List;
 @ToString
 public class Salon extends Enterprise {
 
-    public Salon(Long entId, String entName, String entPhone, String entAddress, String officeHours, String entUrl, String introduction) {
-        super(entId, entName, entPhone, entAddress, officeHours, entUrl, introduction);
+    public Salon(Long entId, String entName, String bizNum, String entPhone, String entAddress, String officeHours, String entUrl, String introduction) {
+        super(entId, entName, bizNum, entPhone, entAddress, officeHours, entUrl, introduction);
     }
 }
