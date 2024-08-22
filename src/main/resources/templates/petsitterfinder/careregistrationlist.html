@@ -90,7 +90,7 @@
                     <a th:href="|@{/petsitterfinder/careregistrationdetails?postId=}${list.postId}|">
                         <div class="staff">
                             <div class="img-wrap d-flex align-items-stretch">
-                                <div class="img align-self-stretch" style="background-image: url(/images/KakaoTalk_20240527_201110282.jpg);"></div>
+                                <img  th:src="${list.profile}" width=" 300px" height="300px"/>
                             </div>
                             <div class=" pt-3 px-3 pb-4">
                                 <div>

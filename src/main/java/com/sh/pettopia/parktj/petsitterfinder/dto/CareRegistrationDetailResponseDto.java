@@ -52,6 +52,7 @@ public class CareRegistrationDetailResponseDto {
                 .postId(careRegistration.getPostId())
                 .memberId(careRegistration.getMemberId())
                 .requestService(careRegistration.getRequestService())
+                .profile(careRegistration.getProfile())
                 .build();
     }
 }
