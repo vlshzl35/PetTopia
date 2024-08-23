@@ -11,6 +11,7 @@ import com.sh.pettopia.kakaopay.dto.KakaoPayReadyResponse;
 import com.sh.pettopia.kakaopay.service.PayService;
 import com.sh.pettopia.ncpTest.FileDto;
 import com.sh.pettopia.ncpTest.FileService;
+import com.sh.pettopia.parktj.petsitterfinder.dto.PetDetailsResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -297,8 +298,8 @@ public class PetSitterController {
         log.info("readyResponse : " + readyResponse.toString()); //kakaoPay가 준비요청 후 보내준 정보 확인
 
         Reservation reservation = new Reservation().dtoToEntity(dto);
-        reservationService.save(reservation);
-        System.out.println("reservation = " + reservation);
+        Reservation reservationTemp=reservationService.save(reservation);
+        System.out.println("reservationTemp = " + reservationTemp);
 
         return String.format("redirect:%s", readyResponse.getNext_redirect_pc_url()); // 결제 페이지를 준다
     }
@@ -376,12 +377,8 @@ public class PetSitterController {
     public String reservationCancel(String partnerOrderId) {
         log.info("POST /petsitter/reservationCancel");
         System.out.println("partnerOrderId = " + partnerOrderId);
-
-        Reservation reservation = reservationService.findByPartnerOrderId(partnerOrderId);
-        reservation.changeReservationStatus(ReservationStatus.cancel);
-        reservationService.save(reservation);
-
-        System.out.println("reservationCancel / reservation = " + reservation);
+        payService.kakaoCancel(partnerOrderId); // 결제 취소 + 예약 취소
+        
         return "redirect:/mypage/mypage";
     }
 

@@ -17,12 +17,12 @@ import java.util.List;
 public class ReservationService {
     private final ReservationRepository reservationRepository;
 
-    public void save(Reservation reservation)
+    public Reservation save(Reservation reservation)
     {
         //업데이트를 한다는 말은 기존에 있던 db를 가지고 작업을 하기 때문에
         // @id값을 가지고 있다 그러니 자동으로 세이브가 된다
         // save라는 메소드 한에 merge가 존재함
-       reservationRepository.save(reservation);
+       return reservationRepository.save(reservation);
     }
 
     public Reservation findByPartnerOrderId(String partnerOrderId)

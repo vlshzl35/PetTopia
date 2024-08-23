@@ -73,18 +73,23 @@ public class PayController {
      * 결제 실패
      */
     @GetMapping("/fail")
-    public void fail() {
-
-        //throw new BusinessLogicException(ExceptionCode.PAY_FAILED);
+    public void fail(@RequestParam("pg_token") String pgToken,@RequestParam("partner_order_id")String partner_order_id) {
+        log.info("GET /pay/fail");
+        log.info("pgToken = {}",pgToken);
+        log.info("partner_order_id = {}",partner_order_id);
     }
 
     /**
      * 환불
      */
     @PostMapping("/refund")
-    public ResponseEntity refund() {
+    public ResponseEntity refund(@RequestParam("pg_token") String pgToken,@RequestParam("partner_order_id")String partner_order_id) {
+        log.info("GET /pay/refund");
+        log.info("pgToken = {}",pgToken);
+        log.info("partner_order_id = {}",partner_order_id);
 
-        KakaoCancelResponse kakaoCancelResponse = payService.kakaoCancel();
+        KakaoCancelResponse kakaoCancelResponse = payService.kakaoCancel(partner_order_id);
+        log.info("kakaoCancelResponse ={}",kakaoCancelResponse);
 
         return new ResponseEntity<>(kakaoCancelResponse, HttpStatus.OK);
     }

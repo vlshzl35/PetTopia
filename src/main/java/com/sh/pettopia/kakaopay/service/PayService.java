@@ -3,6 +3,7 @@ package com.sh.pettopia.kakaopay.service;
 import com.sh.pettopia.choipetsitter.dto.ReservationDto;
 import com.sh.pettopia.choipetsitter.entity.Order;
 import com.sh.pettopia.choipetsitter.entity.Reservation;
+import com.sh.pettopia.choipetsitter.entity.ReservationStatus;
 import com.sh.pettopia.choipetsitter.repository.OrderRepository;
 import com.sh.pettopia.choipetsitter.repository.ReservationRepository;
 import com.sh.pettopia.kakaopay.dto.KakaoApproveResponse;
@@ -25,8 +26,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Service
 public class PayService {
+
+    @Value("${server.approval_url}")
+    private String approvalUrl;
+    @Value("${server.cancel_url}")
+    private String cancelUrl;
+    @Value("${server.fail_url}")
+    private String failUrl;
+
     final ReservationRepository reservationRepository;
-//    final PayRepository payRepository;
     private final OrderRepository orderRepository;
 
     static final String cid = "TC0ONETIME";// 테스트 코드
@@ -45,9 +53,9 @@ public class PayService {
         payParams.add("quantity", dto.getQuantity());
         payParams.add("total_amount", dto.getTotal_amount());
         payParams.add("tax_free_amount", dto.getTax_free_amount());
-        payParams.add("approval_url","http://localhost:8080/pay/success?partner_order_id="+dto.getPartnerOrderId() ); //결제 성공시 넘어갈 url 핸들러로 간다
-        payParams.add("cancel_url", "http://localhost:8080/pay/cancel?partner_order_id="+dto.getPartnerOrderId()); //결제 취소시 넘어갈 url
-        payParams.add("fail_url", "http://localhost:8080/pay/fail"); //결제 실패시 넘어갈 url
+        payParams.add("approval_url",approvalUrl+dto.getPartnerOrderId() ); //결제 성공시 넘어갈 url 핸들러로 간다
+        payParams.add("cancel_url", cancelUrl+dto.getPartnerOrderId()); //결제 취소시 넘어갈 url
+        payParams.add("fail_url", failUrl+dto.getPartnerOrderId()); //결제 실패시 넘어갈 url
 
         HttpEntity<Map> requestEntity = new HttpEntity<>(payParams, this.getheaders());
         RestTemplate template = new RestTemplate();
@@ -65,9 +73,12 @@ log.info("kakaoPayReadyResponse = {}",kakaoPayReadyResponse);
     @Transactional
     public KakaoApproveResponse kakaoPayApprove(String pgToken,String partner_order_id) {
         log.info("PayService /kakaoPayApprove");
+        log.info("pgToken = {}" ,pgToken);
+        log.info("partner_order_id = {}",partner_order_id);
 
         MultiValueMap<String, Object> payParams = new LinkedMultiValueMap<>();
         Reservation reservation=reservationRepository.findByPartnerOrderId(partner_order_id);
+        log.info("reservation = {}",reservation);
 
         Order order=new Order().reservationToOrder(reservation);
         // 여기서 주문에 대한 값을 partner_order_id 이걸로 가져오고
@@ -108,13 +119,15 @@ log.info("kakaoPayReadyResponse = {}",kakaoPayReadyResponse);
         return headers;
     }
 
-    public KakaoCancelResponse kakaoCancel() {
-
+    //환불하기
+    public KakaoCancelResponse kakaoCancel(String partner_order_id) {
+        Order order=orderRepository.findByPartnerOrderId(partner_order_id); // 결제 건을 가져오고
+        log.info("order = {}",order);
         // 카카오페이 요청
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
         parameters.add("cid", cid);
-        parameters.add("tid", "환불할 결제 고유 번호");
-        parameters.add("cancel_amount", "환불 금액");
+        parameters.add("tid",order.getTid());
+        parameters.add("cancel_amount", String.valueOf(order.getTotalPrice()));
         parameters.add("cancel_tax_free_amount", "환불 비과세 금액");
         parameters.add("cancel_vat_amount", "환불 부가세");
 
@@ -128,6 +141,12 @@ log.info("kakaoPayReadyResponse = {}",kakaoPayReadyResponse);
                 "https://kapi.kakao.com/v1/payment/cancel",
                 requestEntity,
                 KakaoCancelResponse.class);
+
+        order.changePayStatus(false);
+        orderRepository.save(order); // 바뀐 상태를 저장
+        Reservation reservation=reservationRepository.findByPartnerOrderId(partner_order_id); // 예약 건 가져오고
+        reservation.changeReservationStatus(ReservationStatus.cancel); // 예약상태 = 요청취소
+        reservationRepository.save(reservation); // 바뀐거 세이브
 
         return cancelResponse;
     }
