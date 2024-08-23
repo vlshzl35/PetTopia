@@ -7,7 +7,6 @@ import com.sh.pettopia.choipetsitter.service.PetSitterReviewService;
 import com.sh.pettopia.choipetsitter.service.PetSitterService;
 import com.sh.pettopia.choipetsitter.service.ReservationService;
 import com.sh.pettopia.choipetsitter.service.SittingService;
-import com.sh.pettopia.enterprise.entity.Review;
 import com.sh.pettopia.kakaopay.dto.KakaoPayReadyResponse;
 import com.sh.pettopia.kakaopay.service.PayService;
 import com.sh.pettopia.ncpTest.FileDto;

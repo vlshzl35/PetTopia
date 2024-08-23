@@ -27,7 +27,7 @@ import java.util.Map;
 public class PayService {
     final ReservationRepository reservationRepository;
 //    final PayRepository payRepository;
-    final OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
     static final String cid = "TC0ONETIME";// 테스트 코드
     @Value("${my.admin}")
@@ -58,7 +58,7 @@ public class PayService {
                 requestEntity,
                 KakaoPayReadyResponse.class
         );
-        System.out.println("kakaoPayReadyResponse = " + kakaoPayReadyResponse);
+log.info("kakaoPayReadyResponse = {}",kakaoPayReadyResponse);
         return kakaoPayReadyResponse;
     }
 
@@ -130,9 +130,5 @@ public class PayService {
                 KakaoCancelResponse.class);
 
         return cancelResponse;
-    }
-
-    public Order findByPartnerOrderId(String partnerOrderId) {
-        return orderRepository.findByPartnerOrderId(partnerOrderId);
     }
 }

@@ -4,6 +4,7 @@ import com.sh.pettopia.choipetsitter.entity.Reservation;
 import com.sh.pettopia.choipetsitter.repository.ReservationRepository;
 import com.sh.pettopia.parktj.petsitterfinder.entity.ReservationByPetSitter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class ReservationService {
     private final ReservationRepository reservationRepository;
 
@@ -25,7 +27,10 @@ public class ReservationService {
 
     public Reservation findByPartnerOrderId(String partnerOrderId)
     {
-        return reservationRepository.findByPartnerOrderId(partnerOrderId);
+        Reservation reservation=reservationRepository.findByPartnerOrderId(partnerOrderId);
+        System.out.println("reservation = " + reservation);
+        return reservation;
+//        return reservationRepository.findByPartnerOrderId(partnerOrderId);
     }
 
     public List<Reservation> findByPetSitterId(String email) {

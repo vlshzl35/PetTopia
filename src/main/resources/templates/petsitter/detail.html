@@ -359,7 +359,7 @@
                                             <input type="hidden" name="total_amount" id="totalPrice" value="0">
                                             <input type="hidden" name="item_name" id="item_name">
                                             <input type="hidden" name="quantity" id="total_PetCnt">
-                                            <input type="hidden" name="partner_order_id" id="partner_order_id">
+                                            <input type="hidden" name="partnerOrderId" id="partner_order_id">
                                             <h4 id="totalCostDisplay">총 금액 : 0원</h4>
                                         </div>
                                     </div>
@@ -385,6 +385,10 @@
             var day = document.getElementById('impossibleDays').value;
             var startTime = document.getElementById('startTime').value;
             var endTime = document.getElementById('endTime').value;
+            const partner_order_id = document.getElementById('partner_order_id');
+            partner_order_id.value = Math.random().toString(36).substr(2, 16);
+            console.log(partner_order_id.value);
+
             console.log("day : " + day, "startTime : " + startTime, "endTime : " + endTime);
 
             if (day.innerText === '') {
@@ -400,8 +404,6 @@
                 alert('최소 하나의 반려견 수를 입력해야 합니다.');
                 return false;  // Prevent form submission
             } else {
-                const partner_order_id = document.getElementById('partner_order_id');
-                partner_order_id.value = Math.random().toString(36).substr(2, 16);
                 document.getElementById('reservationForm').submit();
             }
         }

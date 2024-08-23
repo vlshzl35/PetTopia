@@ -3,6 +3,7 @@ package com.sh.pettopia.kakaopay.controller;
 import com.sh.pettopia.Hojji.pet.service.PetService;
 import com.sh.pettopia.choipetsitter.entity.Order;
 import com.sh.pettopia.choipetsitter.entity.Reservation;
+import com.sh.pettopia.choipetsitter.service.OrderService;
 import com.sh.pettopia.choipetsitter.service.ReservationService;
 import com.sh.pettopia.kakaopay.dto.KakaoApproveResponse;
 import com.sh.pettopia.kakaopay.dto.KakaoCancelResponse;
@@ -21,8 +22,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/pay")
 public class PayController {
     private final PayService payService;
-    private PetService petService;
-    private ReservationService reservationService;
+    private final ReservationService reservationService;
+    private final OrderService orderService;
 
 //    @GetMapping("/ready")
 //    public @ResponseBody KakaoPayReadyResponse kakaoPayReady(@RequestParam Map<String, Object> params) {
@@ -44,12 +45,12 @@ public class PayController {
         log.info("GET /pay/success");
         System.out.println("partner_order_id = " + partner_order_id);
 
-        Order order=payService.findByPartnerOrderId(partner_order_id);
+        Order order=orderService.findByPartnerOrderId(partner_order_id);
         System.out.println("order = " + order);
 
         KakaoApproveResponse approveResponse = payService.kakaoPayApprove(pgToken,partner_order_id); //kakaoPay 요청양식에 따라 요청객체 만들어 보내는 메서드(밑에서 구현)
         System.out.println("approveResponse = " + approveResponse);
-        return String.format("redirect:/petsitter/detail/%s",order.getPetSitterId()); //결제 승인 후 redirect 할 페이지 (알아서 구현)
+        return String.format("redirect:/petsitter/detail/%s",approveResponse.getPartner_user_id()); //결제 승인 후 redirect 할 페이지 (알아서 구현)
 //        return "redirect:/petsitter/list";
     }
 
@@ -57,6 +58,9 @@ public class PayController {
     // 결제 진행 중 취소
     @GetMapping("/cancel")
     public String  cancel(@RequestParam("partner_order_id")String partnerOrderId) {
+        log.info("GET /pay/cancel");
+        log.info("GET /partnerOrderId = {}",partnerOrderId);
+        log.info("");
         Reservation reservation=reservationService.findByPartnerOrderId(partnerOrderId);
         reservationService.delete(reservation);
         String petSitterId=reservation.getMemberId();

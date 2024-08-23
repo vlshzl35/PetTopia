@@ -3,15 +3,8 @@ spring:
   application:
     name: pettopia
 
-  datasource:
-    url: jdbc:mysql://localhost/pettopiadb
-    username: sh
-    password: sh
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  profiles:
-    default: test
 #    active: prod
+
   servlet:
     multipart:
       enabled: true
