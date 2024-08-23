@@ -22,6 +22,7 @@
             document.getElementById('petProfileSection').style.display = 'none';
             document.getElementById('usageHistorySection').style.display = 'none';
             document.getElementById('petSitterSection').style.display = 'none';
+            document.getElementById('payStatusSection').style.display = 'none';
 
             // 선택된 섹션만 보이기
             var section = document.getElementById(sectionId);
@@ -59,26 +60,30 @@
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-md-12">
+                <div class="col-md-10">
                     <div class="wrapper">
                         <!-- 버튼 추가 영역 -->
-                        <div class="row mb-5 justify-content-center">
+                        <div class="row mb-1 justify-content-center">
                             <div class="col-md-3">
-                                <button class="btn btn-primary w-100" onclick="showSection('editProfileSection')">회원정보
+                                <button class="btn btn-primary w-50" onclick="showSection('editProfileSection')">회원정보
                                     수정
                                 </button>
                             </div>
                             <div class="col-md-3">
-                                <button class="btn btn-primary w-100" onclick="showSection('petProfileSection')">펫 프로필
+                                <button class="btn btn-primary w-50" onclick="showSection('petProfileSection')">펫 프로필
                                 </button>
                             </div>
                             <div class="col-md-3">
-                                <button class="btn btn-primary w-100" onclick="showSection('usageHistorySection')">
+                                <button class="btn btn-primary w-50" onclick="showSection('usageHistorySection')">
                                     이용내역
                                 </button>
                             </div>
                             <div class="col-md-3">
-                                <button class="btn btn-primary w-100" onclick="showSection('petSitterSection')">펫시터
+                                <button class="btn btn-primary w-50" onclick="showSection('petSitterSection')">펫시터
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-primary w-50" onclick="showSection('payStatusSection')">결제 내역
                                 </button>
                             </div>
                         </div>
@@ -182,7 +187,7 @@
                             </div>
                         </div>
 
-
+                        <!--이용 내역 세션-->
                         <div id="usageHistorySection" style="display:none;">
 
                             <!-- 현재 진행중인 내역 -->
@@ -194,6 +199,7 @@
                                         <th></th>
                                         <th scope="col">펫시터</th>
                                         <th scope="col">서비스 날짜</th>
+                                        <th scope="col">예약 신청 날짜</th>
                                         <th scope="col">견종, 마리</th>
                                         <th scope="col">시작, 종료</th>
                                         <th>상태변경</th>
@@ -215,6 +221,7 @@
                                             </td>
                                             <td th:text="${reservationDto.petSitterId}"></td>
                                             <td th:text="${reservationDto.reservationDay}"></td>
+                                            <td th:text="${#temporals.format(reservationDto.createdAt, 'yyyy-MM-dd/a hh:mm')}"></td>
                                             <td>
                                                 <div th:each="sizehowmany:${reservationDto.petSizeAndHowManyPets}">
                                                     <span th:text="${sizehowmany.petSize}" name="petSize"></span>
@@ -370,6 +377,7 @@
                                 </table>
                             </div>
                         </div>
+
                         <div id="petSitterSection" style="display:none;">
                             <h3>펫시터</h3>
                             <form>
@@ -419,12 +427,62 @@
                                 <button type="submit" class="btn btn-primary">등록하기</button>
                             </form>
                         </div>
-                        <!-- 섹션 추가 영역 끝 -->
+
+                        <div id="payStatusSection" style="display:none;">
+
+                            <!-- 완료된 내역 -->
+
+                                <h4>완료된 내역</h4>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th scope="col">펫시터</th>
+                                        <th scope="col">결제 날짜</th>
+                                        <th scope="col">취소 날짜</th>
+                                        <th>금액</th>
+                                        <th>상태</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="orderDto ,stat :${orderDtoList}"
+                                            th:object="${orderDto}">
+                                            <label>
+                                                <input type="hidden" th:value="${orderDto.partnerOrderId}"
+                                                       name="partnerOrderId">
+                                            </label>
+                                            <td>
+                                                <a th:href="@{|/petsitter/reservationdetail/${orderDto.partnerOrderId}|}"
+                                                   onclick="window.open(this.href, '_blank', 'left=2000%,top=800%, width=900, height=700'); return false;">자세히</a>
+                                            </td>
+                                            <td>
+                                            <a th:href="@{|/petsitter/detail/${orderDto.petSitterId}|}" th:text="${orderDto.petSitterId}"></a>
+                                            </td>
+                                            <td th:text="${orderDto.payDate}"></td>
+                                            <td >
+                                                <span th:if="${!orderDto.payStatus}" th:text="${orderDto.payCancelDate}"></span>
+                                            </td>
+                                            <td th:text="${orderDto.totalPrice}"></td>
+                                            <td>
+                                              <span th:if="${orderDto.payStatus}"
+                                                    th:text="'결제완료'"></span>
+                                                <span th:if="${!orderDto.payStatus}"
+                                                      th:text="'환불완료'"></span>
+                                            </td>
+                                        </tr>
+                                    <!-- 다른 진행중인 내역 추가 -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
-        </div>
+
     </section>
+
+
 
     <!-- loader -->
     <div id="ftco-loader" class="show fullscreen">

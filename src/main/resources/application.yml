@@ -12,6 +12,12 @@ spring:
       max-request-size: 10MB
       location: build/resources/main/static/ocr
 
+#카카오페이, 결제가 성공 했는데 partner_order_id 값 이거 너가 설정했지?? 그래서 성공하고 이것도 가져왔어 하는 거다
+server:
+  approval_url: "http://localhost:8080/pay/success?partner_order_id="
+  cancel_url: "http://localhost:8080/pay/cancel?partner_order_id="
+  fail_url: "http://localhost:8080/pay/fail?partner_order_id="
+
 logging:
   level:
     root: info
