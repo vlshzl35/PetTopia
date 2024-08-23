@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -63,9 +64,17 @@ public class Sitting {
     @ElementCollection
     private List<PetSizeAndHowManyPet> petSizeAndHowManyPets; // 어떤 견종을 몇마리 할 것인지
 
+    @Column(name = "review_check",columnDefinition = "boolean default false")
+    @ColumnDefault("false")
+    private boolean reviewCheck; // 돌봄 완료된 주문에 대해 리뷰를 등록 했는지 안했는지, true=등록 했음, false 등록 안했음
+
     public void changeSittingStatus(SittingStatus sittingStatus)
     {
         this.sittingStatus=sittingStatus;
+    }
+    public void changeReviewCheck(boolean check)
+    {
+        this.reviewCheck=check;
     }
 
     public Sitting dtoToEntity(ReservationDto dto)

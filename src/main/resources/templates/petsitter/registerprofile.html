@@ -56,6 +56,19 @@
             overflow: hidden;
             margin: 0px 10px 10px 0px;
         }
+        #imgdiv{
+            width: 400px;
+            height: 300px;
+            border-radius: 20px 20px / 20px 20px;
+            margin: 0px 10px 10px 0px;
+        }
+        #imgdiv >img{
+            width: 400px;
+            height: 300px;
+        }
+        #addressDiv{
+            margin: 10px;
+        }
     </style>
 </head>
 <body>
@@ -63,15 +76,19 @@
     <form th:action="@{/petsitter/registerprofile}" id="registFrm" method="post" th:object="${petSitterRegisterDto}"
           enctype="multipart/form-data" class="container">
         <div >
-            <div class="container">
+            <div style="display: flex">
+                <div>
                 <div class="addImage" id="mainImage"></div><!-- 이미지 띄울 공간 여기에 새로 만들어진 이미지 태그가 append된다 -->
                 <input type="file" onchange="mainImgLoad(this)" name="mainImage" multiple>
+                </div>
+                <div id="imgdiv">
                     <img th:src="${petSitterRegisterDto.mainImageUrl}" alt="" onclick="remove_confirm(src)" id="removeMainImage">
-
+                </div>
             </div>
+
         </div>
 
-        <div>
+        <div id="addressDiv">
             <!--            주소 찾기, 등록-->
             <input type="text" id="postcode" placeholder="우편번호" name="postcode" th:field="*{postcode}">
             <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
@@ -88,88 +105,88 @@
 
             </div>
         </div>
-        <div class="container">
-            <div style="border: 1px solid black">
-                [[${petService}]]
-                [[${petSize}]]
-                [[${petService.contains('youngerPetWalk')}]]
-                <div>
-                    <label for="everydayWalk">
-                        <img th:src="@{/images/availableService/everydaywalk.PNG}" alt="everydayWalk">
-                        <input type="checkbox" name="availableServices" id="everydayWalk" value="everydayWalk"
-                               th:checked="${petService.contains('everydayWalk')}">
+<!--        <div class="container">-->
+<!--            <div style="border: 1px solid black">-->
+<!--                [[${petService}]]-->
+<!--                [[${petSize}]]-->
+<!--                [[${petService.contains('youngerPetWalk')}]]-->
+<!--                <div>-->
+<!--                    <label for="everydayWalk">-->
+<!--                        <img th:src="@{/images/availableService/everydaywalk.PNG}" alt="everydayWalk">-->
+<!--                        <input type="checkbox" name="availableServices" id="everydayWalk" value="everydayWalk"-->
+<!--                               th:checked="${petService.contains('everydayWalk')}">-->
 
-                    </label>
-                    <label for="oldPetWalk">
-                        <img th:src="@{/images/availableService/oldpetwalk.PNG}" alt="노견산책">
-                        <input type="checkbox" name="availableServices" id="oldPetWalk" value="olderPetWalk"
-                               th:checked="${petService.contains('olderPetWalk')}">
+<!--                    </label>-->
+<!--                    <label for="oldPetWalk">-->
+<!--                        <img th:src="@{/images/availableService/oldpetwalk.PNG}" alt="노견산책">-->
+<!--                        <input type="checkbox" name="availableServices" id="oldPetWalk" value="olderPetWalk"-->
+<!--                               th:checked="${petService.contains('olderPetWalk')}">-->
 
-                    </label>
-                    <label for="youngerPetWalk">
-                        <img th:src="@{/images/availableService/youngerpetwalk.PNG}" alt="어린견산책">
-                        <input type="checkbox" name="availableServices" id="youngerPetWalk" value="youngerPetWalk"
-                               th:checked="${petService.contains('youngerPetWalk')}">
-                        <!-- th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.availableServices).youngerPetWalk)}">-->
-                    </label>
-                </div>
-                <div class="">
-                    <label for="play">
-                        <img th:src="@{/images/availableService/play.PNG}" alt="실내놀이">
-                        <input type="checkbox" name="availableServices" id="play" alt="" value="play"
-                               th:checked="${petService.contains('play')}">
-                        <!-- th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.availableServices).play)}">-->
-                    </label>
-                    <label for="firstAid">
-                        <img th:src="@{/images/availableService/firstaid.PNG}" alt="응급처치">
-                        <input type="checkbox" name="availableServices" id="firstAid" value="firstAid"
-                               th:checked="${petService.contains('firstAid')}">
-                    </label>
-                    <label for="pickup">
-                        <img th:src="@{/images/availableService/pickup.PNG}" alt="도보픽업">
-                        <input type="checkbox" name="availableServices" id="pickup" value="walkPickup"
-                               th:checked="${petService.contains('walkPickup')}">
-                    </label>
-                </div>
-                <div class="">
-                    <label for="brush">
-                        <img th:src="@{/images/availableService/brush.PNG}" alt="모발관리">
-                        <input type="checkbox" name="availableServices" id="brush" value="brush"
-                               th:checked="${petService.contains('brush')}">
-                    </label>
-                    <label for="medicine">
-                        <img th:src="@{/images/availableService/medicine.PNG}" alt="약먹이기">
-                        <input type="checkbox" name="availableServices" id="medicine" value="medicine"
-                               th:checked="${petService.contains('medicine')}">
-                    </label>
-                    <label for="longReservation">
-                        <img th:src="@{/images/availableService/longreservation.PNG}" alt="장기예약">
-                        <input type="checkbox" name="availableServices" id="longReservation" value="longReservation"
-                               th:checked="${petService.contains('longReservation')}">
-                    </label>
-                </div>
+<!--                    </label>-->
+<!--                    <label for="youngerPetWalk">-->
+<!--                        <img th:src="@{/images/availableService/youngerpetwalk.PNG}" alt="어린견산책">-->
+<!--                        <input type="checkbox" name="availableServices" id="youngerPetWalk" value="youngerPetWalk"-->
+<!--                               th:checked="${petService.contains('youngerPetWalk')}">-->
+<!--                        &lt;!&ndash; th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.availableServices).youngerPetWalk)}">&ndash;&gt;-->
+<!--                    </label>-->
+<!--                </div>-->
+<!--                <div class="">-->
+<!--                    <label for="play">-->
+<!--                        <img th:src="@{/images/availableService/play.PNG}" alt="실내놀이">-->
+<!--                        <input type="checkbox" name="availableServices" id="play" alt="" value="play"-->
+<!--                               th:checked="${petService.contains('play')}">-->
+<!--                        &lt;!&ndash; th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.availableServices).play)}">&ndash;&gt;-->
+<!--                    </label>-->
+<!--                    <label for="firstAid">-->
+<!--                        <img th:src="@{/images/availableService/firstaid.PNG}" alt="응급처치">-->
+<!--                        <input type="checkbox" name="availableServices" id="firstAid" value="firstAid"-->
+<!--                               th:checked="${petService.contains('firstAid')}">-->
+<!--                    </label>-->
+<!--                    <label for="pickup">-->
+<!--                        <img th:src="@{/images/availableService/pickup.PNG}" alt="도보픽업">-->
+<!--                        <input type="checkbox" name="availableServices" id="pickup" value="walkPickup"-->
+<!--                               th:checked="${petService.contains('walkPickup')}">-->
+<!--                    </label>-->
+<!--                </div>-->
+<!--                <div class="">-->
+<!--                    <label for="brush">-->
+<!--                        <img th:src="@{/images/availableService/brush.PNG}" alt="모발관리">-->
+<!--                        <input type="checkbox" name="availableServices" id="brush" value="brush"-->
+<!--                               th:checked="${petService.contains('brush')}">-->
+<!--                    </label>-->
+<!--                    <label for="medicine">-->
+<!--                        <img th:src="@{/images/availableService/medicine.PNG}" alt="약먹이기">-->
+<!--                        <input type="checkbox" name="availableServices" id="medicine" value="medicine"-->
+<!--                               th:checked="${petService.contains('medicine')}">-->
+<!--                    </label>-->
+<!--                    <label for="longReservation">-->
+<!--                        <img th:src="@{/images/availableService/longreservation.PNG}" alt="장기예약">-->
+<!--                        <input type="checkbox" name="availableServices" id="longReservation" value="longReservation"-->
+<!--                               th:checked="${petService.contains('longReservation')}">-->
+<!--                    </label>-->
+<!--                </div>-->
 
-            </div>
-            <div class="" style="border: 1px solid black; display: block;" id="availablePetSizes">
-                <label for="smallPet">
-                    <img th:src="@{/images/availablePetSize/smallpet.PNG}" alt="" class="petSize">
-                    <input type="checkbox" name="availablePetSizes" id="smallPet" value="smallPet"
-                           th:checked="${petSize.contains('smallPet')}">
+<!--            </div>-->
+<!--            <div class="" style="border: 1px solid black; display: block;" id="availablePetSizes">-->
+<!--                <label for="smallPet">-->
+<!--                    <img th:src="@{/images/availablePetSize/smallpet.PNG}" alt="" class="petSize">-->
+<!--                    <input type="checkbox" name="availablePetSizes" id="smallPet" value="smallPet"-->
+<!--                           th:checked="${petSize.contains('smallPet')}">-->
 
-                </label>
-                <label for="middlePet">
-                    <img th:src="@{/images/availablePetSize/middlepet.PNG}" alt="" class="petSize">
-                    <input type="checkbox" name="availablePetSizes" id="middlePet" value="middlePet"
-                           th:checked="${petSize.contains('middlePet')}">
-                </label>
-                <label for="largePet">
-                    <img th:src="@{/images/availablePetSize/largepet.PNG}" alt="" class="petSize">
-                    <input type="checkbox" name="availablePetSizes" id="largePet" value="largePet"
-                           th:checked="${petSize.contains('largePet')}">
+<!--                </label>-->
+<!--                <label for="middlePet">-->
+<!--                    <img th:src="@{/images/availablePetSize/middlepet.PNG}" alt="" class="petSize">-->
+<!--                    <input type="checkbox" name="availablePetSizes" id="middlePet" value="middlePet"-->
+<!--                           th:checked="${petSize.contains('middlePet')}">-->
+<!--                </label>-->
+<!--                <label for="largePet">-->
+<!--                    <img th:src="@{/images/availablePetSize/largepet.PNG}" alt="" class="petSize">-->
+<!--                    <input type="checkbox" name="availablePetSizes" id="largePet" value="largePet"-->
+<!--                           th:checked="${petSize.contains('largePet')}">-->
 
-                </label>
-            </div>
-        </div>
+<!--                </label>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <button type="submit" class="btn btn-primary">제출</button>
     </form>
@@ -225,7 +242,6 @@
                         console.log("responseText : "+responseText);
                         location.reload();
                         // console.log(responseText, textStatus, jqXhr);
-
 
                     }
                 })

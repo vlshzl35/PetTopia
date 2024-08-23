@@ -64,4 +64,5 @@ public class ReviewService {
     public Double findAverageRatingByEntId(Long entId){
         return reviewRepository.findAverageRatingByEntId(entId);
     }
+
 }

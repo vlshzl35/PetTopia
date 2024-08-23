@@ -1,5 +1,6 @@
 package com.sh.pettopia.choipetsitter.entity;
 
+import com.sh.pettopia.choipetsitter.dto.PetSitterReviewDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "review")
 @Table(name = "tbl_sitter_review")
@@ -25,7 +27,8 @@ public class PetSitterReview {
     private String reviewText;
 
     @Column(name = "image_url")
-    private String imageUrl; // 한 줄에 전부가 오는지, 아니면 리스트로 만들어야 하는지 알아야 할 거 같다
+    @ElementCollection
+    private List<String> imageUrl; // 한 줄에 전부가 오는지, 아니면 리스트로 만들어야 하는지 알아야 할 거 같다
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -44,10 +47,17 @@ public class PetSitterReview {
     @Column(name = "petsitter_id")
     private String petSitterId;
 
-
-    public void changeReviewText(String reviewText)
+    public PetSitterReview dtoToEntity(PetSitterReviewDto dto)
     {
-        this.reviewText=reviewText;
+        return PetSitterReview.builder()
+                .partnerOrderId(dto.getPartnerOrderId())
+                .reviewText(dto.getReviewText())
+                .imageUrl(dto.getImagesUrls())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(dto.getUpdatedAt())
+                .petSitterReply(dto.getPetSitterReply())
+                .memberId(dto.getMemberId())
+                .petSitterId(dto.getPetSitterId()).build();
     }
 
 
