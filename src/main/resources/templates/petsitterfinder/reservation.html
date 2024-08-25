@@ -74,26 +74,30 @@
                     th:data-reservation-id=${reservation.reservationId}>
                     <th scope="row" th:text="${iterStat.index + 1}"></th>
                     <td th:text="${reservation.reservationId}"></td>
-                    <td >
-                        <a th:href="@{/petsitter/detail/{petsitterId}(petsitterId=${reservation.petSitterId})}" th:text="${reservation.petSitterId}"></a>
+                    <td>
+                        <a th:href="@{/petsitter/detail/{petsitterId}(petsitterId=${reservation.petSitterId})}"
+                           th:text="${reservation.petSitterId}"></a>
                     </td>
                     <td th:text="${reservation.postId}"></td>
                     <td th:text="${reservation.status}"></td>
                     <td th:text="${reservation.createdDate}"></td>
                     <td>
                         <!--              버튼 눌렀을 때 상태변경 요청하는 함수 호출-->
-<!--                       창욱이형이 알려준 코드로 해결된거 기록하기!!! -->
+                        <!--                       창욱이형이 알려준 코드로 해결된거 기록하기!!! -->
                         <div class="d-flex justify-content-between">
-                        <button  th:if="${reservation.status.getReservationStatus() != '요청거절'}" class="btn btn-sm btn-primary me-2"  th:text="${reservation.status}"  th:onclick="'advanceReservationStatus('+ ${reservation.reservationId} +')'"></button>
-                        <form th:action="@{/petsitterfinder/reservation/{reservationId}/reject(reservationId=${reservation.reservationId})}" method="post" onsubmit="return confirm('정말 거절하시겠습니까?')">
-                            <input type="hidden" name="postId" th:value="${reservation.postId}"/>
-                        <button class="btn btn-sm btn-danger" type = "submit" >예약요청 거절</button>
-                        </form>
+                            <button th:if="${reservation.status.getReservationStatus() != '요청거절'}"
+                                    class="btn btn-sm btn-primary me-2" th:text="${reservation.status}"
+                                    th:onclick="'advanceReservationStatus('+ ${reservation.reservationId} +')'"></button>
+                            <form th:action="@{/petsitterfinder/reservation/{reservationId}/reject(reservationId=${reservation.reservationId})}"
+                                  method="post" onsubmit="return confirm('정말 거절하시겠습니까?')">
+                                <input type="hidden" name="postId" th:value="${reservation.postId}"/>
+                                <button class="btn btn-sm btn-danger" type="submit">예약요청 거절</button>
+                            </form>
                         </div>
+
                     </td>
 
                 </tr>
-
                 <!-- 추가적인 예약 목록은 여기에 계속 추가될 수 있습니다 -->
                 </tbody>
             </table>
@@ -136,7 +140,6 @@
             )
 
             // 어떤 아이디인지 받기 위해서
-
             function refuseRequest(reservationId) {
                 console.log(reservationId)
                 $.ajax({
@@ -152,10 +155,15 @@
         }
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+    <script src="/js/ring/ring.js"></script>
+
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
 
     <script>
         const message = '[[${message}]]';

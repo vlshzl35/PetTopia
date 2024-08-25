@@ -16,8 +16,10 @@ import com.sh.pettopia.parktj.petsitterfinder.entity.ReservationStatus;
 import com.sh.pettopia.parktj.petsitterfinder.service.CareRegistrationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -130,10 +132,13 @@ public class CareRegistrationController {
         return "redirect:/petsitterfinder/careregistrationlist";
     }
 
+    private final SimpMessagingTemplate messagingTemplate;
+
     @PostMapping("/reservation")
     public ResponseEntity<String>  reservation(
             @ModelAttribute ReservationRequestDto reservationRequestDto,
             RedirectAttributes redirectAttributes){
+
 
        log.debug("reservationRequestDto={}", reservationRequestDto);
        PetSitter petSitter = petSitterService.findOneByPetSitter(reservationRequestDto.getMemberEmail());
@@ -144,12 +149,30 @@ public class CareRegistrationController {
 
         String currentPetSitterId = petSitter.getPetSitterId();
         Long currentPostId = careRegistration.getPostId();
+
+        //WebSocket
+        String notificationMessage = reservationInfo.getPostId() + "번 게시물에 " + petSitter.getPetSitterId() + "펫시터가 해당게시글에 대한 예약을 요청했습니다..";
+        messagingTemplate.convertAndSend("/topic/petsitterfinder", notificationMessage);
+        // 이 코드는 서버에서 클라이언트에게 실시간으로 메세지를 보내는 역할을 함
+        // - messagingTemplate
+        // : Spring에서 제공하는 객체로 , 메세지를 전송하는 역할을함
+        // 이 템플릿 사용하면, 서버가 특정 경로로 메세지를 보낼 수 있게 도와줌
+        // 쉽게 말해 서버에서 클라이언트에게 이 메세지를 받으세요 라고 전하는 우편 배달부..
+        // - convertAndSend()
+        // : 메세지를 전송하는 기능을 하는 메서드. 경로, 메세지 내용을 보내줌
+        // /topic/petsitterfinder 라는 경로는 특정 그룹의 클라이언트들이 구독하고 있다
+        // - 구독한다는 것은 클라이언트가 "나는 이 주소로 오는 메세지를 받고 싶어" 라고 선언하는 것과 같다
+
+
+//        messagingTemplate.convertAndSend("/topic/petsitterfinder/careregistrationdetails", notificationMessage);
+
         try {
             careRegistrationService.save(reservationInfo, currentPetSitterId, currentPostId);
             return ResponseEntity.ok("예약이 성공적으로 완료됨");
         } catch (IllegalStateException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+
     }
     @GetMapping("/reservation")
     public void reservationList(@RequestParam(value = "postId") Long postId, Model model) {
