@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 @Entity(name = "careregistration")
 @Table(name = "tbl_care_registration")
@@ -100,6 +101,9 @@ public class CareRegistration {
     @Column(name = "member_address", nullable = false)
     private String address;
 
+    @Column(name ="additional_info")
+    private String additionalInfo;
+
 
     public void update(PetDetailsUpdateRequestDto dto) {
         this.postId = dto.getPostId();
@@ -107,6 +111,11 @@ public class CareRegistration {
         this.requestStartDate = dto.getRequestStartDate();
         this.requestEndDate = dto.getRequestEndDate();
         this.requestService = dto.getRequestService();
+    }
+
+    public void toStringVaccinationName(Set<String> strings)
+    {
+
     }
 
 }

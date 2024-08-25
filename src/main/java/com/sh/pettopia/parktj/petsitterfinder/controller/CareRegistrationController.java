@@ -1,7 +1,9 @@
 package com.sh.pettopia.parktj.petsitterfinder.controller;
 
 import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
+import com.sh.pettopia.Hojji.pet.entity.ParasitePrevention;
 import com.sh.pettopia.Hojji.pet.entity.Pet;
+import com.sh.pettopia.Hojji.pet.entity.VaccinationType;
 import com.sh.pettopia.Hojji.pet.service.PetService;
 import com.sh.pettopia.choipetsitter.entity.PetSitter;
 import com.sh.pettopia.choipetsitter.entity.Reservation;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -58,7 +62,6 @@ public class CareRegistrationController {
         log.debug("petId = {}", petId);
         PetDetailsResponseDto petDetails = petService.findByPetId(petId);
         return ResponseEntity.ok(petDetails);
-
     }
 
     //  쿼리 파라미터로 postId 받아서 postId 에 해당하는 게시글의 내용만 보여주는 코드
@@ -66,6 +69,7 @@ public class CareRegistrationController {
     public void careRegistrationDetails(@AuthenticationPrincipal AuthPrincipal authPrincipal, @RequestParam(value = "postId") Long postId, Model model) {
         CareRegistrationDetailResponseDto detailDto = careRegistrationService.findAllByPostId(postId);
         model.addAttribute("detail", detailDto);
+
 //        이 부분 댓글에 멤버 정보 포함시키기 위함임
         model.addAttribute("memberInfo", authPrincipal.getMember());
         log.debug("detailDto = {}", detailDto);
@@ -186,6 +190,14 @@ public class CareRegistrationController {
 
 
     }
+
+    /**
+     * // Javascript에서 enum값 여러개 받아오는 것 forEach
+     * Java에서 'forEach' Stream API 나 Iterable 인터페이스의 메서드임
+     * 컬렉션의 각 요소에 대해 지정된 동작을 수행하는 메서드임, forEach는 주로 람다 표현식과 함께 사용되어 코드가 간결하고 직관적이게 될 수 있음
+     * collection.forEach(element -> {}); 람다표현식 사용가능
+     *
+     */
     /**
      * redirectFlashAttribute 사용될때에는 model.addAttribyte사용 불가능함 따라서
      * redirectAttribute 할때 값 보내고, input으로 해서 직접 값 받아봐라 맞는지 아닌지

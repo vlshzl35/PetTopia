@@ -31,7 +31,10 @@ public class PetService {
     // 8/08 박태준 추가
     public PetDetailsResponseDto findByPetId(Long petId) {
         return PetDetailsResponseDto.PetDetailFromPet(petRepository.findByPetId(petId));
+
     }
+
+
 
     // 8/11 홍지민 작업 시작
     public Pet registPet(Member member, PetRegistRequestDto petDto) {
