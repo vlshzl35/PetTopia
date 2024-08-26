@@ -1,3 +1,12 @@
+.petsittingmain {
+    margin: 50px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /*height: 100vh; !* 화면의 전체 높이 사용 *!*/
+}
+
 .custom-button {
     position: relative;
     display: inline-block;
@@ -8,7 +17,7 @@
     background-color: #00bd56;
     color: white;
     border: none;
-    border-radius: 20px; /* 둥근 모서리의 반경 */
+    border-radius: 50px; /* 둥근 모서리의 반경 */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1); /* 그림자 크기 */
     overflow: hidden;
@@ -66,9 +75,8 @@
 }
 
 .serviceImage{
-    width: 60px;
-    height: 80px;
-    color: white;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 

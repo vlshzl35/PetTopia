@@ -10,16 +10,16 @@
     <link href="/css/pesitting/petsittingmain.css" rel="stylesheet">
 </head>
 <body>
-<div layout:fragment="main" class="container">
+<div layout:fragment="main" class="petsittingmain">
     <button class="custom-button">
         <a th:href="@{/petsitterfinder/careregistrationlist}">
-            <img src="/images/sitting/wantsitting.png" alt="돌봐주세요 이미지" class="serviceImage">
+            <img src='/svg/helpDog.svg' class="serviceImage">
             돌봐주세요
         </a>
     </button>
     <button class="custom-button">
         <a th:href="@{/petsitter/list}">
-            <img src="/images/sitting/sitting.png" alt="돌봐드려요 이미지" class="serviceImage">
+            <img src='/svg/petcare.svg' class="serviceImage">
             돌봐드려요
         </a>
     </button>

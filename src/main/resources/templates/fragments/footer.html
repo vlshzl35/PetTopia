@@ -5,86 +5,63 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>footer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>Footer with Modal</title>
+
+    <style>
+        footer {
+            background-color: #f5f5f5;
+            padding: 20px 0;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .footer-content p {
+            margin: 5px 0;
+        }
+
+        .footer-links {
+            margin-top: 20px;
+        }
+
+        .footer-links a {
+            color: #555;
+            text-decoration: none;
+            margin: 0 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<footer  th:fragment="footerFragment" class="footer">
+<footer th:fragment="footerFragment" class="footer">
     <div class="container">
         <div class="row">
-            <div class="col-md-6 col-lg-3 mb-4 mb-md-0">
-                <h2 class="footer-heading">Petsitting</h2>
-                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-                <ul class="ftco-footer-social p-0">
-                    <li class="ftco-animate"><a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Twitter"><span class="fa fa-twitter"></span></a></li>
-                    <li class="ftco-animate"><a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Facebook"><span class="fa fa-facebook"></span></a></li>
-                    <li class="ftco-animate"><a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="Instagram"><span class="fa fa-instagram"></span></a></li>
-                </ul>
-            </div>
-            <div class="col-md-6 col-lg-3 mb-4 mb-md-0">
-                <h2 class="footer-heading">Latest News</h2>
-                <div class="block-21 mb-4 d-flex">
-                    <a class="img mr-4 rounded" style="background-image: url(/images/image_1.jpg);"></a>
-                    <div class="text">
-                        <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about</a></h3>
-                        <div class="meta">
-                            <div><a href="#"><span class="icon-calendar"></span> April 7, 2020</a></div>
-                            <div><a href="#"><span class="icon-person"></span> Admin</a></div>
-                            <div><a href="#"><span class="icon-chat"></span> 19</a></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="block-21 mb-4 d-flex">
-                    <a class="img mr-4 rounded" style="background-image: url(/images/image_2.jpg);"></a>
-                    <div class="text">
-                        <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about</a></h3>
-                        <div class="meta">
-                            <div><a href="#"><span class="icon-calendar"></span> April 7, 2020</a></div>
-                            <div><a href="#"><span class="icon-person"></span> Admin</a></div>
-                            <div><a href="#"><span class="icon-chat"></span> 19</a></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 pl-lg-5 mb-4 mb-md-0">
-                <h2 class="footer-heading">Quick Links</h2>
-                <ul class="list-unstyled">
-                    <li><a href="#" class="py-2 d-block">Home</a></li>
-                    <li><a href="#" class="py-2 d-block">About</a></li>
-                    <li><a href="#" class="py-2 d-block">Services</a></li>
-                    <li><a href="#" class="py-2 d-block">Works</a></li>
-                    <li><a href="#" class="py-2 d-block">Blog</a></li>
-                    <li><a href="#" class="py-2 d-block">Contact</a></li>
-                </ul>
-            </div>
-            <div class="col-md-6 col-lg-3 mb-4 mb-md-0">
-                <h2 class="footer-heading">Have a Questions?</h2>
-                <div class="block-23 mb-3">
-                    <ul>
-                        <li><span class="icon fa fa-map"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span>
-                        </li>
-                        <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a>
-                        </li>
-                        <li><a href="#"><span class="icon fa fa-paper-plane"></span><span class="text">info@yourdomain.com</span></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-5">
-            <div class="col-md-12 text-center">
 
-                <p class="copyright">
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    Copyright &copy;<script>document.write(new Date().getFullYear());</script>
-                    All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by
-                    <a href="https://colorlib.com" target="_blank">Colorlib.com</a>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+            <div class="footer-content">
+                <p>주식회사 펫토피아 | 대표 : 최창준 | 개인정보책임관리자 : 홍윤영 | 사업자등록번호: 123-48-06212 | 통신판매업신고번호: 제 2024-서울강남-7349 호</p>
+                <p>서울시 강남구 삼성로 44, 3층(삼성동, 도도독케어센터)</p>
+                <p>© 2024 PetTopia. All Rights Reserved.</p>
             </div>
+            <div class="footer-links">
+                <strong>
+                    <a id="terms-link" data-bs-toggle="modal" data-bs-target="#termsModal">이용약관</a> |
+                    <a id="privacy-link" data-bs-toggle="modal" data-bs-target="#privacyModal">개인정보처리방침</a> |
+                    <a id="location-link" data-bs-toggle="modal" data-bs-target="#locationModal">위치기반서비스 이용약관</a> |
+                </strong>
+            </div>
+
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </footer>
+
+
 </body>
 </html>

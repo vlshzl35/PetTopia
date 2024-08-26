@@ -1,0 +1,33 @@
+.login-header {
+    color: white !important;
+}
+
+.modal-content {
+    border-radius: 20px;
+    border: none;
+}
+
+.modal-body {
+    padding: 3rem;
+}
+
+.modal-header {
+    padding: 3rem;
+    background-color: #00bd56;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    color: white;
+}
+
+.close {
+    font-size: 40px;
+    font-weight: 700;
+}
+
+/* 버튼 스타일 */
+.btn-primary, .btn-light {
+    width: 100%; /* 버튼의 가로 길이를 100%로 설정 */
+    padding: 15px; /* 버튼의 안쪽 여백을 설정 */
+    font-size: 1.2em; /* 글꼴 크기를 조정 */
+    margin-top: 10px; /* 버튼 사이의 간격 */
+}
