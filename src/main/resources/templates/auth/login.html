@@ -31,7 +31,7 @@
             <div class="modal-content">
                 <div class="modal-header justify-content-center">
                     <h1 class="modal-title login-header" id="loginModalLabel">로그인</h1>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <button th:onclick="|location.href='@{/}'|" type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
