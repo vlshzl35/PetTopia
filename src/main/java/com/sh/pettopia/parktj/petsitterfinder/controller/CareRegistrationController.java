@@ -1,7 +1,9 @@
 package com.sh.pettopia.parktj.petsitterfinder.controller;
 
 import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
+import com.sh.pettopia.Hojji.pet.entity.ParasitePrevention;
 import com.sh.pettopia.Hojji.pet.entity.Pet;
+import com.sh.pettopia.Hojji.pet.entity.VaccinationType;
 import com.sh.pettopia.Hojji.pet.service.PetService;
 import com.sh.pettopia.choipetsitter.entity.PetSitter;
 import com.sh.pettopia.choipetsitter.entity.Reservation;
@@ -14,8 +16,10 @@ import com.sh.pettopia.parktj.petsitterfinder.entity.ReservationStatus;
 import com.sh.pettopia.parktj.petsitterfinder.service.CareRegistrationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +27,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -58,7 +64,6 @@ public class CareRegistrationController {
         log.debug("petId = {}", petId);
         PetDetailsResponseDto petDetails = petService.findByPetId(petId);
         return ResponseEntity.ok(petDetails);
-
     }
 
     //  쿼리 파라미터로 postId 받아서 postId 에 해당하는 게시글의 내용만 보여주는 코드
@@ -66,6 +71,7 @@ public class CareRegistrationController {
     public void careRegistrationDetails(@AuthenticationPrincipal AuthPrincipal authPrincipal, @RequestParam(value = "postId") Long postId, Model model) {
         CareRegistrationDetailResponseDto detailDto = careRegistrationService.findAllByPostId(postId);
         model.addAttribute("detail", detailDto);
+
 //        이 부분 댓글에 멤버 정보 포함시키기 위함임
         model.addAttribute("memberInfo", authPrincipal.getMember());
         log.debug("detailDto = {}", detailDto);
@@ -126,10 +132,13 @@ public class CareRegistrationController {
         return "redirect:/petsitterfinder/careregistrationlist";
     }
 
+    private final SimpMessagingTemplate messagingTemplate;
+
     @PostMapping("/reservation")
     public ResponseEntity<String>  reservation(
             @ModelAttribute ReservationRequestDto reservationRequestDto,
             RedirectAttributes redirectAttributes){
+
 
        log.debug("reservationRequestDto={}", reservationRequestDto);
        PetSitter petSitter = petSitterService.findOneByPetSitter(reservationRequestDto.getMemberEmail());
@@ -140,12 +149,30 @@ public class CareRegistrationController {
 
         String currentPetSitterId = petSitter.getPetSitterId();
         Long currentPostId = careRegistration.getPostId();
+
+        //WebSocket
+        String notificationMessage = reservationInfo.getPostId() + "번 게시물에 " + petSitter.getPetSitterId() + "펫시터가 해당게시글에 대한 예약을 요청했습니다..";
+        messagingTemplate.convertAndSend("/topic/petsitterfinder", notificationMessage);
+        // 이 코드는 서버에서 클라이언트에게 실시간으로 메세지를 보내는 역할을 함
+        // - messagingTemplate
+        // : Spring에서 제공하는 객체로 , 메세지를 전송하는 역할을함
+        // 이 템플릿 사용하면, 서버가 특정 경로로 메세지를 보낼 수 있게 도와줌
+        // 쉽게 말해 서버에서 클라이언트에게 이 메세지를 받으세요 라고 전하는 우편 배달부..
+        // - convertAndSend()
+        // : 메세지를 전송하는 기능을 하는 메서드. 경로, 메세지 내용을 보내줌
+        // /topic/petsitterfinder 라는 경로는 특정 그룹의 클라이언트들이 구독하고 있다
+        // - 구독한다는 것은 클라이언트가 "나는 이 주소로 오는 메세지를 받고 싶어" 라고 선언하는 것과 같다
+
+
+//        messagingTemplate.convertAndSend("/topic/petsitterfinder/careregistrationdetails", notificationMessage);
+
         try {
             careRegistrationService.save(reservationInfo, currentPetSitterId, currentPostId);
             return ResponseEntity.ok("예약이 성공적으로 완료됨");
         } catch (IllegalStateException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+
     }
     @GetMapping("/reservation")
     public void reservationList(@RequestParam(value = "postId") Long postId, Model model) {
@@ -180,12 +207,18 @@ public class CareRegistrationController {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
         }
 
-
-
         return "redirect:/petsitterfinder/reservation?postId="+postId;
 
 
     }
+
+    /**
+     * // Javascript에서 enum값 여러개 받아오는 것 forEach
+     * Java에서 'forEach' Stream API 나 Iterable 인터페이스의 메서드임
+     * 컬렉션의 각 요소에 대해 지정된 동작을 수행하는 메서드임, forEach는 주로 람다 표현식과 함께 사용되어 코드가 간결하고 직관적이게 될 수 있음
+     * collection.forEach(element -> {}); 람다표현식 사용가능
+     *
+     */
     /**
      * redirectFlashAttribute 사용될때에는 model.addAttribyte사용 불가능함 따라서
      * redirectAttribute 할때 값 보내고, input으로 해서 직접 값 받아봐라 맞는지 아닌지

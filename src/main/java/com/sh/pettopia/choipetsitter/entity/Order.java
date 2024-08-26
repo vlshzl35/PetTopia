@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -31,6 +33,10 @@ public class Order {
     @CreationTimestamp
     private LocalDateTime payDate; // 결제 날짜
 
+    @Column(name = "pay_cancel_date")
+    @UpdateTimestamp
+    private LocalDateTime payCancelDate;
+
     @Column(name = "pay_status")
     private boolean payStatus; // true= 결제완료, false=결제취소(환불)
 
@@ -39,6 +45,12 @@ public class Order {
 
     @Column(name = "tid")
     private String tid; // 환불 할 떄 쓰는 고유 번호
+
+
+    public void changePayStatus(boolean payStatus)
+    {
+        this.payStatus=payStatus;
+    }
 
     public Order reservationToOrder(Reservation reservation)
     {

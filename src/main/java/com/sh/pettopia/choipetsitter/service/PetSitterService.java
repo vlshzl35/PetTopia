@@ -4,6 +4,7 @@ import com.sh.pettopia.Hojji.pet.entity.Pet;
 import com.sh.pettopia.choipetsitter.entity.PetSitter;
 import com.sh.pettopia.choipetsitter.repository.PetSitterRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +44,11 @@ public class PetSitterService {
     {
         PetSitter petSitter= petSitterRepository.findById(memberId).orElseThrow();
         petSitterRepository.delete(petSitter);
+    }
+
+    public List<PetSitter> findByPetSitterAddressContaining(String address)
+    {
+       return petSitterRepository.findByPetSitterAddressContaining(address);
     }
 
 }

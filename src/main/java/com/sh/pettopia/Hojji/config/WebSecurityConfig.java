@@ -21,7 +21,7 @@ public class WebSecurityConfig {
      */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("css/**", "js/**",  "scss/**", "images/**", "fonts/**", "json/**", "ocr/**", "assets/**"); // 이 경로로 시작하는 것들은 보안 검사를 하지 말라는 의미
+        return (web) -> web.ignoring().requestMatchers("css/**", "js/**",  "scss/**", "images/**", "fonts/**", "json/**", "ocr/**", "assets/**", "svg/**"); // 이 경로로 시작하는 것들은 보안 검사를 하지 말라는 의미
     }
 
     @Bean
@@ -47,7 +47,7 @@ public class WebSecurityConfig {
                     .requestMatchers("/member/**", "/auth/login").anonymous()
 
                     // 인증된 사용자만 허용 - 로그인 한 사용자를 의미함
-                    .requestMatchers("/petsitter/detail/","/petsitter/successpay/", "/enterprise/**", "/mypage/**", "/petsitter/**", "/petsitterfinder/**", "/community/postDetail", "/community/registPost").authenticated()
+                    .requestMatchers("https://kapi.kakao.com/v1/payment/ready","/petsitter/detail/","/petsitter/successpay/", "/enterprise/**", "/mypage/**", "/petsitter/**", "/petsitterfinder/**", "/community/postDetail", "/community/registPost").authenticated()
 
                     // ROLE_SITTER 권한이 있는 사용자만 허용
                     .requestMatchers("/petsitter/registerpost", "/petsitter/registerprofile", "/petsitter/startjob").hasRole("SITTER")

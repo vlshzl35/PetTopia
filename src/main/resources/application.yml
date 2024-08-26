@@ -3,16 +3,8 @@ spring:
   application:
     name: pettopia
 
-#  datasource:
-#    url: jdbc:mysql://localhost/pettopiadb
-#    username: sh
-#    password: sh
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  profiles:
-    default: test
-#    default: prod
 #    active: prod
+
   servlet:
     multipart:
       enabled: true
@@ -20,10 +12,18 @@ spring:
       max-request-size: 10MB
       location: build/resources/main/static/ocr
 
+#카카오페이, 결제가 성공 했는데 partner_order_id 값 이거 너가 설정했지?? 그래서 성공하고 이것도 가져왔어 하는 거다
+server:
+  approval_url: "http://localhost:8080/pay/success?partner_order_id="
+  cancel_url: "http://localhost:8080/pay/cancel?partner_order_id="
+  fail_url: "http://localhost:8080/pay/fail?partner_order_id="
+
 logging:
   level:
     root: info
     com.sh: debug
+
+
 
   # 공통 jpa 설정
   jpa:
@@ -33,6 +33,7 @@ logging:
         format_sql: true
         show_sql: true
         hbm2ddl:
+#          auto: none
           auto: update # update, create, create-drp, validate 중 선택
 
   thymeleaf:
@@ -57,7 +58,7 @@ file:
 my:
   admin: 16091a7548fa162364eaec609653de3e
 
-# OCR 관련 설정
+  # OCR 관련 설정
 naver:
   clova-ocr:
     document:

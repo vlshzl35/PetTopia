@@ -34,6 +34,7 @@ public class PetDetailsRegistRequestDto {
     private LocalDate endDate;
     private String address;
     private Set<RequestService> requestService;
+    private String additionalInfo;
 
 
     public CareRegistration toCareRegistration(){
@@ -55,6 +56,7 @@ public class PetDetailsRegistRequestDto {
                 .requestEndDate(this.endDate)
                 .address(this.address)
                 .requestService(this.requestService)
+                .additionalInfo(this.additionalInfo)
                 .build();
 
 

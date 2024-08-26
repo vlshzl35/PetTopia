@@ -82,7 +82,8 @@
                 <input type="file" onchange="mainImgLoad(this)" name="mainImage" multiple>
                 </div>
                 <div id="imgdiv">
-                    <img th:src="${petSitterRegisterDto.mainImageUrl}" alt="" onclick="remove_confirm(src)" id="removeMainImage">
+                    <img th:if="${not #strings.isEmpty(petSitterRegisterDto.mainImageUrl)}" th:src="${petSitterRegisterDto.mainImageUrl}" alt="" onclick="remove_confirm(src)" id="removeMainImage">
+                    <img th:if="${#strings.isEmpty(petSitterRegisterDto.mainImageUrl)}" th:src="@{/images/petsitter/nothingImg.jpg}" alt="" onclick="remove_confirm(src)">
                 </div>
             </div>
 
@@ -105,88 +106,6 @@
 
             </div>
         </div>
-<!--        <div class="container">-->
-<!--            <div style="border: 1px solid black">-->
-<!--                [[${petService}]]-->
-<!--                [[${petSize}]]-->
-<!--                [[${petService.contains('youngerPetWalk')}]]-->
-<!--                <div>-->
-<!--                    <label for="everydayWalk">-->
-<!--                        <img th:src="@{/images/availableService/everydaywalk.PNG}" alt="everydayWalk">-->
-<!--                        <input type="checkbox" name="availableServices" id="everydayWalk" value="everydayWalk"-->
-<!--                               th:checked="${petService.contains('everydayWalk')}">-->
-
-<!--                    </label>-->
-<!--                    <label for="oldPetWalk">-->
-<!--                        <img th:src="@{/images/availableService/oldpetwalk.PNG}" alt="노견산책">-->
-<!--                        <input type="checkbox" name="availableServices" id="oldPetWalk" value="olderPetWalk"-->
-<!--                               th:checked="${petService.contains('olderPetWalk')}">-->
-
-<!--                    </label>-->
-<!--                    <label for="youngerPetWalk">-->
-<!--                        <img th:src="@{/images/availableService/youngerpetwalk.PNG}" alt="어린견산책">-->
-<!--                        <input type="checkbox" name="availableServices" id="youngerPetWalk" value="youngerPetWalk"-->
-<!--                               th:checked="${petService.contains('youngerPetWalk')}">-->
-<!--                        &lt;!&ndash; th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.availableServices).youngerPetWalk)}">&ndash;&gt;-->
-<!--                    </label>-->
-<!--                </div>-->
-<!--                <div class="">-->
-<!--                    <label for="play">-->
-<!--                        <img th:src="@{/images/availableService/play.PNG}" alt="실내놀이">-->
-<!--                        <input type="checkbox" name="availableServices" id="play" alt="" value="play"-->
-<!--                               th:checked="${petService.contains('play')}">-->
-<!--                        &lt;!&ndash; th:checked="${#sets.contains(petService, T(com.sh.pettopia.choipetsitter.entity.availableServices).play)}">&ndash;&gt;-->
-<!--                    </label>-->
-<!--                    <label for="firstAid">-->
-<!--                        <img th:src="@{/images/availableService/firstaid.PNG}" alt="응급처치">-->
-<!--                        <input type="checkbox" name="availableServices" id="firstAid" value="firstAid"-->
-<!--                               th:checked="${petService.contains('firstAid')}">-->
-<!--                    </label>-->
-<!--                    <label for="pickup">-->
-<!--                        <img th:src="@{/images/availableService/pickup.PNG}" alt="도보픽업">-->
-<!--                        <input type="checkbox" name="availableServices" id="pickup" value="walkPickup"-->
-<!--                               th:checked="${petService.contains('walkPickup')}">-->
-<!--                    </label>-->
-<!--                </div>-->
-<!--                <div class="">-->
-<!--                    <label for="brush">-->
-<!--                        <img th:src="@{/images/availableService/brush.PNG}" alt="모발관리">-->
-<!--                        <input type="checkbox" name="availableServices" id="brush" value="brush"-->
-<!--                               th:checked="${petService.contains('brush')}">-->
-<!--                    </label>-->
-<!--                    <label for="medicine">-->
-<!--                        <img th:src="@{/images/availableService/medicine.PNG}" alt="약먹이기">-->
-<!--                        <input type="checkbox" name="availableServices" id="medicine" value="medicine"-->
-<!--                               th:checked="${petService.contains('medicine')}">-->
-<!--                    </label>-->
-<!--                    <label for="longReservation">-->
-<!--                        <img th:src="@{/images/availableService/longreservation.PNG}" alt="장기예약">-->
-<!--                        <input type="checkbox" name="availableServices" id="longReservation" value="longReservation"-->
-<!--                               th:checked="${petService.contains('longReservation')}">-->
-<!--                    </label>-->
-<!--                </div>-->
-
-<!--            </div>-->
-<!--            <div class="" style="border: 1px solid black; display: block;" id="availablePetSizes">-->
-<!--                <label for="smallPet">-->
-<!--                    <img th:src="@{/images/availablePetSize/smallpet.PNG}" alt="" class="petSize">-->
-<!--                    <input type="checkbox" name="availablePetSizes" id="smallPet" value="smallPet"-->
-<!--                           th:checked="${petSize.contains('smallPet')}">-->
-
-<!--                </label>-->
-<!--                <label for="middlePet">-->
-<!--                    <img th:src="@{/images/availablePetSize/middlepet.PNG}" alt="" class="petSize">-->
-<!--                    <input type="checkbox" name="availablePetSizes" id="middlePet" value="middlePet"-->
-<!--                           th:checked="${petSize.contains('middlePet')}">-->
-<!--                </label>-->
-<!--                <label for="largePet">-->
-<!--                    <img th:src="@{/images/availablePetSize/largepet.PNG}" alt="" class="petSize">-->
-<!--                    <input type="checkbox" name="availablePetSizes" id="largePet" value="largePet"-->
-<!--                           th:checked="${petSize.contains('largePet')}">-->
-
-<!--                </label>-->
-<!--            </div>-->
-<!--        </div>-->
 
         <button type="submit" class="btn btn-primary">제출</button>
     </form>
@@ -220,29 +139,27 @@
         function remove_confirm(src) {
             var header = $("meta[name='_csrf_header']").attr('content');
             var token = $("meta[name='_csrf']").attr('content');
-            console.log("header : "+header,"token : "+ token)
-            // var formData=new FormData;
-            // formData.append('image',imageUrl)
             console.log("src : "+src);
+            const parts = src.split('/');
+            const fileNameWithExtension = parts[parts.length - 1];
+
+            console.log(fileNameWithExtension);
 
             if (confirm("사진을 제거 하시겠습니까??")) {
 
                 $.ajax({
-                    // beforeSend: function (xhr) {
-                    //     xhr.setRequestHeader(header, token);
-                    // },
-                    url: '[[@{/petsitter/profileImage}]]',
+
+                    url: '[[@{/petsitter/removeProfileImage}]]',
                     method: 'post',
-                    // enctype: 'multipart/form-data',
-                    contentType: false, // false = content-type 헤더가 multipart/form-data로 전송하게 함
-                    processData: false, // false = formData를 string으로 변환하지 않음
-                    data: src,
+                    // contentType: false, // false = content-type 헤더가 multipart/form-data로 전송하게 함
+                    processData: true, // false = formData를 string으로 변환하지 않음
+                    data: {
+                        fileNameWithExtension:fileNameWithExtension
+                    },
                     success(responseText) {
                         alert("이미지가 정상제거 되었습니다");
                         console.log("responseText : "+responseText);
-                        location.reload();
-                        // console.log(responseText, textStatus, jqXhr);
-
+                        location.reload(); // 바로 새로고침
                     }
                 })
 

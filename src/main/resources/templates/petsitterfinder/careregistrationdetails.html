@@ -114,16 +114,17 @@
     <section class="reservation-details">
         <input type="hidden" id="addressInput" th:value="${detail.address}">
         <h2><strong>🐶우리 강아지를 돌봐주세요🐶</strong></h2>
-        <p>이름: <span th:text="${detail.petName}"></span></p>
+        <p>이름: <span th:text="${detail.petName}" ></span></p>
         <p>강아지 성격: <span th:text="${detail.petSociability}"></span></p>
         <p>강아지 출생일: <span th:text="${detail.petBirth}"></span></p>
         <p>견종: <span th:text="${detail.petBreed}"></span></p>
-        <p>강아지 크기: <span th:text="${detail.petSize}"></span></p>
-        <p>예방 접종: <span th:text="${detail.petVaccinationType}"></span></p>
-        <p>기생충 예방 접종: <span th:text="${detail.petParasitePrevention}"></span></p>
+        <p>강아지 크기: <span th:text="${detail.petSize.petSize}"></span></p>
+        <p>예방 접종: <span th:text="${detail.petVaccinationTypeNames}"></span></p>
+        <p>기생충 예방 접종: <span th:text="${detail.petParasitePreventionNames}"></span></p>
         <p>예약 요청 날짜: <input type="date" th:value="${detail.startDate}" readonly></p>
         <p>예약 종료요청 날짜: <input type="date" th:value="${detail.endDate}" readonly></p>
         <p>예약 서비스: <span th:text="${detail.requestService}"></span></p>
+        <p>추가적인 요청사항: <span th:text="${detail.additionalInfo}"></span></p>
         <div class="update-box">
             <button class="btn btn-primary" th:if="${isWriter}" th:onclick="|location.href = '@{/petsitterfinder/detailupdate(postId=${detail.postId})}'|">수정/삭제</button>
             <input type="hidden" name ="sitterStatus" id ="sitterStatus" th:value="${memberInfo.sitterStatus}">
@@ -341,6 +342,17 @@
         })
 
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+    <script src="/js/ring/ring.js"></script>
+
 </div>
 </body>
 </html>

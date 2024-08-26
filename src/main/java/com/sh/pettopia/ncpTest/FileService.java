@@ -110,9 +110,10 @@ public class FileService {
     }
 
     public List<FileDto> sitterUpFile(List<MultipartFile> multipartFiles,String petSitterEmail,String directory){
-
+        log.info("sitterUpFile 실행됩니다");
         String filePath="petsitter/"+petSitterEmail+"/"+directory; // 파일에 저장되는 경로는 petsitter/email/directory 안에 파일이 저장된다
-        System.out.println(filePath);
+        log.info("multipartFiles = {}",multipartFiles);
+        log.info("filePath = {}",filePath);
         return uploadFiles(multipartFiles,filePath);  // ncp 버킷에 filePath 경로의 디렉토리에 올라감(없으면 생성함)
 
     }
@@ -121,7 +122,7 @@ public class FileService {
     public void deleteImage(String petSitterEmail, String directory, String fileName)
     {
         String path="petsitter/"+petSitterEmail+"/"+directory+"/";
-        System.out.println("service path = " + path);
+        log.info("service path = {} " , path);
 
         amazonS3Client.deleteObject(bucketName,path+fileName);
 

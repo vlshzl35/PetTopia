@@ -1,5 +1,7 @@
 package com.sh.pettopia.parktj.petsitterfinder.service;
 
+import com.sh.pettopia.Hojji.pet.entity.ParasitePrevention;
+import com.sh.pettopia.Hojji.pet.entity.VaccinationType;
 import com.sh.pettopia.parktj.petsitterfinder.dto.*;
 import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;
 import com.sh.pettopia.parktj.petsitterfinder.entity.ReservationByPetSitter;
@@ -13,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Transactional
@@ -58,7 +62,26 @@ public class CareRegistrationService {
     }
 
     public CareRegistrationDetailResponseDto findAllByPostId(Long postId) {
-        return CareRegistrationDetailResponseDto.toCareRegistrationDetailDto(registrationRepository.findAllByPostId(postId));
+
+        CareRegistrationDetailResponseDto dto = CareRegistrationDetailResponseDto.toCareRegistrationDetailDto(registrationRepository.findAllByPostId(postId));
+
+        Set<String> parasitePreventionNames = dto.getPetParasitePrevention()
+                .stream()
+                .map(ParasitePrevention::getParasitePreventionName)
+                .collect(Collectors.toSet());
+
+        Set<String> vaccinationTypeNames = dto.getPetVaccinationType()
+                .stream()
+                .map(VaccinationType::getVaccinationTypeName)
+                .collect(Collectors.toSet());
+
+        dto.setPetParasitePreventionNames(parasitePreventionNames);
+        dto.setPetVaccinationTypeNames(vaccinationTypeNames);
+
+
+        return dto;
+
+
     }
 
 //    public void updateByPostIdAndMemberId(Long postId, Long id) {
@@ -116,8 +139,8 @@ public class CareRegistrationService {
             throw new IllegalStateException("이미 돌봄이 완료된 예약입니다.");
         }
         // 예약 상태 변경을 한것을 다시 엔티티에 저장
-            reservation.advanceStatus();
-            return reservationByPetSitterRepository.save(reservation);
+        reservation.advanceStatus();
+        return reservationByPetSitterRepository.save(reservation);
 
     }
 
@@ -126,9 +149,9 @@ public class CareRegistrationService {
         ReservationByPetSitter reservation = reservationByPetSitterRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalStateException("예약이 발견되지 않았습니다"));
 
-        if (reservation.getReservationStatus() != ReservationStatus.요청대기){
+        if (reservation.getReservationStatus() != ReservationStatus.요청대기) {
             throw new IllegalStateException("요청 대기 상태가 아닐 때는 요청을 거절하실 수 없습니다.\uD83E\uDD72");
-        }else{
+        } else {
             reservation.rejectReservation();
             reservationByPetSitterRepository.save(reservation);
         }
@@ -136,19 +159,18 @@ public class CareRegistrationService {
 }
 
 /**
- *Spring Data JPA 에서 `CrudRepository` 또는 `JpaRepository` 인터페이스를 사용하는 경우
+ * Spring Data JPA 에서 `CrudRepository` 또는 `JpaRepository` 인터페이스를 사용하는 경우
  * findById는 메서드는 해당 엔티티가 존재하지 않으므로, 그 결과를 Optional<T>로 감싸서 반환함.
  * 이는 엔티티가 존재하지 않을 때 null 대신 Optional.empty()를 반환하도록 함.
- *
+ * <p>
  * - find 메서드는 무조건 Optinal로 감싸져있음
  * - orElseThrow는 Optional 객체일 때만 사용할 수 있음
- *
- *  DB와 뷰의 데이터 불일치로 인한 오류 해결
- *
- *  처음엔 뷰에서 js 에서 status === 돌봄완료일경우 alert 계획
- *  하지만 돌봄중에서 돌봄완료로 갈 때 이미 돌봄 완료라는 오류가 발생함 (버튼을 눌렀을 때 디비는 이미 돌봄완료로 바뀜)
- *  따라서 Service 단에서 reservation을 조회할때 먼저 reservation 객체의 getStatus를하여 돌봄완료인 경우
- *  예외를 던져 컨트롤러에서 받아서 예외를 리턴하는 방식으로 바꿈
- *
+ * <p>
+ * DB와 뷰의 데이터 불일치로 인한 오류 해결
+ * <p>
+ * 처음엔 뷰에서 js 에서 status === 돌봄완료일경우 alert 계획
+ * 하지만 돌봄중에서 돌봄완료로 갈 때 이미 돌봄 완료라는 오류가 발생함 (버튼을 눌렀을 때 디비는 이미 돌봄완료로 바뀜)
+ * 따라서 Service 단에서 reservation을 조회할때 먼저 reservation 객체의 getStatus를하여 돌봄완료인 경우
+ * 예외를 던져 컨트롤러에서 받아서 예외를 리턴하는 방식으로 바꿈
  */
 

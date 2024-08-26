@@ -36,7 +36,7 @@ public class ReservationResponseDto {
         return ReservationResponseDto.builder()
                 .petSitterId(reservationByPetSitters.getPetSitter().getPetSitterId())
                 .introduce(reservationByPetSitters.getPetSitter().getIntroduce())
-                .address(String.valueOf(reservationByPetSitters.getPetSitter().getPetSitterAddress().getAddress()))
+//                .address(String.valueOf(reservationByPetSitters.getPetSitter().getPetSitterAddress().getAddress()))
                 .status(reservationByPetSitters.getReservationStatus())
                 .reservationId(reservationByPetSitters.getReservationId())
                 .postId(reservationByPetSitters.getPostId())

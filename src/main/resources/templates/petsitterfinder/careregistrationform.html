@@ -104,12 +104,13 @@
             align-items: center;
             gap: 20px;
         }
-             /* 헤더 스타일 명시 */
-         .navbar {
-             background-color: #ffffff !important; /* 흰색 배경 */
-             padding: 10px 20px;
-             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 헤더 그림자 */
-         }
+
+        /* 헤더 스타일 명시 */
+        .navbar {
+            background-color: #ffffff !important; /* 흰색 배경 */
+            padding: 10px 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 헤더 그림자 */
+        }
 
         .navbar .nav-link, .navbar-brand {
             color: #000000 !important; /* 검정색 텍스트 */
@@ -133,7 +134,8 @@
                     <label>펫 선택:</label>
                     <select id="petSelect" name="petId" class="form-select">
                         <option disabled selected value="">돌보실 펫을 선택해 주세요.</option>
-                        <option th:each="pet : ${pets}" th:text="${pet.name}" th:value="${pet.petId}" data-file ="${pet.profile}" ></option>
+                        <option th:each="pet : ${pets}" th:text="${pet.name}" th:value="${pet.petId}"
+                                data-file="${pet.profile}"></option>
                     </select>
                 </div>
 
@@ -141,87 +143,257 @@
                 <input type="text" name="profile" id="profile" style="display: none">
 
 
-
                 <script>
                     document.getElementById('petSelect').addEventListener('change', function () {
                         var petId = this.value;
                         console.log("선택된 펫 ID : ", petId);
                         $.ajax({
-                            url: '[[@{/petsitterfinder/request-pet-info}]]',
-                            method: 'get',
-                            dataType: 'json',
-                            data: {petId: petId},
-                            success(data) {
-                                $('#profileImage').attr('src', data.profile);
-                                $('#petName').val(data.name);
-                                $('#petAge').val(data.age);
-                                $('#petGender').val(data.petGender);
-                                $('#petBirth').val(data.birth);
-                                $('#petSociability').val(data.socialization);
-                                $('#petSize').val(data.size);
-                                $('#petVaccinationType').val(data.vaccinationType);
-                                $('#petParasitePrevention').val(data.parasitePrevention);
-                                $('#petBreed').val(data.breed);
-                                $('#isMissing').val(data.status);
-                                $('#isNeutered').val(data.neutered);
-                                $('#profile').val(data.profile)
+                                url: '[[@{/petsitterfinder/request-pet-info}]]',
+                                method: 'get',
+                                type: 'json',
+                                data: {petId: petId},
+                                success(data) {
+                                    console.log(data)
+                                    $('#profileImage').attr('src', data.profile);
+                                    $('#petName').val(data.name);
+                                    $('#petAge').val(data.age);
+                                    // $('#petGender').val(data.petGender);
+                                    $('#petBirth').val(data.birth);
+                                    $('#petSociability').val(data.socialization);
+                                    // $('#petSize').val(data.size);
+                                    // $('#petVaccinationType').val(data.vaccinationType);
+                                    // $('#petParasitePrevention').val(data.parasitePrevention);
+                                    $('#petBreed').val(data.breed);
+                                    // $('#isMissing').val(data.status);
+                                    // $('#isNeutered').val(data.neutered);
+                                    $('#profile').val(data.profile)
+
+                                    // enum 타입 영어로 받아오고 뷰단에 한글로 뿌려주는 코드
+                                    /**
+                                     * 동등 (==) 및 일치 (===) 연산자
+                                     * 동등?
+                                     * -> 두 값이 같으면 true 다르면 false 반환함
+                                     * 혈 변환을 수행하여 타입이 다른 경우에도 비교를 함
+                                     * ex) 5 == "5" true
+                                     *
+                                     * 일치?
+                                     * -> 두 값이 타입과 값이 모두 같아야 'true' 다르면 'false' 반환
+                                     * ex) 5 === "5" false
+                                     *
+                                     * 그래서 json 타입과 비교가 되는 듯
+                                     *
+                                     */
+
+                                        // parasitePrevention Enum타입 한글로 뷰에서 보여주고 서버에는 영어로 저장하는 코드
+                                    const view0 = [];
+                                    const server0 = [];
+                                    const parasiteData = data.parasitePrevention;
+                                    console.log(parasiteData)
+
+                                    parasiteData.forEach(function (item) {
+                                        if (item == "HEARTWORM") {
+                                            server0.push("HEARTWORM")
+                                            view0.push("심장사상충")
+                                        }
+                                        if (item == 'FLEA_TICK') {
+                                            server0.push("FLEA_TICK")
+                                            view0.push("벼룩과 진드기")
+                                        }
+
+                                        $('#petParasitePreventionDisplay').val(view0.join(","))
+                                        $('#petParasitePrevention').val(server0.join(","))
+                                    })
+
+                                    // 펫 예방접종 enum -> 한글로
+
+                                    const view = [];
+                                    const server = [];
+                                    const vaccinationOfData = data.vaccinationType;
+
+                                    vaccinationOfData.forEach(function (item2) {
+                                        console.log(item2)
+                                        if (item2 == 'RABIES') {
+                                            view.push('광견병')
+                                            server.push('RABIES')
+                                        }
+
+                                        if (item2 == 'COMBINED_VACCINE') {
+                                            view.push('종합 백신')
+                                            server.push('COMBINED_VACCINE')
+                                        }
+
+                                        if (item2 == 'CORONAVIRUS') {
+                                            view.push('코로나')
+                                            server.push('CORONAVIRUS')
+                                        }
+                                        if (item2 == 'KENNEL_COUGH') {
+                                            view.push('켄넬로프')
+                                            server.push('KENNEL_COUGH')
+                                        }
+
+                                        $('#petVaccinationTypeToDisplay').val(view.join(","))
+                                        $('#petVaccinationType').val(server.join(","))
+                                    });
+
+                                    const server1 = []
+                                    const view1 = []
+                                    const petSizeData = data.size;
+
+                                    console.log(petSizeData)
+
+                                    if (petSizeData == 'LARGE') {
+                                        view1.push('대형견')
+                                        server1.push('LARGE')
+                                    }
+                                    if (petSizeData == 'MEDIUM') {
+                                        view1.push('중형견')
+                                        server1.push('MEDIUM')
+                                    }
+                                    if (petSizeData == 'SMALL') {
+                                        view1.push('소형견')
+                                        server1.push('SMALL')
+                                    }
+
+                                    $('#petSizeToDisplay').val(view1)
+                                    $('#petSize').val(server1)
+
+                                    const view2 = []
+                                    const server2 = []
+                                    const statusData = data.status
+
+                                    if (statusData == "MISSING") {
+                                        view2.push('우리집 강아지가 실종 됐어요 도와주세요🥺')
+                                        server2.push('MISSING')
+                                    }
+
+                                    if (statusData == "WITH_OWNER") {
+                                        view2.push('강아지랑 같이 살아요😄')
+                                        server2.push('WITH_OWNER')
+                                    }
+
+                                    $('#isMissingToDisplay').val(view2)
+                                    $('#isMissing').val(server2)
+
+                                    const view3 = []
+                                    const server3 = []
+                                    const petGender = data.petGender
+
+                                    if (petGender == 'M') {
+                                        view3.push('남자아이🌞')
+                                        server3.push('M')
+                                    }
+                                    if (petGender == 'F') {
+                                        view3.push('여자아이🧚‍♀️')
+                                        server3.push('F')
+                                    }
+
+                                    $('#petGenderToDisplay').val(view3)
+                                    $('#petGender').val(server3)
+
+                                    const view4 = []
+                                    const server4 = []
+                                    const neutered = data.neutered;
+
+                                    if (neutered == true) {
+                                        view4.push('중성화 했어요🥺')
+                                        server4.push('true')
+                                    }
+
+                                    if (neutered == false) {
+                                        view4.push('중성화 안했어요😎')
+                                        server4.push('false')
+                                    }
+
+                                    $('#isNeutered').val(server4)
+                                    $('#isNeuteredToDisplay').val(view4)
+
+                                }
                             }
-                        });
-                    });
+                        )
+                    })
+
+
+                    // const test3 = "심장사상충, 벼룩과 진드기"
+                    // const test2 = "심장사상충"
+                    // const test1 = "벼룩과 진드기"
+                    // const test = data.parasitePrevention;
+                    // console.log(test)
+                    // if (test == 'HEARTWORM') {
+                    //     $('#petParasitePreventionDisplay').val(test2)
+                    //     $('#petParasitePrevention').val(test)
+                    // } else if (test == 'FLEA_TICK') {
+                    //     $('#petParasitePreventionDisplay').val(test1)
+                    //     $('#petParasitePrevention').val(test)
+                    // } else if (test == 'HEARTWORM', 'FLEA_TICK') {
+                    //     $('#petParasitePreventionDisplay').val(test3)
+                    //     $('#petParasitePrevention').val(test)
+                    // }
+
+
                 </script>
                 <div class="form-group text-center">
                     <img id="profileImage" alt="profileImage" name="profileImage" src="" class="rounded-circle"
-                    onerror="this.onerror=null;this.src='/images/sample/cutyBoy.png';">
+                         onerror="this.onerror=null;this.src='/images/sample/cutyBoy.png';">
                 </div>
 
                 <div class="form-group">
                     <label for="petName">이름:</label>
-                    <input id="petName" name="petName" type="text" class="form-control">
+                    <input id="petName" name="petName" type="text" class="form-control" readonly>
                 </div>
 
                 <div class="form-group">
                     <label for="petGender">성별:</label>
-                    <input id="petGender" name="petGender" type="text" class="form-control">
+                    <input id="petGenderToDisplay" name="petGenderToDisplay" type="text" class="form-control" readonly>
+                    <input id="petGender" name="petGender" type="hidden" class="form-control">
                 </div>
 
                 <div class="form-group">
                     <label for="petBreed">견종:</label>
-                    <input id="petBreed" name="petBreed" type="text" class="form-control">
+                    <input id="petBreed" name="petBreed" type="text" class="form-control" readonly>
                 </div>
 
                 <div class="form-group">
                     <label for="petBirth">출생일:</label>
-                    <input id="petBirth" name="petBirth" type="text" class="form-control">
+                    <input id="petBirth" name="petBirth" type="text" class="form-control" readonly>
                 </div>
 
                 <div class="form-group">
                     <label for="petSize">사이즈:</label>
-                    <input id="petSize" name="petSize" type="text" class="form-control">
+                    <input id="petSizeToDisplay" name="petSizeToDisplay" type="text" class="form-control" readonly>
+                    <input id="petSize" name="petSize" type="hidden" class="form-control">
                 </div>
 
                 <div class="form-group">
                     <label for="petSociability">사회성:</label>
-                    <input id="petSociability" name="petSociability" type="text" class="form-control">
+                    <input id="petSociability" name="petSociability" type="text" class="form-control" readonly>
                 </div>
 
                 <div class="form-group">
                     <label for="petVaccinationType">예방접종:</label>
-                    <input id="petVaccinationType" name="petVaccinationType" type="text" class="form-control">
+                    <input id="petVaccinationTypeToDisplay" name="petVaccinationTypeToDisplay" type="text"
+                           class="form-control" readonly>
+                    <input id="petVaccinationType" name="petVaccinationType" type="hidden" class="form-control">
                 </div>
 
                 <div class="form-group">
-                    <label for="petParasitePrevention">기생충 예방:</label>
-                    <input id="petParasitePrevention" name="petParasitePrevention" type="text" class="form-control">
+                    <label for="petParasitePreventionDisplay">기생충 예방:</label>
+                    <input id="petParasitePreventionDisplay" name="petParasitePreventionDisplay" type="text"
+                           class="form-control" readonly>
+                    <!--                    <label for="petParasitePrevention" type="hidden">기생충 예방:</label>-->
+                    <input id="petParasitePrevention" name="petParasitePrevention" class="form-control" type="hidden">
+
                 </div>
 
                 <div class="form-group">
                     <label for="isMissing">실종 여부:</label>
-                    <input id="isMissing" name="isMissing" type="text" class="form-control">
+                    <input id="isMissingToDisplay" name="isMissingToDisplay" type="text" class="form-control" readonly>
+                    <input id="isMissing" name="isMissing" type="hidden" class="form-control">
                 </div>
 
                 <div class="form-group">
                     <label for="isNeutered">중성화 여부:</label>
-                    <input id="isNeutered" name="isNeutered" type="text" class="form-control">
+                    <input id="isNeuteredToDisplay" name="isNeuteredToDisplay" type="text" class="form-control" readonly>
+                    <input id="isNeutered" name="isNeutered" type="hidden" class="form-control">
                 </div>
 
             </div>
@@ -238,29 +410,94 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="address">주소 입력(*동까지만 입력해주세요*): </label>
-                    <input id="address" name="address" placeholder="주소를 입력하세요" type="text" class="form-control">
+                    <label>주소 입력(*도로명 주소만 입력해주세요 (상세 주소 제외) *): </label>
+<!--                    <input id="address" name="address" placeholder="주소를 입력하세요" type="text" class="form-control">-->
+                    <input type="text" id="sample6_postcode" placeholder="우편번호" class="form-control">
+                    <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="form-control"><br>
+                    <input type="text" id="sample6_address" name="address" placeholder="주소" class="form-control" readonly><br>
+                    <input type="hidden" id="sample6_extraAddress" name="address" placeholder="참고항목" class="form-control" readonly>
+                    <input type="hidden" id="sample6_detailAddress" name="address" placeholder="상세주소" class="form-control" >
+
+                    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+                    <script>
+                        function sample6_execDaumPostcode() {
+                            new daum.Postcode({
+                                oncomplete: function(data) {
+                                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                                    // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                                    var addr = ''; // 주소 변수
+                                    var extraAddr = ''; // 참고항목 변수
+
+                                    //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                                        addr = data.roadAddress;
+                                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                                        addr = data.jibunAddress;
+                                    }
+
+                                    // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                                    if(data.userSelectedType === 'R'){
+                                        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                                        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                                        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                                            extraAddr += data.bname;
+                                        }
+                                        // 건물명이 있고, 공동주택일 경우 추가한다.
+                                        if(data.buildingName !== '' && data.apartment === 'Y'){
+                                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                                        }
+                                        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                                        if(extraAddr !== ''){
+                                            extraAddr = ' (' + extraAddr + ')';
+                                        }
+                                        // 조합된 참고항목을 해당 필드에 넣는다.
+                                        document.getElementById("sample6_extraAddress").value = extraAddr;
+
+                                    } else {
+                                        document.getElementById("sample6_extraAddress").value = '';
+                                    }
+
+                                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                                    document.getElementById('sample6_postcode').value = data.zonecode;
+                                    document.getElementById("sample6_address").value = addr;
+                                    // 커서를 상세주소 필드로 이동한다.
+                                    document.getElementById("sample6_detailAddress").focus();
+                                }
+                            }).open();
+                        }
+                    </script>
                 </div>
 
                 <div class="form-group">
                     <label>돌봄유형:</label>
                     <div class="radio-group">
                         <div class="form-check">
-                            <input id="visitCare" name="requestService" class="form-check-input" onclick="toggleRadio(this)" type="checkbox"
+                            <input id="visitCare" name="requestService" class="form-check-input"
+                                   onclick="toggleRadio(this)" type="checkbox"
                                    value="방문돌봄">
                             <label class="form-check-label" for="visitCare">방문돌봄</label>
                         </div>
                         <div class="form-check">
-                            <input id="walkCare" name="requestService" class="form-check-input" onclick="toggleRadio(this)" type="checkbox"
+                            <input id="walkCare" name="requestService" class="form-check-input"
+                                   onclick="toggleRadio(this)" type="checkbox"
                                    value="산책돌봄">
                             <label class="form-check-label" for="walkCare">산책</label>
                         </div>
                         <div class="form-check">
-                            <input id="leavingCare" name="requestService" class="form-check-input" onclick="toggleRadio(this)" type="checkbox"
+                            <input id="leavingCare" name="requestService" class="form-check-input"
+                                   onclick="toggleRadio(this)" type="checkbox"
                                    value="맡김돌봄">
                             <label class="form-check-label" for="leavingCare">맡김돌봄</label>
                         </div>
                     </div>
+                </div>
+                <div class="form-group">
+                            <textarea id="additionalInfo" name="additionalInfo" class="form-control"
+                                      placeholder="추가적인 사항이 있다면 기재해주세요 ex) 산책 경로, 추가적인 문의 사항은 댓글에 남겨주세요 등등"
+                                      cols="50" rows="10"
+                            ></textarea>
                 </div>
             </div>
             <button class="submit-btn" type="submit">예약 등록하기</button>
