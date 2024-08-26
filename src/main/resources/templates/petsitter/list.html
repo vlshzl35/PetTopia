@@ -2,7 +2,7 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{layout/default}">
 <head>
-    <title>vet 제목 써</title>
+    <title>펫시터</title>
 
     <!--
   - 타임 리프 문법을 써야 하니 href에 th:꼭 붙여서 사용하세요
@@ -16,18 +16,21 @@
 
   -->
     <style>
+
         .image-box {
-            width: 300px;
-            height: 260px;
-            overflow: hidden;
-            margin: 0 auto;
             padding-top: 10px;
+            width: 100%; /* 부모 박스의 너비를 100%로 설정 */
+            height: 100%; /* 부모 박스의 높이를 설정 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* 이미지가 부모 박스보다 커질 때 넘치는 부분을 숨기기 */
         }
 
         .image-thumbnail {
-            width: 300px;
-            height: 250px;
-            object-fit: cover;
+            width: 100%; /* 너비를 부모 박스에 맞춤 */
+            height: 100%; /* 높이를 부모 박스에 맞춤 */
+            object-fit: cover; /* 이미지 비율을 유지하며 박스를 채우도록 설정 */
         }
 
     </style>
@@ -56,16 +59,20 @@
         <div class="container">
             <!--            [[${petSitterList}]]-->
             <div style="display:flex; border-bottom: #0b0b0b 1px solid; border-top: 20px; padding-bottom: 30px; ">
-                <label for="searchAddress">
-                    <input type="text" placeholder="주소를 입력해주세요" id="searchAddress">
-                </label>
+                <div class="autocomplete-wrapper" style="position: relative;">
+                    <form th:action="@{/petsitter/findAddress}" id="findAddressForm" method="post">
+                        <input th:value="${address}" type="text" id="input-location" name="address" placeholder="ex) 삼성동, 잠실1동, 잠실2동..."
+                               style="flex: 1">
+                    </form>
+                </div>
                 <div>
-                    <button type="button" onclick="alert('검색합니다')"
-                            style="width: 30px; height: 30px; background-image: url(/images/searchbtn.PNG);">
+                    <button type="button" onclick="submitAddressForm()"
+                            style="width: 30px; height: 30px;">
+                        <img src="/images/searchbtn.PNG" alt="" style="width: 100%; height: 100%;">
                     </button> <!--여기서 동네 조건 검색을 한다-->
                 </div>
             </div>
-            <div class="row">
+            <div class="row" id="petSitterListContainer">
                 <div class="col-md-6 col-lg-3 ftco-animate" th:each="petSitter, stat : ${petSitterList}"
                      th:object="${petSitter}">
                     <a th:href="@{|/petsitter/detail/${petSitter.petSitterId}|}"><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
@@ -103,6 +110,13 @@
                     stroke="#F96D00"/>
         </svg>
     </div>
+<script>
+    function submitAddressForm(){
+        const form=document.getElementById('findAddressForm');
+        form.submit();
+    }
+</script>
+
 </div>
 </body>
 </html>

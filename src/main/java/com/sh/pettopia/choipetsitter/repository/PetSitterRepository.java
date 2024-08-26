@@ -16,4 +16,7 @@ import java.util.Optional;
 public interface PetSitterRepository extends JpaRepository<PetSitter,String> {
 
     PetSitter findPetSitterByPetSitterId(String petSitterId);
+
+    @Query("select p from petsitter p where p.petSitterAddress.address like %:address%")
+    List<PetSitter> findByPetSitterAddressContaining(@Param("address") String address);
 }

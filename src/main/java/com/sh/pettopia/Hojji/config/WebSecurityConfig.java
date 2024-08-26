@@ -47,7 +47,7 @@ public class WebSecurityConfig {
                     .requestMatchers("/member/**", "/auth/login").anonymous()
 
                     // 인증된 사용자만 허용 - 로그인 한 사용자를 의미함
-                    .requestMatchers("/petsitter/detail/","/petsitter/successpay/", "/enterprise/**", "/mypage/**", "/petsitter/**", "/petsitterfinder/**", "/community/postDetail", "/community/registPost").authenticated()
+                    .requestMatchers("https://kapi.kakao.com/v1/payment/ready","/petsitter/detail/","/petsitter/successpay/", "/enterprise/**", "/mypage/**", "/petsitter/**", "/petsitterfinder/**", "/community/postDetail", "/community/registPost").authenticated()
 
                     // ROLE_SITTER 권한이 있는 사용자만 허용
                     .requestMatchers("/petsitter/registerpost", "/petsitter/registerprofile", "/petsitter/startjob").hasRole("SITTER")
