@@ -107,8 +107,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const actualEntName = document.getElementById('entName').innerText;
         const actualBizNum = document.getElementById('bizNum').value;
 
-        console.log("ocrEntName:" ,ocrEntName, "actualEntName:" , actualEntName);
-        console.log("ocrBizNum:" ,ocrBizNum, "actualBizNum:" , actualBizNum);
+        console.log("ocrEntName:", ocrEntName, "actualEntName:", actualEntName);
+        console.log("ocrBizNum:", ocrBizNum, "actualBizNum:", actualBizNum);
         console.log('EntName Comparison result:', ocrEntName.includes(actualEntName));
         console.log('BizNum Comparison result:', ocrBizNum === actualBizNum);
 
@@ -117,9 +117,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const isBizNumMatch = ocrBizNum === actualBizNum;
 
         // EntName 또는 BizNum 중 하나라도 일치하면 true 반환(OCR 데이터와 서버 제공 데이터 비교
-        if (isEntNameMatch || isBizNumMatch)
+        if (isEntNameMatch || isBizNumMatch){
             return true;
-
+        }
         // 여기까지 왔다는 것은 EntName과 BizNum이 모두 일치하지 않는 경우임
         alert('영수증의 정보가 선택하신 업체와 일치하지 않습니다. 확인 후 다시 시도해 주세요.');
         return false;
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         {
                             receipt: {
                                 result: {
-                                    storeInfo: { name, bizNum },
+                                    storeInfo: { name, bizNum},
                                     paymentInfo: { date },
                                     totalPrice: { price }
                                 }
@@ -164,15 +164,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     ]
                 } = _data;
-
-                // HTML에 출력
-                const target = document.getElementById('target');
-                target.innerHTML = `
-                    <p><strong>업체명:</strong> ${name.text}</p>
-                    <p><strong>사업자 번호:</strong> ${bizNum.text}</p>
-                    <p><strong>결제일자:</strong> ${date.text}</p>
-                    <p><strong>총 결제금액:</strong> ${price.text}</p>
-                `;
 
                 // Fill hidden form fields with OCR data
                 // document.querySelector('.reviewForm input[name="entName"]').value = name.text;
@@ -193,8 +184,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (bizNumField) bizNumField.value = bizNum.text;
                 if (paymentDateField) paymentDateField.value = date.text;
                 if (totalPriceField) totalPriceField.value = price.text;
-
-
 
 
                 // // 리뷰 작성 폼 표시

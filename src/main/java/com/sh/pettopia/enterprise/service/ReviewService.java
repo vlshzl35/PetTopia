@@ -21,9 +21,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ReviewService {
     private final ReviewRepository reviewRepository;
-    private final HospitalService hospitalService;
-    private final PharmacyService pharmacyService;
-    private final SalonService salonService;
 
     // 리뷰 보여주기에 필요한 컬럼을 엔티티 -> Dto로 반환
     public List<ReviewResponseDto> findByEntId(Long entId) {

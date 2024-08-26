@@ -3,12 +3,6 @@ spring:
   application:
     name: pettopia
 
-#    server.port=8443
-#    server.ssl.key-store=classpath:keystore.p12
-#    server.ssl.key-store-password=yourpassword
-#    server.ssl.keyStoreType=PKCS12
-#    server.ssl.keyAlias=youralias
-
 #    active: prod
 
   servlet:
@@ -18,13 +12,11 @@ spring:
       max-request-size: 10MB
       location: build/resources/main/static/ocr
 
-
 #카카오페이, 결제가 성공 했는데 partner_order_id 값 이거 너가 설정했지?? 그래서 성공하고 이것도 가져왔어 하는 거다
 server:
   approval_url: "http://localhost:8080/pay/success?partner_order_id="
   cancel_url: "http://localhost:8080/pay/cancel?partner_order_id="
   fail_url: "http://localhost:8080/pay/fail?partner_order_id="
-  port:
 
 logging:
   level:
@@ -72,6 +64,3 @@ naver:
     document:
       url: https://ajyqmi57wp.apigw.ntruss.com/custom/v1/33275/1211f29f3558eeccd1846ebd1e703c05e37a8295a4fcbca282d3bf85a4c43902/document/receipt
       secretKey: bmdZYXFQaXp1YnJQTk1FV0hNdXlRaHh3RFZ2alp5ZE8=
-
-
-

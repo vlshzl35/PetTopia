@@ -35,7 +35,7 @@ public class PetSitterRegisterDto {
         this.availableServices = availableServices;
     }
 
-    public PetSitterRegisterDto EntityToDto(PetSitter entity) {
+    public PetSitterRegisterDto entityToDto(PetSitter entity) {
 
         return PetSitterRegisterDto.builder()
                 .petSitterId(entity.getPetSitterId())
@@ -43,7 +43,10 @@ public class PetSitterRegisterDto {
                 .mainIntroduce(entity.getIntroduce())
                 .availableServices(entity.getAvailableService())
                 .availablePetSizes(entity.getAvailablePetSize())
-                .petSitterAddress(entity.getPetSitterAddress())
+                .postcode(entity.getPetSitterAddress().getPostcode())
+                .extraAddress(entity.getPetSitterAddress().getExtraAddress())
+                .address(entity.getPetSitterAddress().getAddress())
+                .detailAddress(entity.getPetSitterAddress().getDetailAddress())
                 .impossibleDays(entity.getAvailableDates())
                 .oneLineIntroduce(entity.getOneLineIntroduce())
                 .build();

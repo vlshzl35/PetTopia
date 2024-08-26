@@ -2,6 +2,7 @@ package com.sh.pettopia.choipetsitter.service;
 
 import com.sh.pettopia.choipetsitter.entity.PetSitterReview;
 import com.sh.pettopia.choipetsitter.repository.PetSitterReviewRepository;
+import com.sh.pettopia.enterprise.entity.Review;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,5 +42,9 @@ public class PetSitterReviewService {
     public void deleteReviewByPartnerOrderId(String partnerOrderId)
     {
         petSitterReviewRepository.deleteReviewByPartnerOrderId(partnerOrderId);
+    }
+
+    public List<PetSitterReview> findAll() {
+        return petSitterReviewRepository.findAll();
     }
 }

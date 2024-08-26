@@ -30,6 +30,8 @@ public class PetSitterReviewDto {
 
     private String petSitterId;
 
+    private int rating; // 별점
+
     public PetSitterReviewDto entityToDto(PetSitterReview entity)
     {
         return PetSitterReviewDto.builder()
@@ -38,7 +40,7 @@ public class PetSitterReviewDto {
                 .imagesUrls(entity.getImageUrl())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
-                .petSitterReply(entity.getPetSitterReply())
+                .rating(entity.getStarRating())
                 .memberId(entity.getMemberId())
                 .petSitterId(entity.getPetSitterId()).build();
     }

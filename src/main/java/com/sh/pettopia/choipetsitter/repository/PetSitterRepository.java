@@ -17,6 +17,9 @@ public interface PetSitterRepository extends JpaRepository<PetSitter,String> {
 
     PetSitter findPetSitterByPetSitterId(String petSitterId);
 
-    @Query("select p from petsitter p where p.petSitterAddress.address like %:address%")
+    @Query("select p from petSitter p where p.petSitterAddress.address like %:address%")
     List<PetSitter> findByPetSitterAddressContaining(@Param("address") String address);
+
+    @Query("select p from petSitter p left join review r on p.petSitterId=r.petSitterId")
+    List<PetSitter> findPetSitterJoinReview();
 }

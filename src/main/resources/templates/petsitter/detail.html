@@ -352,12 +352,13 @@
                                                        oninput="calculateTotal()"/>
                                                 <span>55,000원</span>
                                             </div>
-                                            <input type="hidden" name="total_amount" id="totalPrice" value="0">
-                                            <input type="hidden" name="item_name" id="item_name">
-                                            <input type="hidden" name="quantity" id="total_PetCnt">
-                                            <input type="hidden" name="partnerOrderId" id="partner_order_id">
-                                            <h4 id="totalCostDisplay">총 금액 : 0원</h4>
+
                                         </div>
+                                        <input type="hidden" name="total_amount" id="totalPrice" value="0">
+                                        <input type="hidden" name="item_name" id="item_name">
+                                        <input type="hidden" name="quantity" id="total_PetCnt">
+                                        <input type="hidden" name="partnerOrderId" id="partner_order_id">
+                                        <h4 id="totalCostDisplay">총 금액 : 0원</h4>
                                     </div>
                                 </div>
                                 <div th:if="${#authentication.principal.member.email != dto.getPetSitterId}">
@@ -375,9 +376,15 @@
     <script>
         function validateInput() {
             // Get the values from the input fields
-            let smallPetValue = parseInt(document.getElementById('smallPetCnt').value) || 0;
-            let middlePetValue = parseInt(document.getElementById('middlePetCnt').value) || 0;
-            let largePetValue = parseInt(document.getElementById('largePetCnt').value) || 0;
+            let smallPetElement = document.getElementById('smallPetCnt');
+            let smallPetValue = smallPetElement ? parseInt(smallPetElement.value) || 0 : 0;
+
+            let middlePetElement = document.getElementById('middlePetCnt');
+            let middlePetValue = middlePetElement ? parseInt(middlePetElement.value) || 0 : 0;
+
+            let largePetElement = document.getElementById('largePetCnt');
+            let largePetValue = largePetElement ? parseInt(largePetElement.value) || 0 : 0;
+
             var day = document.getElementById('impossibleDays').value;
             var startTime = document.getElementById('startTime').value;
             var endTime = document.getElementById('endTime').value;
@@ -406,48 +413,59 @@
 
     </script>
     <script>
-        function calculateTotal() {
-            var total_PetCnt = document.getElementById('total_PetCnt');
-            var item_name = document.getElementById('item_name');
+            function calculateTotal() {
 
-            let smallPetCnt = parseInt(document.getElementById('smallPetCnt').value) || 0;
-            let middlePetCnt = parseInt(document.getElementById('middlePetCnt').value) || 0;
-            let largePetCnt = parseInt(document.getElementById('largePetCnt').value) || 0;
+                var total_PetCnt = document.getElementById('total_PetCnt');
+                var item_name = document.getElementById('item_name');
 
-            // Calculate the total cost
-            let total = (smallPetCnt * 45000 + middlePetCnt * 50000 + largePetCnt * 55000);
-            let totalPetCnt = smallPetCnt + middlePetCnt + largePetCnt;
+                let smallPetElement = document.getElementById('smallPetCnt');
+                let smallPetCnt = smallPetElement ? parseInt(smallPetElement.value) || 0 : 0;
 
-            if (totalPetCnt > 6) {
-                alert('총 반려견 수는 6마리 이하이어야 합니다.');
-                document.getElementById('smallPetCnt').value = 0;
-                document.getElementById('middlePetCnt').value = 0;
-                document.getElementById('largePetCnt').value = 0;
-                total = 0;
+                let middlePetElement = document.getElementById('middlePetCnt');
+                let middlePetCnt = middlePetElement ? parseInt(middlePetElement.value) || 0 : 0;
+
+                let largePetElement = document.getElementById('largePetCnt');
+                let largePetCnt = largePetElement ? parseInt(largePetElement.value) || 0 : 0;
+
+
+                console.log('smallPetCnt : '+smallPetCnt,"middlePetCnt : "+middlePetCnt,"largePetCnt : "+largePetCnt);
+
+                // Calculate the total cost
+                let total = (smallPetCnt * 45000 + middlePetCnt * 50000 + largePetCnt * 55000);
+                let totalPetCnt = smallPetCnt + middlePetCnt + largePetCnt;
+
+                if (totalPetCnt > 6) {
+                    alert('총 반려견 수는 6마리 이하이어야 합니다.');
+                    smallPetCnt = smallPetElement ? parseInt(smallPetElement.value) || 0 : 0;
+                    middlePetCnt = middlePetElement ? parseInt(middlePetElement.value) || 0 : 0;
+                    largePetCnt = largePetElement ? parseInt(largePetElement.value) || 0 : 0;
+                    total = 0;
+                    document.getElementById('totalCostDisplay').innerText = '총 금액 : ' + total.toLocaleString() + '원';
+                }
+
+                // 총합 출력
+                document.getElementById('totalCostDisplay').innerText = '총 금액 : ' + total.toLocaleString() + '원';
+                document.getElementById('totalPrice').value = total;
+
+                total_PetCnt.value = totalPetCnt;
+
+                if (smallPetCnt) {
+                    item_name.value = "소형견"
+                    if (middlePetCnt || largePetCnt) {
+                        item_name.value = "소형견 외..."
+                    }
+                } else if (middlePetCnt) {
+                    item_name.value = "중형견"
+                    if (largePetCnt) {
+                        item_name.value = "중형견 외..."
+                    }
+                } else
+                    item_name.value = "대형견"
+
             }
-
-            // 총합 출력
-            document.getElementById('totalCostDisplay').innerText = '총 금액 : ' + total.toLocaleString() + '원';
-            document.getElementById('totalPrice').value = total;
-
-            total_PetCnt.value = totalPetCnt;
-
-            if (smallPetCnt) {
-                item_name.value = "소형견"
-                if (middlePetCnt || largePetCnt) {
-                    item_name.value = "소형견 외..."
-                }
-            } else if (middlePetCnt) {
-                item_name.value = "중형견"
-                if (largePetCnt) {
-                    item_name.value = "중형견 외..."
-                }
-            } else
-                item_name.value = "대형견"
-
-        }
     </script>
     <script>
+
         // start timepicker
         $('#startTime').timepicker({
             timeFormat: 'HH:mm',
@@ -480,8 +498,9 @@
         $('#endTime').timepicker({
             timeFormat: 'HH:mm',
             interval: 60,
-            // minTime: '11',
+            minTime: '11',
             maxTime: '23:00',
+            startTime : '11',
             dynamic: true,
             dropdown: true,
             scrollbar: true,

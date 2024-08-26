@@ -87,7 +87,7 @@ public class MyPageController {
         model.addAttribute("reservationDtoList",reservationDtoList); // 예약 중인 속성
         model.addAttribute("sittingDtoList",sittingDtoList); // 돌봄 진행중인 속성
         model.addAttribute("completeSittingDtoList",completeSittingDtoList); // 돌봄 승인 대기 및 완료된 속성
-        model.addAttribute("orderDtoList",orderDtoList);
+        model.addAttribute("orderDtoList",orderDtoList); // 내가 결제한 내역
         model.addAttribute("member", member);
     }
 
