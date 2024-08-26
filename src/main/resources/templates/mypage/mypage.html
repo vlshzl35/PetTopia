@@ -222,12 +222,19 @@
                                             <td th:text="${reservationDto.petSitterId}"></td>
                                             <td th:text="${reservationDto.reservationDay}"></td>
                                             <td th:text="${#temporals.format(reservationDto.createdAt, 'yyyy-MM-dd/a hh:mm')}"></td>
-                                            <td>
-                                                <div th:each="sizehowmany:${reservationDto.petSizeAndHowManyPets}">
-                                                    <span th:text="${sizehowmany.petSize}" name="petSize"></span>
-                                                    <span th:text="${sizehowmany.howManyPet}"></span>
+
+                                            <td th:object="${reservationDto.petSizeAndHowManyPets}">
+                                                <div th:if="${#lists.size(reservationDto.petSizeAndHowManyPets) >= 2}">
+                                                    <span th:text="${reservationDto.petSizeAndHowManyPets[0].petSize}" name="petSize"></span>
+                                                    <span th:text="${reservationDto.petSizeAndHowManyPets[0].howManyPet}"></span>
+                                                    <span th:text="'외...'"></span>
+                                                </div>
+                                                <div th:if="${#lists.size(reservationDto.petSizeAndHowManyPets) <2}">
+                                                    <span th:text="${reservationDto.petSizeAndHowManyPets[0].petSize}" name="petSize"></span>
+                                                    <span th:text="${reservationDto.petSizeAndHowManyPets[0].howManyPet}"></span>
                                                 </div>
                                             </td>
+
                                             <td>
                                                 <span th:text="${reservationDto.startTime}" name="startTime"></span>
                                                 <span th:text="${reservationDto.endTime}" name="endTime"></span>
@@ -287,12 +294,19 @@
                                             </td>
                                             <td th:text="${sittingDto.petSitterId}"></td>
                                             <td th:text="${sittingDto.serviceDate}"></td>
-                                            <td>
-                                                <div th:each="sizehowmany, stat:${sittingDto.petSizeAndHowManyPets}">
-                                                    <span th:text="${sizehowmany.petSize}" name="petSize"></span>
-                                                    <span th:text="${sizehowmany.howManyPet}"></span>
+
+                                            <td th:object="${sittingDto.petSizeAndHowManyPets}">
+                                                <div th:if="${#lists.size(sittingDto.petSizeAndHowManyPets) >= 2}">
+                                                    <span th:text="${sittingDto.petSizeAndHowManyPets[0].petSize}" name="petSize"></span>
+                                                    <span th:text="${sittingDto.petSizeAndHowManyPets[0].howManyPet}"></span>
+                                                    <span th:text="'외...'"></span>
+                                                </div>
+                                                <div th:if="${#lists.size(sittingDto.petSizeAndHowManyPets) <2}">
+                                                    <span th:text="${sittingDto.petSizeAndHowManyPets[0].petSize}" name="petSize"></span>
+                                                    <span th:text="${sittingDto.petSizeAndHowManyPets[0].howManyPet}"></span>
                                                 </div>
                                             </td>
+
                                             <td>
                                                 <span th:text="${sittingDto.startTime}" name="startTime"></span>
                                                 <span th:text="${sittingDto.endTime}" name="endTime"></span>
@@ -340,12 +354,19 @@
                                             </td>
                                             <td th:text="${completeSittingDto.petSitterId}"></td>
                                             <td th:text="${completeSittingDto.serviceDate}"></td>
-                                            <td>
-                                                <div th:each="sizehowmany, stat:${completeSittingDto.petSizeAndHowManyPets}">
-                                                    <span th:text="${sizehowmany.petSize}" name="petSize"></span>
-                                                    <span th:text="${sizehowmany.howManyPet}"></span>
+
+                                            <td th:object="${completeSittingDto.petSizeAndHowManyPets}">
+                                                <div th:if="${#lists.size(completeSittingDto.petSizeAndHowManyPets) >= 2}">
+                                                    <span th:text="${completeSittingDto.petSizeAndHowManyPets[0].petSize}" name="petSize"></span>
+                                                    <span th:text="${completeSittingDto.petSizeAndHowManyPets[0].howManyPet}"></span>
+                                                    <span th:text="'외...'"></span>
+                                                </div>
+                                                <div th:if="${#lists.size(completeSittingDto.petSizeAndHowManyPets) < 2}">
+                                                    <span th:text="${completeSittingDto.petSizeAndHowManyPets[0].petSize}" name="petSize"></span>
+                                                    <span th:text="${completeSittingDto.petSizeAndHowManyPets[0].howManyPet}"></span>
                                                 </div>
                                             </td>
+
                                             <td>
                                               <span th:if="${completeSittingDto.sittingStatus.getSittingStatus()} == 'COMPLETED_SITTING'"
                                               th:text="'돌봄 완료'"></span>
@@ -356,7 +377,6 @@
                                                             th:text="돌봄대기승인" id="completeButton" value="COMPLETED_SITTING"
                                                             name="sittingStatus"></button>
                                             </td>
-                                            [[${completeSittingDto}]]
                                             <td>
                                                     <a  th:href="@{|/petsitter/review/${completeSittingDto.partnerOrderId}|}"
                                                             th:if="${completeSittingDto.sittingStatus.getSittingStatus()} == 'COMPLETED_SITTING'
@@ -458,9 +478,9 @@
                                             <td>
                                             <a th:href="@{|/petsitter/detail/${orderDto.petSitterId}|}" th:text="${orderDto.petSitterId}"></a>
                                             </td>
-                                            <td th:text="${orderDto.payDate}"></td>
+                                            <td><span th:text="${#temporals.format(orderDto.payDate, 'yyyy-MM-dd/a hh:mm')}" name="createdAt"></span>
                                             <td >
-                                                <span th:if="${!orderDto.payStatus}" th:text="${orderDto.payCancelDate}"></span>
+                                                <span th:if="${!orderDto.payStatus}" th:text="${#temporals.format(orderDto.payCancelDate, 'yyyy-MM-dd/a hh:mm')}"></span>
                                             </td>
                                             <td th:text="${orderDto.totalPrice}"></td>
                                             <td>

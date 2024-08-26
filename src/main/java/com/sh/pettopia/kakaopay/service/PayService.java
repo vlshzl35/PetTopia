@@ -128,8 +128,8 @@ log.info("kakaoPayReadyResponse = {}",kakaoPayReadyResponse);
         parameters.add("cid", cid);
         parameters.add("tid",order.getTid());
         parameters.add("cancel_amount", String.valueOf(order.getTotalPrice()));
-        parameters.add("cancel_tax_free_amount", "환불 비과세 금액");
-        parameters.add("cancel_vat_amount", "환불 부가세");
+        parameters.add("cancel_tax_free_amount","0");
+        parameters.add("cancel_vat_amount", "0");
 
         // 파라미터, 헤더
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getheaders());
