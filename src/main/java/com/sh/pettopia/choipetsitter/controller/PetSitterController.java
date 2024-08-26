@@ -7,6 +7,7 @@ import com.sh.pettopia.choipetsitter.service.PetSitterReviewService;
 import com.sh.pettopia.choipetsitter.service.PetSitterService;
 import com.sh.pettopia.choipetsitter.service.ReservationService;
 import com.sh.pettopia.choipetsitter.service.SittingService;
+import com.sh.pettopia.enterprise.entity.Review;
 import com.sh.pettopia.kakaopay.dto.KakaoPayReadyResponse;
 import com.sh.pettopia.kakaopay.service.PayService;
 import com.sh.pettopia.ncpTest.FileDto;
@@ -97,8 +98,10 @@ public class PetSitterController {
     @GetMapping("/list")
     public void list(Model model) {
         log.info("GET petsitter/list");
-        List<PetSitter> petSitterList = petSitterService.findAll();
-        System.out.println("petSitterList = " + petSitterList);
+
+        List<PetSitter> petSitterList = petSitterService.findPetSitterJoinReview();
+        List<PetSitterReview> petSitterReviewList=petSitterReviewService.findAll();
+        log.info("petSitterList = {}",petSitterList);
         model.addAttribute("petSitterList", petSitterList);
         // 펫시터 리스트를 가져온다
     }
@@ -333,17 +336,29 @@ public class PetSitterController {
         // 펫시터 찾기, 펫시터 검색 선택 페이지
     }
 
-    @GetMapping("reservationlist")
+    @GetMapping("/schedule")
     public void reservationList(Model model, @AuthenticationPrincipal AuthPrincipal principal) {
-        List<Reservation> reservationList = reservationService.findByPetSitterIdAndReservationStatusNotReady(principal.getMember().getEmail());
+        log.info("GET petsitter/schedule");
 
+        // 시팅 중인 리스트
+        List<Sitting> sittingList = sittingService.findAllByOrderByServiceDateAsc();
+        List<SittingDto> sittingDtoList=new ArrayList<>();
+        for(Sitting sitting:sittingList)
+        {
+            sittingDtoList.add(new SittingDto().entityToDto(sitting));
+        }
+        System.out.println("sittingList = " + sittingList);
+
+        // 예약건에 대한 리스트
+        List<Reservation> reservationList = reservationService.findByPetSitterIdAndReservationStatusNotReady(principal.getMember().getEmail());
         List<ReservationDto> reservationDtoList = new ArrayList<>();
         for (Reservation reservation1 : reservationList) {
             ReservationDto reservationDto = new ReservationDto().entityToDto(reservation1);
             reservationDtoList.add(reservationDto);
         }
-        System.out.println("reservation = " + reservationList);
-        System.out.println("reservationDtoList = " + reservationDtoList);
+
+
+        model.addAttribute("sittinglist", sittingDtoList);
         model.addAttribute("reservationDtoList", reservationDtoList);
 
     }
@@ -376,14 +391,6 @@ public class PetSitterController {
         payService.kakaoCancel(partnerOrderId); // 결제 취소 + 예약 취소
         
         return "redirect:/mypage/mypage";
-    }
-
-    @GetMapping("/sittinglist")
-    public void sittingList(Model model) {
-        log.info("GET /petsitting/sittinglist");
-        List<Sitting> sittingList = sittingService.findAllByOrderByServiceDateAsc();
-        System.out.println("sittingList = " + sittingList);
-        model.addAttribute("sittinglist", sittingList);
     }
 
     @GetMapping("/reservationdetail/{partnerOrderId}")
@@ -510,6 +517,6 @@ public class PetSitterController {
         log.info("petSitter = {}",petSitterList);
         model.addAttribute("petSitterList",petSitterList);
         model.addAttribute("address",address);
-        return "/petsitter/list";
+        return "petsitter/list";
     }
 }

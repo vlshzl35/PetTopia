@@ -38,14 +38,14 @@ public class PetSitterReview {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @Embedded
-    private PetSitterReply petSitterReply;
-
     @Column(name = "member_id")
     private String memberId;
 
     @Column(name = "petsitter_id")
     private String petSitterId;
+
+    @Column(name = "star_rating")
+    private int starRating; // 별점
 
     public PetSitterReview dtoToEntity(PetSitterReviewDto dto)
     {
@@ -55,8 +55,8 @@ public class PetSitterReview {
                 .imageUrl(dto.getImagesUrls())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(dto.getUpdatedAt())
-                .petSitterReply(dto.getPetSitterReply())
                 .memberId(dto.getMemberId())
+                .starRating(dto.getRating())
                 .petSitterId(dto.getPetSitterId()).build();
     }
 
