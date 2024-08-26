@@ -1,6 +1,7 @@
 package com.sh.pettopia.parktj.petsitterfinder.dto;
 
 
+import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;
 import com.sh.pettopia.parktj.petsitterfinder.entity.CommentEntity;
 import lombok.*;
 
@@ -19,7 +20,6 @@ public class CommentDTO {
     private LocalDate commentCreatedTime;
     private Long postId;
     private Long memberId;
-
 
     public static CommentDTO toCommentDTO(CommentEntity commentEntity, Long postId) {
         return new CommentDTO(

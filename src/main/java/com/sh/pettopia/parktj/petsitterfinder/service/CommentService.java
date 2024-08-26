@@ -24,14 +24,13 @@ public class CommentService {
 
 
     public Long save(CommentDTO commentDTO) {
-        // commentDTO에 있는 postId로 게시글 정보 조회함 , postId에 해당하는 게시글이 존재해야하기 때문에, 해당하는 게시글이 없다면 댓글도 존재할 수 없다
+
+
         Optional<CareRegistration> optionalCareRegistration  = careRegistrationRepository.findById(commentDTO.getPostId());
         if (optionalCareRegistration.isPresent()) {
             CareRegistration careRegistration = optionalCareRegistration.get(); // optional 객체에서 값을 가져옴
             CommentEntity commentEntity = CommentEntity.toSaveEntity(commentDTO, careRegistration);
            return commentRepository.save(commentEntity).getId(); // 저장됐는지 확인하기 위함임
-
-
         }else {
             return null;
         }
