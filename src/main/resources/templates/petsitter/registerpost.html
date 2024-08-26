@@ -71,11 +71,6 @@
             position: relative;
         }
 
-        img {
-            width: 150px;
-            height: 70px;
-            margin: 3%;
-        }
     </style>
 </head>
 <body>
@@ -92,7 +87,7 @@
 							<i class="ion-ios-arrow-forward"></i>
 						</span>
                     </p>
-                    <h1 class="mb-0 bread">펫시터 서비스 등록</h1>
+                    <h1 class="mb-0 bread">돌봐주세요 등록</h1>
                 </div>
             </div>
         </div>
@@ -100,7 +95,6 @@
     <div class="container">
         <form th:action="@{/petsitter/registerpost}" method="post" th:object="${dto}" enctype="multipart/form-data"
               class="container">
-            <h1>여기는 홍보글 작성 form 입니다</h1>
             <div style="margin: 50px">
                 <div>
                     <div style="padding: 30px;">
@@ -113,18 +107,30 @@
                             </div>
                             <input type="file" onchange="loadFile(this)" name="files" multiple>
                         </div>
-                        <div style="overflow:scroll; width:500px; height:400px;">
-                            <div th:each="image : ${dto.imageUrlList}">
-                                <img th:src=" ${image}" style="height: 400px; width: 400px" onclick="remove_confirm(src)" alt="">
-                            </div>
+                        <div class="gallery-container">
 
+                                <div class="image-slider">
+                                    <button id="leftBtn">&lt;</button>
+                                    <div class="image-container">
+                                        <img th:each="images,stat: ${dto.PostImagesList}"
+                                             th:if="${not #strings.isEmpty(images)}" th:src=" ${images}"
+                                             onclick="remove_confirm(src)"
+                                             style="width: 400px; height: 350px; margin: 10px;">
+                                        <img th:each="images,stat: ${dto.PostImagesList}"
+                                             th:if="${ #strings.isEmpty(images)}"
+                                             th:src="@{/images/petsitter/nothingImg.jpg}">
+                                    </div>
+                                    <button id="rightBtn">&gt;</button>
+                                </div>
+
+                            <div class="arrow" id="next1">&#9654;</div>
                         </div>
                         <div>
                             <div class="form-group">
                                 <p>한 줄 소개</p>
                                 <label for="oneLineIntroduce">
                                     <input type="text" name="oneLineIntroduce" id="oneLineIntroduce"
-                                           th:value="${dto.oneLineIntroduce}">
+                                           th:value="${dto.oneLineIntroduce}" style="flex: 1">
                                 </label>
                             </div>
                             <div class="form-group">
@@ -133,7 +139,7 @@
                                     <label for="mainIntroduce">
                                     </label>
                                     <textarea name="mainIntroduce" id="mainIntroduce" th:field="*{mainIntroduce}"
-                                              placeholder="소개글을 입력해주세요"></textarea>
+                                              placeholder="소개글을 입력해주세요" style="flex: 1"></textarea>
                                 </div>
                             </div>
                             <div class="container">
@@ -141,7 +147,8 @@
                                     [[${petService}]]
                                     [[${petSize}]]
                                     [[${petService.contains('youngerPetWalk')}]]
-                                    [[${dto.availableServices eq T(com.sh.pettopia.choipetsitter.entity.AvailableService).everydayWalk}]]
+                                    [[${dto.availableServices eq
+                                    T(com.sh.pettopia.choipetsitter.entity.AvailableService).everydayWalk}]]
                                     [[${dto}]]
                                     <div>
                                         <label for="everydayWalk">
@@ -246,7 +253,8 @@
 
                                                 <label for="impossibleDays">
 
-                                                    <input type="text" id="impossibleDays" class="form-control" name="impossibleDays"
+                                                    <input type="text" id="impossibleDays" class="form-control"
+                                                           name="impossibleDays"
                                                            th:value="${dto.impossibleDays}">
 
                                                 </label>
@@ -270,7 +278,7 @@
         function remove_confirm(src) {
             var header = $("meta[name='_csrf_header']").attr('content');
             var token = $("meta[name='_csrf']").attr('content');
-            console.log("src : "+src);
+            console.log("src : " + src);
             const parts = src.split('/');
             const fileNameWithExtension = parts[parts.length - 1];
 
@@ -285,11 +293,11 @@
                     // contentType: false, // false = content-type 헤더가 multipart/form-data로 전송하게 함
                     processData: true, // false = formData를 string으로 변환하지 않음
                     data: {
-                        fileNameWithExtension:fileNameWithExtension
+                        fileNameWithExtension: fileNameWithExtension
                     },
                     success(responseText) {
                         alert("이미지가 정상제거 되었습니다");
-                        console.log("responseText : "+responseText);
+                        console.log("responseText : " + responseText);
                         location.reload(); // 바로 새로고침
                     }
                 })
@@ -358,6 +366,25 @@
             });
         }
 
+    </script>
+    <script>
+        let position = 0;
+        const container = document.querySelector('.image-container');
+        const totalImages = container.children.length;
+
+        document.getElementById('leftBtn').addEventListener('click', function() {
+            if (position > 0) {
+                position -= 1;
+                container.style.transform = `translateX(-${position * 100}%)`;
+            }
+        });
+
+        document.getElementById('rightBtn').addEventListener('click', function() {
+            if (position < totalImages - 1) {
+                position += 1;
+                container.style.transform = `translateX(-${position * 100}%)`;
+            }
+        });
     </script>
     <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>

@@ -15,7 +15,7 @@ import java.util.Set;
 @Builder
 public class PetSitterRegisterDto {
     private String petSitterId;
-    private List<String> imageUrlList;// 펫시터가 올리 게시글 안에 이미지들
+    private List<String> PostImagesList;// 펫시터가 올리 게시글 안에 이미지들
     private String mainImageUrl; // 펫시터 리스트들에서 들어갈 사진
     private List<String> licenseImages; // 자격증 및 증명 이미지
     private String oneLineIntroduce; // 한 줄 소개
@@ -27,8 +27,8 @@ public class PetSitterRegisterDto {
     private String extraAddress;
     private String address;
     private String postUrl;
-    private PetSitterAddress petSitterAddress;
     private Set<String> impossibleDays;
+    private PetSitterAddress petSitterAddress;
 
     public void setAvailable(Set<AvailableService > availableServices, Set<AvailablePetSize > availablePetSizes) {
         this.availablePetSizes = availablePetSizes;
@@ -43,10 +43,7 @@ public class PetSitterRegisterDto {
                 .mainIntroduce(entity.getIntroduce())
                 .availableServices(entity.getAvailableService())
                 .availablePetSizes(entity.getAvailablePetSize())
-                .postcode(entity.getPetSitterAddress().getPostcode())
-                .detailAddress(entity.getPetSitterAddress().getDetailAddress())
-                .extraAddress(entity.getPetSitterAddress().getExtraAddress())
-                .address(entity.getPetSitterAddress().getAddress())
+                .petSitterAddress(entity.getPetSitterAddress())
                 .impossibleDays(entity.getAvailableDates())
                 .oneLineIntroduce(entity.getOneLineIntroduce())
                 .build();

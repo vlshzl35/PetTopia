@@ -39,8 +39,8 @@ public class PetSitter {
     @LastModifiedDate
     private LocalDateTime updateAt;
 
-    @Embedded
-    private PetSitterAddress petSitterAddress;
+    @Column(name = "address")
+    private PetSitterAddress petSitterAddress; // 주소
 
     @Column(name = "available_dates")
     @ElementCollection
@@ -105,9 +105,9 @@ public class PetSitter {
         this.mainImageUrl=mainImageUrl;
     }
 
-    public void changeAddress(PetSitterAddress petSitterAddress)
+    public void changeAddress(String postcode,String address,String detailAddress,String extraAddress)
     {
-        this.petSitterAddress=petSitterAddress;
+        this.petSitterAddress= new PetSitterAddress(postcode,address,detailAddress,extraAddress);
     }
 
 }
