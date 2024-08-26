@@ -2,54 +2,302 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{layout/default}">
 <head>
-    <title>돌봐드립니다</title>
+    <title>펫시터</title>
 
-    <!--
-  - 타임 리프 문법을 써야 하니 href에 th:꼭 붙여서 사용하세요
-  - 헤더에서 각 페이지로 넘어가는 링크가 되어있고, HomeController 클래스에서 GetMapping 메소드로 이동을 합니다
-  - 나중에 각 페이지를 쓰게 되면, 디렉토리를 만들어서 이동하고 MVC패턴을 쓰면됩니다
-  - JavaScript, CSS는 fragments -> header에 다 있습니다 (메인 기준 CSS위에, js는 아래에 있어야 작동이 되는거 같습니다)
-
-  단축키
-  1. 컨트롤+알트+쉬프트+L = 현재 페이지 코드 자동정렬입니다
-  2. 컨트롤+R = 현재페이지 찾아바꾸기 입니다
-
-  -->
     <style>
+        .section {
+            background-color: #00bd56;
+        }
 
-        .image-box {
+        .find-sitter {
+            color: white;
+        }
+
+        p {
+            color: white;
+        }
+
+        /* Flexbox를 이용한 가로 정렬 */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            flex-wrap: wrap; /* 반응형 디자인을 위해 flex-wrap 추가 */
+        }
+
+        .header-text {
+            max-width: 50%;
+        }
+
+        .main-image {
+            width: 400px !important;
+            height: 400px !important;
+            margin-right: 0px;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            animation: float 1s ease-in-out infinite; /* 위아래로 천천히 움직이는 효과 */
+        }
+
+        .main-image.show {
+            opacity: 1;
+            transform: translateY(0);
+            animation: pulse 2s infinite alternate;
+
+        }
+
+
+        /* 게시글들 사이에 여백 추가 */
+        .staff {
+            margin-bottom: 30px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        /* 카드 형태의 게시글들을 더 넓게 배치 */
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start; /* 남은 공간을 사용하여 요소들이 왼쪽으로 정렬되도록 함 */
+        }
+
+
+        .petList {
+            flex: 0 0 30%; /* 카드의 크기를 유지하고, 줄에 3개씩 배치 */
+            box-sizing: border-box;
             padding-top: 10px;
-            width: 100%; /* 부모 박스의 너비를 100%로 설정 */
-            height: 100%; /* 부모 박스의 높이를 설정 */
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 10px;
+        }
+
+        /* 마우스를 올렸을 때의 효과 */
+        .petList:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+
+        /* 동적인 효과를 추가한 요소들 */
+        .img-wrap {
+            overflow: hidden;
+            border-radius: 15px 15px 0 0;
+            transition: transform 0.3s ease;
+        }
+
+        .img-wrap img {
+            transition: transform 0.3s ease;
+        }
+
+        /* 마우스를 올렸을 때 이미지 확대 효과 */
+        .img-wrap:hover img {
+            transform: scale(1.1);
+        }
+
+
+
+        /* 글씨를 살짝 커지게 */
+        .pt-3, .px-3, .pb-4 {
+            transition: font-size 0.3s ease;
+        }
+
+        .petList:hover .pt-3, .petList:hover .px-3, .petList:hover .pb-4 {
+            font-size: 1.05rem;
+        }
+
+        /* 반응형 디자인을 위한 미디어 쿼리 */
+        @media (max-width: 1200px) {
+            .main-image {
+                width: 300px !important;
+                height: 300px !important;
+            }
+
+            .header-text {
+                max-width: 60%;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-image {
+                width: 250px !important;
+                height: 250px !important;
+            }
+
+            .header-text {
+                max-width: 70%;
+            }
+
+            .findSitterButton {
+                font-size: 1.3em;
+                padding: 10px 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header-text {
+                max-width: 100%;
+            }
+
+            .main-image {
+                width: 200px !important;
+                height: 200px !important;
+                margin: 20px 0;
+            }
+
+            .staff {
+                margin-left: 0;
+                margin-right: 0;
+                width: 100%;
+            }
+
+            .petList {
+                flex: 0 0 48%; /* 카드가 2개씩 배치되도록 설정 */
+            }
+        }
+
+        @media (max-width: 576px) {
+            .main-image {
+                width: 150px !important;
+                height: 150px !important;
+            }
+
+            .staff {
+                margin-left: 0;
+                margin-right: 0;
+                width: 100%;
+            }
+
+            .petList {
+                flex: 0 0 100%; /* 카드가 1개씩 배치되도록 설정 */
+            }
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* 이미지에 애니메이션 추가 */
+        .main-image {
+            animation:
+                    float 1s ease-in-out infinite; /* 위아래로 천천히 움직이는 효과 */
+            width: 400px !important;
+            height: 400px !important;
+            margin-right: 0px;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .main-image.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /*.ftco-section {*/
+        /*    padding: 4em 0;*/
+        /*}*/
+
+        .search-section {
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* 이미지가 부모 박스보다 커질 때 넘치는 부분을 숨기기 */
+            /*padding: 2em 0;*/
+            /*background-color: #f7f7f7;*/
+            border-radius: 8px;
+            /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
         }
 
-        .image-thumbnail {
-            width: 100%; /* 너비를 부모 박스에 맞춤 */
-            height: 100%; /* 높이를 부모 박스에 맞춤 */
-            object-fit: cover; /* 이미지 비율을 유지하며 박스를 채우도록 설정 */
+        .autocomplete-wrapper {
+            width: 100%;
+            max-width: 600px;
+            position: relative;
         }
 
+        #input-location {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #00bd56;
+            border-radius: 20px 0 0 20px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        #input-location:focus {
+            border-color: #00bd56;
+        }
+
+        #search-button {
+            background-color: #00bd56;
+            border: none;
+            padding: 0 16px;
+            border-radius: 0 20px 20px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #search-button img {
+            height: 20px;
+            vertical-align: middle;
+        }
+
+        #search-button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            #input-location {
+                font-size: 14px;
+                padding: 10px 12px;
+            }
+
+            #search-button {
+                padding: 0 12px;
+            }
+
+            #search-button img {
+                height: 18px;
+            }
+        }
     </style>
 </head>
 <body>
 <div layout:fragment="main" class="page-body">
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('/images/bg_2.jpg');"
-             data-stellar-background-ratio="0.5">
-        <div class="overlay"></div>
+
+    <section class="section">
         <div class="container">
-            <div class="row no-gutters slider-text align-items-end">
-                <div class="col-md-9 ftco-animate pb-5">
-                    <p class="breadcrumbs mb-2"><span class="mr-2"><a th:href="@{/}">Home  <i
-                            class="ion-ios-arrow-forward"></i></a></span>
-                        <span>펫시터
-							<i class="ion-ios-arrow-forward"></i>
-						</span>
-                    </p>
-                    <h1 class="mb-0 bread">돌봐드립니다</h1>
+            <div class="row">
+                <div class="col-md-12 ftco-animate pb-5">
+                    <div class="header-container">
+                        <div class="header-text">
+                            <h1 class="mb-0 find-sitter">돌봐드려요</h1>
+                            <p>사랑으로 돌보는 펫시터에게 아이를 맡겨보세요!</p>
+                        </div>
+                        <img src="/svg/whiteDog.svg" class="main-image">
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,48 +305,44 @@
 
     <section class="ftco-section bg-light">
         <div class="container">
-            <!--            [[${petSitterList}]]-->
-            <div style="display:flex; border-bottom: #0b0b0b 1px solid; border-top: 20px; padding-bottom: 30px; ">
-                <div class="autocomplete-wrapper" style="position: relative;">
-                    <form th:action="@{/petsitter/findAddress}" id="findAddressForm" method="post">
-                        <input th:value="${address}" type="text" id="input-location" name="address" placeholder="ex) 삼성동, 잠실1동, 잠실2동..."
-                               style="flex: 1">
+            <div class="search-section">
+                <div class="autocomplete-wrapper">
+                    <form th:action="@{/petsitter/findAddress}" id="findAddressForm" method="post" style="display: flex;">
+                        <input th:value="${address}" type="text" id="input-location" name="address"
+                               placeholder="예: 삼성동, 잠실1동, 잠실2동...">
+                        <button type="button" id="search-button" onclick="submitAddressForm()">
+                            <img src="/images/searchbtn.PNG" alt="Search">
+                        </button>
                     </form>
                 </div>
-                <div>
-                    <button type="button" onclick="submitAddressForm()"
-                            style="width: 30px; height: 30px;">
-                        <img src="/images/searchbtn.PNG" alt="" style="width: 100%; height: 100%;">
-                    </button> <!--여기서 동네 조건 검색을 한다-->
-                </div>
             </div>
-            <div class="row" id="petSitterListContainer">
-                <div class="col-md-6 col-lg-3 ftco-animate" th:each="petSitter, stat : ${petSitterList}"
-                     th:object="${petSitter}">
-                    <a th:href="@{|/petsitter/detail/${petSitter.petSitterId}|}"><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
+        </div>
+    </section>
+
+
+    <section class="ftco-section bg-light">
+        <div class="container">
+            <div class="row">
+                <div th:each="petSitter, stat : ${petSitterList}"
+                     th:object="${petSitter}" class="petList">
+                    <a th:href="@{|/petsitter/detail/${petSitter.petSitterId}|}">
                         <div class="staff">
                             <div class="img-wrap d-flex align-items-stretch">
-                                <div class="image-box">
-                                    <img class="image-thumbnail" th:src="${petSitter.mainImageUrl}"
-                                         alt="Profile Image"/>
-                                </div>
+                                <img th:src="${petSitter.mainImageUrl}" width="300px" height="300px"/>
                             </div>
-                            <div class=" pt-3 px-3 pb-4">
-                                <span class="position mb-2"
-                                      th:text="${petSitter.petSitterAddress.address}">사용자 주소</span>
+                            <div class="pt-3 px-3 pb-4">
                                 <div>
-                                    <span id="starRating">별점 : 4.5</span>
-                                    <span id="review">후기 : 100개</span>
-                                </div>
-                                <div class="faded">
-                                    <p th:text="${petSitter.oneLineIntroduce}"></p>
+                                    <span id="address" th:text="${petSitter.petSitterAddress.address}"></span><br>
+                                    <span id="starRating" >별점 : 4.5</span><br>
+                                    <span id="review">후기 : 100개</span><br>
+                                    <span th:text="${petSitter.oneLineIntroduce}"></span>
                                 </div>
                             </div>
                         </div>
                     </a>
                 </div>
-
             </div>
+            <br>
         </div>
     </section>
 
@@ -110,13 +354,13 @@
                     stroke="#F96D00"/>
         </svg>
     </div>
-<script>
-    function submitAddressForm(){
-        const form=document.getElementById('findAddressForm');
-        form.submit();
-    }
-</script>
 
+    <script>
+        function submitAddressForm() {
+            const form = document.getElementById('findAddressForm');
+            form.submit();
+        }
+    </script>
 </div>
 </body>
 </html>
