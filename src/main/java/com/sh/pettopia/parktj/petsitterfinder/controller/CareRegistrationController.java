@@ -207,8 +207,6 @@ public class CareRegistrationController {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
         }
 
-
-
         return "redirect:/petsitterfinder/reservation?postId="+postId;
 
 
