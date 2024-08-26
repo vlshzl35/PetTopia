@@ -7,28 +7,29 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>프로필 수정, 글 등록</title>
+    <link href="/css/pesitting/petsittingmain.css" rel="stylesheet">
 </head>
 <body>
 <div class="container" layout:fragment="main">
     <div>
-        <button>
+        <button class="custom-button">
             <span th:text="${#authentication.principal.member.name}"></span>
             <a th:href="@{/petsitter/registerprofile}">프로필 등록하기</a>
         </button>
 
     </div>
     <div>
-        <button>
+        <button class="custom-button">
             <a th:href="@{/petsitter/registerpost}">글 등록</a>
         </button>
     </div>
     <div>
-        <button>
+        <button class="custom-button">
             <a th:href="@{/petsitter/reservationlist}">예약 보기</a>
         </button>
     </div>
     <div>
-        <button>
+        <button class="custom-button">
             <a th:href="@{/petsitter/sittinglist}">스케쥴 보기</a>
         </button>
     </div>

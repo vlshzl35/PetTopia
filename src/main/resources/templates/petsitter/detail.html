@@ -87,36 +87,39 @@
         }
 
         /*    이미지 파일 css*/
-        .gallery-container {
+        .image-slider {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .slides {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 5px;
-            left: auto;
-            float: left;
+            transition: transform 0.5s ease-in-out;
         }
 
-        .gallery-wrapper {
-            overflow: hidden; /* 넘치는 이미지를 숨김 */
-            width: 510px; /* 이미지 3장 크기 (150px * 3) + 간격 (10px * 2) */
+        .images {
+            width: 100%; /* Adjust based on how many images you want visible at once */
+            height: 200px;
         }
 
-        .gallery {
-            display: flex;
-            transition: transform 0.3s ease;
-        }
-
-        .gallery img {
-            width: 150px;
-            height: 100px;
-            margin: 10px;
-        }
-
-        .arrow {
+        #sliderNext,#sliderPrev {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
             cursor: pointer;
-            font-size: 30px;
-            user-select: none;
-            margin: 0 20px;
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
         }
     </style>
 </head>
@@ -144,23 +147,16 @@
         <div style="display:flex;">
             <div th:object="${dto}">
                 <div>
-                    <div style="padding-right: 30px">`
-                        <div>
+                    <div>
+                        <div >
                             <h4 th:text="${dto.getPetSitterId}" name="petSitterId">여기는 사용자의 이름이 들어옵니다</h4>
-
-                            <div class="gallery-container">
-                                <div class="arrow" id="prev1">&#9664;</div>
-                                <div class="gallery-wrapper">
-                                    <div class="gallery">
-                                        <!-- 이미지가 flex 안에서 반복됨 -->
-                                        <img th:each="images,stat: ${dto.imageUrlList}"
-                                             th:src="${images}" alt="이미지"
-                                             style="width: 250px; height: 200px; margin: 10px;">
-                                    </div>
+                            <div class="image-slider">
+                                <div class="slides">
+                                    <img class="images" th:each="images, stat: ${dto.getPostImagesList}" th:src="${images}" alt="images" >
                                 </div>
-                                <div class="arrow" id="next1">&#9654;</div>
+                                <button id="sliderPrev" class="prev">Prev</button>
+                                <button id="sliderNext" class="next">Next</button>
                             </div>
-
                         </div>
                         <div style="padding: 5px">
                             <h4>여기는 자신의 자격증이나 기타 증명이 들어옵니다(대부분 자격증)</h4>
@@ -212,44 +208,44 @@
                             </div>
                         </div>
                         <div style="padding: 5px">
-                            <h4>여기는 사용자들의 리뷰가 들어옵니다</h4>
-                            <div class="pt-5 mt-5">
-                                <h3>댓글</h3>
-                                <ul th:unless="${#lists.isEmpty(petSitterReviewDtoList)}">
-                                    <li class="comment" th:each="review : ${petSitterReviewDtoList}">
-                                        <div class="comment-body">
-                                            <div class="post-comment-headers">
-                                                <span th:text="'코맨트_회원 : '"></span>
-                                                <span th:text="${review.memberId}"></span>
-                                                <span>|</span>
-                                                <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                            <ul th:unless="${#lists.isEmpty(petSitterReviewDtoList)}">
+                                <li class="comment" th:each="review : ${petSitterReviewDtoList}">
+                                    <div class="comment-body">
+                                        <div class="post-comment-headers">
+                                            <span th:text="'코맨트_회원 : '"></span>
+                                            <span th:text="${review.memberId}"></span>
+                                            <span>|</span>
+                                            <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
 
-                                                        <input type="hidden" name="id" th:value="${review.partnerOrderId}" id="reviewPartnerOrderId">
-                                                        <button type="button" onclick="deleteReview()" th:if="${#authentication.principal.member.email == review.memberId}" class="btn btn-danger btn-sm">
-                                                            삭제
-                                                        </button>
-                                            </div>
-                                            <div>
-                                                <div class="gallery-container">
-                                                    <div class="arrow" id="prev">&#9664;</div>
-                                                    <div class="gallery-wrapper">
-                                                        <div class="gallery">
-                                                            <!-- 이미지가 flex 안에서 반복됨 -->
-                                                            <img th:each="imageUrl : ${review.imagesUrls}"
-                                                                 th:src="${imageUrl}" alt="이미지"
-                                                                 style="width: 150px; height: 100px; margin: 10px;">
-                                                        </div>
-                                                    </div>
-                                                    <div class="arrow" id="next">&#9654;</div>
-                                                </div>
-
-                                            </div>
-                                            <div th:text="${review.reviewText}"></div>
+                                            <input type="hidden" name="id" th:value="${review.partnerOrderId}"
+                                                   id="reviewPartnerOrderId">
+                                            <button type="button" onclick="deleteReview()"
+                                                    th:if="${#authentication.principal.member.email == review.memberId}"
+                                                    class="btn btn-danger btn-sm">
+                                                삭제
+                                            </button>
                                         </div>
+                                        <div>
+                                            <div class="gallery-container">
+                                                <div class="arrow" id="prev">&#9664;</div>
+                                                <div class="gallery-wrapper">
+                                                    <div class="gallery">
+                                                        <!-- 이미지가 flex 안에서 반복됨 -->
+                                                        <img th:each="imageUrl : ${review.imagesUrls}"
+                                                             th:src="${imageUrl}" alt="이미지"
+                                                             style="width: 150px; height: 100px; margin: 10px;">
+                                                    </div>
+                                                </div>
+                                                <div class="arrow" id="next">&#9654;</div>
+                                            </div>
 
-                                    </li>
-                                </ul>
-                            </div>
+                                        </div>
+                                        <div th:text="${review.reviewText}"></div>
+                                    </div>
+
+                                </li>
+                            </ul>
+
                         </div>
                     </div>
                 </div>
@@ -552,42 +548,30 @@
 
 
     <script>
-        const gallery = document.querySelector('.gallery');
-        const images = gallery.querySelectorAll('img');
-        const gallery1 = document.querySelector('.gallery1');
-        const images1 = gallery.querySelectorAll('img1');
-        let currentIndex = 0;
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelector('.slides');
+            const images = slides.querySelectorAll('img');
+            let currentIndex = 0;
 
-        function updateGallery() {
-            const maxIndex = images.length - 5;  // 3개의 이미지만 보이도록 설정
-            gallery.style.transform = `translateX(-${currentIndex * 170}px)`;  // 이미지 너비 + margin 계산
-        }
+            // Only apply sliding if there are more than 3 images
+            if (images.length > 3) {
+                const totalImages = images.length;
+                const slideWidth = images[0].clientWidth;
 
-        document.getElementById('next').addEventListener('click', () => {
-            if (currentIndex < images.length - 5) { // 남은 이미지가 3개 미만일 때까지만 이동
-                currentIndex++;
-                updateGallery();
-            }
-        });
+                // Event listener for the 'Next' button
+                document.querySelector('.next').addEventListener('click', function() {
+                    currentIndex = (currentIndex + 1) % totalImages;
+                    slides.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
+                });
 
-        document.getElementById('prev').addEventListener('click', () => {
-            if (currentIndex > 0) {
-                currentIndex--;
-                updateGallery();
-            }
-        });
-
-        document.getElementById('next1').addEventListener('click', () => {
-            if (currentIndex < images.length - 5) { // 남은 이미지가 3개 미만일 때까지만 이동
-                currentIndex++;
-                updateGallery();
-            }
-        });
-
-        document.getElementById('prev1').addEventListener('click', () => {
-            if (currentIndex > 0) {
-                currentIndex--;
-                updateGallery();
+                // Event listener for the 'Prev' button
+                document.querySelector('.prev').addEventListener('click', function() {
+                    currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+                    slides.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
+                });
+            } else {
+                document.querySelector('.prev').style.display = 'none';
+                document.querySelector('.next').style.display = 'none';
             }
         });
     </script>

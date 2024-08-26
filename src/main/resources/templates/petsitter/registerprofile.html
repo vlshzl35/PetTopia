@@ -82,7 +82,8 @@
                 <input type="file" onchange="mainImgLoad(this)" name="mainImage" multiple>
                 </div>
                 <div id="imgdiv">
-                    <img th:src="${petSitterRegisterDto.mainImageUrl}" alt="" onclick="remove_confirm(src)" id="removeMainImage">
+                    <img th:if="${not #strings.isEmpty(petSitterRegisterDto.mainImageUrl)}" th:src="${petSitterRegisterDto.mainImageUrl}" alt="" onclick="remove_confirm(src)" id="removeMainImage">
+                    <img th:if="${#strings.isEmpty(petSitterRegisterDto.mainImageUrl)}" th:src="@{/images/petsitter/nothingImg.jpg}" alt="" onclick="remove_confirm(src)">
                 </div>
             </div>
 
@@ -220,29 +221,27 @@
         function remove_confirm(src) {
             var header = $("meta[name='_csrf_header']").attr('content');
             var token = $("meta[name='_csrf']").attr('content');
-            console.log("header : "+header,"token : "+ token)
-            // var formData=new FormData;
-            // formData.append('image',imageUrl)
             console.log("src : "+src);
+            const parts = src.split('/');
+            const fileNameWithExtension = parts[parts.length - 1];
+
+            console.log(fileNameWithExtension);
 
             if (confirm("사진을 제거 하시겠습니까??")) {
 
                 $.ajax({
-                    // beforeSend: function (xhr) {
-                    //     xhr.setRequestHeader(header, token);
-                    // },
-                    url: '[[@{/petsitter/profileImage}]]',
+
+                    url: '[[@{/petsitter/removeProfileImage}]]',
                     method: 'post',
-                    // enctype: 'multipart/form-data',
-                    contentType: false, // false = content-type 헤더가 multipart/form-data로 전송하게 함
-                    processData: false, // false = formData를 string으로 변환하지 않음
-                    data: src,
+                    // contentType: false, // false = content-type 헤더가 multipart/form-data로 전송하게 함
+                    processData: true, // false = formData를 string으로 변환하지 않음
+                    data: {
+                        fileNameWithExtension:fileNameWithExtension
+                    },
                     success(responseText) {
                         alert("이미지가 정상제거 되었습니다");
                         console.log("responseText : "+responseText);
-                        location.reload();
-                        // console.log(responseText, textStatus, jqXhr);
-
+                        location.reload(); // 바로 새로고침
                     }
                 })
 
