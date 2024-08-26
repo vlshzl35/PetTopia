@@ -24,7 +24,9 @@ public class CareRegistrationDetailResponseDto {
     private boolean isNeutered;
     private String profile;
     private Set<VaccinationType> petVaccinationType;
+    private Set<String> petVaccinationTypeNames;
     private Set<ParasitePrevention> petParasitePrevention;
+    private Set<String> petParasitePreventionNames;
     private String petSociability;
     private PetStatus isMissing;
     private Long memberId;
@@ -34,6 +36,7 @@ public class CareRegistrationDetailResponseDto {
     private String address;
     private Set<RequestService> requestService;
     private Long postId;
+    private String additionalInfo;
 
     public static CareRegistrationDetailResponseDto toCareRegistrationDetailDto(CareRegistration careRegistration){
         return CareRegistrationDetailResponseDto.builder()
@@ -53,6 +56,7 @@ public class CareRegistrationDetailResponseDto {
                 .memberId(careRegistration.getMemberId())
                 .requestService(careRegistration.getRequestService())
                 .profile(careRegistration.getProfile())
+                .additionalInfo(careRegistration.getAdditionalInfo())
                 .build();
     }
 }
