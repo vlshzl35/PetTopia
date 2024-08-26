@@ -2,102 +2,279 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{layout/default}">
 <head>
-    <title>vet 제목 써</title>
-<!--    펫시터 찾기 btn css -->
+    <title>펫시터 구하기</title>
+    <!-- 펫시터 찾기 btn css -->
     <style>
-        .right-align{
-            align-content: end;
-            float: right;
-
+        .section {
+            background-color: #00bd56;
         }
-        .btn-link {
-            border: 1px solid #1e7e34;
-            font-size: 30px;
+
+        .find-sitter {
             color: white;
-            text-decoration: none;
-            padding: 10px 20px;
+        }
+
+        p {
+            color: white;
+        }
+
+        /* Flexbox를 이용한 가로 정렬 */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            flex-wrap: wrap; /* 반응형 디자인을 위해 flex-wrap 추가 */
+        }
+
+        .header-text {
+            max-width: 50%;
+        }
+
+        .main-image {
+            width: 400px !important;
+            height: 400px !important;
+            margin-right: 0px;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .main-image.show {
+            opacity: 1;
+            transform: translateY(0);
+            animation: pulse 2s infinite alternate;
+        }
+
+        .findSitterButton {
             display: inline-block;
-            background-color: green;
-            border-radius: 4px;
+            margin-top: 30px;
+            padding: 15px 30px;
+            background-color: white;
+            color: #00bd56;
+            font-size: 1.5em;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .btn-link:hover {
-            background-color: #45a049;
+        .findSitterButton:hover {
+            transform: scale(1.1);
+            background-color: whitesmoke;
+            color: #00bd56;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
+
+        /* 게시글들 사이에 여백 추가 */
+        .staff {
+            margin-bottom: 30px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        /* 카드 형태의 게시글들을 더 넓게 배치 */
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start; /* 남은 공간을 사용하여 요소들이 왼쪽으로 정렬되도록 함 */
+        }
+
+        .petList {
+            flex: 0 0 30%; /* 카드의 크기를 유지하고, 줄에 3개씩 배치 */
+            box-sizing: border-box;
+            padding-top: 10px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 10px;
+        }
+
+        /* 마우스를 올렸을 때의 효과 */
+        .petList:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 동적인 효과를 추가한 요소들 */
+        .img-wrap {
+            overflow: hidden;
+            border-radius: 15px 15px 0 0;
+            transition: transform 0.3s ease;
+        }
+
+        .img-wrap img {
+            transition: transform 0.3s ease;
+        }
+
+        /* 마우스를 올렸을 때 이미지 확대 효과 */
+        .img-wrap:hover img {
+            transform: scale(1.1);
+        }
+
+        /* 글씨를 살짝 커지게 */
+        .pt-3, .px-3, .pb-4 {
+            transition: font-size 0.3s ease;
+        }
+
+        .petList:hover .pt-3, .petList:hover .px-3, .petList:hover .pb-4 {
+            font-size: 1.05rem;
+        }
+
+        /* 반응형 디자인을 위한 미디어 쿼리 */
+        @media (max-width: 1200px) {
+            .main-image {
+                width: 300px !important;
+                height: 300px !important;
+            }
+
+            .header-text {
+                max-width: 60%;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-image {
+                width: 250px !important;
+                height: 250px !important;
+            }
+
+            .header-text {
+                max-width: 70%;
+            }
+
+            .findSitterButton {
+                font-size: 1.3em;
+                padding: 10px 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header-text {
+                max-width: 100%;
+            }
+
+            .main-image {
+                width: 200px !important;
+                height: 200px !important;
+                margin: 20px 0;
+            }
+
+            .findSitterButton {
+                font-size: 1.2em;
+                padding: 8px 16px;
+            }
+
+            .staff {
+                margin-left: 0;
+                margin-right: 0;
+                width: 100%;
+            }
+
+            .petList {
+                flex: 0 0 48%; /* 카드가 2개씩 배치되도록 설정 */
+            }
+        }
+
+        @media (max-width: 576px) {
+            .main-image {
+                width: 150px !important;
+                height: 150px !important;
+            }
+
+            .findSitterButton {
+                font-size: 1em;
+                padding: 6px 12px;
+            }
+
+            .staff {
+                margin-left: 0;
+                margin-right: 0;
+                width: 100%;
+            }
+
+            .petList {
+                flex: 0 0 100%; /* 카드가 1개씩 배치되도록 설정 */
+            }
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* 이미지에 애니메이션 추가 */
+        .main-image {
+            animation:
+                    float 1s ease-in-out infinite; /* 위아래로 천천히 움직이는 효과 */
+            width: 400px !important;
+            height: 400px !important;
+            margin-right: 0px;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .main-image.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
     </style>
-
-    <!--
-  - 타임 리프 문법을 써야 하니 href에 th:꼭 붙여서 사용하세요
-  - 헤더에서 각 페이지로 넘어가는 링크가 되어있고, HomeController 클래스에서 GetMapping 메소드로 이동을 합니다
-  - 나중에 각 페이지를 쓰게 되면, 디렉토리를 만들어서 이동하고 MVC패턴을 쓰면됩니다
-  - JavaScript, CSS는 fragments -> header에 다 있습니다 (메인 기준 CSS위에, js는 아래에 있어야 작동이 되는거 같습니다)
-
-  단축키
-  1. 컨트롤+알트+쉬프트+L = 현재 페이지 코드 자동정렬입니다
-  2. 컨트롤+R = 현재페이지 찾아바꾸기 입니다
-  -->
-
-<!--
-        8/11 박태준 할일
-        - 펫시터 찾기를 통해 입력된 값이 list에 바로 보여야됨
-        - 최근에 작성된게 가장 위로 올라오도록
-        - 요청일~ 끝나는 날짜, 원하느는 서비스와 주소정도가 보여지면 좋을 것 같음
-        - 근데 어떻게 보여줘야하지? 데이터베이스의 값이 뜨도록
-        - 서버에서 -> 클라이언트로 보여지는 것이기 때문에 Entity 를 dto로 바꿔서 화면에 뿌려줘야할 것 같음
-        - responseDto에 화면단에 model.attribute로 뿌려주자
-
-
--->
-
 </head>
 <body>
 <div layout:fragment="main" class="page-body">
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('/images/dogzzal.jpg'); height: 500px; background-size: cover;background-attachment: fixed; background-position: center center;">
-
-
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row no-gutters slider-text align-items-end">
-                <div class="col-md-9 ftco-animate pb-5">
-<!--                    <p class="breadcrumbs mb-2"><span class="mr-2"><a th:href="@{/}">Home <i class="ion-ios-arrow-forward"></i></a></span>-->
-                        <span> 펫시팅
-<!--							<i class="ion-ios-arrow-forward"></i>-->
-						</span>
-<!--                    </p>-->
-                    <h1 class="mb-0 bread">펫시터 찾기</h1>
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 ftco-animate pb-5">
+                    <div class="header-container">
+                        <div class="header-text">
+                            <h1 class="mb-0 find-sitter">돌봐주세요</h1>
+                            <p>원하는 조건으로 펫시터를 구해보세요!</p>
+                            <a th:href="@{/petsitterfinder/careregistrationform}" class="findSitterButton">돌봐주세요 게시글 등록하러 가기</a>
+                        </div>
+                        <img src="/svg/whiteDog.svg" class="main-image">
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-
-
     <section class="ftco-section bg-light">
         <div class="container">
-<!--                <input type="text" placeholder="주소를 입력해주세요"  id="searchAddress">-->
-<!--                <div>-->
-<!--                    <button type="button" onclick="alert('검색합니다')" style="width: 30px; height: 30px; background-image: url(/images/searchbtn.PNG);" >-->
-<!--                    </button> &lt;!&ndash;여기서 동네 조건 검색을 한다&ndash;&gt;-->
-<!--                </div>-->
-                <div class="right-align" >
-                    <a th:href="@{/petsitterfinder/careregistrationform}" class="btn-link"> 펫시터 찾기 </a>
-<!--                    펫시터 찾는 요청폼으로 이동함-->
-                </div>
-
             <div class="row">
-                <div th:each="list : ${lists}" >
-
+                <div th:each="list : ${lists}" class="petList">
                     <a th:href="|@{/petsitterfinder/careregistrationdetails?postId=}${list.postId}|">
                         <div class="staff">
                             <div class="img-wrap d-flex align-items-stretch">
-                                <img  th:src="${list.profile}" width=" 300px" height="300px"/>
+                                <img th:src="${list.profile}" width="300px" height="300px"/>
                             </div>
-                            <div class=" pt-3 px-3 pb-4">
+                            <div class="pt-3 px-3 pb-4">
                                 <div>
-                                    <span id="address" th:text = "'주소 : ' + ${list.address}"></span><br>
-                                    <span id="petName" th:text = "'이름 : ' + ${list.petName}"></span><br>
-                                    <span id="startDate" th:text = "'요청 시작 날짜 : ' + ${list.startDate}"></span><br>
-                                    <span id="endDate" th:text = "' 요청 종료 날짜 : ' + ${list.endDate}"></span>
+                                    <span id="address" th:text="'주소 : ' + ${list.address}"></span><br>
+                                    <span id="petName" th:text="'이름 : ' + ${list.petName}"></span><br>
+                                    <span id="startDate" th:text="'요청 시작 날짜 : ' + ${list.startDate}"></span><br>
+                                    <span id="endDate" th:text="'요청 종료 날짜 : ' + ${list.endDate}"></span>
                                 </div>
                             </div>
                         </div>
@@ -123,4 +300,3 @@
 </div>
 </body>
 </html>
-
