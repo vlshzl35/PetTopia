@@ -1,0 +1,25 @@
+.agreement-section {
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+}
+
+.agreement-section h5 {
+    font-weight: bold;
+}
+
+.modal-body {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}

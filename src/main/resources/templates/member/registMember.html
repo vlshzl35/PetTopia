@@ -4,48 +4,10 @@
       layout:decorate="~{layout/default}">
 <head>
     <title>회원가입</title>
-    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <style>
-        .modal-body {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .btn-container {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .btn-full {
-            width: 100%;
-        }
-
-        .form-row {
-            margin-bottom: 1rem;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group .form-control {
-            display: inline-block;
-        }
-
-        .form-group .form-control.btn {
-            width: 100px;
-        }
-
-        /* Make the submit button full width */
-        .btn-primary {
-            width: 100%;
-            display: block;
-        }
-    </style>
+    <link href="/css/member/registMember.css" rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="main" class="page-body">
-
     <section class="ftco-section">
         <div class="container">
             <div class="row justify-content-center">
@@ -56,18 +18,22 @@
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="wrapper">
-                        <form th:action="@{/member/registMember}" enctype="multipart/form-data" id="signup-form" method="post" onsubmit="return isValid()">
+                        <form th:action="@{/member/registMember}" enctype="multipart/form-data" id="signup-form"
+                              method="post" onsubmit="return isValid()">
                             <!-- enctype 속성이 multipart/form-data로 설정되어 있어야 서버가 요청을 multipart로 처리할 수 있음 -->
 
                             <!-- 회원가입 폼 -->
-                            <div class="row justify-content-center" style="display: flex; flex-direction: column; align-items: center;">
-                                <img id = "preview" src="/images/developer.png" alt="기본 회원 사진" height="400px" width="400px"
+                            <div class="row justify-content-center"
+                                 style="display: flex; flex-direction: column; align-items: center;">
+                                <img id="preview" src="/images/developer.png" alt="기본 회원 사진" height="400px"
+                                     width="400px"
                                      style="border: #00bd56; border-radius: 50%; margin-bottom:5px;">
                             </div>
 
                             <div class="form-group">
                                 <label for="profile-pic">프로필 사진</label>
-                                <input type="file" class="form-control-file" id="profile-pic" name="files" onchange="previewImage(event)">
+                                <input type="file" class="form-control-file" id="profile-pic" name="files"
+                                       onchange="previewImage(event)">
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -93,7 +59,6 @@
                                            placeholder="비밀번호 확인" onKeyUp=pwCheck() name="passwordCheck" required>
                                     <p id="pwResult"></p>
                                 </div>
-
                             </div>
 
                             <div class="form-row">
@@ -163,7 +128,6 @@
     </section>
 
 
-
     <!-- loader -->
     <div id="ftco-loader" class="show fullscreen">
         <svg class="circular" width="48px" height="48px">
@@ -176,136 +140,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <script layout:fragment="js">
-        let emailCheckResult = false;
-        let pwCheckResult = false;
-
-        // 이메일 중복 확인 & password 일치 여부를 모두 검증하는 코드입니다.
-        function isValid() {
-            if (emailCheckResult && pwCheckResult) {
-                alert('👍회원가입 축하드립니다!')
-
-            } else if (!emailCheckResult) {
-                alert('이메일 중복 체크를 먼저 해주세요');
-                return false;
-            } else {
-                alert('비밀번호가 일치하지 않습니다.');
-                return false;
-            }
-        }
-
-        // 이메일 중복 체크를 하는 코드입니다.
-        function duplicateEmailCheck() {
-            const memberEmail = document.getElementById('email');
-            if (!memberEmail.value) {
-                alert('이메일을 입력해주세요.');
-                return false;
-            }
-
-            $.ajax({
-                url: '[[@{/member/sameEmailCheck}]]', // 대괄호를 꼭 써줘야 한다, 그렇지 않으면 controller로 넘어가지 않는다.
-                method: 'post',
-                data: {
-                    memberEmail: memberEmail.value
-                },
-                success: function (res) {
-                    if (res === true) {
-                        alert('이미 사용중인 이메일입니다. 다시 입력해주세요!');
-                        console.log('사용중인 이메일입니다. 다시 입력해주세요');
-                        emailCheckResult = false; // 이메일 중복 확인 실패
-                    } else {
-                        alert('사용 가능한 이메일입니다!');
-                        emailCheckResult = true; // 이메일 사용 가능
-                    }
-                },
-                error: function () {
-                    console.log('이메일 중복 체크 오류입니다.');
-                },
-                complete: function () {
-                    console.log('이메일 중복 체크 완료')
-                }
-            });
-            return emailCheckResult;
-        }
-
-        // 비밀번호 확인하는 코드입니다.
-        const pwCheck = () => {
-            const pw = document.getElementById('password').value;
-            const pwCheck = document.getElementById('confirm-password').value;
-            const pwResult = document.getElementById('pwResult');
-
-            if (pw === pwCheck) {
-                pwResult.style.color = '#00bd56';
-                pwResult.innerHTML = "비밀번호가 일치합니다.";
-                pwCheckResult = true;
-            } else {
-                pwResult.style.color = '#e2263e';
-                pwResult.innerHTML = " 비밀번호가 일치하지 않습니다."
-                pwCheckResult = false;
-            }
-        }
-
-        // 사진 미리보기 코드입니다.
-        function previewImage(event) {
-            const reader = new FileReader();  // FileReader 객체 생성
-            reader.onload = function() {
-                const output = document.getElementById('preview');  // 미리보기 이미지 태그
-                output.src = reader.result;  // 이미지 태그의 src 속성에 데이터 URL 설정
-            };
-            if (event.target.files && event.target.files[0]) {
-                reader.readAsDataURL(event.target.files[0]);  // 파일 내용을 읽어 데이터 URL로 변환
-            }
-        }
-
-        // 우편번호 찾는 코드입니다.
-        function sample6_execDaumPostcode() {
-            new daum.Postcode({
-                oncomplete: function (data) {
-                    let addr = '';
-                    let extraAddr = '';
-
-                    if (data.userSelectedType === 'R') {
-                        addr = data.roadAddress;
-                    } else {
-                        addr = data.jibunAddress;
-                    }
-
-                    if (data.userSelectedType === 'R') {
-                        if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-                            extraAddr += data.bname;
-                        }
-                        if (data.buildingName !== '' && data.apartment === 'Y') {
-                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                        }
-                        if (extraAddr !== '') {
-                            extraAddr = ' (' + extraAddr + ')';
-                        }
-                        document.getElementById("sample6_extraAddress").value = extraAddr;
-                    } else {
-                        document.getElementById("sample6_extraAddress").value = '';
-                    }
-
-                    document.getElementById('sample6_postcode').value = data.zonecode;
-                    document.getElementById("sample6_address").value = addr;
-                    document.getElementById("sample6_detailAddress").focus();
-                }
-            }).open();
-        }
-
-        // 핸드폰 번호 입력시, 숫자만 입력 가능함을 알려주는 코드입니다.
-        function validatePhoneInput(input) {
-        const originalValue = input.value;
-        const sanitizedValue = originalValue.replace(/[^0-9]/g, '');
-
-        if (originalValue !== sanitizedValue) {
-            alert('숫자만 입력 가능합니다.');
-        }
-
-        input.value = sanitizedValue;
-        }
-    </script>
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script layout:fragment="js" th:src="@{/js/member/registMember.js}"></script>
 </div>
-
 </body>
 </html>
