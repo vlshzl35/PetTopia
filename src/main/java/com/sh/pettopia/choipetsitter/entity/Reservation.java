@@ -61,6 +61,7 @@ public class Reservation {
     @Enumerated(EnumType.STRING)
     private ReservationStatus reservationStatus; // 예약 상태(요청대기, 요청수락, 요청취소)
 
+
     // 어떤 펫시터에 대한 예약인가
     @Column(name="member_id")
     private String  memberId;

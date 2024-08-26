@@ -51,4 +51,7 @@ public class PetSitterService {
        return petSitterRepository.findByPetSitterAddressContaining(address);
     }
 
+    public List<PetSitter> findPetSitterJoinReview() {
+        return petSitterRepository.findPetSitterJoinReview();
+    }
 }
