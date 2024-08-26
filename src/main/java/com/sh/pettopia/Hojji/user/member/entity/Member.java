@@ -4,10 +4,7 @@ package com.sh.pettopia.Hojji.user.member.entity;
 import com.sh.pettopia.Hojji.user.User;
 import com.sh.pettopia.mypage.dto.ProfileUpdateRequestDto;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
@@ -18,6 +15,7 @@ import java.time.LocalDate;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
+@AllArgsConstructor
 @SuperBuilder // User의 필드를 받기 위한 Builder
 @ToString(callSuper = true)
 public class Member extends User {
