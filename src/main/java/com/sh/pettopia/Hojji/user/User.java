@@ -47,7 +47,7 @@ public abstract class User {
 
     // 회원 역할 - 최대 2개를 가질 수 있음.
     @Enumerated(EnumType.STRING) // enum을 string으로 관리
-    @ElementCollection(fetch = FetchType.LAZY) // 컬렉션 객체임을 jpa가 알 수 있게 해줌, 지연 로딩
+    @ElementCollection(fetch = FetchType.EAGER) // 컬렉션 객체임을 jpa가 알 수 있게 해줌, 지연 로딩
     @CollectionTable(
             name = "tbl_authority",
             joinColumns = @JoinColumn(name = "member_id") //
