@@ -9,7 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Entity(name = "petsitter")
+@Entity(name = "petSitter")
 @Table(name = "tbl_petsitter")
 @Data
 @NoArgsConstructor
