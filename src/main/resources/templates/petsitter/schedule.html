@@ -102,10 +102,6 @@
                                 </td>
                                 <td>
                                     <span th:text="${#numbers.formatInteger(info.total_amount, 3, 'COMMA')}"></span>
-                                    <!--                    <div th:each="sizehowmany:${info.petSizeAndHowManyPets}" >-->
-                                    <!--                        <span th:text="${sizehowmany.petSize}" name="petSize"></span>-->
-                                    <!--                        <span th:text="${sizehowmany.howManyPet}"></span>-->
-                                    <!--                    </div>-->
                                 </td>
                                 <td>
                                     <div th:block th:if="${info.reservationStatus.getReservationStatus()} != 'cancel'">
@@ -145,7 +141,7 @@
                         </thead>
                         <tbody>
                         <tr th:each="sitting , stat : ${sittinglist}" th:object="${sitting}">
-                            <form id="reservationForm" method="post" th:object="${sitting}">
+                            <form id="sittingForm" method="post" th:object="${sitting}">
                                 <label>
                                     <input type="hidden" th:value="${sitting.partnerOrderId}" name="partnerOrderId">
                                 </label>

@@ -38,12 +38,6 @@
             width: 3em;
         }
 
-        img {
-            width: 150px;
-            height: 60px;
-            margin: 3%;
-        }
-
         .petSize {
             display: inline-block;
             width: 150px;
@@ -76,6 +70,13 @@
             width: 200px;
             height: 69px;
         }
+
+        img {
+            width: 150px;
+            height: 60px;
+            margin: 3%;
+        }
+
 
         p {
             font-size: 14px;
@@ -121,6 +122,42 @@
         .next {
             right: 10px;
         }
+    /**/
+        .review-image-slider {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .reviewSlides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .reviewImage{
+            width: 100%; /* Adjust based on how many images you want visible at once */
+            height: 100px;
+        }
+
+        #reviewSliderNext,#reviewSliderPrev {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .reviewPrev {
+            left: 10px;
+        }
+
+        .reviewNext {
+            right: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -149,19 +186,18 @@
                 <div>
                     <div>
                         <div >
-                            <h4 th:text="${dto.getPetSitterId}" name="petSitterId">여기는 사용자의 이름이 들어옵니다</h4>
                             <div class="image-slider">
                                 <div class="slides">
                                     <img class="images" th:each="images, stat: ${dto.getPostImagesList}" th:src="${images}" alt="images" >
                                 </div>
-                                <button id="sliderPrev" class="prev">Prev</button>
-                                <button id="sliderNext" class="next">Next</button>
+                                <button id="sliderPrev" class="prev">&#10094;</button>
+                                <button id="sliderNext" class="next">&#10095;</button>
                             </div>
                         </div>
                         <div style="padding: 5px">
-                            <h4>여기는 자신의 자격증이나 기타 증명이 들어옵니다(대부분 자격증)</h4>
-                            <div>
-                                <img th:src="@{/images/License.PNG}" alt="증명서">
+                            <h3>자격증 및 교육 수료</h3>
+                            <div th:if="${#lists.size(dto.getLicenseImages()) >0 }">
+                                <img th:each="license ,stat:${dto.getLicenseImages} " th:src="${license}" alt="증명서">
                             </div>
                             <div>
                                 <h3>소개합니다.</h3>
@@ -209,8 +245,8 @@
                         </div>
                         <div style="padding: 5px">
                             <ul th:unless="${#lists.isEmpty(petSitterReviewDtoList)}">
-                                <li class="comment" th:each="review : ${petSitterReviewDtoList}">
-                                    <div class="comment-body">
+                                <li class="comment bo_w_tit write_div" th:each="review : ${petSitterReviewDtoList}">
+                                    <div class="comment-body" >
                                         <div class="post-comment-headers">
                                             <span th:text="'코맨트_회원 : '"></span>
                                             <span th:text="${review.memberId}"></span>
@@ -226,17 +262,14 @@
                                             </button>
                                         </div>
                                         <div>
-                                            <div class="gallery-container">
-                                                <div class="arrow" id="prev">&#9664;</div>
-                                                <div class="gallery-wrapper">
-                                                    <div class="gallery">
-                                                        <!-- 이미지가 flex 안에서 반복됨 -->
-                                                        <img th:each="imageUrl : ${review.imagesUrls}"
-                                                             th:src="${imageUrl}" alt="이미지"
-                                                             style="width: 150px; height: 100px; margin: 10px;">
-                                                    </div>
+
+                                            <div class="review-image-slider">
+                                                <div class="reviewSlides">
+                                                    <img class="reviewImage" th:each="imageUrl : ${review.imagesUrls}"
+                                                         th:src="${imageUrl}" alt="이미지">
                                                 </div>
-                                                <div class="arrow" id="next">&#9654;</div>
+                                                <button id="reviewSliderPrev" class="reviewPrev">&#10094;</button>
+                                                <button id="reviewSliderNext" class="reviewNext">&#10095;</button>
                                             </div>
 
                                         </div>
@@ -352,7 +385,6 @@
                                                        oninput="calculateTotal()"/>
                                                 <span>55,000원</span>
                                             </div>
-
                                         </div>
                                         <input type="hidden" name="total_amount" id="totalPrice" value="0">
                                         <input type="hidden" name="item_name" id="item_name">
@@ -591,6 +623,35 @@
             } else {
                 document.querySelector('.prev').style.display = 'none';
                 document.querySelector('.next').style.display = 'none';
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelector('.reviewSlides');
+            const images = slides.querySelectorAll('img');
+            let currentIndex = 0;
+
+            // Only apply sliding if there are more than 3 images
+            if (images.length > 3) {
+                const totalImages = images.length;
+                const slideWidth = images[0].clientWidth;
+
+                // Event listener for the 'Next' button
+                document.querySelector('.reviewNext').addEventListener('click', function() {
+                    currentIndex = (currentIndex + 1) % totalImages;
+                    slides.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
+                });
+
+                // Event listener for the 'Prev' button
+                document.querySelector('.reviewPrev').addEventListener('click', function() {
+                    currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+                    slides.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
+                });
+            } else {
+                document.querySelector('.reviewPrev').style.display = 'none';
+                document.querySelector('.reviewNext').style.display = 'none';
             }
         });
     </script>

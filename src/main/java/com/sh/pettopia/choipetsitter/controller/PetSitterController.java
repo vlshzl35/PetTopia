@@ -3,11 +3,11 @@ package com.sh.pettopia.choipetsitter.controller;
 import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
 import com.sh.pettopia.choipetsitter.dto.*;
 import com.sh.pettopia.choipetsitter.entity.*;
+import com.sh.pettopia.choipetsitter.repository.PetSitterReviewRepository;
 import com.sh.pettopia.choipetsitter.service.PetSitterReviewService;
 import com.sh.pettopia.choipetsitter.service.PetSitterService;
 import com.sh.pettopia.choipetsitter.service.ReservationService;
 import com.sh.pettopia.choipetsitter.service.SittingService;
-import com.sh.pettopia.enterprise.entity.Review;
 import com.sh.pettopia.kakaopay.dto.KakaoPayReadyResponse;
 import com.sh.pettopia.kakaopay.service.PayService;
 import com.sh.pettopia.ncpTest.FileDto;
@@ -35,6 +35,7 @@ public class PetSitterController {
     private final ReservationService reservationService;
     private final SittingService sittingService;
     private final PetSitterReviewService petSitterReviewService;
+    private final PetSitterReviewRepository petSitterReviewRepository;
 
 
     //여기서는 회원=펫시터이기 때문에, /registerprofile/{memeberId} 이렇게 와야한다 그러므로 dto에 memeberId가 온다
@@ -99,10 +100,21 @@ public class PetSitterController {
     public void list(Model model) {
         log.info("GET petsitter/list");
 
-        List<PetSitter> petSitterList = petSitterService.findPetSitterJoinReview();
-        List<PetSitterReview> petSitterReviewList=petSitterReviewService.findAll();
-        log.info("petSitterList = {}",petSitterList);
-        model.addAttribute("petSitterList", petSitterList);
+        List<PetSitter> petSitterList = petSitterService.findAll();
+        List<PetSitterListDto> petSitterListDtoList =new ArrayList<>();
+
+        for(PetSitter petSitter:petSitterList)
+        {
+                petSitterListDtoList.add(new PetSitterListDto().entityEtoDto(petSitter));
+        }
+        for(PetSitterListDto petSitterListDto : petSitterListDtoList)
+        {
+            petSitterListDto.setStarRating(petSitterReviewRepository.findPetSitterReviewByStarRating(petSitterListDto.getPetSitterId()));
+            petSitterListDto.setReviewCnt(petSitterReviewRepository.findPetSitterReviewByReviewCnt(petSitterListDto.getPetSitterId()));
+        }
+
+        log.info("petSitterListDtoList = {}",petSitterListDtoList);
+        model.addAttribute("petSitterListDtoList", petSitterListDtoList);
         // 펫시터 리스트를 가져온다
     }
 
@@ -117,11 +129,11 @@ public class PetSitterController {
         Set<String> petServiceList = new HashSet<>();
         Set<String> petSizeList = new HashSet<>();
         List<String> postImagesList = new ArrayList<>();
+        List<String> licenseImagesList=new ArrayList<>();
 
         for (AvailableService service : petSitter.getAvailableService()) {
             petServiceList.add(service.getPetService());
         }
-        System.out.println("stringService = " + petServiceList);
 
         for (AvailablePetSize petSize : petSitter.getAvailablePetSize()) {
             petSizeList.add(petSize.getPetSize());
@@ -133,9 +145,14 @@ public class PetSitterController {
             postImagesList.add(fileDtoImageUrl.getUploadFileUrl());
         }
         dto.setPostImagesList(postImagesList);
-        System.out.println("profileImg = " + postImagesList);
 
-        System.out.println("stringService = " + petServiceList);
+        List<FileDto> licenseImageFileDto = fileService.sitterDownImg(petSitter.getPetSitterId(), "licenseImage");// 주소를/member/memberid가 들어가야 될 거같다
+
+        for (FileDto fileDtoImageUrl : licenseImageFileDto) {
+            licenseImagesList.add(fileDtoImageUrl.getUploadFileUrl());
+        }
+        dto.setLicenseImages(licenseImagesList);
+        log.info("dto.getLicenseImages() = {}",dto.getLicenseImages());
 
         for (PetSitterReview entity : PetSitterReviewList) {
             petSitterReviewDtoList.add(new PetSitterReviewDto().entityToDto(entity)); // 리뷰dto에 리뷰entity를 넣는다
@@ -195,13 +212,20 @@ public class PetSitterController {
             @AuthenticationPrincipal AuthPrincipal principal
             , @ModelAttribute PetSitterRegisterDto dto
             , @RequestPart(value = "files", required = true) List<MultipartFile> multipartFiles
+            , @RequestPart(value = "License_files", required = true) List<MultipartFile> licenseFiles
     ) {
         log.info("POST petsitter/register_post 입니다");
         System.out.println("petSitterRegisterDto = " + dto);
 
         List<String> imageUrl = new ArrayList<>();
+        List<String> licenseImageUrl=new ArrayList<>();
+
         // 들어온 multipartFiles 에 빈사진이 오면 없는 문자열로 취급해서 이미지 등록이 안되게 한다
         List<MultipartFile> checkFiles = multipartFiles.stream()
+                .filter(file -> !file.isEmpty())
+                .toList();
+
+        List<MultipartFile> CheckLicenseImageUrl = licenseFiles.stream()
                 .filter(file -> !file.isEmpty())
                 .toList();
 
@@ -209,6 +233,14 @@ public class PetSitterController {
         if (!checkFiles.isEmpty()) {
             //파일들의 url을 List로 담아서 Dto->Entity할 때 넣는다
             List<FileDto> fileDtoList = fileService.sitterUpFile(checkFiles, principal.getMember().getEmail(), "imagesInPost");
+            for (FileDto fileDtoImageUrl : fileDtoList) {
+                imageUrl.add(fileDtoImageUrl.getUploadFileUrl());
+            }
+        }
+
+        if (!licenseFiles.isEmpty()) {
+            //파일들의 url을 List로 담아서 Dto->Entity할 때 넣는다
+            List<FileDto> fileDtoList = fileService.sitterUpFile(licenseFiles, principal.getMember().getEmail(), "licenseImage");
             for (FileDto fileDtoImageUrl : fileDtoList) {
                 imageUrl.add(fileDtoImageUrl.getUploadFileUrl());
             }
@@ -276,8 +308,8 @@ public class PetSitterController {
         for (PetSizeAndHowManyPet petDto : dto.getPetSizeAndHowManyPets()) {
             System.out.println(petDto.getPetSize() + ": " + petDto.getHowManyPet());
         }
-        System.out.println("reservationDto = " + dto);
-        System.out.println("reservationDto.getPetSizeAndHowManyPets() = " + dto.getPetSizeAndHowManyPets());
+        log.info("reservationDto = {}" , dto);
+        log.info("reservationDto.getPetSizeAndHowManyPets() = {}" , dto.getPetSizeAndHowManyPets());
 
         //클라이언트에서 jquery ajax로 넘긴 정보가 잘 넘어왔는지 확인
         log.info("item_name: " + dto.getItem_name());
@@ -368,19 +400,18 @@ public class PetSitterController {
         log.info("POST /petsitter/reservationOk");
 
         Reservation reservation = reservationService.findByPartnerOrderId(partnerOrderId);
-        reservation.changeReservationStatus(ReservationStatus.OK);
-        reservationService.save(reservation);
-
+        log.info("reservation = {}",reservation);
         ReservationDto reservationDto = new ReservationDto().entityToDto(reservation);
-        System.out.println("reservationOk / reservationDto = " + reservationDto);
 
         Sitting sitting = new Sitting();
         sitting = sitting.dtoToEntity(reservationDto);
 
-        System.out.println("sitting = " + sitting);
         sittingService.save(sitting);
+        reservationService.delete(reservation);
 
-        System.out.println("reservationOk / reservation = " + reservation);
+        log.info("reservationDto = {}" , reservationDto);
+        log.info("sitting = {}" , sitting);
+        log.info("reservation = {}" , reservation);
         return "redirect:/petsitter/reservationlist";
     }
 
@@ -432,7 +463,7 @@ public class PetSitterController {
         sitting.changeSittingStatus(dto.getSittingStatus()); // 어떤 상태인지 저장을 한다, start_sitting, complete_sitting
         sittingService.save(sitting);
 
-        System.out.println("sitting / dto = " + dto);
+        log.info("dto = {}" , dto);
         return "redirect:/petsitter/sittinglist";
     }
 
@@ -499,24 +530,48 @@ public class PetSitterController {
     private String  deleteReview(String partnerOrderId) {
         log.info("POST petsitter/deleteReview");
         System.out.println("partnerOrderId = " + partnerOrderId);
-        PetSitterReview PetSitterReview=petSitterReviewService.findByPartnerOrderId(partnerOrderId);
+        PetSitterReview petSitterReview=petSitterReviewService.findByPartnerOrderId(partnerOrderId);
+        String petSitterId=petSitterReview.getPetSitterId();
+        String memberId=petSitterReview.getMemberId();
+
+        List<FileDto> fileDtoList=fileService.sitterDownImg(petSitterReview.getPetSitterId(), memberId + "reviewImage");
+        for(FileDto fileDto:fileDtoList)
+        {
+            fileService.deleteImage(petSitterId,memberId+"reviewImage",fileDto.getUploadFileName());
+        }
         petSitterReviewService.deleteReviewByPartnerOrderId(partnerOrderId);
-        return String.format("redirect:/petsitter/detail/%s", PetSitterReview.getPetSitterId());
+
+        return String.format("redirect:/petsitter/detail/%s", petSitterReview.getPetSitterId());
     }
 
     @PostMapping("/findAddress")
     public String  findAddress(@RequestParam(required = false) String address, Model model) {
         log.info("POST /petsitter/findAddress");
         List<PetSitter> petSitterList =null;
+        List<PetSitterListDto> petSitterListDtoList=new ArrayList<>();
         if (address != null && !address.isEmpty())
         {
              petSitterList=petSitterService.findByPetSitterAddressContaining(address);
+             for(PetSitter PetSitter:petSitterList)
+             {
+                 petSitterListDtoList.add(new PetSitterListDto().entityEtoDto(PetSitter));
+             }
         } else {
             petSitterList=petSitterService.findAll();
+            for(PetSitter PetSitter:petSitterList)
+            {
+                petSitterListDtoList.add(new PetSitterListDto().entityEtoDto(PetSitter));
+            }
         }
+
+        for(PetSitterListDto petSitterListDto : petSitterListDtoList)
+        {
+            petSitterListDto.setStarRating(petSitterReviewRepository.findPetSitterReviewByStarRating(petSitterListDto.getPetSitterId()));
+            petSitterListDto.setReviewCnt(petSitterReviewRepository.findPetSitterReviewByReviewCnt(petSitterListDto.getPetSitterId()));
+        }
+
         log.info("petSitter = {}",petSitterList);
-        model.addAttribute("petSitterList",petSitterList);
-        model.addAttribute("address",address);
+        model.addAttribute("petSitterListDtoList", petSitterListDtoList);
         return "petsitter/list";
     }
 }

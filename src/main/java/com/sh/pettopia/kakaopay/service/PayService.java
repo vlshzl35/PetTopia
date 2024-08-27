@@ -45,6 +45,7 @@ public class PayService {
 
     public KakaoPayReadyResponse kakaoPayReady(ReservationDto dto) {
         log.info("payservice / kakaoPayReady");
+
         MultiValueMap<String,Object> payParams = new LinkedMultiValueMap<>();
         payParams.add("cid", cid); //테스트 결제는 가맹점 코드로 'TC0ONETIME'를 사용
         payParams.add("partner_order_id", dto.getPartnerOrderId()); //일단 아무값이나 hard coding.
