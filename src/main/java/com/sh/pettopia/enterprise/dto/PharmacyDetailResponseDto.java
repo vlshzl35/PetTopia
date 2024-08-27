@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class PharmacyDetailResponseDto {
     private String entName;
     private String entPhone; // 전화번호
+    private String bizNum; // 사업자번호
     private String entAddress; // 주소
     private String officeHours; // 영업시간 09:00-18:00 형식으로 쓰기
     private String entUrl; // 사이트링크
@@ -21,6 +22,7 @@ public class PharmacyDetailResponseDto {
         return new PharmacyDetailResponseDto(
                 pharmacy.getEntName(),
                 pharmacy.getEntPhone(),
+                pharmacy.getBizNum(),
                 pharmacy.getEntAddress(),
                 pharmacy.getOfficeHours(),
                 pharmacy.getEntUrl(),
