@@ -1,8 +1,10 @@
 package com.sh.pettopia.Hojji.user.member.service;
 
+import com.sh.pettopia.Hojji.user.Authority;
 import com.sh.pettopia.Hojji.user.member.dto.MemberRegistRequestDto;
 import com.sh.pettopia.Hojji.user.member.dto.MemberListResponseDto;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
+import com.sh.pettopia.Hojji.user.member.entity.SitterStatus;
 import com.sh.pettopia.Hojji.user.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,5 +61,31 @@ public class MemberService {
         return sitters.stream()
                 .map(MemberListResponseDto::fromMember)
                 .collect(Collectors.toList());
+    }
+
+    // 시터 자격을 요청중인 회원 조회
+    // 이름, 이메일, 상태, 수락/거부 상태
+    public List<MemberListResponseDto> findPendingSitterMembers(){
+        List<Member> pendingSitters =  memberRepository.findPendingSitterMembers(SitterStatus.PENDING);
+        return pendingSitters.stream()
+                .map(MemberListResponseDto::fromMember)
+                .collect(Collectors.toList());
+    }
+
+    // 시터자격 요청 수락/거절로 sitterStatus를 변경
+    // tbl_authority에 sitter_role추가
+    public void updateSitterStatus(Long memberId, SitterStatus sitterStatus) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원을 찾을 수 없습니다: " + memberId));
+
+        member.setSitterStatus(sitterStatus);
+        memberRepository.save(member);
+    }
+
+    public void grantSitterAuthority(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID를 가진 사용자를 찾을 수 없습니다. ID: " + memberId));
+        member.getAuthorities().add(Authority.ROLE_SITTER); // 시터 권한 추가
+        memberRepository.save(member);
     }
 }
