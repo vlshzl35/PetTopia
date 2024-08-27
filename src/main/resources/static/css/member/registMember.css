@@ -1,0 +1,35 @@
+.modal-body {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+.form-row {
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group .form-control {
+    display: inline-block;
+}
+
+.form-group .form-control.btn {
+    width: 100px;
+}
+
+/* Make the submit button full width */
+.btn-primary {
+    width: 100%;
+    display: block;
+}

@@ -34,15 +34,21 @@ public class OcrController {
         log.debug("file = {}", file);
 
         // 파일 저장
-        String originalFilename = file.getOriginalFilename();
-        String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
-        String savedFilename = UUID.randomUUID().toString() + ext;
-        Path path = Paths.get(MULTIPART_LOCATION, savedFilename);
-        Files.copy(file.getInputStream(), path);
-        log.debug("path = {}", path);
+//        String originalFilename = file.getOriginalFilename();
+//        String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+//        String savedFilename = UUID.randomUUID().toString() + ext;
+//        Path path = Paths.get(MULTIPART_LOCATION, savedFilename);
+//        Files.copy(file.getInputStream(), path);
+//        log.debug("path = {}", path);
 
-        // OCR API 호출
-        String response = ocrService.processOcr(type, path.toString());
+//        // OCR API 호출
+//        String response = ocrService.processOcr(type, path.toString());
+//        log.debug("response = {}", response);
+
+        // 파일을 저장하지 않고 바로 OCR API에 데이터 전달
+        byte[] fileBytes = file.getBytes();  // 파일의 바이트 배열을 얻음
+        String response = ocrService.processOcr(type, fileBytes);  // OCR API 호출
+
         log.debug("response = {}", response);
 
         model.addAttribute("message", file.getOriginalFilename() + " 영수증 인증 성공");

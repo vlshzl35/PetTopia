@@ -23,9 +23,17 @@ public class Member extends User {
     @Column(name = "nick_name")
     private String nickName;
 
+    // 우편번호
+    @Column
+    private String postCode;
+
     // 주소
     @Column
     private String address;
+
+    // 상세 주소
+    @Column
+    private String detailAddress;
 
     // 회원 이미지
     @Column(name = "profile_image")

@@ -1,0 +1,271 @@
+.section {
+    background-color: #00bd56;
+}
+
+.find-sitter {
+    color: white;
+}
+
+p {
+    color: white;
+}
+
+/* Flexbox를 이용한 가로 정렬 */
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap; /* 반응형 디자인을 위해 flex-wrap 추가 */
+}
+
+.header-text {
+    max-width: 50%;
+}
+
+.main-image {
+    width: 400px !important;
+    height: 400px !important;
+    margin-right: 0px;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+    animation: float 1s ease-in-out infinite; /* 위아래로 천천히 움직이는 효과 */
+}
+
+.main-image.show {
+    opacity: 1;
+    transform: translateY(0);
+    animation: pulse 2s infinite alternate;
+
+}
+
+
+/* 게시글들 사이에 여백 추가 */
+.staff {
+    margin-bottom: 30px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/* 카드 형태의 게시글들을 더 넓게 배치 */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* 남은 공간을 사용하여 요소들이 왼쪽으로 정렬되도록 함 */
+}
+
+
+.petList {
+    flex: 0 0 30%; /* 카드의 크기를 유지하고, 줄에 3개씩 배치 */
+    box-sizing: border-box;
+    padding-top: 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 10px;
+}
+
+/* 마우스를 올렸을 때의 효과 */
+.petList:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+
+/* 동적인 효과를 추가한 요소들 */
+.img-wrap {
+    overflow: hidden;
+    border-radius: 15px 15px 0 0;
+    transition: transform 0.3s ease;
+}
+
+.img-wrap img {
+    transition: transform 0.3s ease;
+}
+
+/* 마우스를 올렸을 때 이미지 확대 효과 */
+.img-wrap:hover img {
+    transform: scale(1.1);
+}
+
+/* 글씨를 살짝 커지게 */
+.pt-3, .px-3, .pb-4 {
+    transition: font-size 0.3s ease;
+}
+
+.petList:hover .pt-3, .petList:hover .px-3, .petList:hover .pb-4 {
+    font-size: 1.05rem;
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 1200px) {
+    .main-image {
+        width: 300px !important;
+        height: 300px !important;
+    }
+
+    .header-text {
+        max-width: 60%;
+    }
+}
+
+@media (max-width: 992px) {
+    .main-image {
+        width: 250px !important;
+        height: 250px !important;
+    }
+
+    .header-text {
+        max-width: 70%;
+    }
+
+    .findSitterButton {
+        font-size: 1.3em;
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .header-text {
+        max-width: 100%;
+    }
+
+    .main-image {
+        width: 200px !important;
+        height: 200px !important;
+        margin: 20px 0;
+    }
+
+    .staff {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+    }
+
+    .petList {
+        flex: 0 0 48%; /* 카드가 2개씩 배치되도록 설정 */
+    }
+}
+
+@media (max-width: 576px) {
+    .main-image {
+        width: 150px !important;
+        height: 150px !important;
+    }
+
+    .staff {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+    }
+
+    .petList {
+        flex: 0 0 100%; /* 카드가 1개씩 배치되도록 설정 */
+    }
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+/* 이미지에 애니메이션 추가 */
+.main-image {
+    animation:
+            float 1s ease-in-out infinite; /* 위아래로 천천히 움직이는 효과 */
+    width: 400px !important;
+    height: 400px !important;
+    margin-right: 0px;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.main-image.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+.search-section {display: flex;
+    justify-content: center;
+    align-items: center;
+    /*padding: 2em 0;*/
+    /*background-color: #f7f7f7;*/
+    border-radius: 8px;
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+}
+
+.autocomplete-wrapper {
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+}
+
+#input-location {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #00bd56;
+    border-radius: 20px 0 0 20px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+#input-location:focus {
+    border-color: #00bd56;
+}
+
+#search-button {
+    background-color: #00bd56;
+    border: none;
+    padding: 0 16px;
+    border-radius: 0 20px 20px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#search-button img {
+    height: 20px;
+    vertical-align: middle;
+}
+
+#search-button:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    #input-location {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+
+    #search-button {
+        padding: 0 12px;
+    }
+
+    #search-button img {
+        height: 18px;
+    }
+}

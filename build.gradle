@@ -30,8 +30,8 @@ dependencies {
     // 서버측 유효성 검사 관련 의존 @NotNull, @NotEmpty, @NotBlank 등
     implementation 'org.springframework.boot:spring-boot-starter-security' // 사용자 입력값 유효한지 검사해주는 것
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'// 타임리프에서 쓸 수 있는 security 문법 추가!
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6' // 타임리프에서 쓸 수 있는 security 문법 추가!
+//    implementation 'org.springframework.boot:springframewor-boot-starter-websocket'
     testImplementation 'org.springframework.security:spring-security-test'
 
     // ncp 서버 업로드
