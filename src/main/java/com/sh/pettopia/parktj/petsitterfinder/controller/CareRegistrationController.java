@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+//import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -132,7 +132,7 @@ public class CareRegistrationController {
         return "redirect:/petsitterfinder/careregistrationlist";
     }
 
-    private final SimpMessagingTemplate messagingTemplate;
+//    private final SimpMessagingTemplate messagingTemplate;
 
     @PostMapping("/reservation")
     public ResponseEntity<String>  reservation(
@@ -151,8 +151,8 @@ public class CareRegistrationController {
         Long currentPostId = careRegistration.getPostId();
 
         //WebSocket
-        String notificationMessage = reservationInfo.getPostId() + "번 게시물에 " + petSitter.getPetSitterId() + "펫시터가 해당게시글에 대한 예약을 요청했습니다..";
-        messagingTemplate.convertAndSend("/topic/petsitterfinder", notificationMessage);
+//        String notificationMessage = reservationInfo.getPostId() + "번 게시물에 " + petSitter.getPetSitterId() + "펫시터가 해당게시글에 대한 예약을 요청했습니다..";
+//        messagingTemplate.convertAndSend("/topic/petsitterfinder", notificationMessage);
         // 이 코드는 서버에서 클라이언트에게 실시간으로 메세지를 보내는 역할을 함
         // - messagingTemplate
         // : Spring에서 제공하는 객체로 , 메세지를 전송하는 역할을함

@@ -7,9 +7,9 @@
 </head>
 <body>
 <main layout:fragment="main">
-    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
-    <script src="/js/ring/ring.js"></script>
+<!--    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>-->
+<!--    <script src="/js/ring/ring.js"></script>-->
 
     <div class="main-content">
         <div class="text-content">
@@ -39,11 +39,11 @@
         <div class="trustworthy-content">
             <div class="trustworthy-item">
                 <img src='/svg/brownDog.svg' class="main-image">
-                <a th:href="@{/petsitter/list}" class="sitting-button">돌봐드려요</a>
+                <a th:href="@{/petsitterfinder/careregistrationlist}" class="sitting-button">돌봐주세요</a>
             </div>
             <div class="trustworthy-item">
                 <img src='/svg/whiteDog.svg' class="main-image">
-                <a th:href="@{/petsitterfinder/careregistrationlist}" class="sitting-button">돌봐주세요</a>
+                <a th:href="@{/petsitter/list}" class="sitting-button">돌봐드려요</a>
             </div>
 
         </div>
