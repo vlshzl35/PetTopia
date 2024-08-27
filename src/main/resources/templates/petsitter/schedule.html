@@ -208,81 +208,93 @@
 
                 </div>
 
-
-
+                <!--박태준 돌봐주세요 ---------------------------------------------->
                 <div id="Pleasetakecare" style="display:none;">
                     <table class="table" style="text-align: center">
                         <thead>
                         <tr>
-                            <th></th>
-                            <th>주문회원</th>
-                            <th>요청 날짜</th>
-                            <th>예약 날짜</th>
-                            <th>시작, 종료</th>
-                            <th>사이즈</th>
+                            <th>예약 번호</th>
+                            <th>요청한 예약 주소</th>
+                            <th>예약 요청 시작 날짜</th>
+                            <th>예약 요청 종료 날짜</th>
+                            <th>예약 상태</th>
                             <th>상태 변경</th>
-                            <th>돌봄 상태</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="sitting , stat : ${sittinglist}" th:object="${sitting}">
-                            <form id="reservationForm" method="post" th:object="${sitting}">
+                        <tr th:each="dto , stat : ${pleaseCareReservationDtos}" th:object="${pleaseCareReservationDtos}">
+                            <div id="pleaseCareForm" method="post" th:object="${dto}">
                                 <label>
-                                    <input type="hidden" th:value="${sitting.partnerOrderId}" name="partnerOrderId">
+                                    <input type="hidden" th:value="${dto.postId}" name="postId">
                                 </label>
-                                <td>
-                                    <a th:href="@{|/petsitter/sittingdetail/${sitting.partnerOrderId}|}"
-                                       onclick="window.open(this.href, '_blank', 'left=2000%,top=800%, width=900, height=700'); return false;">자세히</a>
-                                </td>
-                                <td><span th:text="${sitting.memberId}" name="memberId"></span></td>
-                                <td><span th:text="${#temporals.format(sitting.createdAt, 'yyyy-MM-dd/a hh:mm')}"
-                                          name="createdAt"></span></td>
-                                <td><span th:text="${sitting.serviceDate}" name="reservationDay"></span></td>
-                                <td>
-                                    <span th:text="${sitting.startTime}" name="startTime"></span>
-                                    <span th:text="${sitting.endTime}" name="endTime"></span>
-                                </td>
-                                <td th:object="${sitting.petSizeAndHowManyPets}">
-                                    <div th:if="${#lists.size(sitting.petSizeAndHowManyPets) >= 2}">
-                                        <span th:text="${sitting.petSizeAndHowManyPets[0].petSize}"
-                                              name="petSize"></span>
-                                        <span th:text="${sitting.petSizeAndHowManyPets[0].howManyPet}"></span>
-                                        <span th:text="'외...'"></span>
-                                    </div>
-                                    <div th:if="${#lists.size(sitting.petSizeAndHowManyPets) <2}">
-                                        <span th:text="${sitting.petSizeAndHowManyPets[0].petSize}"
-                                              name="petSize"></span>
-                                        <span th:text="${sitting.petSizeAndHowManyPets[0].howManyPet}"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <button type="submit" th:formaction="@{/petsitter/sitting}"
-                                                class="btn btn-primary"
-                                                th:if="${sitting.sittingStatus.getSittingStatus()} == 'StandbySitting'"
-                                                th:text="돌봄시작" id="startButton" value="START_SITTING"
-                                                name="sittingStatus"></button>
-                                        <button type="submit" th:formaction="@{/petsitter/sitting}"
-                                                class="btn btn-primary"
-                                                th:if="${sitting.sittingStatus.getSittingStatus()} == 'START_SITTING'"
-                                                th:text="돌봄완료" id="completeButton" value="COMPLETED_SITTING"
-                                                name="sittingStatus"></button>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'StandbySitting'"
-                              th:text="돌봄대기"></span>
-                                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'START_SITTING'"
-                                              th:text="돌봄중"></span>
-                                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'WAITING_MEMBER_CHECK'"
-                                              th:text="승인대기중" id="completedSitting"></span>
-                                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'COMPLETED_SITTING'"
-                                              th:text="돌봄완료"></span>
-                                    </div>
+<!--                                <td>-->
+<!--                                    <a th:href="@{|/petsitter/sittingdetail/${sitting.partnerOrderId}|}"-->
+<!--                                       onclick="window.open(this.href, '_blank', 'left=2000%,top=800%, width=900, height=700'); return false;">자세히</a>-->
+<!--                                </td>-->
+                                <td><span th:text="${dto.reservationId}" name="reservationId"></span></td>
+                                <td><span th:text="${dto.address}" name="address"></span></td>
+                                <td><span th:text="${dto.startDate}" name="startDate"></span></td>
+                                <td><span th:text="${dto.endDate}" name="endDate"></span></td>
+                                <td th:if="${dto.status.getReservationStatus() eq 'PENDING'}"
+                                    th:text='예약대기'></td>
+                                <td th:if="${dto.status.getReservationStatus() eq 'REQUEST_REJECTED'}"
+                                    th:text="예약거절"></td>
+                                <td th:if="${dto.status.getReservationStatus() eq 'REQUEST_ACCEPTED'}"
+                                    th:text="예약수락"></td>
+                                <td th:if="${dto.status.getReservationStatus() eq 'IN_CARE'}"
+                                    th:text="돌봄중"></td>
+                                <td th:if="${dto.status.getReservationStatus() eq 'CARE_COMPLETION_REQUEST'}"
+                                    th:text="돌봄완료요청"></td>
+                                <td th:if="${dto.status.getReservationStatus() eq 'CARE_COMPLETE'}"
+                                    th:text="돌봄완료"></td>
+                                <td th:if="${dto.status.getReservationStatus() eq 'START_OF_CARE'}"
+                                    th:text="돌봄시작"></td>
 
-                                </td>
-                            </form>
+
+                                    <form id="startCareForm" method="post" th:object="${dto}" onsubmit="return confirm('정말 돌봄을 시작하시겠습니까? 요청 사항을 전부 세세히 확인하셨나요?')">
+                                        <label>
+                                        <input type="hidden" name="reservationId" th:value="${dto.reservationId}">
+                                        <input type="hidden" name="postId" th:value="${dto.postId}">
+                                        </label>
+                                        <td>
+                                        <button type="submit" th:formaction="@{/petsitter/startCare}"
+                                                class="btn btn-primary"
+                                                th:if="${dto.status.getReservationStatus()} == 'REQUEST_ACCEPTED'"
+                                                th:text="돌봄시작" id="startOfCare" value="START_OF_CARE"
+                                                name="startOfCare"></button>
+                                       </td>
+                                    </form>
+                                    <form method="post" onsubmit="return confirm('정말 돌봄 완료 요청을 하시겠습니까?')" th:object="${dto}">
+
+                                            <label>
+                                            <input type="hidden" name="reservationId" th:value="${dto.reservationId}">
+                                            <input type="hidden" name="postId" th:value="${dto.postId}">
+                                            </label>
+                                        <td>
+                                        <button type="submit" th:formaction="@{/petsitter/careCompletionRequest}"
+                                                class="btn btn-primary"
+                                                th:if="${dto.status.getReservationStatus()} == 'IN_CARE'"
+                                                th:text="돌봄완료요청" id="careCompletionRequest" value="CARE_COMPLETION_REQUEST"
+                                                name="sittingStatus"></button>
+                                        </td>
+                                    </form>
+
+
+
+<!--                                    <div>-->
+<!--                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'STANDING_BY_SITTING'" th:text="돌봄대기"></span>-->
+<!--                                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'START_SITTING'"-->
+<!--                                              th:text="돌봄중"></span>-->
+<!--                                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'WAITING_MEMBER_CHECK'"-->
+<!--                                              th:text="승인대기중" id="completedSitting"></span>-->
+<!--                                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'COMPLETED_SITTING'"-->
+<!--                                              th:text="돌봄완료"></span>-->
+<!--                                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'COMPLETED_SITTING'"-->
+<!--                                              th:text="돌봄완료"></span>-->
+<!--                                    </div>-->
+
+<!--                                </td>-->
+                            </div>
                         </tr>
                         </tbody>
                     </table>

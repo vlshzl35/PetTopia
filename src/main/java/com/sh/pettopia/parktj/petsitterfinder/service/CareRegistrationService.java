@@ -2,6 +2,8 @@ package com.sh.pettopia.parktj.petsitterfinder.service;
 
 import com.sh.pettopia.Hojji.pet.entity.ParasitePrevention;
 import com.sh.pettopia.Hojji.pet.entity.VaccinationType;
+import com.sh.pettopia.choipetsitter.entity.PetSitter;
+import com.sh.pettopia.choipetsitter.repository.PetSitterRepository;
 import com.sh.pettopia.parktj.petsitterfinder.dto.*;
 import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;
 import com.sh.pettopia.parktj.petsitterfinder.entity.ReservationByPetSitter;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,6 +27,8 @@ import java.util.stream.Collectors;
 public class CareRegistrationService {
     @Autowired
     private CareRegistrationRepository registrationRepository;
+    @Autowired
+    private PetSitterRepository petSitterRepository;
     @Autowired
     private ReservationByPetSitterRepository reservationByPetSitterRepository;
 
@@ -135,7 +140,7 @@ public class CareRegistrationService {
         ReservationByPetSitter reservation = reservationByPetSitterRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalStateException("예약이 발견되지 않았습니다."));
         // 이게 무슨 기능인지 확인해 보기
-        if (reservation.getReservationStatus() == ReservationStatus.돌봄완료) {
+        if (reservation.getReservationStatus() == ReservationStatus.CARE_COMPLETE) {
             throw new IllegalStateException("이미 돌봄이 완료된 예약입니다.");
         }
         // 예약 상태 변경을 한것을 다시 엔티티에 저장
@@ -149,12 +154,70 @@ public class CareRegistrationService {
         ReservationByPetSitter reservation = reservationByPetSitterRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalStateException("예약이 발견되지 않았습니다"));
 
-        if (reservation.getReservationStatus() != ReservationStatus.요청대기) {
+        if (reservation.getReservationStatus() != ReservationStatus.PENDING) {
             throw new IllegalStateException("요청 대기 상태가 아닐 때는 요청을 거절하실 수 없습니다.\uD83E\uDD72");
         } else {
             reservation.rejectReservation();
             reservationByPetSitterRepository.save(reservation);
         }
+    }
+
+
+    public List<ReservationResponseDto> findReservationByPetSitter(PetSitter petSitter) {
+        List<ReservationByPetSitter> reservation = reservationByPetSitterRepository.findByPetSitter(petSitter);
+        return reservation.stream().map(ReservationResponseDto::fromReservations).toList();
+    }
+
+    public Optional<CareRegistration> findByMemberId(Long id) {
+        return registrationRepository.findById(id);
+    }
+
+    public void acceptRequest(Long reservationId) {
+        ReservationByPetSitter reservation = reservationByPetSitterRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalStateException("예약이 발견되지 않았습니다"));
+
+        if(reservation.getReservationStatus() != ReservationStatus.PENDING) {
+            throw new IllegalStateException("요청 대기가 아닌 상태에서는 요청 수락을 할 수 없습니다");
+        } else {
+            reservation.acceptRequest();
+            reservationByPetSitterRepository.save(reservation);
+        }
+
+    }
+
+    public void startReservation(Long reservationId) {
+         ReservationByPetSitter reservation= reservationByPetSitterRepository.findById(reservationId)
+                 .orElseThrow(() -> new IllegalStateException("예약이 발견되지 않았습니다"));
+
+         if(reservation.getReservationStatus() != ReservationStatus.REQUEST_ACCEPTED){
+             throw new IllegalStateException("요청 수락이 아닌 상태에서는 요청을 돌봄을 시작할 수 없습니다.");
+         } else {
+             reservation.startRequest();
+             reservationByPetSitterRepository.save(reservation);
+         }
+    }
+
+    public void careCompletionRequest(Long reservationId) {
+        ReservationByPetSitter reservation = reservationByPetSitterRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalStateException("예약이 발견되지 않았습니다."));
+        if(reservation.getReservationStatus() != ReservationStatus.IN_CARE) {
+            throw new IllegalStateException("돌봄중이 아닌 상태에서는 돌봄 완료 요청을 할 수 없습니다.");
+        }else {
+            reservation.careCompletionRequest();
+            reservationByPetSitterRepository.save(reservation);
+        }
+    }
+
+    public void completeReservation(Long reservationId) {
+        ReservationByPetSitter reservation = reservationByPetSitterRepository.findById(reservationId)
+                .orElseThrow(()-> new IllegalStateException("예약이 발견되지 않았습니다"));
+        if(reservation.getReservationStatus() != ReservationStatus.CARE_COMPLETION_REQUEST) {
+            throw new IllegalStateException("돌봄 완료 요청 상태가 아닐 때는 돌봄 완료를 할 수 없습니다");
+        }else {
+            reservation.completeReservation();
+            reservationByPetSitterRepository.save(reservation);
+        }
+
     }
 }
 

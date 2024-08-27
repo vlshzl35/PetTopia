@@ -12,7 +12,7 @@
 /*<![CDATA[*/
 // '/websocket'은 서버와의 웹소켓 연결을 설정하는 엔드포인트를 의미한다. 즉 서버와의 실시간 연결을 시작하는 출발점
 // let socket = new SockJS('/websocket');
-let socket = new SockJS('/websocket');
+let socket = new SockJS("/websocket");
 // let socket = new SockJS('https:/223.130.146.203:8080/websocket');
 
 // let stompClient = Stomp.over(socket);
@@ -32,24 +32,29 @@ stompClient.connect({}, function (frame) {
     stompClient.subscribe('/topic/petsitterfinder', function (message) {
         console.log(message)
         let notification = message.body;
-        showNotification(notification)
+        showNotification(notification);
+
+
+
+
+        });
     });
-});
 
-function showNotification(message) {
-    // if (Notification.permission === "granted") {
-    //     console.log("permission granted?" + Notification.permission)
-    //     let notification = new Notification('🔔새로운 예약 알림🔔', {
-    //         body: message,
-    //         requireInteraction: true
-    //
-    //     })
-    // } else ("permission granted? ㄴㄴ?" + Notification.permission)
+    function showNotification(message) {
+        // if (Notification.permission === "granted") {
+        //     console.log("permission granted?" + Notification.permission)
+        //     let notification = new Notification('🔔새로운 예약 알림🔔', {
+        //         body: message,
+        //         requireInteraction: true
+        //
+        //     })
+        // } else ("permission granted? ㄴㄴ?" + Notification.permission)
 
-    let notificationList = document.getElementById('notification');
-    let notificationItem = document.createElement('li');
-    notificationItem.textContent = message;
-    notificationList.appendChild(notificationItem);
-}
+        let notificationList = document.getElementById('notification');
+        let notificationItem = document.createElement('li');
+        notificationItem.textContent = message;
+        notificationList.appendChild(notificationItem);
+
+    }
 
 /*]]>*/

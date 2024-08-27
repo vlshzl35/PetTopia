@@ -12,6 +12,10 @@ import com.sh.pettopia.kakaopay.dto.KakaoPayReadyResponse;
 import com.sh.pettopia.kakaopay.service.PayService;
 import com.sh.pettopia.ncpTest.FileDto;
 import com.sh.pettopia.ncpTest.FileService;
+import com.sh.pettopia.parktj.petsitterfinder.dto.ReservationRequestDto;
+import com.sh.pettopia.parktj.petsitterfinder.dto.ReservationResponseDto;
+import com.sh.pettopia.parktj.petsitterfinder.entity.ReservationByPetSitter;
+import com.sh.pettopia.parktj.petsitterfinder.service.CareRegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -35,6 +39,8 @@ public class PetSitterController {
     private final ReservationService reservationService;
     private final SittingService sittingService;
     private final PetSitterReviewService petSitterReviewService;
+    // 박태준 추가
+    private final CareRegistrationService careRegistrationService;
 
 
     //여기서는 회원=펫시터이기 때문에, /registerprofile/{memeberId} 이렇게 와야한다 그러므로 dto에 memeberId가 온다
@@ -361,6 +367,12 @@ public class PetSitterController {
         model.addAttribute("sittinglist", sittingDtoList);
         model.addAttribute("reservationDtoList", reservationDtoList);
 
+
+        // 박태준 추가 (돌봐주세요)
+        PetSitter petSitter = petSitterService.findOneByPetSitter(principal.getMember().getEmail());
+        List<ReservationResponseDto> reservation = careRegistrationService.findReservationByPetSitter(petSitter);
+        model.addAttribute("pleaseCareReservationDtos", reservation);
+        log.debug("pleaseCareReservationDtos = " + reservation);
     }
 
     @PostMapping("/reservationOk")
@@ -518,5 +530,32 @@ public class PetSitterController {
         model.addAttribute("petSitterList",petSitterList);
         model.addAttribute("address",address);
         return "petsitter/list";
+    }
+
+    // 박태준 추가 (돌봐주세요, 돌봄 시작 버튼)
+    @PostMapping("/startCare")
+    public String StartCare(@RequestParam(value = "reservationId") Long reservationId,
+                            @RequestParam(value = "postId") Long postId,
+                            RedirectAttributes redirectAttributes) {
+          try{
+              careRegistrationService.startReservation(reservationId);
+              redirectAttributes.addFlashAttribute("message", "돌봄을 시작합니다.");
+
+          } catch (IllegalStateException e){
+             redirectAttributes.addFlashAttribute("message", "돌봄 시작을 실패하셨습니다");
+          }
+          return "redirect:/petsitter/schedule";
+    }
+    // 박태준 추가 (돌봐주세요, 돌봄 완료 요청 버튼)
+    @PostMapping("/careCompletionRequest")
+    public String careCompletionRequest(@RequestParam(value = "reservationId") Long reservationId,
+                                      RedirectAttributes redirectAttributes) {
+        try {
+            careRegistrationService.careCompletionRequest(reservationId);
+
+        }catch (IllegalStateException e){
+            redirectAttributes.addFlashAttribute("message","돌봄완료 요청을 실패하였습니다.");
+        }
+        return "redirect:/petsitter/schedule";
     }
 }

@@ -50,7 +50,7 @@ public class CommentController {
         CareRegistration careRegistration = careRegistrationService.findOneByPostId(commentDTO.getPostId());
         if(!careRegistration.getMemberId().equals(authPrincipal.getMember().getId())) {
             String notificationMessage = commentDTO.getPostId() + "번 게시글에" + commentDTO.getMemberId() + "회원이 댓글을 남겼습니다.";
-            messagingTemplate.convertAndSend("/topic/petsitterfinder", notificationMessage);
+            messagingTemplate.convertAndSend("/topic/", notificationMessage);
         }else {
             redirectAttributes.addFlashAttribute("commentDTO", commentDTO);
 
