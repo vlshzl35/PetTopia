@@ -17,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+//import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +33,7 @@ import java.util.List;
 @Slf4j
 public class CommentController {
     private final CommentService commentService;
-    private final SimpMessagingTemplate messagingTemplate;
+//    private final SimpMessagingTemplate messagingTemplate;
     private final CareRegistrationService careRegistrationService;
 
 
@@ -48,13 +48,13 @@ public class CommentController {
         log.debug("로그인한 회원 정보 확인 " + authPrincipal.getMember().getId());//WebSocket
 
         CareRegistration careRegistration = careRegistrationService.findOneByPostId(commentDTO.getPostId());
-        if(!careRegistration.getMemberId().equals(authPrincipal.getMember().getId())) {
-            String notificationMessage = commentDTO.getPostId() + "번 게시글에" + commentDTO.getMemberId() + "회원이 댓글을 남겼습니다.";
-            messagingTemplate.convertAndSend("/topic/petsitterfinder", notificationMessage);
-        }else {
-            redirectAttributes.addFlashAttribute("commentDTO", commentDTO);
-
-        }
+//        if(!careRegistration.getMemberId().equals(authPrincipal.getMember().getId())) {
+//            String notificationMessage = commentDTO.getPostId() + "번 게시글에" + commentDTO.getMemberId() + "회원이 댓글을 남겼습니다.";
+//            messagingTemplate.convertAndSend("/topic/petsitterfinder", notificationMessage);
+//        }else {
+//            redirectAttributes.addFlashAttribute("commentDTO", commentDTO);
+//
+//        }
 
 
         if (saveResult != null) {
