@@ -40,30 +40,63 @@ public class ReservationByPetSitter {
     @Column(name="created_date")
     private LocalDate createdDate;
 
+    @Column(name = "member_id")
+    private Long memberId;
+
+    @Column(name ="start_date")
+    private LocalDate startDate;
+
+    @Column(name ="end_date")
+    private LocalDate endDate;
+
+    @Column(name = "address")
+    private String address;
+
     public static ReservationByPetSitter toReservationEntity(PetSitter petSitter, CareRegistration careRegistration) {
         ReservationByPetSitter reservationByPetSitter = new ReservationByPetSitter();
         reservationByPetSitter.setPetSitter(petSitter);
-        reservationByPetSitter.setReservationStatus(ReservationStatus.요청대기);
+        reservationByPetSitter.setReservationStatus(ReservationStatus.PENDING);
         reservationByPetSitter.setPostId(careRegistration.getPostId());
         reservationByPetSitter.setCreatedDate(LocalDate.now());
+        reservationByPetSitter.setMemberId(careRegistration.getMemberId());
+        reservationByPetSitter.setStartDate(careRegistration.getRequestStartDate());
+        reservationByPetSitter.setEndDate(careRegistration.getRequestEndDate());
+        reservationByPetSitter.setAddress(careRegistration.getAddress());
+
         return reservationByPetSitter;
     }
     public void advanceStatus() {
         switch (this.reservationStatus){
-            case 요청대기:
-                this.reservationStatus = ReservationStatus.요청수락;
+            case PENDING:
+                this.reservationStatus = ReservationStatus.REQUEST_ACCEPTED;
                 break;
-            case 요청수락:
-                this.reservationStatus = ReservationStatus.돌봄중;
+            case REQUEST_ACCEPTED:
+                this.reservationStatus = ReservationStatus.IN_CARE;
                 break;
-            case 돌봄중:
-                this.reservationStatus = ReservationStatus.돌봄완료;
+            case IN_CARE:
+                this.reservationStatus = ReservationStatus.CARE_COMPLETE;
                 break;
 
         }
     }
     public void rejectReservation(){
-        this.reservationStatus = ReservationStatus.요청거절;
+        this.reservationStatus = ReservationStatus.REQUEST_REJECTED;
+    }
+
+    public void acceptRequest() {
+        this.reservationStatus = ReservationStatus.REQUEST_ACCEPTED;
+    }
+
+    public void startRequest() {
+        this.reservationStatus = ReservationStatus.IN_CARE;
+    }
+
+    public void careCompletionRequest() {
+        this.reservationStatus = ReservationStatus.CARE_COMPLETION_REQUEST;
+    }
+
+    public void completeReservation() {
+        this.reservationStatus = ReservationStatus.CARE_COMPLETE;
     }
 }
 

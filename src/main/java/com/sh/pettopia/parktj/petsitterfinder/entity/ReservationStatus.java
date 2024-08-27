@@ -4,7 +4,14 @@ import lombok.Getter;
 
 @Getter
 public enum ReservationStatus {
-    요청대기("요청대기"), 요청수락("요청수락"), 돌봄중("돌봄중"), 돌봄완료("돌봄완료"), 요청거절("요청거절");
+    PENDING("PENDING"),
+    REQUEST_ACCEPTED("REQUEST_ACCEPTED"),
+    IN_CARE("IN_CARE"),
+    CARE_COMPLETE("CARE_COMPLETE"),
+    REQUEST_REJECTED("REQUEST_REJECTED"),
+    CARE_COMPLETION_REQUEST("CARE_COMPLETION_REQUEST"),
+    START_OF_CARE("START_OF_CARE"),
+    STANDING_BY_SITTING("STANDING_BY_SITTING");
 
     private final String reservationStatus;
 
@@ -12,4 +19,5 @@ public enum ReservationStatus {
         this.reservationStatus = reservationStatus;
 
     }
+
 }

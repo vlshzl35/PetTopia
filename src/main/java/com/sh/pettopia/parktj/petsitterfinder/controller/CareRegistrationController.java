@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -132,7 +132,7 @@ public class CareRegistrationController {
         return "redirect:/petsitterfinder/careregistrationlist";
     }
 
-//    private final SimpMessagingTemplate messagingTemplate;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @PostMapping("/reservation")
     public ResponseEntity<String>  reservation(
@@ -199,6 +199,7 @@ public class CareRegistrationController {
 
     @PostMapping("/reservation/{reservationId}/reject")
     public String reservationReject(@PathVariable Long reservationId, @RequestParam Long postId , RedirectAttributes redirectAttributes, Model model) {
+        log.debug("reservationId={}", reservationId);
         try {
              careRegistrationService.rejectReservation(reservationId);
             redirectAttributes.addFlashAttribute("message", "요청이 거절 되었습니다.");

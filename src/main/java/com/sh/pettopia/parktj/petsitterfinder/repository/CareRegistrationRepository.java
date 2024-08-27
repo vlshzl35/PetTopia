@@ -1,5 +1,7 @@
 package com.sh.pettopia.parktj.petsitterfinder.repository;
 
+import com.sh.pettopia.choipetsitter.entity.PetSitter;
+import com.sh.pettopia.parktj.petsitterfinder.dto.ReservationResponseDto;
 import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,5 +21,5 @@ public interface CareRegistrationRepository extends JpaRepository<CareRegistrati
 
     CareRegistration findOneByPostId(Long postId);
 
-//    void updateByPostIdAndMemberId(Long postId, Long memberId);
+
 }

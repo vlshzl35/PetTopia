@@ -1,5 +1,6 @@
 package com.sh.pettopia.parktj.petsitterfinder.dto;
 
+import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;
 import com.sh.pettopia.parktj.petsitterfinder.entity.ReservationByPetSitter;
 import com.sh.pettopia.parktj.petsitterfinder.entity.ReservationStatus;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ public class ReservationResponseDto {
 
     private String introduce;
 
-    private String address;
+//    private String address;
 
     private ReservationStatus status;
 
@@ -31,6 +32,14 @@ public class ReservationResponseDto {
 
     private String message;
 
+    private Long memberId;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
+
+    private String address;
+
 
     public static ReservationResponseDto fromReservations(ReservationByPetSitter reservationByPetSitters){
         return ReservationResponseDto.builder()
@@ -41,6 +50,10 @@ public class ReservationResponseDto {
                 .reservationId(reservationByPetSitters.getReservationId())
                 .postId(reservationByPetSitters.getPostId())
                 .createdDate(reservationByPetSitters.getCreatedDate())
+                .memberId(reservationByPetSitters.getMemberId())
+                .startDate(reservationByPetSitters.getStartDate())
+                .endDate(reservationByPetSitters.getEndDate())
+                .address(reservationByPetSitters.getAddress())
                 .build();
     }
     public ReservationResponseDto(String message){
