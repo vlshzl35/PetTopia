@@ -2,102 +2,44 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{layout/default}">
 <head>
-    <title>vet 제목 써</title>
-<!--    펫시터 찾기 btn css -->
-    <style>
-        .right-align{
-            align-content: end;
-            float: right;
-
-        }
-        .btn-link {
-            border: 1px solid #1e7e34;
-            font-size: 30px;
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            display: inline-block;
-            background-color: green;
-            border-radius: 4px;
-        }
-
-        .btn-link:hover {
-            background-color: #45a049;
-        }
-    </style>
-
-    <!--
-  - 타임 리프 문법을 써야 하니 href에 th:꼭 붙여서 사용하세요
-  - 헤더에서 각 페이지로 넘어가는 링크가 되어있고, HomeController 클래스에서 GetMapping 메소드로 이동을 합니다
-  - 나중에 각 페이지를 쓰게 되면, 디렉토리를 만들어서 이동하고 MVC패턴을 쓰면됩니다
-  - JavaScript, CSS는 fragments -> header에 다 있습니다 (메인 기준 CSS위에, js는 아래에 있어야 작동이 되는거 같습니다)
-
-  단축키
-  1. 컨트롤+알트+쉬프트+L = 현재 페이지 코드 자동정렬입니다
-  2. 컨트롤+R = 현재페이지 찾아바꾸기 입니다
-  -->
-
-<!--
-        8/11 박태준 할일
-        - 펫시터 찾기를 통해 입력된 값이 list에 바로 보여야됨
-        - 최근에 작성된게 가장 위로 올라오도록
-        - 요청일~ 끝나는 날짜, 원하느는 서비스와 주소정도가 보여지면 좋을 것 같음
-        - 근데 어떻게 보여줘야하지? 데이터베이스의 값이 뜨도록
-        - 서버에서 -> 클라이언트로 보여지는 것이기 때문에 Entity 를 dto로 바꿔서 화면에 뿌려줘야할 것 같음
-        - responseDto에 화면단에 model.attribute로 뿌려주자
-
-
--->
-
+    <title>펫시터 구하기</title>
+    <!-- 펫시터 찾기 btn css -->
+    <link href="/css/petsitter-finder/careregistrationlist.css" rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="main" class="page-body">
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('/images/dogzzal.jpg'); height: 500px; background-size: cover;background-attachment: fixed; background-position: center center;">
-
-
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row no-gutters slider-text align-items-end">
-                <div class="col-md-9 ftco-animate pb-5">
-<!--                    <p class="breadcrumbs mb-2"><span class="mr-2"><a th:href="@{/}">Home <i class="ion-ios-arrow-forward"></i></a></span>-->
-                        <span> 펫시팅
-<!--							<i class="ion-ios-arrow-forward"></i>-->
-						</span>
-<!--                    </p>-->
-                    <h1 class="mb-0 bread">펫시터 찾기</h1>
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 ftco-animate">
+                    <div class="header-container">
+                        <div class="header-text">
+                            <h1 class="mb-0 find-sitter">돌봐주세요</h1>
+                            <p>원하는 조건으로 펫시터를 구해보세요!</p>
+                            <a th:href="@{/petsitterfinder/careregistrationform}" class="findSitterButton">돌봐주세요 게시글 등록하러 가기</a>
+                        </div>
+                        <img src="/svg/brownDog.svg" class="main-image" style="margin-top: 10px">
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-
-
     <section class="ftco-section bg-light">
         <div class="container">
-<!--                <input type="text" placeholder="주소를 입력해주세요"  id="searchAddress">-->
-<!--                <div>-->
-<!--                    <button type="button" onclick="alert('검색합니다')" style="width: 30px; height: 30px; background-image: url(/images/searchbtn.PNG);" >-->
-<!--                    </button> &lt;!&ndash;여기서 동네 조건 검색을 한다&ndash;&gt;-->
-<!--                </div>-->
-                <div class="right-align" >
-                    <a th:href="@{/petsitterfinder/careregistrationform}" class="btn-link"> 펫시터 찾기 </a>
-<!--                    펫시터 찾는 요청폼으로 이동함-->
-                </div>
-
             <div class="row">
-                <div th:each="list : ${lists}" >
-
+                <div th:each="list : ${lists}" class="petList">
                     <a th:href="|@{/petsitterfinder/careregistrationdetails?postId=}${list.postId}|">
                         <div class="staff">
                             <div class="img-wrap d-flex align-items-stretch">
-                                <img  th:src="${list.profile}" width=" 300px" height="300px"/>
+                                <img th:src="${list.profile}" width="300px" height="300px"/>
                             </div>
-                            <div class=" pt-3 px-3 pb-4">
+                            <div class="pt-3 px-3 pb-4">
                                 <div>
-                                    <span id="address" th:text = "'주소 : ' + ${list.address}"></span><br>
-                                    <span id="petName" th:text = "'이름 : ' + ${list.petName}"></span><br>
-                                    <span id="startDate" th:text = "'요청 시작 날짜 : ' + ${list.startDate}"></span><br>
-                                    <span id="endDate" th:text = "' 요청 종료 날짜 : ' + ${list.endDate}"></span>
+                                    <span id="address" th:text="'주소 : ' + ${list.address}"></span><br>
+                                    <span id="petName" th:text="'이름 : ' + ${list.petName}"></span><br>
+                                    <span id="startDate" th:text="'요청 시작 날짜 : ' + ${list.startDate}"></span><br>
+                                    <span id="endDate" th:text="'요청 종료 날짜 : ' + ${list.endDate}"></span>
                                 </div>
                             </div>
                         </div>
@@ -123,4 +65,3 @@
 </div>
 </body>
 </html>
-

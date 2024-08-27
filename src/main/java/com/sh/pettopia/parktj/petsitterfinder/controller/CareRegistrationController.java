@@ -139,6 +139,7 @@ public class CareRegistrationController {
             @ModelAttribute ReservationRequestDto reservationRequestDto,
             RedirectAttributes redirectAttributes){
 
+
        log.debug("reservationRequestDto={}", reservationRequestDto);
        PetSitter petSitter = petSitterService.findOneByPetSitter(reservationRequestDto.getMemberEmail());
        CareRegistration careRegistration = careRegistrationService.findOneByPostId(reservationRequestDto.getPostId());
@@ -150,8 +151,8 @@ public class CareRegistrationController {
         Long currentPostId = careRegistration.getPostId();
 
         //WebSocket
-        String notificationMessage = reservationInfo.getPostId() + "번 게시물에 " + petSitter.getPetSitterId() + "펫시터가 해당게시글에 대한 예약을 요청했습니다..";
-        messagingTemplate.convertAndSend("/topic/", notificationMessage);
+//        String notificationMessage = reservationInfo.getPostId() + "번 게시물에 " + petSitter.getPetSitterId() + "펫시터가 해당게시글에 대한 예약을 요청했습니다..";
+//        messagingTemplate.convertAndSend("/topic/petsitterfinder", notificationMessage);
         // 이 코드는 서버에서 클라이언트에게 실시간으로 메세지를 보내는 역할을 함
         // - messagingTemplate
         // : Spring에서 제공하는 객체로 , 메세지를 전송하는 역할을함
@@ -208,9 +209,9 @@ public class CareRegistrationController {
         }
 
         return "redirect:/petsitterfinder/reservation?postId="+postId;
+
+
     }
-
-
 
     /**
      * // Javascript에서 enum값 여러개 받아오는 것 forEach

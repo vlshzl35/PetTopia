@@ -43,8 +43,14 @@ public class MemberRegistRequestDto {
     // 생년 월일
     private LocalDate birth;
 
+    // 우편 번호
+    private String postCode;
+
     // 주소
     private String address;
+
+    // 상세 주소
+    private String detailAddress;
 
     public Member toMember() {
         return Member.builder()
@@ -56,7 +62,9 @@ public class MemberRegistRequestDto {
                 .phone(this.phone)
                 .gender(this.gender)
                 .birth(this.birth)
+                .postCode(this.postCode)
                 .address(this.address)
+                .detailAddress(this.detailAddress)
                 .createdAt(LocalDate.now())
                 .sitterStatus(SitterStatus.NONE)
                 .build();

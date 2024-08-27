@@ -5,7 +5,7 @@
     <title>반려견 등록</title>
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-    <link rel="stylesheet" href="/css/petRegist.css">
+    <link rel="stylesheet" href="/css/pet/registPet.css">
 
 </head>
 <body>
@@ -27,9 +27,7 @@
 
                             <!-- 반려견 등록 폼 -->
                             <div class="row justify-content-center" style="display: flex; flex-direction: column; align-items: center;">
-                                <img id = "preview" src="/images/KakaoTalk_20240527_201110282.jpg" alt="댕댕쓰 사진" height="400px" width="400px"
-                                     style="border: #00bd56; border-radius: 50%; margin-bottom:5px;">
-
+                                <img src='/images/pet/dog_10656026.jpg' class="petImage">
                                 <h5>댕댕이 사진</h5>
                             </div>
                             <div class="form-group">
@@ -174,30 +172,6 @@
         </svg>
     </div>
 
-    <script>
-
-        // 펫 등록되고 나서 alert 해주기 위함입니다.
-        function isValid() {
-            if (true) {
-                alert('🐶펫 등록이 완료되었습니다!🐶')
-            }
-        }
-    </script>
-
-    <script>
-
-        function previewImage(event) {
-            const reader = new FileReader();  // FileReader 객체 생성
-            reader.onload = function() {
-                const output = document.getElementById('preview');  // 미리보기 이미지 태그
-                output.src = reader.result;  // 이미지 태그의 src 속성에 데이터 URL 설정
-            };
-            if (event.target.files && event.target.files[0]) {
-                reader.readAsDataURL(event.target.files[0]);  // 파일 내용을 읽어 데이터 URL로 변환
-            }
-        }
-    </script>
-
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -207,6 +181,7 @@
             crossorigin="anonymous"></script>
 
 
+    <script layout:fragment="js" th:src="@{/js/pet/registPet.js}"></script>
 </div>
 
 </body>

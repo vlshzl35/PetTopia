@@ -1,0 +1,130 @@
+/* 기본 버튼 스타일 */
+.btn-outline-primary {
+    border-color: #00bd56 !important;
+    color: #00bd56 !important;
+    margin: 0;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* 버튼 호버 시 스타일 */
+.btn-outline-primary:hover {
+    background-color: #00bd56;
+    color: white;
+}
+
+/* 라디오 버튼 체크 시 라벨에 스타일 적용 */
+input[type="radio"]:checked + label.btn-outline-primary {
+    background-color: #00bd56 !important;
+    color: white !important;
+    box-shadow: 0 0 10px #00bd56 !important;
+}
+
+/* 클릭 시 버튼 상태 유지 */
+.btn-outline-primary:not(:disabled):not(.disabled):active,
+.btn-outline-primary:not(:disabled):not(.disabled).active,
+.show > .btn-outline-primary.dropdown-toggle {
+    background-color: #00bd56 !important;
+    color: white !important;
+    box-shadow: 0 0 10px #00bd56 !important;
+}
+
+/* 라벨에 커서를 올렸을 때의 스타일 */
+label.btn-outline-primary:hover {
+    background-color: #00bd56 !important;
+    color: white !important;
+    box-shadow: 0 0 10px #00bd56 !important;
+}
+
+/* 클릭 시 버튼 상태 유지 */
+.btn-outline-primary:active {
+    background-color: #00bd56;
+    color: white;
+    box-shadow: 0 0 10px #00bd56;
+}
+
+/* 이미지 스타일 */
+.petImage {
+    height: 400px;
+    width: 400px;
+    border: 3px solid #00bd56; /* 테두리 두께를 5px로 설정 */
+    border-radius: 50%; /* 둥근 테두리 */
+    margin-bottom: 5px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+}
+
+/* 이미지에 마우스를 올렸을 때 확대 및 그림자 효과 */
+.petImage:hover {
+    border-color: #00bd56;
+    transform: scale(1.05);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.form-row {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.form-group .form-control {
+    display: inline-block;
+    padding: 0.75rem;
+    border: 1px solid #00bd56;
+    border-radius: 5px;
+    width: 100%;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 인풋 포커스 시 테두리 및 그림자 효과 */
+.form-group .form-control:focus {
+    border-color: #00bd56;
+    /*box-shadow: 0px 0px 5px rgba(0, 146, 77, 0.5);*/
+}
+
+/* 버튼에 애니메이션 효과 추가 */
+.form-group .form-control.btn {
+    width: 100px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-primary {
+    width: 100%;
+    display: block;
+    padding: 1rem;
+    background-color: #00bd56;
+    color: white;
+    font-size: 1.25rem;
+    border-radius: 10px;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* 버튼에 호버 시 크기 변화와 그림자 효과 추가 */
+.btn-primary:hover {
+    background-color: #00924d;
+    transform: scale(1.05);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+    writing-mode: horizontal-tb;
+    font-weight: bold;
+    color: #00bd56;
+}
+
+.btn-group-toggle .btn {
+    margin: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+

@@ -2,6 +2,8 @@
 package com.sh.pettopia.mypage.controller;
 
 import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
+import com.sh.pettopia.Hojji.pet.entity.Pet;
+import com.sh.pettopia.Hojji.pet.service.PetService;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import com.sh.pettopia.choipetsitter.dto.OrderDto;
 import com.sh.pettopia.choipetsitter.dto.PetSitterReviewDto;
@@ -10,12 +12,18 @@ import com.sh.pettopia.choipetsitter.dto.SittingDto;
 import com.sh.pettopia.choipetsitter.entity.*;
 import com.sh.pettopia.choipetsitter.repository.ReservationRepository;
 import com.sh.pettopia.choipetsitter.service.*;
+import com.sh.pettopia.choipetsitter.service.OrderService;
+import com.sh.pettopia.choipetsitter.service.PetSitterReviewService;
+import com.sh.pettopia.choipetsitter.service.ReservationService;
+import com.sh.pettopia.choipetsitter.service.SittingService;
+import com.sh.pettopia.mypage.dto.PesitterQualificationRegistRequestDto;
 import com.sh.pettopia.mypage.dto.ProfileUpdateRequestDto;
 import com.sh.pettopia.mypage.service.MyPageService;
 import com.sh.pettopia.parktj.petsitterfinder.dto.ReservationResponseDto;
 import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;
 import com.sh.pettopia.parktj.petsitterfinder.entity.ReservationByPetSitter;
 import com.sh.pettopia.parktj.petsitterfinder.service.CareRegistrationService;
+import com.sh.pettopia.parktj.petsitterfinder.dto.PetDetailsResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -40,7 +48,7 @@ public class MyPageController {
     private final OrderService orderService;
     private final CareRegistrationService careRegistrationService;
     private final PetSitterService petSitterService;
-
+    private final PetService petService;
     @GetMapping("/mypage")
     public void mypage(@AuthenticationPrincipal AuthPrincipal authPrincipal,
                        Model model) {
@@ -140,6 +148,34 @@ public class MyPageController {
         }catch (IllegalStateException e) {
             redirectAttributes.addFlashAttribute("message", "돌봄 완료 상태변경을 실패하였습니다.");
         }
+        return "redirect:/mypage/mypage";
+    }
+
+    @GetMapping("/mypage/petDetails")
+    @ResponseBody
+    public List<PetDetailsResponseDto> getPets(@AuthenticationPrincipal AuthPrincipal authPrincipal) {
+        Member member = authPrincipal.getMember();
+        Long memberId = member.getId();
+        List<PetDetailsResponseDto> pets = petService.findAllByMemberId(memberId);
+        log.debug("pets = {}", pets);
+        return pets;
+    }
+
+    @GetMapping("/petsitterRegist")
+    public void pesitterQualificationRegist() {
+
+    }
+
+    @PostMapping("/petsitterRegist")
+    public String pesitterQualificationRegist(@ModelAttribute PesitterQualificationRegistRequestDto dto,
+                                              @AuthenticationPrincipal AuthPrincipal authPrincipal,
+                                              RedirectAttributes redirectAttributes) {
+        Member member = authPrincipal.getMember();
+        Long memberId = member.getId();
+        dto.setId(memberId);
+        log.debug("dto = {}",dto);
+        myPageService.regist(dto);
+        redirectAttributes.addFlashAttribute("message", "신청이 완료되었습니다!");
         return "redirect:/mypage/mypage";
     }
 }

@@ -36,6 +36,17 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+  <style>
+    /* 테이블의 padding과 margin을 줄여 요소들을 더 가깝게 배치 */
+    table.table td, table.table th {
+      padding: 8px; /* 기본 padding 값에서 줄여서 간격을 좁게 설정 */
+    }
+
+    /* 버튼 간 간격을 줄이기 위해 margin 값 조정 */
+    .btn {
+      margin: 2px; /* 버튼 간의 간격을 줄이기 위해 margin 값을 최소화 */
+    }
+  </style>
 </head>
 
 <body>
@@ -293,7 +304,7 @@
           <li>
             <a th:href="@{/admin/sitterList}">
               <i class="bi bi-circle"></i>
-              <span>펫시터 회원관리</span>
+              <span>펫시터 회원</span>
             </a>
           </li>
         </ul>
@@ -366,8 +377,9 @@
             <!-- 제목 영역 -->
             <div class="card-body">
               <div class="d-flex align-items-center justify-content-between mb-3">
-                <h1 class="card-title" style="font-size: 2rem; font-weight: bold; color: #2c3e50; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); font-family: 'Helvetica Neue', Arial, sans-serif;">펫시터 회원</h1>
-                <button type="button" class="btn btn-outline-primary" id="requestSitter">시터 요청 목록</button>
+                <h1 class="card-title" style="font-size: 2rem; font-weight: bold; color: #2c3e50; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); font-family: 'Helvetica Neue', Arial, sans-serif;">시터 승인 대기 목록</h1>
+                <button type="button" class="btn btn-outline-primary" id="requestSitter" th:onclick="|location.href='@{/admin/sitterList}'|">펫시터 회원 보기</button>
+
               </div>
               <!-- 테이블 영역 -->
               <table class="table">
@@ -375,20 +387,28 @@
                   <tr>
                     <th>No.</th>
                     <th>이름</th>
-                    <th>닉네임</th>
                     <th>이메일</th>
-                    <th>성별</th>
                     <th>전화번호</th>
+                    <th>신청서 보기</th>
+                    <th>수락</th>
+                    <th>거절</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr th:each="sitter : ${sitters}">
-                    <td th:text="${sitter.id}"></td>
-                    <td th:text="${sitter.name}"></td>
-                    <td th:text="${sitter.nickName}"></td>
-                    <td th:text="${sitter.email}"></td>
-                    <td th:text="${sitter.gender}"></td>
-                    <td th:text="${sitter.phone}"></td>
+                  <tr th:each="pendingMember : ${pendingMembers}">
+                    <td th:text="${pendingMember.id}"></td>
+                    <td th:text="${pendingMember.name}"></td>
+                    <td th:text="${pendingMember.email}"></td>
+                    <td th:text="${pendingMember.phone}"></td>
+                    <td>
+                      <a th:href="@{/userProfile/{id}(id=${pendingMember.id})}">자세히</a>
+                    </td>
+                    <td>
+                      <button class="btn btn-success" th:attr="onclick='updateSitterStatus(' + ${pendingMember.id} + ', \'APPROVED\')'">승인</button>
+                    </td>
+                    <td>
+                      <button class="btn btn-danger" th:attr="onclick='updateSitterStatus(' + ${pendingMember.id} + ', \'NONE\')'">거절</button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -397,7 +417,6 @@
         </div>
       </div>
     </section>
-
   </main><!-- End #main -->
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
@@ -413,6 +432,7 @@
     </div>
   </footer><!-- End Footer -->
 
+
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
@@ -427,5 +447,30 @@
 
   <!-- Template Main JS File -->
   <script src="/assets/js/main.js"></script>
+  <!-- ajax -->
+  <script>
+
+    function updateSitterStatus(memberId, status) {
+      fetch(`/admin/updateSitterStatus/${memberId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: status })
+      })
+              .then(response => {
+                if (response.ok) {
+                  alert('상태가 성공적으로 업데이트되었습니다.');
+                  location.reload(); // 페이지 새로고침
+                } else {
+                  alert('상태 업데이트에 실패했습니다.');
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                alert('상태 업데이트 중 오류가 발생했습니다.');
+              });
+    }
+  </script>
 </body>
 </html>

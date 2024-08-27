@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "User")
@@ -52,7 +53,7 @@ public abstract class User {
             name = "tbl_authority",
             joinColumns = @JoinColumn(name = "member_id") //
     )
-    private Set<Authority> authorities;
+    private Set<Authority> authorities = new HashSet<>();
 
     public void setDefaultAuthorities() {
         this.authorities = Set.of(Authority.ROLE_MEMBER);
