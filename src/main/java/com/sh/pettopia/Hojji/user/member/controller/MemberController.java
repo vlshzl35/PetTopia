@@ -26,7 +26,6 @@ public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
     private final FileService fileService;
-//    private final AuthService authService;
 
     @Value("${profile.value}")
     private String value;

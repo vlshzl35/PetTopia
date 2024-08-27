@@ -24,7 +24,7 @@ function duplicateEmailCheck() {
     }
 
     $.ajax({
-        url: '[[@{/member/sameEmailCheck}]]', // 대괄호를 꼭 써줘야 한다, 그렇지 않으면 controller로 넘어가지 않는다.
+        url: '/member/sameEmailCheck', // 대괄호를 꼭 써줘야 한다, 그렇지 않으면 controller로 넘어가지 않는다.
         method: 'post',
         data: {
             memberEmail: memberEmail.value
@@ -105,10 +105,14 @@ function sample6_execDaumPostcode() {
             } else {
                 document.getElementById("sample6_extraAddress").value = '';
             }
-
             document.getElementById('sample6_postcode').value = data.zonecode;
             document.getElementById("sample6_address").value = addr;
             document.getElementById("sample6_detailAddress").focus();
+
+            console.log(document.getElementById('sample6_postcode').value);
+            console.log(document.getElementById('sample6_address').value);
+            console.log(document.getElementById('sample6_detailAddress').value);
+            console.log(document.getElementById('sample6_extraAddress').value);
         }
     }).open();
 }
@@ -116,7 +120,13 @@ function sample6_execDaumPostcode() {
 // 핸드폰 번호 입력시, 숫자만 입력 가능함을 알려주는 코드입니다.
 function validatePhoneInput(input) {
     const originalValue = input.value;
-    const sanitizedValue = originalValue.replace(/[^0-9]/g, '');
+    let sanitizedValue = originalValue.replace(/[^0-9]/g, '');
+
+    // 11자리까지만 허용
+    if (sanitizedValue.length > 11) {
+        sanitizedValue = sanitizedValue.substring(0, 11);
+        alert('핸드폰 번호는 최대 11자리까지 입력 가능합니다.');
+    }
 
     if (originalValue !== sanitizedValue) {
         alert('숫자만 입력 가능합니다.');
