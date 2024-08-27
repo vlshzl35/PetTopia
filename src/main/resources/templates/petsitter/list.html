@@ -24,7 +24,7 @@
         </div>
     </section>
 
-    <section class="ftco-section bg-light">
+    <section class="ftco-section">
         <div class="container">
             <div class="search-section">
                 <div class="autocomplete-wrapper">
@@ -37,26 +37,32 @@
                     </form>
                 </div>
             </div>
-        </div>
-    </section>
-
-
-    <section class="ftco-section bg-light">
-        <div class="container">
-            <div class="row">
-                <div th:each="petSitter, stat : ${petSitterList}"
-                     th:object="${petSitter}" class="petList">
-                    <a th:href="@{|/petsitter/detail/${petSitter.petSitterId}|}">
+            <div class="row" id="petSitterListContainer">
+                <div class="col-md-6 col-lg-3 ftco-animate" th:each="petSitterDto, stat : ${petSitterListDtoList}"
+                     th:object="${petSitterDto}">
+                    <a th:href="@{|/petsitter/detail/${petSitterDto.petSitterId}|}"><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
                         <div class="staff">
                             <div class="img-wrap d-flex align-items-stretch">
-                                <img th:src="${petSitter.mainImageUrl}" width="300px" height="300px"/>
+                                <div class="image-box">
+                                    <img class="image-thumbnail" th:src="${petSitterDto.mainImageUrl}"
+                                         alt="Profile Image"/>
+                                </div>
                             </div>
-                            <div class="pt-3 px-3 pb-4">
+                            <div class=" pt-3 px-3 pb-4">
+                                <span class="position mb-2"
+                                      th:text="${petSitterDto.address}">사용자 주소</span>
                                 <div>
-                                    <span id="address" th:text="${petSitter.petSitterAddress.address}"></span><br>
-                                    <span id="starRating" >별점 : 4.5</span><br>
-                                    <span id="review">후기 : 100개</span><br>
-                                    <span th:text="${petSitter.oneLineIntroduce}"></span>
+                                    <div>
+                                        <span>별점 : </span>
+                                        <span id="starRating" th:text="${petSitterDto.starRating != null ? petSitterDto.starRating : 0}">별점:</span>
+                                    </div>
+                                    <div>
+                                        <span>후기 : </span>
+                                        <span id="review" th:text="${petSitterDto.reviewCnt != null ? petSitterDto.reviewCnt  : 0}">후기 :</span>
+                                    </div>
+                                </div>
+                                <div class="faded">
+                                    <p th:text="${petSitterDto.oneLineIntroduce}"></p>
                                 </div>
                             </div>
                         </div>
