@@ -1,0 +1,140 @@
+.hero-wrap {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-size: cover;
+    background-position: center center;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.breadcrumbs, .bread {
+    color: white;
+}
+
+.post-container {
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #fff;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 15px;
+}
+
+.post-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.post-meta {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.post-body {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    color: #555;
+    font-size: 1.1rem;
+}
+
+.post-footer {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 2px solid #e0e0e0;
+    padding-top: 15px;
+}
+
+.post-footer button {
+    margin-left: 10px;
+}
+
+.btn-custom {
+    background-color: #00bd56;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn-custom:hover {
+    background-color: #009e46;
+    color: white;
+}
+
+.comment-list .comment {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.comment-list .vcard img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.comment-reply {
+    margin-left: 50px;
+    margin-top: 10px;
+}
+
+.comment-reply .form-group {
+    margin-bottom: 10px;
+}
+
+textarea.form-control {
+    resize: none;
+    overflow: hidden;
+    min-height: 40px;
+}
+
+textarea.form-control:focus {
+    height: auto;
+}
+
+.comment-list li .comment-body {
+    float: left;
+}
+
+.btn {
+    font-size: 16px;
+    padding: 10px 20px;
+}
+
+.post-comment-headers {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.delete-comment {
+    font-size: 12px;
+    padding: 3px 7px;
+}
+
+.post-headers {
+    gap: 8px;
+}
