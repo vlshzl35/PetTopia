@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/default}">
+<head>
+    <title>펫시터 자격 신청</title>
+</head>
+<body>
+<div layout:fragment="main" class="page-body">
+    <div id="petSitterSection">
+        <h3>펫시터 자격 신청</h3>
+        <!-- form 태그에 action과 method 속성 추가 -->
+        <form th:action="@{/mypage/petsitterRegist}" method="post">
+            <div class="form-group">
+                <label for="name">이름:</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="이름을 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="birthday">생년월일:</label>
+                <input type="date" class="form-control" id="birthday" name="birth" placeholder="생년월일을 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="ssn">주민등록번호 (형식: 123456-7):</label>
+                <input type="text" class="form-control" id="ssn" name="personalIdentificationNumber" placeholder="주민등록번호를 입력하세요 (형식: 123456-7)" maxlength="8">
+            </div>
+            <div class="form-group">
+                <label for="phone">연락처:</label>
+                <input type="text" class="form-control" id="phone" name="phone" placeholder="연락처를 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="smoking">흡연 여부:</label>
+                <select class="form-control" id="smoking" name="smokingStatus">
+                    <option value="yes">예</option>
+                    <option value="no">아니오</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="address">거주지 주소:</label>
+                <input type="text" class="form-control" id="address" name="address" placeholder="거주지 주소를 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="currentJob">현재 하는 일:</label>
+                <input type="text" class="form-control" id="currentJob" name="job" placeholder="현재 하는 일을 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="petExperience">반려 경험 유무:</label>
+                <select class="form-control" id="petExperience" name="petOwnershipExperience">
+                    <option value="yes">예</option>
+                    <option value="no">아니오</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="certification">자격증:</label>
+                <input type="text" class="form-control" id="certification" name="certification" placeholder="자격증을 입력하세요">
+            </div>
+            <!-- 지원동기 추가 -->
+            <div class="form-group">
+                <label for="motivation">지원동기:</label>
+                <textarea class="form-control" id="motivation" name="motivationForApplying" placeholder="지원동기를 입력하세요" rows="4"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">등록하기</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
