@@ -12,13 +12,13 @@ import java.time.LocalDate;
 public class PesitterQualificationRegistRequestDto {
     private Long id;
     private String name;
-    private String personalIdentificationNumber; // 주민등록번호
+    private String personalIdentificationNum; // 주민등록번호
     private LocalDate birth;
     private String phone;
     private String smokingStatus; // 흡연 유무
     private String address;
     private String job;
-    private String petOwnershipExperience; // 반려동물 경험 유무
+    private String petOwnershipExp; // 반려동물 경험 유무
     private String certification; // 자격증
     private String motivationForApplying; // 지원동기
 
@@ -26,13 +26,13 @@ public class PesitterQualificationRegistRequestDto {
         return PetsitterQualificationApplicationEntity.builder()
                 .id(this.id)
                 .name(this.name)
-                .personalIdentificationNumber(this.personalIdentificationNumber)
+                .personalIdentificationNum(this.personalIdentificationNum)
                 .birth(this.birth)
                 .phone(this.phone)
                 .smokingStatus(this.smokingStatus)
                 .address(this.address)
                 .job(this.job)
-                .petOwnershipExperience(this.petOwnershipExperience)
+                .petOwnershipExp(this.petOwnershipExp)
                 .certification(this.certification)
                 .motivationForApplying(this.motivationForApplying)
                 .build();

@@ -32,7 +32,6 @@ public class MemberListResponseDto {
     public String profileImage;
     private LocalDate birth;
     private LocalDate createdAt;
-//    private SitterStatus sitterStatus; // None(역할X), PENDING(승인대기중),APPROVED(승인됨)
     private String sitterStatus; // None(역할X), PENDING(승인대기중),APPROVED(승인됨)
 
     public static MemberListResponseDto fromMember(Member member) {
@@ -41,7 +40,8 @@ public class MemberListResponseDto {
                 member.getEmail(),
                 member.getName(),
                 member.getGender(),
-                member.getPhone(),
+                formatPhoneNumber(member.getPhone()), // 포매팅된 phone 번호
+//                member.getPhone(),
                 member.getAuthorities().stream()
                         .map(Authority::getAuthorityKor)
                         .collect(Collectors.toSet()), // Set<String>
@@ -52,5 +52,12 @@ public class MemberListResponseDto {
                 member.getCreatedAt(),
                 member.getSitterStatus().getSitterStatusKor() // String
         );
+    }
+
+    private static String formatPhoneNumber(String phone) {
+        if (phone == null || phone.length() != 11) {
+            return phone; // 포매팅이 불가능한 경우 원래 값을 반환
+        }
+        return phone.replaceAll("(\\d{3})(\\d{4})(\\d{4})", "$1 - $2 - $3");
     }
 }

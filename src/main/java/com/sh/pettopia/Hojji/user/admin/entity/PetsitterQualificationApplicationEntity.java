@@ -21,7 +21,7 @@ public class PetsitterQualificationApplicationEntity {
     @Column
     private String name;
     @Column
-    private String personalIdentificationNumber; // 주민등록번호
+    private String personalIdentificationNum; // 주민등록번호
     @Column
     private LocalDate birth;
     @Column
@@ -33,10 +33,9 @@ public class PetsitterQualificationApplicationEntity {
     @Column
     private String job;
     @Column
-    private String petOwnershipExperience; // 반려동물 경험 유무
+    private String petOwnershipExp; // 반려동물 경험 유무
     @Column
     private String certification; // 자격증
     @Column
     private String motivationForApplying; // 지원동기
-
 }
