@@ -21,3 +21,10 @@ server:
   approval_url: "http://223.130.146.203:8080/pay/success?partner_order_id="
   cancel_url: "http://223.130.146.203:8080/pay/cancel?partner_order_id="
   fail_url: "http://223.130.146.203:8080/pay/fail?partner_order_id="
+
+  # OCR 관련 설정
+naver:
+  clova-ocr:
+    document:
+      url: https://ajyqmi57wp.apigw.ntruss.com/custom/v1/33275/1211f29f3558eeccd1846ebd1e703c05e37a8295a4fcbca282d3bf85a4c43902/document/receipt
+      secretKey: bmdZYXFQaXp1YnJQTk1FV0hNdXlRaHh3RFZ2alp5ZE8=
