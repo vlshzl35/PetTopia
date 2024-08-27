@@ -54,71 +54,30 @@
             margin-top: 20px;
         }
 
-
-        .star_rating .star {
-            width: 25px;
-            height: 25px;
-            margin-right: 10px;
-            display: inline-block;
-            background: url('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FE2bww%2FbtsviSSBz4Q%2F5UYnwSWgTlFt6CEFZ1L3Q0%2Fimg.png') no-repeat;
-            background-size: 100%;
-            box-sizing: border-box;
-        }
-
-        .star_rating .star.on {
-            width: 25px;
-            height: 25px;
-            margin-right: 10px;
-            display: inline-block;
-            background: url('https://blog.kakaocdn.net/dn/b2d6gV/btsvbDoal87/XH5b17uLeEJcBP3RV3FyDk/img.png') no-repeat;
-            background-size: 100%;
-            box-sizing: border-box;
-        }
-
-        .star_box {
-            width: 400px;
-            box-sizing: border-box;
-            display: inline-block;
-            margin: 15px 0;
-            background: #F3F4F8;
-            border: 0;
-            border-radius: 10px;
-            height: 100px;
-            resize: none;
-            padding: 15px;
-            font-size: 13px;
-            font-family: sans-serif;
-        }
-
-        .btn02 {
-            display: block;
-            width: 400px;
-            font-weight: bold;
-            border: 0;
-            border-radius: 10px;
-            max-height: 50px;
-            padding: 15px 0;
-            font-size: 1.1em;
-            text-align: center;
-            background: bisque;
-        }
+        /*별점 css*/
 
         .star-rating {
-            display: flex;
-            direction: row-reverse;
-            font-size: 2rem;
+            direction: rtl;
+            display: inline-flex;
+            font-size: 2em;
         }
 
-        .star {
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            color: #ddd;
             cursor: pointer;
-            color: gray;
         }
 
-        .star:hover,
-        .star:hover ~ .star,
-        .star.checked,
-        .star.checked ~ .star {
-            color: gold;
+        .star-rating input:checked ~ label {
+            color: #ffc700;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #ffc700;
         }
 
     </style>
@@ -126,7 +85,7 @@
 <body>
 <div class="container">
 
-    <div class="ftco-section bg-light">
+    <div class="ftco-section">
         <br><br>
         <!--    보는 사람 == 펫시터 회원의 회원의 아이디를 보여준다-->
         <div th:object="${sittingInfo}" th:if="${#authentication.principal.member.email == sittingInfo.getPetSitterId}">
@@ -189,11 +148,20 @@
                                th:value="${sittingInfo.getPartnerOrderId()}">
 
                         <div class="star-rating">
-                            <input hidden="hidden"  type="radio" id="star1" name="rating" value="1"><label for="star1" class="star">★</label>
-                            <input hidden="hidden"  type="radio" id="star2" name="rating" value="2"><label for="star2" class="star">★</label>
-                            <input hidden="hidden"  type="radio" id="star3" name="rating" value="3"><label for="star3" class="star">★</label>
-                            <input hidden="hidden"  type="radio" id="star4" name="rating" value="4"><label for="star4" class="star">★</label>
-                            <input hidden="hidden" type="radio" id="star5" name="rating" value="5"><label for="star5" class="star">★</label>
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            <label for="star5" title="5 stars">☆</label>
+
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            <label for="star4" title="4 stars">☆</label>
+
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            <label for="star3" title="3 stars">☆</label>
+
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            <label for="star2" title="2 stars">☆</label>
+
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            <label for="star1" title="1 star">☆</label>
                         </div>
                         <textarea class="" placeholder="댓글을 입력해주세요!" id="comment"
                                   aria-label="Recipient's username"

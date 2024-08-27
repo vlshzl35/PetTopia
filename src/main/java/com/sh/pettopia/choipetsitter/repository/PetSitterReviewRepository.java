@@ -19,8 +19,12 @@ public interface PetSitterReviewRepository extends JpaRepository<PetSitterReview
 
     PetSitterReview findByPartnerOrderId(String partnerOrderId);
 
+    @Query("select round(avg(r.starRating),1) from review r where r.petSitterId=:petSitterId")
+    Float findPetSitterReviewByStarRating(@Param("petSitterId") String petSitterId);
 
-    @Query("delete from review s WHERE s.partnerOrderId = :partnerOrderId")
-    void deleteReviewByPartnerOrderId(@Param("partnerOrderId")String partnerOrderId );
+    @Query("select count(*) from review r where r.petSitterId=:petSitterId")
+    int findPetSitterReviewByReviewCnt(@Param("petSitterId") String petSitterId);
+
+    void deleteReviewByPartnerOrderId(String partnerOrderId);
 
 }

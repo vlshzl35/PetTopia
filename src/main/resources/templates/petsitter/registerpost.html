@@ -8,8 +8,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>홍보글 작성</title>
-    <link rel="stylesheet" href="https://cdn.mobiscroll.com/4.10.4/css/mobiscroll.min.css">
-    <script src="https://cdn.mobiscroll.com/4.10.4/js/mobiscroll.jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- datepicker 는 jquery 1.7.1 이상 bootstrap 2.0.4 이상 버전이 필요함 -->
@@ -27,27 +25,42 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
     <style>
-        textarea {
-            width: 100%;
-            height: 7em;
-            border: 1px solid black;
-            resize: none;
+
+        p {
+            font-size: 14px;
+            letter-spacing: -0.2px;
+            line-height: 20px;
+            color: #393C47;
+            margin-top: 38px
+
         }
 
-        .prev, .next {
+        /*    이미지 파일 css*/
+        .image-slider {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .images {
+            width: 100%; /* Adjust based on how many images you want visible at once */
+            height: 200px;
+        }
+
+        #sliderNext, #sliderPrev {
             position: absolute;
             top: 50%;
-            width: 30px;
-            height: 30px;
+            transform: translateY(-70%);
             background-color: rgba(0, 0, 0, 0.5);
             color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border: none;
+            padding: 10px;
             cursor: pointer;
-            user-select: none;
-            font-size: 20px;
-            z-index: 100;
         }
 
         .prev {
@@ -58,19 +71,73 @@
             right: 10px;
         }
 
-        .slider-container {
-            position: relative;
-            width: 300px;
-            height: 200px;
+        /*    등록하려는 파일 미리보기*/
+        .gallery-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
         }
 
-        #showImage {
-            width: 300px; /* Set the width of the container */
-            height: 200px; /* Set the height of the container */
+        .gallery {
+            display: flex;
+            width: 300px;
+            height: 250px;
             overflow: hidden;
             position: relative;
+            border: 2px solid #ddd;
         }
 
+        .gallery img {
+            width: 300px;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .arrow {
+            cursor: pointer;
+            font-size: 30px;
+            user-select: none;
+            margin: 0 10px;
+        }
+
+        #fileInput {
+            margin-top: 20px;
+        }
+
+    /*    라이센트 등록 이미지 미리보기*/
+        .License-gallery-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .License-gallery {
+            display: flex;
+            width: 300px;
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #ddd;
+        }
+
+        .License-gallery img {
+            width: 300px;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .License-arrow {
+            cursor: pointer;
+            font-size: 30px;
+            user-select: none;
+            margin: 0 10px;
+        }
+
+        #License-fileInput {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -98,42 +165,55 @@
             <div style="margin: 50px">
                 <div>
                     <div style="padding: 30px;">
-                        <div>
-                            <h4>이미지 미리보기</h4>
-                            <div class="slider-container">
-                                <div class="prev" onclick="moveSlide(-1)">&#10094;</div>
-                                <div id="showImage"></div>
-                                <div class="next" onclick="moveSlide(1)">&#10095;</div>
-                            </div>
-                            <input type="file" onchange="loadFile(this)" name="files" multiple>
-                        </div>
-                        <div class="gallery-container">
+                        <div style="display: inline-block; width: 100%;">
 
-                                <div class="image-slider">
-                                    <button id="leftBtn">&lt;</button>
-                                    <div class="image-container">
-                                        <img th:each="images,stat: ${dto.PostImagesList}"
-                                             th:if="${not #strings.isEmpty(images)}" th:src=" ${images}"
-                                             onclick="remove_confirm(src)"
-                                             style="width: 400px; height: 350px; margin: 10px;">
-                                        <img th:each="images,stat: ${dto.PostImagesList}"
-                                             th:if="${ #strings.isEmpty(images)}"
-                                             th:src="@{/images/petsitter/nothingImg.jpg}">
-                                    </div>
-                                    <button id="rightBtn">&gt;</button>
+                            <div style="display: inline-block; vertical-align: top; width: 49%;">
+                                <h4>홍보사진</h4>
+
+                                <div class="gallery-container">
+                                    <div class="arrow" id="prev">&#9664;</div>
+                                    <div class="gallery" id="file-gallery"></div>
+                                    <div class="arrow" id="next">&#9654;</div>
                                 </div>
+                                <input type="file" id="fileInput" multiple name="files">
+                            </div>
 
-                            <div class="arrow" id="next1">&#9654;</div>
+
+                            <div style="display: inline-block; vertical-align: top; width: 49%;">
+                                <h4>자격증 및 수료증</h4>
+
+                                <div class="License-gallery-container">
+                                    <div class="License-arrow" id="License-prev">&#9664;</div>
+                                    <div class="License-gallery" id="License-gallery"></div>
+                                    <div class="License-arrow" id="License-next">&#9654;</div>
+                                </div>
+                                <input type="file" id="License-fileInput" multiple name="License_files">
+                            </div>
                         </div>
+
+                        <div class="image-slider">
+                            <div class="slides">
+                                <img th:each="images,stat: ${dto.PostImagesList}"
+                                     th:if="${not #strings.isEmpty(images)}" th:src=" ${images}"
+                                     onclick="remove_confirm(src)"
+                                     style="width: 400px; height: 350px; margin: 10px;">
+                                <img th:each="images,stat: ${dto.PostImagesList}"
+                                     th:if="${ #strings.isEmpty(images)}"
+                                     th:src="@{/images/petsitter/nothingImg.jpg}">
+                            </div>
+                            <button id="sliderPrev" type="button" class="prev">&#10094;</button>
+                            <button id="sliderNext" type="button" class="next">&#10095;</button>
+                        </div>
+
                         <div>
                             <div class="form-group">
-                                <p>한 줄 소개</p>
-                                <label for="oneLineIntroduce">
+                                <div>
+                                    <label for="oneLineIntroduce">
+                                    </label>
+                                    <h3>한 줄 소개</h3>
                                     <input type="text" name="oneLineIntroduce" id="oneLineIntroduce"
-                                           th:value="${dto.oneLineIntroduce}" style="flex: 1">
-                                </label>
-                            </div>
-                            <div class="form-group">
+                                           th:value="${dto.oneLineIntroduce}" style=" width: 100%">
+                                </div>
                                 <h3>소개</h3>
                                 <div class="input-group">
                                     <label for="mainIntroduce">
@@ -144,12 +224,6 @@
                             </div>
                             <div class="container">
                                 <div style="border: 1px solid black">
-                                    [[${petService}]]
-                                    [[${petSize}]]
-                                    [[${petService.contains('youngerPetWalk')}]]
-                                    [[${dto.availableServices eq
-                                    T(com.sh.pettopia.choipetsitter.entity.AvailableService).everydayWalk}]]
-                                    [[${dto}]]
                                     <div>
                                         <label for="everydayWalk">
                                             <img th:src="@{/images/availableService/everydaywalk.PNG}"
@@ -337,52 +411,134 @@
         // 특정일 선택막기
     </script>
     <script>
+        <!--        내가 올리려고 하는 라이센트 이미지 미리보기 슬라이드-->
+        const fileInput = document.getElementById('License-fileInput');
+        const gallery = document.getElementById('License-gallery');
         let currentIndex = 0;
-        const images = [];
+        let imageElements = [];
 
-        function loadFile(input) {
-            const files = input.files;
-            const showImageDiv = document.getElementById('showImage');
-
-            if (showImageDiv.querySelector('img')) {
-                showImageDiv.innerHTML = ''; // Clear existing images
-            }
+        fileInput.addEventListener('change', (event) => {
+            const files = event.target.files;
+            gallery.innerHTML = '';  // 갤러리 초기화
+            imageElements = [];
 
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
-                const newImage = document.createElement("img");
-                newImage.src = URL.createObjectURL(file);
-                newImage.style.transform = `translateX(${currentIndex * -100}%)`;
-                images.push(newImage);
-                showImageDiv.append(newImage);
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    gallery.appendChild(img);
+                    imageElements.push(img);
+
+                    // 처음 이미지만 표시
+                    if (imageElements.length > 1) {
+                        img.style.display = 'none';
+                    }
+                };
+
+                reader.readAsDataURL(file);
             }
-        }
 
-        function moveSlide(step) {
-            const showImageDiv = document.getElementById('showImage');
-            currentIndex = (currentIndex + step + images.length) % images.length;
-            images.forEach((img, index) => {
-                img.style.transform = `translateX(${(index - currentIndex) * 100}%)`;
-            });
-        }
+            currentIndex = 0; // 인덱스 초기화
+        });
 
-    </script>
-    <script>
-        let position = 0;
-        const container = document.querySelector('.image-container');
-        const totalImages = container.children.length;
-
-        document.getElementById('leftBtn').addEventListener('click', function() {
-            if (position > 0) {
-                position -= 1;
-                container.style.transform = `translateX(-${position * 100}%)`;
+        document.getElementById('License-next').addEventListener('click', () => {
+            if (currentIndex < imageElements.length - 1) {
+                imageElements[currentIndex].style.display = 'none';
+                currentIndex++;
+                imageElements[currentIndex].style.display = 'block';
             }
         });
 
-        document.getElementById('rightBtn').addEventListener('click', function() {
-            if (position < totalImages - 1) {
-                position += 1;
-                container.style.transform = `translateX(-${position * 100}%)`;
+        document.getElementById('License-prev').addEventListener('click', () => {
+            if (currentIndex > 0) {
+                imageElements[currentIndex].style.display = 'none';
+                currentIndex--;
+                imageElements[currentIndex].style.display = 'block';
+            }
+        });
+    </script>
+    <script>
+        <!--        내가 올리려고 하는 이미지 미리보기 슬라이드-->
+        const fileInput1 = document.getElementById('fileInput');
+        const gallery1 = document.getElementById('file-gallery');
+        let filecurrentIndex = 0;
+        let fileimageElements = [];
+
+        fileInput1.addEventListener('change', (event) => {
+            console.log("Image loaded:", event.target.result); // Debugging line
+            const files = event.target.files;
+            gallery1.innerHTML = '';  // 갤러리 초기화
+            fileimageElements = [];
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    gallery1.appendChild(img);
+                    fileimageElements.push(img);
+
+                    // 처음 이미지만 표시
+                    if (fileimageElements.length > 1) {
+                        img.style.display = 'none';
+                    }
+                };
+
+                reader.readAsDataURL(file);
+            }
+
+            filecurrentIndex = 0; // 인덱스 초기화
+        });
+
+        document.getElementById('next').addEventListener('click', () => {
+            if (filecurrentIndex < fileimageElements.length - 1) {
+                fileimageElements[filecurrentIndex].style.display = 'none';
+                filecurrentIndex++;
+                fileimageElements[filecurrentIndex].style.display = 'block';
+            }
+        });
+
+        document.getElementById('prev').addEventListener('click', () => {
+            if (filecurrentIndex > 0) {
+                fileimageElements[filecurrentIndex].style.display = 'none';
+                filecurrentIndex--;
+                fileimageElements[filecurrentIndex].style.display = 'block';
+            }
+        });
+    </script>
+
+    <script>
+        <!--        내가 등록한 이미지 슬라이드 -->
+        document.addEventListener('DOMContentLoaded', function (e) {
+            e.preventDefault();
+            const slides = document.querySelector('.slides');
+            const images = slides.querySelectorAll('img');
+            let currentIndex = 0;
+
+            // Only apply sliding if there are more than 3 images
+            if (images.length > 3) {
+                const totalImages = images.length;
+                const slideWidth = images[0].clientWidth;
+
+                // Event listener for the 'Next' button
+                document.querySelector('.next').addEventListener('click', function () {
+                    currentIndex = (currentIndex + 1) % totalImages;
+                    slides.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
+                });
+
+                // Event listener for the 'Prev' button
+                document.querySelector('.prev').addEventListener('click', function () {
+                    currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+                    slides.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
+                });
+            } else {
+                document.querySelector('.prev').style.display = 'none';
+                document.querySelector('.next').style.display = 'none';
             }
         });
     </script>
