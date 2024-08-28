@@ -1,6 +1,7 @@
 package com.sh.pettopia.Hojji.user.member.service;
 
 import com.sh.pettopia.Hojji.user.Authority;
+
 import com.sh.pettopia.Hojji.user.admin.entity.PetsitterQualificationApplicationEntity;
 import com.sh.pettopia.Hojji.user.member.dto.MemberRegistRequestDto;
 import com.sh.pettopia.Hojji.user.member.dto.MemberListResponseDto;
@@ -69,6 +70,7 @@ public class MemberService {
     // 이름, 이메일, 상태, 수락/거부 상태
     public List<MemberListResponseDto> findPendingSitterMembers(){
         List<Member> pendingSitters =  memberRepository.findPendingSitterMembers(SitterStatus.PENDING);
+        log.info("pendingSitters = {}", pendingSitters);
 
         return pendingSitters.stream()
                 .map(MemberListResponseDto::fromMember)

@@ -1,12 +1,10 @@
 package com.sh.pettopia.Hojji.user.admin.controller;
 
-import com.sh.pettopia.Hojji.user.admin.entity.PetsitterQualificationApplicationEntity;
-import com.sh.pettopia.Hojji.user.admin.service.AdminService;
 import com.sh.pettopia.Hojji.user.member.dto.MemberListResponseDto;
-import com.sh.pettopia.Hojji.user.member.dto.PendingSitterMemberDto;
 import com.sh.pettopia.Hojji.user.member.entity.SitterStatus;
 import com.sh.pettopia.Hojji.user.member.service.MemberService;
-import com.sh.pettopia.mypage.dto.PetsitterQulificationResponseDto;
+import com.sh.pettopia.choipetsitter.entity.PetSitter;
+import com.sh.pettopia.choipetsitter.service.PetSitterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +22,7 @@ import java.util.Map;
 public class AdminController {
 
     private final MemberService memberService;
-    private final AdminService adminService;
+    private final PetSitterService petSitterService;
 
 
     @GetMapping("/dashboard")
@@ -66,17 +64,23 @@ public class AdminController {
     @PostMapping("/updateSitterStatus/{memberId}")
     @ResponseBody
     public ResponseEntity<Void> updateSitterStatus(@PathVariable Long memberId, @RequestBody Map<String, String> result) {
+        log.info("POST updateSitterStatus/{}",memberId);
         String status = result.get("status");
         // status문자열을 SitterStatus enum값으로 변환
         SitterStatus sitterStatus = SitterStatus.valueOf(status);
+        MemberListResponseDto MemberDto=memberService.findById(memberId); // 펫시터 등록은 위한 멤버를 불러온다
 
         // 수락은 APPROVED, 거절은 NONE으로 sitterStatus 변경
         memberService.updateSitterStatus(memberId, sitterStatus);
         memberService.grantSitterAuthority(memberId);
 
-        // 수락된 회원에 한해 tbl_authority테이블에 회원id의 role_sitter insert
-        if (sitterStatus == SitterStatus.APPROVED)
+        // 수락된 회원에 한해 회원id에 role_sitter 추가
+        if (sitterStatus == SitterStatus.APPROVED) {
             memberService.grantSitterAuthority(memberId);
+            PetSitter petSitter=petSitterService.saveMemberToEntity(MemberDto);
+            log.info("petsitter = {}",petSitter);
+
+        }
 
         return ResponseEntity.ok().build();
     }

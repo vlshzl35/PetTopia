@@ -46,4 +46,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             m.sitterStatus = :status
     """)
     List<Member> findPendingSitterMembers(SitterStatus status);
+
+    Member findMemberByEmail(String email);
 }
