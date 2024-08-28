@@ -6,7 +6,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title></title>
+    <title>돌봄 정보 등록</title>
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="/css/datepicker/bootstrap-datepicker.css">
@@ -18,250 +18,7 @@
     <script src="/css/datepicker/bootstrap-datepicker.ko.min.js" charset="UTF-8"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
-    <style>
-        .sitting-container {
-            width: 70%;
-            margin: 30px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            font-size: 30px;
-            color: #333;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        h3 {
-            font-size: 20px;
-            color: #333;
-            margin-top: 20px;
-            margin-bottom: 0px;
-        }
-
-        h4 {
-            font-size: 18px;
-            color: #333;
-            text-align: center;
-
-            margin: 10px 0;
-        }
-
-        p {
-            font-size: 14px;
-            color: #393C47;
-            /*margin-top: 20px;*/
-        }
-
-        label {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        input[type="text"],
-        textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-            margin-bottom: 20px;
-        }
-
-        textarea {
-            height: 150px;
-            resize: vertical;
-        }
-
-        .submit-button {
-            background-color: white;
-            color: #00bd56;
-            border: 1px solid; /* 테두리 스타일을 명시적으로 설정 */
-            border-color: #00bd56 !important;
-            text-align: center;
-            padding: 10px 40px; /* 좀 더 일반적인 버튼 크기로 조정 */
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 4px;
-            display: block; /* 이 부분을 추가 */
-            margin: 20px auto; /* 수평 중앙 정렬을 위한 자동 마진 설정 */        }
-
-        .submit-button:hover {
-            background-color: #00bd56;
-            color: white;
-            border-color: #00bd56;
-        }
-
-        /* Image Slider */
-        .image-slider {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-            margin: 20px 0;
-        }
-
-        .slides {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-        }
-
-        .slides img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        #sliderNext, #sliderPrev {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        .prev {
-            left: 10px;
-        }
-
-        .next {
-            right: 10px;
-        }
-
-        /* File Preview */
-        .gallery-container {
-            display: flex;
-            align-items: center; /* 세로 중앙 정렬 */
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .file-section {
-            flex: 1;
-        }
-
-        .gallery, .License-gallery {
-            display: flex;
-            width: 100%;
-            height: 250px;
-            overflow: hidden;
-            position: relative;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .gallery img, .License-gallery img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .arrow {
-            cursor: pointer;
-            font-size: 30px;
-            color: #00bd56;
-            user-select: none;
-            margin: 0 10px;
-        }
-
-        .arrow:hover {
-            color: #127e43;
-        }
-
-        /* Available Services */
-        .available-services {
-            display: flex;
-            flex-direction: column; /* 항목 내부를 세로로 정렬 */
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .services-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3개의 열로 분할 */
-            gap: 20px; /* 각 항목 사이의 간격 */
-        }
-
-        .services-container label {
-            display: flex;
-            flex-direction: column; /* 항목 내부를 세로로 정렬 */
-            align-items: center; /* 중앙 정렬 */
-            text-align: center; /* 텍스트 중앙 정렬 */
-        }
-
-        .available-service-image {
-            width: 50px;
-            height: 50px;
-        }
-
-        input[type="checkbox"] {
-            margin-right: 5px;
-        }
-
-        .pet-size {
-            display: flex;
-            flex-direction: column; /* 세로 방향으로 아이템 정렬 */
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .dogs {
-            display: flex;
-            flex-direction: column; /* 세로 방향으로 아이템 정렬 */
-        }
-
-        .small-dog-image {
-            width: 60px;
-            height: 60px;
-        }
-
-        .medium-dog-image {
-            width: 90px;
-            height: 90px;
-        }
-
-        .large-dog-image {
-            width: 120px;
-            height: 120px;
-        }
-
-        .size-section {
-            display: flex;
-            /*justify-content: center; !* 가로 방향 중앙 정렬 *!*/
-            align-items: end;
-            gap: 20px;
-        }
-
-        .horizontal-container {
-            display: flex;
-            justify-content: space-between; /* 섹션 사이 공간 동일하게 */
-            margin-top: 20px; /* 상단 여백 추가 */
-        }
-
-        .pet-size,
-        .date-picker-container {
-            flex: 1; /* 두 컨테이너가 동일한 크기를 가지도록 설정 */
-            padding: 20px; /* 패딩 추가 */
-        }
-
-
-        .date-picker p {
-           justify-content: center;
-            flex-direction : column;
-            align-items: center;
-            font-size: 14px;
-            color: #393C47;
-            margin-bottom: 10px;
-        }
-    </style>
+    <link href="/css/petsitter/registerpost.css" rel="stylesheet">
 
 </head>
 <body>
@@ -272,7 +29,7 @@
             <div class="form-container">
                 <div class="gallery-container">
                     <div class="file-section">
-                        <h4>홍보사진</h4>
+                        <h4>프로필 사진</h4>
                         <div class="gallery-container">
                             <div class="arrow" id="prev">&#9664;</div>
                             <div class="gallery" id="file-gallery"></div>
@@ -322,7 +79,7 @@
                     <div class="services-container">
                         <label for="everydayWalk">
                             <img src='/svg/walk.png' class="available-service-image">
-                            <p>매일산책</p>
+                            <p class="available-service-text">매일산책</p>
                             <span>산책 및 실외 배변 가능</span>
                             <input type="checkbox" name="availableServices" id="everydayWalk"
                                    value="everydayWalk"
@@ -331,7 +88,7 @@
                         </label>
                         <label for="oldPetWalk">
                             <img src='/svg/oldDog.png' class="available-service-image">
-                            <p>노견 산책케어</p>
+                            <p class="available-service-text">노견 산책케어</p>
                             <span>8년 이상 노견 가능</span>
                             <input type="checkbox" name="availableServices" id="oldPetWalk"
                                    value="olderPetWalk"
@@ -339,7 +96,7 @@
                         </label>
                         <label for="youngerPetWalk">
                             <img src='/svg/puppy.png' class="available-service-image">
-                            <p>퍼피 산책케어</p>
+                            <p class="available-service-text">퍼피 산책케어</p>
                             <span>1년 미만 퍼피 가능</span>
                             <input type="checkbox" name="availableServices" id="youngerPetWalk"
                                    value="youngerPetWalk"
@@ -347,14 +104,14 @@
                         </label>
                         <label for="play">
                             <img src='/svg/duck.png' class="available-service-image">
-                            <p>실내 놀이</p>
+                            <p class="available-service-text">실내 놀이</p>
                             <span>터그 놀이, 노즈 워크 등</span>
                             <input type="checkbox" name="availableServices" id="play" value="play"
                                    th:checked="${petService.contains('play')}">
                         </label>
                         <label for="firstAid">
                             <img src='/svg/pharmacy.png' class="available-service-image">
-                            <p>응급 처리</p>
+                            <p class="available-service-text">응급 처리</p>
                             <span>응급 상황 시 병원 이동 가능</span>
                             <input type="checkbox" name="availableServices" id="firstAid"
                                    value="firstAid"
@@ -362,7 +119,7 @@
                         </label>
                         <label for="pickup">
                             <img src='/svg/foot.png' class="available-service-image">
-                            <p>도보 픽업</p>
+                            <p class="available-service-text">도보 픽업</p>
                             <span>비용은 파트너와 협의</span>
                             <input type="checkbox" name="availableServices" id="pickup"
                                    value="walkPickup"
@@ -370,14 +127,14 @@
                         </label>
                         <label for="brush">
                             <img src='/svg/brush.png' class="available-service-image">
-                            <p>모발 관리</p>
+                            <p class="available-service-text">모발 관리</p>
                             <span>눈물 또는 빗질 관리 가능</span>
                             <input type="checkbox" name="availableServices" id="brush" value="brush"
                                    th:checked="${petService.contains('brush')}">
                         </label>
                         <label for="medicine" >
                             <img src='/svg/medicine.png' class="available-service-image">
-                            <p>약물 복용</p>
+                            <p class="available-service-text">약물 복용</p>
                             <span>경구(입) 약물 복용 가능</span>
                             <input type="checkbox" name="availableServices" id="medicine"
                                    value="medicine"
@@ -385,7 +142,7 @@
                         </label>
                         <label for="longReservation">
                             <img src='/svg/calender.png' class="available-service-image">
-                            <p>장기 예약</p>
+                            <p class="available-service-text">장기 예약</p>
                             <span>14일 이상 예약 가능</span>
                             <input type="checkbox" name="availableServices" id="longReservation"
                                    value="longReservation"
