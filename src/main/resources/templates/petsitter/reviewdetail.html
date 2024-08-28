@@ -148,26 +148,25 @@
                                th:value="${sittingInfo.getPartnerOrderId()}">
 
                         <div class="star-rating">
-                            <input type="radio" id="star5" name="rating" value="5" />
+                            <input type="radio" id="star5" name="rating" value="5"/>
                             <label for="star5" title="5 stars">☆</label>
 
-                            <input type="radio" id="star4" name="rating" value="4" />
+                            <input type="radio" id="star4" name="rating" value="4"/>
                             <label for="star4" title="4 stars">☆</label>
 
-                            <input type="radio" id="star3" name="rating" value="3" />
+                            <input type="radio" id="star3" name="rating" value="3"/>
                             <label for="star3" title="3 stars">☆</label>
 
-                            <input type="radio" id="star2" name="rating" value="2" />
+                            <input type="radio" id="star2" name="rating" value="2"/>
                             <label for="star2" title="2 stars">☆</label>
 
-                            <input type="radio" id="star1" name="rating" value="1" />
+                            <input type="radio" id="star1" name="rating" value="1"/>
                             <label for="star1" title="1 star">☆</label>
                         </div>
                         <textarea class="" placeholder="댓글을 입력해주세요!" id="comment"
                                   aria-label="Recipient's username"
                                   aria-describedby="button-addon2" name="reviewText" required></textarea>
                         <br>
-
 
 
                         <div>
@@ -180,7 +179,7 @@
                             <input type="file" id="fileInput" multiple name="imageUrl">
 
                         </div>
-                        <button class="btn btn-custom" type="button" id="button-addon2" onclick="submitform()">등록
+                        <button class="btn btn-custom" type="button" id="button-addon2" onclick="submitform(event)">등록
                         </button>
                     </form>
 
@@ -190,11 +189,32 @@
 
     </div>
     <script>
-        function submitform() {
+        function submitform(event) {
+            event.preventDefault();
             if (confirm('등록을 하시겠습니까??')) {
-                document.petSitterRegistReviewForm.submit();
+                var form = document.getElementById('comment-regist');
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: '[[@{/petsitter/registreview}]]',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        alert('정상 제출되었습니다.');
+                        console.log(response);
+                        // 자식 창 닫기
+                        window.close();
+                    },
+                    error: function (xhr, status, error) {
+                        alert('제출 중 오류가 발생했습니다.');
+                        console.error(error);
+                    }
+                });
             }
         }
+
     </script>
     <script>
 

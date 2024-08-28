@@ -89,7 +89,7 @@
                                 </label>
                                 <td>
                                     <a th:href="@{|/petsitter/reservationdetail/${info.partnerOrderId}|}"
-                                       onclick="window.open(this.href, '_blank', 'left=2000%,top=800%, width=900, height=700'); return false;">자세히</a>
+                                       onclick="window.open(this.href, '_blank', 'left=2000%,top=800%, width=900, height=500'); return false;">자세히</a>
                                 </td>
                                 <td><span th:text="${info.memberId}" name="memberId"></span></td>
                                 <td><span th:text="${#temporals.format(info.createdAt, 'yyyy-MM-dd/a hh:mm')}"
@@ -180,7 +180,7 @@
                                         <button type="submit" th:formaction="@{/petsitter/sitting}"
                                                 class="btn btn-primary"
                                                 th:if="${sitting.sittingStatus.getSittingStatus()} == 'START_SITTING'"
-                                                th:text="돌봄완료" id="completeButton" value="COMPLETED_SITTING"
+                                                th:text="돌봄완료" id="completeButton" value="WAITING_MEMBER_CHECK"
                                                 name="sittingStatus"></button>
                                     </div>
                                 </td>
@@ -192,7 +192,7 @@
                                               th:text="돌봄중"></span>
                                         <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'WAITING_MEMBER_CHECK'"
                                               th:text="승인대기중" id="completedSitting"></span>
-                                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'COMPLETED_SITTING'"
+                                        <span th:if="${sitting.sittingStatus.getSittingStatus()} == 'MEMBER_CHECK'"
                                               th:text="돌봄완료"></span>
                                     </div>
 

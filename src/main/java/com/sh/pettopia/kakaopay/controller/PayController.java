@@ -61,7 +61,7 @@ public class PayController {
         log.info("GET /pay/cancel");
         log.info("GET /partnerOrderId = {}",partnerOrderId);
         log.info("");
-        Reservation reservation=reservationService.findByPartnerOrderId(partnerOrderId);
+        Reservation reservation=reservationService.findReservationByPartnerOrderId(partnerOrderId);
         reservationService.delete(reservation);
         String petSitterId=reservation.getMemberId();
 
