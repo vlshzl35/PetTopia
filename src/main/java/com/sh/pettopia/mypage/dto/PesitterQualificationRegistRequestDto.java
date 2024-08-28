@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,6 +23,7 @@ public class PesitterQualificationRegistRequestDto {
     private String petOwnershipExp; // 반려동물 경험 유무
     private String certification; // 자격증
     private String motivationForApplying; // 지원동기
+    private LocalDateTime createdAt;
 
     public PetsitterQualificationApplicationEntity toEntity() {
         return PetsitterQualificationApplicationEntity.builder()
@@ -35,6 +38,7 @@ public class PesitterQualificationRegistRequestDto {
                 .petOwnershipExp(this.petOwnershipExp)
                 .certification(this.certification)
                 .motivationForApplying(this.motivationForApplying)
+                .createdAt(this.createdAt)
                 .build();
     }
 

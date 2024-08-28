@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 
 @Data
@@ -26,6 +27,7 @@ public class PetsitterQulificationResponseDto {
     private String petOwnershipExp; // 반려동물 경험 유무
     private String certification; // 자격증
     private String motivationForApplying; // 지원동기
+    private LocalDateTime createdAt; // 작성 일자
     private int age; // 만 나이
 
     // Entity -> Dto 변환n
@@ -46,6 +48,7 @@ public class PetsitterQulificationResponseDto {
                 .petOwnershipExp(applyDto.getPetOwnershipExp())
                 .certification(applyDto.getCertification())
                 .motivationForApplying(applyDto.getMotivationForApplying())
+                .createdAt(applyDto.getCreatedAt())
                 .age(age)
                 .build();
     }
