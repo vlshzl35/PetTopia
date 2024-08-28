@@ -35,7 +35,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     """)
     List<Member> findAllSitterMembers();
 
-    // 시터권한 요청대기중인 화원 조화
+    // 시터권한 요청대기중인 화원 조회
     @Query("""
         SELECT 
             m 

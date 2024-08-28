@@ -385,28 +385,25 @@
               <table class="table">
                 <thead>
                   <tr>
+                    <th></th>
                     <th>No.</th>
                     <th>이름</th>
                     <th>이메일</th>
                     <th>전화번호</th>
-                    <th>신청서 보기</th>
-                    <th>수락</th>
-                    <th>거절</th>
+                    <th>상태</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr th:each="pendingMember : ${pendingMembers}">
+                    <td>
+                      <a th:href="@{/sitterRequestForm/{id}(id=${pendingMember.id})}">신청서</a>
+                    </td>
                     <td th:text="${pendingMember.id}"></td>
                     <td th:text="${pendingMember.name}"></td>
                     <td th:text="${pendingMember.email}"></td>
                     <td th:text="${pendingMember.phone}"></td>
                     <td>
-                      <a th:href="@{/userProfile/{id}(id=${pendingMember.id})}">자세히</a>
-                    </td>
-                    <td>
                       <button class="btn btn-success" th:attr="onclick='updateSitterStatus(' + ${pendingMember.id} + ', \'APPROVED\')'">승인</button>
-                    </td>
-                    <td>
                       <button class="btn btn-danger" th:attr="onclick='updateSitterStatus(' + ${pendingMember.id} + ', \'NONE\')'">거절</button>
                     </td>
                   </tr>
