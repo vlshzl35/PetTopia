@@ -6,20 +6,17 @@ import com.sh.pettopia.Hojji.pet.entity.Pet;
 import com.sh.pettopia.Hojji.pet.entity.VaccinationType;
 import com.sh.pettopia.Hojji.pet.service.PetService;
 import com.sh.pettopia.choipetsitter.entity.PetSitter;
-import com.sh.pettopia.choipetsitter.entity.Reservation;
+
 import com.sh.pettopia.choipetsitter.service.PetSitterService;
 import com.sh.pettopia.choipetsitter.service.ReservationService;
 import com.sh.pettopia.parktj.petsitterfinder.dto.*;
 import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;
 import com.sh.pettopia.parktj.petsitterfinder.entity.ReservationByPetSitter;
-import com.sh.pettopia.parktj.petsitterfinder.entity.ReservationStatus;
 import com.sh.pettopia.parktj.petsitterfinder.service.CareRegistrationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -132,7 +129,7 @@ public class CareRegistrationController {
         return "redirect:/petsitterfinder/careregistrationlist";
     }
 
-    private final SimpMessagingTemplate messagingTemplate;
+    //private final SimpMessagingTemplate messagingTemplate;
 
     @PostMapping("/reservation")
     public ResponseEntity<String>  reservation(
