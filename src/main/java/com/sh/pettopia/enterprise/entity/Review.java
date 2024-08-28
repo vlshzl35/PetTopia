@@ -9,7 +9,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
-//@Embeddable
 @Entity(name="EntReview")
 @Table(name="tbl_ent_review")
 @Data
@@ -27,11 +26,12 @@ public class Review {
     private int rating; // 별점
     private String reviewContent; // 내용
     @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP")
+//    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = "created_at", updatable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime createdAt; // 생성일자
     @LastModifiedDate
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+    @Column(name = "updated_at")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime updatedAt; // 마지막 업데이트 일시
     @Embedded

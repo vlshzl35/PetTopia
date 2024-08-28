@@ -1,11 +1,15 @@
 package com.sh.pettopia.Hojji.user.admin.service;
 
+import com.sh.pettopia.Hojji.user.admin.entity.PetsitterQualificationApplicationEntity;
 import com.sh.pettopia.Hojji.user.admin.repository.AdminRepository;
 import com.sh.pettopia.Hojji.user.member.dto.MemberListResponseDto;
+import com.sh.pettopia.Hojji.user.member.entity.SitterStatus;
 import com.sh.pettopia.mypage.dto.PetsitterQulificationResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional

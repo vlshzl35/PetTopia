@@ -1,8 +1,12 @@
 package com.sh.pettopia.Hojji.user.admin.controller;
 
+import com.sh.pettopia.Hojji.user.admin.entity.PetsitterQualificationApplicationEntity;
+import com.sh.pettopia.Hojji.user.admin.service.AdminService;
 import com.sh.pettopia.Hojji.user.member.dto.MemberListResponseDto;
+import com.sh.pettopia.Hojji.user.member.dto.PendingSitterMemberDto;
 import com.sh.pettopia.Hojji.user.member.entity.SitterStatus;
 import com.sh.pettopia.Hojji.user.member.service.MemberService;
+import com.sh.pettopia.mypage.dto.PetsitterQulificationResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +24,7 @@ import java.util.Map;
 public class AdminController {
 
     private final MemberService memberService;
+    private final AdminService adminService;
 
 
     @GetMapping("/dashboard")
@@ -69,7 +74,7 @@ public class AdminController {
         memberService.updateSitterStatus(memberId, sitterStatus);
         memberService.grantSitterAuthority(memberId);
 
-        // 수락된 회원에 한해 회원id에 role_sitter 추가
+        // 수락된 회원에 한해 tbl_authority테이블에 회원id의 role_sitter insert
         if (sitterStatus == SitterStatus.APPROVED)
             memberService.grantSitterAuthority(memberId);
 

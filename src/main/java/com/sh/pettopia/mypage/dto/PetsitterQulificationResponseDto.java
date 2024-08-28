@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @NoArgsConstructor
@@ -54,12 +55,16 @@ public class PetsitterQulificationResponseDto {
     }
 
     // 만 나이 계산
-    // 만 나이 계산
     private static int calculateAge(LocalDate birthDate, LocalDate currentDate) {
         if (birthDate != null && currentDate != null) {
             return Period.between(birthDate, currentDate).getYears();
         } else {
             return 0; // 생일 정보가 없는 경우 0으로 설정
         }
+    }
+
+    // createdAt 포메팅("yyyy-mm-dd HH:MM:SS)
+    public String getCreatedAt() {
+        return createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 }
