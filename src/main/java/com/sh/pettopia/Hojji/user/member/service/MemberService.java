@@ -2,8 +2,10 @@ package com.sh.pettopia.Hojji.user.member.service;
 
 import com.sh.pettopia.Hojji.user.Authority;
 
+import com.sh.pettopia.Hojji.user.admin.entity.PetsitterQualificationApplicationEntity;
 import com.sh.pettopia.Hojji.user.member.dto.MemberRegistRequestDto;
 import com.sh.pettopia.Hojji.user.member.dto.MemberListResponseDto;
+import com.sh.pettopia.Hojji.user.member.dto.PendingSitterMemberDto;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import com.sh.pettopia.Hojji.user.member.entity.SitterStatus;
 import com.sh.pettopia.Hojji.user.member.repository.MemberRepository;
@@ -69,6 +71,7 @@ public class MemberService {
     public List<MemberListResponseDto> findPendingSitterMembers(){
         List<Member> pendingSitters =  memberRepository.findPendingSitterMembers(SitterStatus.PENDING);
         log.info("pendingSitters = {}", pendingSitters);
+
         return pendingSitters.stream()
                 .map(MemberListResponseDto::fromMember)
                 .collect(Collectors.toList());
@@ -90,5 +93,4 @@ public class MemberService {
         member.getAuthorities().add(Authority.ROLE_SITTER); // 시터 권한 추가
         memberRepository.save(member);
     }
-
 }
