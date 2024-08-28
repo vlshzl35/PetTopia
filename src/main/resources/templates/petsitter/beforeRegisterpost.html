@@ -1,0 +1,523 @@
+
+<!doctype html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/default}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>홍보글 작성</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <link rel="stylesheet" href="/css/datepicker/bootstrap-datepicker.css">
+    <script src="/css/datepicker/bootstrap-datepicker.js"></script>
+    <script src="/css/datepicker/bootstrap-datepicker.ko.min.js" charset="UTF-8"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+    <style>
+        /* General Styles */
+        p {
+            font-size: 14px;
+            letter-spacing: -0.2px;
+            line-height: 20px;
+            color: #393C47;
+            margin-top: 38px;
+        }
+
+        /* Image Slider */
+        .image-slider {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .images {
+            width: 100%; /* Adjust based on how many images you want visible at once */
+            height: 200px;
+        }
+
+        #sliderNext, #sliderPrev {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+
+        /* File Preview */
+        .gallery-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .gallery {
+            display: flex;
+            width: 300px;
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #ddd;
+        }
+
+        .gallery img {
+            width: 300px;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .arrow {
+            cursor: pointer;
+            font-size: 30px;
+            user-select: none;
+            margin: 0 10px;
+        }
+
+        #fileInput {
+            margin-top: 20px;
+        }
+
+        /* License Preview */
+        .License-gallery-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .License-gallery {
+            display: flex;
+            width: 300px;
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #ddd;
+        }
+
+        .License-gallery img {
+            width: 300px;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .License-arrow {
+            cursor: pointer;
+            font-size: 30px;
+            user-select: none;
+            margin: 0 10px;
+        }
+
+        #License-fileInput {
+            margin-top: 20px;
+        }
+
+        /* Available Services */
+        .available-services {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .services-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        /* Pet Size */
+        .pet-size {
+            display: flex;
+            gap: 20px;
+        }
+
+        .pet-size h4 {
+            margin: 0;
+        }
+
+        .date-picker-container {
+            margin-top: 20px;
+        }
+
+        .date-picker {
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+<main layout:fragment="main" class="page-body">
+    <div class="container">
+        <h1>돌봄 정보 등록하기</h1>
+        <form th:action="@{/petsitter/registerpost}" method="post" th:object="${dto}" enctype="multipart/form-data"
+              class="container">
+            <div class="form-container">
+                <div class="form-content">
+                    <div class="file-div">
+                        <div class="file-section">
+                            <h4>홍보사진</h4>
+                            <div class="gallery-container">
+                                <div class="arrow" id="prev">&#9664;</div>
+                                <div class="gallery" id="file-gallery"></div>
+                                <div class="arrow" id="next">&#9654;</div>
+                            </div>
+                            <input type="file" id="fileInput" multiple name="files">
+                        </div>
+                        <div class="file-section">
+                            <h4>자격증 및 수료증</h4>
+                            <div class="License-gallery-container">
+                                <div class="License-arrow" id="License-prev">&#9664;</div>
+                                <div class="License-gallery" id="License-gallery"></div>
+                                <div class="License-arrow" id="License-next">&#9654;</div>
+                            </div>
+                            <input type="file" id="License-fileInput" multiple name="License_files">
+                        </div>
+                    </div>
+                    <div class="image-slider">
+                        <div class="slides">
+                            <img th:each="images,stat: ${dto.PostImagesList}"
+                                 th:if="${not #strings.isEmpty(images)}" th:src=" ${images}"
+                                 onclick="remove_confirm(src)">
+                            <img th:each="images,stat: ${dto.PostImagesList}"
+                                 th:if="${ #strings.isEmpty(images)}"
+                                 th:src="@{/images/petsitter/nothingImg.jpg}">
+                        </div>
+                        <button id="sliderPrev" type="button" class="prev">&#10094;</button>
+                        <button id="sliderNext" type="button" class="next">&#10095;</button>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-section">
+                            <label for="oneLineIntroduce">
+                                <h3>한 줄 소개</h3>
+                            </label>
+                            <input type="text" name="oneLineIntroduce" id="oneLineIntroduce"
+                                   th:value="${dto.oneLineIntroduce}">
+                        </div>
+                        <div class="input-section">
+                            <h3>소개</h3>
+                            <textarea name="mainIntroduce" id="mainIntroduce" th:field="*{mainIntroduce}"
+                                      placeholder="소개글을 입력해주세요"></textarea>
+                        </div>
+                    </div>
+                    <div class="available-services">
+                        <div class="services-container">
+                            <label for="everydayWalk">
+                                <p>매일산책</p>
+                                <span>산책 및 실외 배변 가능</span>
+                                <input type="checkbox" name="availableServices" id="everydayWalk"
+                                       value="everydayWalk"
+                                       th:checked="${petService.contains('everydayWalk')}">
+                            </label>
+                            <label for="oldPetWalk">
+                                <p>노견 산책케어</p>
+                                <span>8년 이상 노견 가능</span>
+                                <input type="checkbox" name="availableServices" id="oldPetWalk"
+                                       value="olderPetWalk"
+                                       th:checked="${petService.contains('olderPetWalk')}">
+                            </label>
+                            <label for="youngerPetWalk">
+                                <p>퍼피 산책케어</p>
+                                <span>1년 미만 퍼피 가능</span>
+                                <input type="checkbox" name="availableServices" id="youngerPetWalk"
+                                       value="youngerPetWalk"
+                                       th:checked="${petService.contains('youngerPetWalk')}">
+                            </label>
+                        </div>
+                        <div class="services-container">
+                            <label for="play">
+                                <p>모발 관리</p>
+                                <span>눈물 또는 빗질 관리 가능</span>
+                                <input type="checkbox" name="availableServices" id="play" value="play"
+                                       th:checked="${petService.contains('play')}">
+                            </label>
+                            <label for="firstAid">
+                                <p>응급 처리</p>
+                                <span>응급 상황 시 병원 이동 가능</span>
+                                <input type="checkbox" name="availableServices" id="firstAid"
+                                       value="firstAid"
+                                       th:checked="${petService.contains('firstAid')}">
+                            </label>
+                            <label for="pickup">
+                                <p>도보 픽업</p>
+                                <span>비용은 파트너와 협의</span>
+                                <input type="checkbox" name="availableServices" id="pickup"
+                                       value="walkPickup"
+                                       th:checked="${petService.contains('walkPickup')}">
+                            </label>
+                            <label for="brush">
+                                <p>모발 관리</p>
+                                <span>눈물 또는 빗질 관리 가능</span>
+                                <input type="checkbox" name="availableServices" id="brush" value="brush"
+                                       th:checked="${petService.contains('brush')}">
+                            </label>
+                            <label for="medicine">
+                                <p>약물 복용</p>
+                                <span>경구(입) 약물 복용 가능</span>
+                                <input type="checkbox" name="availableServices" id="medicine"
+                                       value="medicine"
+                                       th:checked="${petService.contains('medicine')}">
+                            </label>
+                            <label for="longReservation">
+                                <p>장기 예약</p>
+                                <span>14일 이상 예약 가능</span>
+                                <input type="checkbox" name="availableServices" id="longReservation"
+                                       value="longReservation"
+                                       th:checked="${petService.contains('longReservation')}">
+                            </label>
+
+                    </div>
+                    <div class="pet-size">
+                        <h4>소형견</h4>
+                        <label for="smallPet">
+                            <input type="checkbox" name="availablePetSizes" id="smallPet" value="smallPet"
+                                   th:checked="${petSize.contains('smallPet')}">
+                        </label>
+                        <h4>중형견</h4>
+                        <label for="middlePet">
+                            <input type="checkbox" name="availablePetSizes" id="middlePet" value="middlePet"
+                                   th:checked="${petSize.contains('middlePet')}">
+                        </label>
+                        <h4>대형견</h4>
+                        <label for="largePet">
+                            <input type="checkbox" name="availablePetSizes" id="largePet" value="largePet"
+                                   th:checked="${petSize.contains('largePet')}">
+                        </label>
+                    </div>
+                    <div class="date-picker">
+                        <p>돌봄 불가능한 날짜를 선택해주세요</p>
+                        <div class="date-picker-container">
+                            <label for="impossibleDays">
+                                <input type="text" id="impossibleDays" class="form-control" name="impossibleDays"
+                                       th:value="${dto.impossibleDays}">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit">제출</button>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        function remove_confirm(src) {
+            var header = $("meta[name='_csrf_header']").attr('content');
+            var token = $("meta[name='_csrf']").attr('content');
+            console.log("src : " + src);
+            const parts = src.split('/');
+            const fileNameWithExtension = parts[parts.length - 1];
+
+            console.log(fileNameWithExtension);
+
+            if (confirm("사진을 제거 하시겠습니까??")) {
+
+                $.ajax({
+
+                    url: '[[@{/petsitter/removePostImage}]]',
+                    method: 'post',
+                    // contentType: false, // false = content-type 헤더가 multipart/form-data로 전송하게 함
+                    processData: true, // false = formData를 string으로 변환하지 않음
+                    data: {
+                        fileNameWithExtension: fileNameWithExtension
+                    },
+                    success(responseText) {
+                        alert("이미지가 정상제거 되었습니다");
+                        console.log("responseText : " + responseText);
+                        location.reload(); // 바로 새로고침
+                    }
+                })
+
+            }
+
+        }
+    </script>
+    <script>
+        const impossibleDays = document.getElementById('impossibleDays');
+        var dates = [[${dto.impossibleDays}]];
+        flatpickr(impossibleDays, {
+            dateFormat: "Y-m-d", // 날짜 및 시간 형식 설정 (예: 2023-09-12 15:30)
+            // enableTime: true,        // 시간 선택 활성화
+            // time_24hr: true,         // 24시간 형식 사용
+            minDate: 'today',        // 오늘 이전 날짜 선택 비활성화
+            maxDate: new Date().fp_incr(92), // 초대 출력 3개월
+            // defaultDate: 'today',    // 초기 날짜 설정 (현재 날짜와 시간)
+            disable: dates, // 특정 날짜 비활성화
+            mode: "multiple",
+            locale: 'ko',            // 한국어로 지역화
+            inline: true,
+            onOpen: function (selectedDates, dateStr, instance) {
+                // 위젯이 열릴 때 실행할 코드
+            },
+            onClose: function (selectedDates, dateStr, instance) {
+                // 위젯이 닫힐 때 실행할 코드
+            },
+            onChange: function (selectedDates, dateStr, instance) {
+                // 날짜가 변경될 때 실행할 코드
+            },
+            disableMobile: true,      // 모바일 기기에서 위젯 비활성화
+            // altInput: true,           // 추가 입력란 활성화
+            // altFormat: 'F j, Y H:i', // 추가 입력란의 날짜 및 시간 형식
+        });
+
+        // 특정일 선택막기
+    </script>
+    <script>
+        <!--        내가 올리려고 하는 라이센트 이미지 미리보기 슬라이드-->
+        const fileInput = document.getElementById('License-fileInput');
+        const gallery = document.getElementById('License-gallery');
+        let currentIndex = 0;
+        let imageElements = [];
+
+        fileInput.addEventListener('change', (event) => {
+            const files = event.target.files;
+            gallery.innerHTML = '';  // 갤러리 초기화
+            imageElements = [];
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    gallery.appendChild(img);
+                    imageElements.push(img);
+
+                    // 처음 이미지만 표시
+                    if (imageElements.length > 1) {
+                        img.style.display = 'none';
+                    }
+                };
+
+                reader.readAsDataURL(file);
+            }
+
+            currentIndex = 0; // 인덱스 초기화
+        });
+
+        document.getElementById('License-next').addEventListener('click', () => {
+            if (currentIndex < imageElements.length - 1) {
+                imageElements[currentIndex].style.display = 'none';
+                currentIndex++;
+                imageElements[currentIndex].style.display = 'block';
+            }
+        });
+
+        document.getElementById('License-prev').addEventListener('click', () => {
+            if (currentIndex > 0) {
+                imageElements[currentIndex].style.display = 'none';
+                currentIndex--;
+                imageElements[currentIndex].style.display = 'block';
+            }
+        });
+    </script>
+    <script>
+        <!--        내가 올리려고 하는 이미지 미리보기 슬라이드-->
+        const fileInput1 = document.getElementById('fileInput');
+        const gallery1 = document.getElementById('file-gallery');
+        let filecurrentIndex = 0;
+        let fileimageElements = [];
+
+        fileInput1.addEventListener('change', (event) => {
+            console.log("Image loaded:", event.target.result); // Debugging line
+            const files = event.target.files;
+            gallery1.innerHTML = '';  // 갤러리 초기화
+            fileimageElements = [];
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    gallery1.appendChild(img);
+                    fileimageElements.push(img);
+
+                    // 처음 이미지만 표시
+                    if (fileimageElements.length > 1) {
+                        img.style.display = 'none';
+                    }
+                };
+
+                reader.readAsDataURL(file);
+            }
+
+            filecurrentIndex = 0; // 인덱스 초기화
+        });
+
+        document.getElementById('next').addEventListener('click', () => {
+            if (filecurrentIndex < fileimageElements.length - 1) {
+                fileimageElements[filecurrentIndex].style.display = 'none';
+                filecurrentIndex++;
+                fileimageElements[filecurrentIndex].style.display = 'block';
+            }
+        });
+
+        document.getElementById('prev').addEventListener('click', () => {
+            if (filecurrentIndex > 0) {
+                fileimageElements[filecurrentIndex].style.display = 'none';
+                filecurrentIndex--;
+                fileimageElements[filecurrentIndex].style.display = 'block';
+            }
+        });
+    </script>
+
+    <script>
+        <!--        내가 등록한 이미지 슬라이드 -->
+        document.addEventListener('DOMContentLoaded', function (e) {
+            e.preventDefault();
+            const slides = document.querySelector('.slides');
+            const images = slides.querySelectorAll('img');
+            let currentIndex = 0;
+
+            // Only apply sliding if there are more than 3 images
+            if (images.length > 3) {
+                const totalImages = images.length;
+                const slideWidth = images[0].clientWidth;
+
+                // Event listener for the 'Next' button
+                document.querySelector('.next').addEventListener('click', function () {
+                    currentIndex = (currentIndex + 1) % totalImages;
+                    slides.style.transform = translateX(${-currentIndex * slideWidth}px);
+                });
+
+                // Event listener for the 'Prev' button
+                document.querySelector('.prev').addEventListener('click', function () {
+                    currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+                    slides.style.transform = translateX(${-currentIndex * slideWidth}px);
+                });
+            } else {
+                document.querySelector('.prev').style.display = 'none';
+                document.querySelector('.next').style.display = 'none';
+            }
+        });
+    </script>
+    <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+</main>
+
+</body>
+</html>
