@@ -1,6 +1,7 @@
 package com.sh.pettopia.Hojji.user.member.service;
 
 import com.sh.pettopia.Hojji.user.Authority;
+
 import com.sh.pettopia.Hojji.user.member.dto.MemberRegistRequestDto;
 import com.sh.pettopia.Hojji.user.member.dto.MemberListResponseDto;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
@@ -89,4 +90,5 @@ public class MemberService {
         member.getAuthorities().add(Authority.ROLE_SITTER); // 시터 권한 추가
         memberRepository.save(member);
     }
+
 }

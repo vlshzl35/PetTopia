@@ -1,19 +1,20 @@
 package com.sh.pettopia.choipetsitter.service;
 
-import com.sh.pettopia.Hojji.pet.entity.Pet;
+import com.sh.pettopia.Hojji.user.member.dto.MemberListResponseDto;
 import com.sh.pettopia.choipetsitter.entity.PetSitter;
+import com.sh.pettopia.choipetsitter.entity.PetSitterAddress;
 import com.sh.pettopia.choipetsitter.repository.PetSitterRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class PetSitterService {
 
     private final PetSitterRepository petSitterRepository;
@@ -53,5 +54,18 @@ public class PetSitterService {
 
     public List<PetSitter> findPetSitterJoinReview() {
         return petSitterRepository.findPetSitterJoinReview();
+    }
+
+    public PetSitter saveMemberToEntity(MemberListResponseDto memberDto) {
+
+            PetSitterAddress petSitterAddress=new PetSitterAddress(null,memberDto.address,null,null);
+            PetSitter petSitter=new PetSitter();
+
+            petSitter.setPetSitterAddress(petSitterAddress);
+            petSitter.setPetSitterId(memberDto.email);
+
+            PetSitter saved = petSitterRepository.save(petSitter);
+            log.info("petSitterService/saveMemberToEntity = {}",saved);
+            return saved;
     }
 }
