@@ -447,75 +447,108 @@
                         <div id="Pleasetakecare" style="display:none;">
 
                             <!-- 현재 진행중인 내역 -->
-                            <div id="currentUsageSection">
-                                <h4>현재 요청한 내역</h4>
+                            <div id="careDto">
+                                <h4>현재 요청받은 내역</h4>
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th></th>
-                                        <th scope="col">펫시터</th>
-                                        <th scope="col">서비스 날짜</th>
-                                        <th scope="col">예약 신청 날짜</th>
-                                        <th scope="col">견종, 마리</th>
-                                        <th scope="col">시작, 종료</th>
-                                        <th>상태변경</th>
-                                        <th>상태</th>
+                                        <th scope="col">예약 요청한 펫시터 이메일</th>
+                                        <th scope="col">예약 번호</th>
+                                        <th scope="col">예약 받은 날짜</th>
+                                        <th scope="col">현재 예약 상태</th>
+                                        <th scope="col">펫시터 한줄 소개</th>
+                                        <th scope="col">요청한 시팅 시작날짜 종료 날짜</th>
+                                        <th>요청거절 하기</th>
+                                        <th>요청수락 하기</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="reservationDto ,stat :${reservationDtoList}"
-                                        th:object="${reservationDto}">
-                                        <form id="reservationForm" method="post" th:object="${reservationDtoList}">
+
+                                    <tr th:each="pleaseCareDto ,stat :${pleaseCare}"
+                                        th:object="${pleaseCareDto}">
+                                        <div id="reservationByPetsitter" method="post" th:object="${pleaseCareDto}">
                                             <label>
-                                                <input type="hidden" th:value="${reservationDto.partnerOrderId}"
-                                                       name="partnerOrderId">
+                                                <input type="hidden" th:value="${pleaseCareDto.memberId}">
                                             </label>
 
-                                            <td>
-                                                <a th:href="@{|/petsitter/reservationdetail/${reservationDto.partnerOrderId}|}"
-                                                   onclick="window.open(this.href, '_blank', 'left=2000%,top=800%, width=900, height=700'); return false;">자세히</a>
-                                            </td>
-                                            <td th:text="${reservationDto.petSitterId}"></td>
-                                            <td th:text="${reservationDto.reservationDay}"></td>
-                                            <td th:text="${#temporals.format(reservationDto.createdAt, 'yyyy-MM-dd/a hh:mm')}"></td>
+                                            <td th:text="${pleaseCareDto.petSitterId}"></td>
+                                            <td th:text="${pleaseCareDto.reservationId}"></td>
+                                            <td th:text="${pleaseCareDto.createdDate}"></td>
+                                            <td th:if="${pleaseCareDto.status.getReservationStatus() eq 'PENDING'}"
+                                                th:text='예약대기'></td>
+                                            <td th:if="${pleaseCareDto.status.getReservationStatus() eq 'REQUEST_REJECTED'}"
+                                                th:text="예약거절"></td>
+                                            <td th:if="${pleaseCareDto.status.getReservationStatus() eq 'REQUEST_ACCEPTED'}"
+                                                th:text="예약수락"></td>
+                                            <td th:if="${pleaseCareDto.status.getReservationStatus() eq 'IN_CARE'}"
+                                                th:text="돌봄중"></td>
+                                            <td th:if="${pleaseCareDto.status.getReservationStatus() eq 'CARE_COMPLETE'}"
+                                                th:text="돌봄완료"></td>
+                                            <td th:if="${pleaseCareDto.status.getReservationStatus() eq 'CARE_COMPLETION_REQUEST'}"
+                                                th:text="돌봄완료요청"></td>
 
-                                            <td th:object="${reservationDto.petSizeAndHowManyPets}">
-                                                <div th:if="${#lists.size(reservationDto.petSizeAndHowManyPets) >= 2}">
-                                                    <span th:text="${reservationDto.petSizeAndHowManyPets[0].petSize}"
-                                                          name="petSize"></span>
-                                                    <span th:text="${reservationDto.petSizeAndHowManyPets[0].howManyPet}"></span>
-                                                    <span th:text="'외...'"></span>
-                                                </div>
-                                                <div th:if="${#lists.size(reservationDto.petSizeAndHowManyPets) <2}">
-                                                    <span th:text="${reservationDto.petSizeAndHowManyPets[0].petSize}"
-                                                          name="petSize"></span>
-                                                    <span th:text="${reservationDto.petSizeAndHowManyPets[0].howManyPet}"></span>
-                                                </div>
-                                            </td>
+                                            <td th:text="${pleaseCareDto.introduce}"></td>
 
                                             <td>
-                                                <span th:text="${reservationDto.startTime}" name="startTime"></span>
-                                                <span th:text="${reservationDto.endTime}" name="endTime"></span>
+                                                <span th:text="${pleaseCareDto.startDate}" name="startTime"></span>
+                                                <span th:text="${pleaseCareDto.endDate}" name="endTime"></span>
                                             </td>
-                                            <td>
-                                                <div>
-                                                    <button type="submit"
-                                                            th:formaction="@{/petsitter/memberReservationCancel}"
-                                                            th:if="${reservationDto.reservationStatus.getReservationStatus()} != 'cancel'"
-                                                            th:text="예약취소" value="cancel" class="btn btn-danger"
-                                                            name="sittingStatus"></button>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <span th:if="${reservationDto.reservationStatus.getReservationStatus()} == 'ready'"
-                                                      th:text="예약대기"></span>
-                                                <span th:if="${reservationDto.reservationStatus.getReservationStatus()} == 'OK'"
-                                                      th:text="예약승인"></span>
-                                                <span th:if="${reservationDto.reservationStatus.getReservationStatus()} == 'cancel'"
-                                                      th:text="예약취소" class=""></span>
 
-                                            </td>
-                                        </form>
+
+                                            <form method="post" onsubmit="return confirm('정말 돌봄 요청을 거절하시겠습니까?')">
+                                                <label>
+                                                    <input type="hidden" name="reservationId"
+                                                           th:value="${pleaseCareDto.reservationId}">
+                                                </label>
+                                                <td>
+                                                    <button th:if="${pleaseCareDto.status.getReservationStatus} == 'PENDING'"
+                                                            th:formaction="@{/mypage/deleteReservation}"
+                                                            class="btn btn-sm btn-danger" type="submit">예약요청 거절
+                                                    </button>
+                                                </td>
+                                            </form>
+
+                                            <form method="post" onsubmit="return confirm('정말 돌봄 요청을 수락하시겠습니까?')">
+                                                <label>
+                                                    <input type="hidden" name="reservationId"
+                                                           th:value="${pleaseCareDto.reservationId}">
+                                                </label>
+                                                <td>
+                                                    <button th:if="${pleaseCareDto.status.getReservationStatus} == 'PENDING'"
+                                                            th:formaction="@{/mypage/acceptRequest}"
+                                                            class="btn btn-sm btn-primary" type="submit">예약요청 수락
+                                                    </button>
+                                                </td>
+                                            </form>
+
+                                            <form method="post" onsubmit="return confirm('정말 돌봄완료 상태로 바꾸시겠습니까?')">
+                                                <td>
+                                                    <label>
+                                                        <input type="hidden" name="reservationId"
+                                                               th:value="${pleaseCareDto.reservationId}">
+                                                    </label>
+                                                    <button th:if="${pleaseCareDto.status.getReservationStatus} == 'CARE_COMPLETION_REQUEST'"
+                                                            th:formaction="@{/mypage/completeReservation}"
+                                                            class="btn btn-sm btn-primary" type="submit"
+                                                    >돌봄완료
+
+                                                    </button>
+
+                                                </td>
+
+                                            </form>
+
+
+                                            <!--
+                                                                               <td>-->
+                                            <!--                                                <span th:if="${pleaseeCareDto.status.getReservationStatus()} == 'PENDING'"-->
+                                            <!--                                                      th:text="요청대기"></span>-->
+                                            <!--                                                <span th:if="${pleaseeCareDto.status.getReservationStatus()} == 'REQUEST_ACCEPTED'"-->
+                                            <!--                                                      th:text="요청수락"></span>-->
+                                            <!--                                                <span th:if="${pleaseeCareDto.status.getReservationStatus()} == 'REQUEST_REJECTED'"-->
+                                            <!--                                                      th:text="요청거절" class=""></span>-->
+                                            <!--                                            </td>-->
+                                        </div>
                                     </tr>
 
                                     <!-- 다른 진행중인 내역 추가 -->
@@ -736,6 +769,10 @@
         </div>
 
     </section>
+    <script>
+        const message = '[[${message}]]';
+        message && alert(message);
+    </script>
 
 
     <!-- loader -->
