@@ -67,6 +67,7 @@ public class MemberService {
     // 이름, 이메일, 상태, 수락/거부 상태
     public List<MemberListResponseDto> findPendingSitterMembers(){
         List<Member> pendingSitters =  memberRepository.findPendingSitterMembers(SitterStatus.PENDING);
+        log.info("pendingSitters = {}", pendingSitters);
         return pendingSitters.stream()
                 .map(MemberListResponseDto::fromMember)
                 .collect(Collectors.toList());

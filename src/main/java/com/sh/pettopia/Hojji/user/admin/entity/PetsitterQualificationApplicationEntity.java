@@ -38,4 +38,6 @@ public class PetsitterQualificationApplicationEntity {
     private String certification; // 자격증
     @Column
     private String motivationForApplying; // 지원동기
+//    @Column
+//    private LocalDate createdAt; // 제출일자
 }
