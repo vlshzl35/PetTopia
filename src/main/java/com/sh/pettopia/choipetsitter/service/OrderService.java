@@ -23,4 +23,7 @@ public class OrderService {
     {
         return orderRepository.findAll();
     }
+    public List<Order> findAllByOrderByPayDate(){
+        return orderRepository.findAllByOrderByPayDate();
+    }
 }

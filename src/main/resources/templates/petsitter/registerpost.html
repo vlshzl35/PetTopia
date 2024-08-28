@@ -138,6 +138,10 @@
         #License-fileInput {
             margin-top: 20px;
         }
+        .availableService >label{
+            solid-color: black;
+            border: 1px;
+        }
     </style>
 </head>
 <body>
@@ -165,11 +169,11 @@
             <div style="margin: 50px">
                 <div>
                     <div style="padding: 30px;">
-                        <div style="display: inline-block; width: 100%;">
+                        <div style="display: inline-block; width: 100%;" id="fileDiv">
 
                             <div style="display: inline-block; vertical-align: top; width: 49%;">
                                 <h4>홍보사진</h4>
-
+                                <!--홍보사진 올린거 미리보기-->
                                 <div class="gallery-container">
                                     <div class="arrow" id="prev">&#9664;</div>
                                     <div class="gallery" id="file-gallery"></div>
@@ -181,7 +185,7 @@
 
                             <div style="display: inline-block; vertical-align: top; width: 49%;">
                                 <h4>자격증 및 수료증</h4>
-
+                                <!--자격증 및 수료증 올린거 미리보기-->
                                 <div class="License-gallery-container">
                                     <div class="License-arrow" id="License-prev">&#9664;</div>
                                     <div class="License-gallery" id="License-gallery"></div>
@@ -223,11 +227,12 @@
                                 </div>
                             </div>
                             <div class="container">
-                                <div style="border: 1px solid black">
+                                <div style="border: 1px solid black" class="availableService">
                                     <div>
                                         <label for="everydayWalk">
-                                            <img th:src="@{/images/availableService/everydaywalk.PNG}"
-                                                 alt="everydayWalk">
+<!--                                            <img th:src="@{/images/availableService/everydaywalk.PNG}" alt="매일산책">-->
+                                            <p>매일산책</p>
+                                            <span>산책 및 실외 배변 가능</span>
                                             <input type="checkbox" name="availableServices" id="everydayWalk"
                                                    value="everydayWalk"
                                                    th:checked="${petService.contains('everydayWalk')}">
@@ -236,35 +241,45 @@
 
                                         </label>
                                         <label for="oldPetWalk">
-                                            <img th:src="@{/images/availableService/oldpetwalk.PNG}" alt="노견산책">
+<!--                                            <img th:src="@{/images/availableService/oldpetwalk.PNG}" alt="노견산책">-->
+                                            <p>노견 산책케어</p>
+                                            <span>8년 이상 노견 가능</span>
                                             <input type="checkbox" name="availableServices" id="oldPetWalk"
                                                    value="olderPetWalk"
                                                    th:checked="${petService.contains('olderPetWalk')}">
 
                                         </label>
                                         <label for="youngerPetWalk">
-                                            <img th:src="@{/images/availableService/youngerpetwalk.PNG}" alt="어린견산책">
+<!--                                            <img th:src="@{/images/availableService/youngerpetwalk.PNG}" alt="어린견산책">-->
+                                            <p>퍼피 산책케어</p>
+                                            <span>1년 미만 퍼피 가능</span>
                                             <input type="checkbox" name="availableServices" id="youngerPetWalk"
                                                    value="youngerPetWalk"
                                                    th:checked="${petService.contains('youngerPetWalk')}">
 
                                         </label>
                                     </div>
-                                    <div class="">
+                                    <div >
                                         <label for="play">
-                                            <img th:src="@{/images/availableService/play.PNG}" alt="실내놀이">
+<!--                                            <img th:src="@{/images/availableService/play.PNG}" alt="실내놀이">-->
+                                            <p>모발 관리</p>
+                                            <span>눈물 또는 빗질 관리 가능</span>
                                             <input type="checkbox" name="availableServices" id="play" alt=""
                                                    value="play"
                                                    th:checked="${petService.contains('play')}">
                                         </label>
                                         <label for="firstAid">
-                                            <img th:src="@{/images/availableService/firstaid.PNG}" alt="응급처치">
+<!--                                            <img th:src="@{/images/availableService/firstaid.PNG}" alt="응급처치">-->
+                                            <p>응급 처리</p>
+                                            <span>응급 상황 시 병원 이동 가능</span>
                                             <input type="checkbox" name="availableServices" id="firstAid"
                                                    value="firstAid"
                                                    th:checked="${petService.contains('firstAid')}">
                                         </label>
                                         <label for="pickup">
-                                            <img th:src="@{/images/availableService/pickup.PNG}" alt="도보픽업">
+<!--                                            <img th:src="@{/images/availableService/pickup.PNG}" alt="도보픽업">-->
+                                            <p>도보 픽업</p>
+                                            <span>비용은 파트너와 협의</span>
                                             <input type="checkbox" name="availableServices" id="pickup"
                                                    value="walkPickup"
                                                    th:checked="${petService.contains('walkPickup')}">
@@ -272,18 +287,24 @@
                                     </div>
                                     <div class="">
                                         <label for="brush">
-                                            <img th:src="@{/images/availableService/brush.PNG}" alt="모발관리">
+<!--                                            <img th:src="@{/images/availableService/brush.PNG}" alt="모발관리">-->
+                                            <p>모발 관리</p>
+                                            <span>눈물 또는 빗질 관리 가능</span>
                                             <input type="checkbox" name="availableServices" id="brush" value="brush"
                                                    th:checked="${petService.contains('brush')}">
                                         </label>
                                         <label for="medicine">
-                                            <img th:src="@{/images/availableService/medicine.PNG}" alt="약먹이기">
+<!--                                            <img th:src="@{/images/availableService/medicine.PNG}" alt="약먹이기">-->
+                                            <p>약물 복용</p>
+                                            <span>경구(입) 약물 복용 가능</span>
                                             <input type="checkbox" name="availableServices" id="medicine"
                                                    value="medicine"
                                                    th:checked="${petService.contains('medicine')}">
                                         </label>
                                         <label for="longReservation">
-                                            <img th:src="@{/images/availableService/longreservation.PNG}" alt="장기예약">
+<!--                                            <img th:src="@{/images/availableService/longreservation.PNG}" alt="장기예약">-->
+                                            <p>장기 예약</p>
+                                            <span>14일 이상 예약 가능</span>
                                             <input type="checkbox" name="availableServices" id="longReservation"
                                                    value="longReservation"
                                                    th:checked="${petService.contains('longReservation')}">
@@ -292,19 +313,22 @@
 
                                 </div>
                                 <div class="" style="border: 1px solid black; display: block;" id="availablePetSize">
+                                    <h4>소형견</h4>
                                     <label for="smallPet">
-                                        <img th:src="@{/images/availablePetSize/smallpet.PNG}" alt="" class="petSize">
+<!--                                        <img th:src="@{/images/availablePetSize/smallpet.PNG}" alt="" class="petSize">-->
                                         <input type="checkbox" name="availablePetSizes" id="smallPet" value="smallPet"
                                                th:checked="${petSize.contains('smallPet')}">
 
                                     </label>
+                                    <h4>중형견</h4>
                                     <label for="middlePet">
-                                        <img th:src="@{/images/availablePetSize/middlepet.PNG}" alt="" class="petSize">
+<!--                                        <img th:src="@{/images/availablePetSize/middlepet.PNG}" alt="" class="petSize">-->
                                         <input type="checkbox" name="availablePetSizes" id="middlePet" value="middlePet"
                                                th:checked="${petSize.contains('middlePet')}">
                                     </label>
+                                    <h4>대형견</h4>
                                     <label for="largePet">
-                                        <img th:src="@{/images/availablePetSize/largepet.PNG}" alt="" class="petSize">
+<!--                                        <img th:src="@{/images/availablePetSize/largepet.PNG}" alt="" class="petSize">-->
                                         <input type="checkbox" name="availablePetSizes" id="largePet" value="largePet"
                                                th:checked="${petSize.contains('largePet')}">
 
