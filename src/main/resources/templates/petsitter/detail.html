@@ -463,7 +463,7 @@
 
             console.log("day : " + day, "startTime : " + startTime, "endTime : " + endTime);
 
-            if (day.innerText === '') {
+            if (day.innerText === null || day.innerText ==='') {
                 alert('날짜를 선택해야 합니다');
                 return false;
             }

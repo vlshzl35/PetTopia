@@ -26,7 +26,7 @@ public class PetSitterReview {
     @Column(name = "review_text") // 리뷰 내용
     private String reviewText;
 
-    @Column(name = "image_url")
+    @Column(name = "image_url", columnDefinition = "TEXT")
     @ElementCollection
     private List<String> imageUrl; // 한 줄에 전부가 오는지, 아니면 리스트로 만들어야 하는지 알아야 할 거 같다
 
