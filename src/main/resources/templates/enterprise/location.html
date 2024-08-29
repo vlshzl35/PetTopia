@@ -1,350 +1,290 @@
 <!doctype html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
-	  layout:decorate="~{layout/default}">
+      layout:decorate="~{layout/default}">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport"
-		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>위치 서비스</title>
-	<script type="text/javascript"
-			src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c2c4e06dc64e84c36fa8af04a0f00306&libraries=services"></script>
-	<link rel="stylesheet" href="/css/kakao-map.css">
-	<style>
-		#mapwrap {
-			position: relative;
-			overflow: hidden;
-		}
-
-		.category, .category * {
-			margin: 0;
-			padding: 0;
-			color: #000;
-		}
-
-		.category {
-			position: absolute;
-			overflow: hidden;
-			top: 10px;
-			left: 10px;
-			width: 200px;
-			height: 60px;
-			z-index: 10;
-			border: 1px solid black;
-			font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
-			font-size: 12px;
-			text-align: center;
-			background-color: #fff;
-		}
-
-		.category .menu_selected {
-			background: #FF5F4A;
-			color: #fff;
-			border-left: 1px solid #915B2F;
-			border-right: 1px solid #915B2F;
-			margin: 0 -1px;
-		}
-
-		.category li {
-			list-style: none;
-			float: left;
-			width: 66px;
-			height: 59px;
-			padding-top: 5px;
-			cursor: pointer;
-		}
-
-		.category .ico_comm {
-			display: block;
-			margin: 0 auto 2px;
-			width: 22px;
-			height: 28px;
-			background-size: contain;
-			background-repeat: no-repeat;
-		}
-
-		.category .ico_hospital {
-			background-image: url('https://cdn-icons-png.flaticon.com/128/2309/2309962.png');
-		}  /* 병원 아이콘 URL */
-
-		.category .ico_pharmacy {
-			background-image: url('https://cdn-icons-png.flaticon.com/128/4320/4320344.png');
-		}  /* 약국 아이콘 URL */
-
-		.category .ico_hairsalon {
-			background-image: url('https://cdn-icons-png.flaticon.com/128/1057/1057470.png');
-		}  /* 미용실 아이콘 URL */
-	</style>
-	<style>
-		#mapwrap {
-			position: relative;
-			overflow: hidden;
-			margin-bottom: 50px; /* 아래에 50px의 공간을 추가 */
-		}
-	</style>
-	<script type="text/javascript"
-			src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c2c4e06dc64e84c36fa8af04a0f00306&libraries=services"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>위치 서비스</title>
+    <link rel="stylesheet" href="/css/kakao-map.css">
+    <link href="/css/enterprise/location.css" rel="stylesheet">
+    <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c2c4e06dc64e84c36fa8af04a0f00306&libraries=services"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
 <div layout:fragment="main" class="page-body">
-	<div class="container">
-		<br>
-		<h3>위치 찾기</h3>
-		<br>
-		<div id="mapwrap">
-			<!-- 지도가 표시될 div -->
-			<div id="map" style="width:100%;height:350px;"></div>
-			<!-- 지도 위에 표시될 마커 카테고리 -->
-			<div class="category">
-				<ul>
-					<li id="hospitalMenu" onclick="changeMarker('hospital')">
-						<span class="ico_comm ico_hospital"></span>
-						병원
-					</li>
-					<li id="pharmacyMenu" onclick="changeMarker('pharmacy')">
-						<span class="ico_comm ico_pharmacy"></span>
-						약국
-					</li>
-					<li id="hairsalonMenu" onclick="changeMarker('hairsalon')">
-						<span class="ico_comm ico_hairsalon"></span>
-						미용실
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+    <section class="section">
+        <div class="container">
+            <div class="header-container">
+                <img src='/svg/map.svg' class="ocr-image">
+                <h2>주변 병원 • 약국 • 미용실 위치를 확인해보세요!</h2>
+                <img src='/svg/receipt.svg' class="ocr-image">
+            </div>
+        </div>
+    </section>
 
-	<script>
-		// 전역 변수로 선언하여 다른 함수에서도 접근 가능하게 합니다
-		let userLat = 37.512983969113506;  // 고정된 기본값 (서울의 예시 좌표)
-		let userLon = 127.05305952813623;  // 고정된 기본값 (서울의 예시 좌표)
-		var map;
+    <div class="container">
+        <div class="info-text">
+            <h5>☝🏻 병원 • 약국 • 미용실 중 원하는 서비스를 눌러주세요!</h5>
+        </div>
+        <div class="info-text">
+            <h5> 📍 표시되는 마커를 누르면, 병원 • 약국 • 미용실의 후기를 볼 수 있어요!</h5>
+        </div>
+        <div class="info-text" >
+            <h4>🎖</h4>
+            <h5>️펫토피아는 영수증 인증을 통한 <strong style="color: #00bd56">신뢰도 있는 후기</strong>만 제공해요!️</h5>
+        </div>
+        <div id="mapwrap">
+            <div id="map" class="map"></div>
+            <ul class="category">
+                <li id="hospitalMenu" onclick="changeMarker('hospital')">
+                    <span class="ico_comm ico_hospital"></span>
+                    병원
+                </li>
+                <li id="pharmacyMenu" onclick="changeMarker('pharmacy')">
+                    <span class="ico_comm ico_pharmacy"></span>
+                    약국
+                </li>
+                <li id="hairsalonMenu" onclick="changeMarker('hairsalon')">
+                    <span class="ico_comm ico_hairsalon"></span>
+                    미용실
+                </li>
+            </ul>
+        </div>
+    </div>
 
-		var currentInfowindow = null; // 현재 열린 인포윈도우를 추적하는 변수  // 추가된 부분
-		var currentMarker = null; // 현재 클릭된 마커를 추적하는 변수  // 추가된 부분
+    <script>
+        // 전역 변수로 선언하여 다른 함수에서도 접근 가능하게 합니다
+        let userLat = 37.512983969113506;  // 고정된 기본값 (서울의 예시 좌표)
+        let userLon = 127.05305952813623;  // 고정된 기본값 (서울의 예시 좌표)
+        var map;
 
-		// Geolocation API를 사용하여 현재 위치를 가져옵니다
-		navigator.geolocation.getCurrentPosition(
-				(position) => {
-					// 위치 정보를 성공적으로 가져온 경우
-					userLat = position.coords.latitude;   // 위도
-					userLon = position.coords.longitude;  // 경도
-					console.log("Current Position:", userLat, userLon);
+        var currentInfowindow = null; // 현재 열린 인포윈도우를 추적하는 변수  // 추가된 부분
+        var currentMarker = null; // 현재 클릭된 마커를 추적하는 변수  // 추가된 부분
 
-					// 위치 정보가 설정된 후 실행할 코드
-					handlePosition(userLat, userLon);
-				},
-				(error) => {
-					// 위치 정보를 가져오지 못한 경우
-					console.warn(`Geolocation Error (${error.code}): ${error.message}`);
+        // Geolocation API를 사용하여 현재 위치를 가져옵니다
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                // 위치 정보를 성공적으로 가져온 경우
+                userLat = position.coords.latitude;   // 위도
+                userLon = position.coords.longitude;  // 경도
+                console.log("Current Position:", userLat, userLon);
 
-					// 고정된 값으로 지도 생성
-					handlePosition(userLat, userLon);
-				}
-		);
+                // 위치 정보가 설정된 후 실행할 코드
+                handlePosition(userLat, userLon);
+            },
+            (error) => {
+                // 위치 정보를 가져오지 못한 경우
+                console.warn(`Geolocation Error (${error.code}): ${error.message}`);
 
-		// 위치 정보가 설정된 후 실행할 함수
-		function handlePosition(lat, lon) {
-			console.log('테스트용', lat);
-			console.log('테스트용', lon);
-			var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-					mapOption = {
-						center: new kakao.maps.LatLng(lat, lon), // 지도의 중심좌표
-						level: 5 // 지도의 확대 레벨
-					};
+                // 고정된 값으로 지도 생성
+                handlePosition(userLat, userLon);
+            }
+        );
 
-			map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-		}
+        // 위치 정보가 설정된 후 실행할 함수
+        function handlePosition(lat, lon) {
+            console.log('테스트용', lat);
+            console.log('테스트용', lon);
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+                mapOption = {
+                    center: new kakao.maps.LatLng(lat, lon), // 지도의 중심좌표
+                    level: 5 // 지도의 확대 레벨
+                };
 
-		var hospitalMarkers = [], // 병원 마커 객체를 가지고 있을 배열입니다
-				pharmacyMarkers = [], // 약국 마커 객체를 가지고 있을 배열입니다
-				hairsalonMarkers = []; // 미용실 마커 객체를 가지고 있을 배열입니다
+            map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+        }
 
-		// JSON 파일 불러와 마커 생성
-		function loadMarkers() {
-			$.ajax({
-				url: '/json/hospitalData.json',
-				dataType: 'json',
-				success: function (data) {
-					console.log('병원 데이터 로드 성공:', data);
-					createMarkers(data.documents, 'hospital');
-				},
-				error: function (xhr, status, error) {
-					console.error('병원 데이터 로드 실패:', error);
-				}
-			});
+        var hospitalMarkers = [], // 병원 마커 객체를 가지고 있을 배열입니다
+            pharmacyMarkers = [], // 약국 마커 객체를 가지고 있을 배열입니다
+            hairsalonMarkers = []; // 미용실 마커 객체를 가지고 있을 배열입니다
 
-			$.ajax({
-				url: '/json/pharmacyData.json',
-				dataType: 'json',
-				success: function (data) {
-					console.log('약국 데이터 로드 성공:', data);
-					createMarkers(data.documents, 'pharmacy');
-				},
-				error: function (xhr, status, error) {
-					console.error('약국 데이터 로드 실패:', error);
-				}
-			});
+        // JSON 파일 불러와 마커 생성
+        function loadMarkers() {
+            $.ajax({
+                url: '/json/hospitalData.json',
+                dataType: 'json',
+                success: function (data) {
+                    console.log('병원 데이터 로드 성공:', data);
+                    createMarkers(data.documents, 'hospital');
+                },
+                error: function (xhr, status, error) {
+                    console.error('병원 데이터 로드 실패:', error);
+                }
+            });
 
-			$.ajax({
-				url: '/json/salonData.json',
-				dataType: 'json',
-				success: function (data) {
-					console.log('미용실 데이터 로드 성공:', data);
-					createMarkers(data.documents, 'hairsalon');
-				},
-				error: function (xhr, status, error) {
-					console.error('미용실 데이터 로드 실패:', error);
-				}
-			});
-		}
+            $.ajax({
+                url: '/json/pharmacyData.json',
+                dataType: 'json',
+                success: function (data) {
+                    console.log('약국 데이터 로드 성공:', data);
+                    createMarkers(data.documents, 'pharmacy');
+                },
+                error: function (xhr, status, error) {
+                    console.error('약국 데이터 로드 실패:', error);
+                }
+            });
 
-		// 마커를 생성하고 배열에 추가하는 함수
-		function createMarkers(data, type) {
-			var markers = [];
-			var imageSrc;
-			var urlPrefix = '';
+            $.ajax({
+                url: '/json/salonData.json',
+                dataType: 'json',
+                success: function (data) {
+                    console.log('미용실 데이터 로드 성공:', data);
+                    createMarkers(data.documents, 'hairsalon');
+                },
+                error: function (xhr, status, error) {
+                    console.error('미용실 데이터 로드 실패:', error);
+                }
+            });
+        }
 
-			// 카테고리에 따른 아이콘과 URL 설정
-			if (type === 'hospital') {
-				imageSrc = 'https://cdn-icons-png.flaticon.com/128/3448/3448513.png';
-				urlPrefix = '/enterprise/hospital/detail?id=';
-			} else if (type === 'pharmacy') {
-				imageSrc = 'https://cdn-icons-png.flaticon.com/128/4287/4287703.png';
-				urlPrefix = '/enterprise/pharmacy/detail?id=';
-			} else if (type === 'hairsalon') {
-				imageSrc = 'https://cdn-icons-png.flaticon.com/128/14183/14183655.png';
-				urlPrefix = '/enterprise/salon/detail?id=';
-			}
+        // 마커를 생성하고 배열에 추가하는 함수
+        function createMarkers(data, type) {
+            var markers = [];
+            var imageSrc;
+            var urlPrefix = '';
 
-			var imageSize = new kakao.maps.Size(34, 45),
-					imageOptions = {offset: new kakao.maps.Point(12, 35)};
+            // 카테고리에 따른 아이콘과 URL 설정
+            if (type === 'hospital') {
+                imageSrc = 'https://cdn-icons-png.flaticon.com/128/3448/3448513.png';
+                urlPrefix = '/enterprise/hospital/detail?id=';
+            } else if (type === 'pharmacy') {
+                imageSrc = 'https://cdn-icons-png.flaticon.com/128/4287/4287703.png';
+                urlPrefix = '/enterprise/pharmacy/detail?id=';
+            } else if (type === 'hairsalon') {
+                imageSrc = 'https://cdn-icons-png.flaticon.com/128/14183/14183655.png';
+                urlPrefix = '/enterprise/salon/detail?id=';
+            }
 
-			$.each(data, function (index, item) {
-				var position = new kakao.maps.LatLng(item.y, item.x); // 위도, 경도 확인 필요
-				var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOptions);
-				var marker = new kakao.maps.Marker({
-					map: map,
-					position: position,
-					image: markerImage
-				});
+            var imageSize = new kakao.maps.Size(34, 45),
+                imageOptions = {offset: new kakao.maps.Point(12, 35)};
 
-				var content = `
+            $.each(data, function (index, item) {
+                var position = new kakao.maps.LatLng(item.y, item.x); // 위도, 경도 확인 필요
+                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOptions);
+                var marker = new kakao.maps.Marker({
+                    map: map,
+                    position: position,
+                    image: markerImage
+                });
+
+                var content = `
 		            <div style="padding:10px; width: 170px; height: 120px; background-color: #fff; border: 2px solid #FF5F4A; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
 		                <strong style="font-size: 14px; color: #333;">${item.place_name}</strong><br>
 		                <a href="${urlPrefix}${item.id}" style="color: #FF5F4A; text-decoration: none;">자세히</a><br>
 		            </div>`;
 
-				var infowindow = createInfoWindow(content);
+                var infowindow = createInfoWindow(content);
 
-				kakao.maps.event.addListener(marker, 'click', function() {
-					// 동일한 마커가 클릭되었을 때 인포윈도우를 닫음  // 추가된 부분
-					if (currentInfowindow && currentMarker === marker) {
-						currentInfowindow.close();
-						currentInfowindow = null;
-						currentMarker = null;
-					} else {
-						// 다른 마커를 클릭했을 때, 이전 인포윈도우가 열려 있다면 닫음
-						if (currentInfowindow) {
-							currentInfowindow.close();
-						}
-						// 새 인포윈도우를 열고, 현재 열린 인포윈도우로 설정
-						infowindow.open(map, marker);
-						currentInfowindow = infowindow;
-						currentMarker = marker;  // 추가된 부분
-					}
-				});
+                kakao.maps.event.addListener(marker, 'click', function() {
+                    // 동일한 마커가 클릭되었을 때 인포윈도우를 닫음  // 추가된 부분
+                    if (currentInfowindow && currentMarker === marker) {
+                        currentInfowindow.close();
+                        currentInfowindow = null;
+                        currentMarker = null;
+                    } else {
+                        // 다른 마커를 클릭했을 때, 이전 인포윈도우가 열려 있다면 닫음
+                        if (currentInfowindow) {
+                            currentInfowindow.close();
+                        }
+                        // 새 인포윈도우를 열고, 현재 열린 인포윈도우로 설정
+                        infowindow.open(map, marker);
+                        currentInfowindow = infowindow;
+                        currentMarker = marker;  // 추가된 부분
+                    }
+                });
 
-				markers.push({marker: marker, infowindow: infowindow});
-			});
+                markers.push({marker: marker, infowindow: infowindow});
+            });
 
-			if (type === 'hospital') {
-				hospitalMarkers = markers;
-				setHospitalMarkers(null);
-			} else if (type === 'pharmacy') {
-				pharmacyMarkers = markers;
-				setPharmacyMarkers(null);
-			} else if (type === 'hairsalon') {
-				hairsalonMarkers = markers;
-				setHairsalonMarkers(null);
-			}
-		}
+            if (type === 'hospital') {
+                hospitalMarkers = markers;
+                setHospitalMarkers(null);
+            } else if (type === 'pharmacy') {
+                pharmacyMarkers = markers;
+                setPharmacyMarkers(null);
+            } else if (type === 'hairsalon') {
+                hairsalonMarkers = markers;
+                setHairsalonMarkers(null);
+            }
+        }
 
-		// 인포윈도우 생성 함수
-		function createInfoWindow(content) {
-			var infowindow = new kakao.maps.InfoWindow({
-				content: content
-			});
-			return infowindow;
-		}
+        // 인포윈도우 생성 함수
+        function createInfoWindow(content) {
+            var infowindow = new kakao.maps.InfoWindow({
+                content: content
+            });
+            return infowindow;
+        }
 
-		// 병원 마커들의 지도 표시 여부를 설정하는 함수입니다
-		function setHospitalMarkers(map) {
-			for (var i = 0; i < hospitalMarkers.length; i++) {
-				hospitalMarkers[i].marker.setMap(map);
-			}
-		}
+        // 병원 마커들의 지도 표시 여부를 설정하는 함수입니다
+        function setHospitalMarkers(map) {
+            for (var i = 0; i < hospitalMarkers.length; i++) {
+                hospitalMarkers[i].marker.setMap(map);
+            }
+        }
 
-		// 약국 마커들의 지도 표시 여부를 설정하는 함수입니다
-		function setPharmacyMarkers(map) {
-			for (var i = 0; i < pharmacyMarkers.length; i++) {
-				pharmacyMarkers[i].marker.setMap(map);
-			}
-		}
+        // 약국 마커들의 지도 표시 여부를 설정하는 함수입니다
+        function setPharmacyMarkers(map) {
+            for (var i = 0; i < pharmacyMarkers.length; i++) {
+                pharmacyMarkers[i].marker.setMap(map);
+            }
+        }
 
-		// 미용실 마커들의 지도 표시 여부를 설정하는 함수입니다
-		function setHairsalonMarkers(map) {
-			for (var i = 0; i < hairsalonMarkers.length; i++) {
-				hairsalonMarkers[i].marker.setMap(map);
-			}
-		}
+        // 미용실 마커들의 지도 표시 여부를 설정하는 함수입니다
+        function setHairsalonMarkers(map) {
+            for (var i = 0; i < hairsalonMarkers.length; i++) {
+                hairsalonMarkers[i].marker.setMap(map);
+            }
+        }
 
-		// 카테고리를 클릭했을 때 type에 따라 카테고리의 스타일과 지도에 표시되는 마커를 변경합니다
-		function changeMarker(type) {
-			var hospitalMenu = document.getElementById('hospitalMenu');
-			var pharmacyMenu = document.getElementById('pharmacyMenu');
-			var hairsalonMenu = document.getElementById('hairsalonMenu');
+        // 카테고리를 클릭했을 때 type에 따라 카테고리의 스타일과 지도에 표시되는 마커를 변경합니다
+        function changeMarker(type) {
+            var hospitalMenu = document.getElementById('hospitalMenu');
+            var pharmacyMenu = document.getElementById('pharmacyMenu');
+            var hairsalonMenu = document.getElementById('hairsalonMenu');
 
-			// 새로운 마커 유형이 선택될 때 모든 인포윈도우를 닫음  // 추가된 부분
-			if (currentInfowindow) {
-				currentInfowindow.close();
-				currentInfowindow = null;
-				currentMarker = null;
-			}
+            // 새로운 마커 유형이 선택될 때 모든 인포윈도우를 닫음  // 추가된 부분
+            if (currentInfowindow) {
+                currentInfowindow.close();
+                currentInfowindow = null;
+                currentMarker = null;
+            }
 
-			if (type === 'hospital') {
-				hospitalMenu.className = 'menu_selected';
-				pharmacyMenu.className = '';
-				hairsalonMenu.className = '';
+            if (type === 'hospital') {
+                hospitalMenu.className = 'menu_selected';
+                pharmacyMenu.className = '';
+                hairsalonMenu.className = '';
 
-				setHospitalMarkers(map);
-				setPharmacyMarkers(null);
-				setHairsalonMarkers(null);
+                setHospitalMarkers(map);
+                setPharmacyMarkers(null);
+                setHairsalonMarkers(null);
 
-			} else if (type === 'pharmacy') {
-				hospitalMenu.className = '';
-				pharmacyMenu.className = 'menu_selected';
-				hairsalonMenu.className = '';
+            } else if (type === 'pharmacy') {
+                hospitalMenu.className = '';
+                pharmacyMenu.className = 'menu_selected';
+                hairsalonMenu.className = '';
 
-				setHospitalMarkers(null);
-				setPharmacyMarkers(map);
-				setHairsalonMarkers(null);
+                setHospitalMarkers(null);
+                setPharmacyMarkers(map);
+                setHairsalonMarkers(null);
 
-			} else if (type === 'hairsalon') {
-				hospitalMenu.className = '';
-				pharmacyMenu.className = '';
-				hairsalonMenu.className = 'menu_selected';
+            } else if (type === 'hairsalon') {
+                hospitalMenu.className = '';
+                pharmacyMenu.className = '';
+                hairsalonMenu.className = 'menu_selected';
 
-				setHospitalMarkers(null);
-				setPharmacyMarkers(null);
-				setHairsalonMarkers(map);
-			}
-		}
+                setHospitalMarkers(null);
+                setPharmacyMarkers(null);
+                setHairsalonMarkers(map);
+            }
+        }
 
-		loadMarkers(); // 마커를 로드하여 지도에 표시합니다
-	</script>
+        loadMarkers(); // 마커를 로드하여 지도에 표시합니다
+    </script>
 </div>
 </body>
 </html>
