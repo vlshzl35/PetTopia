@@ -15,7 +15,7 @@
                     <div class="header-container">
                         <div class="header-text">
                             <h1 class="mb-0 find-sitter">돌봐드려요</h1>
-                            <p>사랑으로 돌보는 펫시터에게 아이를 맡겨보세요!</p>
+                            <p class = "love">사랑으로 돌보는 펫시터에게 아이를 맡겨보세요!</p>
                         </div>
                         <img src="/svg/whiteDog.svg" class="main-image">
                     </div>
@@ -38,17 +38,16 @@
                 </div>
             </div>
             <div class="row" id="petSitterListContainer">
-                <div class="col-md-6 col-lg-3 ftco-animate" th:each="petSitterDto, stat : ${petSitterListDtoList}"
+                <div class="petList" th:each="petSitterDto, stat : ${petSitterListDtoList}"
                      th:object="${petSitterDto}">
                     <a th:href="@{|/petsitter/detail/${petSitterDto.petSitterId}|}"><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
                         <div class="staff">
-                            <div class="img-wrap d-flex align-items-stretch">
-                                <div class="image-box">
-                                    <img class="image-thumbnail" th:src="${petSitterDto.mainImageUrl}"
-                                         alt="Profile Image"/>
+                            <div class="img-wrap d-flex">
+                                <div class="img-wrap d-flex">
+                                    <img th:src="@{${petSitterDto.mainImageUrl}}"/>
                                 </div>
                             </div>
-                            <div class=" pt-3 px-3 pb-4">
+                            <div class=" pt-3 px-3 pb-4 careList-text">
                                 <span class="position mb-2"
                                       th:text="${petSitterDto.address}">사용자 주소</span>
                                 <div>
@@ -63,7 +62,7 @@
                                 </div>
                                 <div class="faded">
 <!--                                    여기 부분이 하얗게 나옴-->
-                                    <p th:text="${petSitterDto.oneLineIntroduce}"></p>
+                                    <p th:text="${petSitterDto.oneLineIntroduce}" class = "one-line-info"></p>
                                 </div>
                             </div>
                         </div>

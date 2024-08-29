@@ -14,7 +14,7 @@ function showContent(feature) {
             description.textContent = '위치 기반으로 펫의 건강과 미용을 위한 병원, 약국, 미용실 위치 모든 것을 제공합니다.';
             break;
         case '커뮤니티':
-            description.textContent = '반려동물 주인들과의 커뮤니티를 통해 정보 공유와 소통을 할 수 있습니다.';
+            description.textContent = '반려동물 견주들과의 커뮤니티를 통해 정보 공유와 소통을 할 수 있습니다.';
             break;
         default:
             description.textContent = '';

@@ -223,6 +223,8 @@ body {
     width: 100%;
     padding: 10px 0;
     flex-direction: row;
+    white-space: nowrap; /* 이 부분을 추가하여 모바일에서도 한 줄로 보이도록 함 */
+
 }
 
 .trustworthy-title.show {
@@ -445,10 +447,33 @@ body {
     margin-bottom: 0;
 }
 
+/*@media (max-width: 768px) {*/
+/*    .main-content {*/
+/*        flex-direction: column;*/
+/*        padding: 20px;*/
+/*    }*/
+
+/*    .image-content, .text-content {*/
+/*        max-width: 100%;*/
+/*    }*/
+
+/*    .main-image, .ocr-image {*/
+/*        width: 100%;*/
+/*        height: auto;*/
+/*    }*/
+
+/*    .trustworthy-title {*/
+/*        font-size: 1.5em; !* 모바일 화면에서는 글씨 크기를 조금 줄여서 표시 *!*/
+/*        white-space: nowrap; !* 모바일에서도 줄바꿈 없이 한 줄로 유지 *!*/
+/*    }*/
+/*}*/
+
+
 @media (max-width: 768px) {
-    .main-content {
+    .main-content, .service-container, .trustworthy-container {
         flex-direction: column;
         padding: 20px;
+        gap: 20px;
     }
 
     .image-content, .text-content {
@@ -458,5 +483,39 @@ body {
     .main-image, .ocr-image {
         width: 100%;
         height: auto;
+    }
+
+    .text-content, .review-content, .trustworthy-title, .service-title {
+        font-size: 1.2em; /* 글자 크기를 조금 줄입니다 */
+    }
+
+    .text-content .features span, .sitting-button, .enterprise-button {
+        font-size: 1em; /* 버튼의 글자 크기를 줄입니다 */
+        padding: 10px 20px; /* 버튼 패딩을 조정하여 더 쉽게 탭할 수 있게 합니다 */
+    }
+
+    .review-card, .trustworthy-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .review-image, .trustworthy-item img {
+        width: 80px; /* 이미지 크기를 줄입니다 */
+        height: 80px;
+    }
+
+    .cta-button {
+        font-size: 1.2em;
+        padding: 10px 20px; /* CTA 버튼 크기를 조정합니다 */
+    }
+
+    .review-card {
+        flex-direction: column; /* 리뷰 카드를 세로로 배열합니다 */
+        gap: 10px;
+    }
+
+    .stars {
+        font-size: 0.8em; /* 별점의 크기를 줄입니다 */
     }
 }
