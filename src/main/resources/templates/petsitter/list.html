@@ -38,14 +38,15 @@
                 </div>
             </div>
             <div class="row" id="petSitterListContainer">
-                <div class="col-md-6 col-lg-3 ftco-animate" th:each="petSitterDto, stat : ${petSitterListDtoList}"
+                <div class="petList" th:each="petSitterDto, stat : ${petSitterListDtoList}"
                      th:object="${petSitterDto}">
                     <a th:href="@{|/petsitter/detail/${petSitterDto.petSitterId}|}"><!-- 여기 부분에 디테일 페이지로 가는 링크해야 된다-->
                         <div class="staff">
-                            <div class="img-wrap d-flex align-items-stretch">
+                            <div class="img-wrap d-flex">
                                 <div class="image-box">
                                     <img class="image-thumbnail" th:src="${petSitterDto.mainImageUrl}"
                                          alt="Profile Image"/>
+<!--                                    [[${petSitterDto.mainImageUrl}]]-->
                                 </div>
                             </div>
                             <div class=" pt-3 px-3 pb-4">

@@ -211,10 +211,8 @@ p {
 .search-section {display: flex;
     justify-content: center;
     align-items: center;
-    /*padding: 2em 0;*/
-    /*background-color: #f7f7f7;*/
     border-radius: 8px;
-    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+    margin-bottom: 15px;
 }
 
 .autocomplete-wrapper {
