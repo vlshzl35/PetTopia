@@ -509,6 +509,7 @@ public class PetSitterController {
             for(Reservation reservation:reservationList)
             {
                 reservation.changeReservationStatus(ReservationStatus.cancel);
+                payService.kakaoCancel(reservation.getPartnerOrderId());
                 log.info("reservation = {}",reservation);
                 reservationService.save(reservation);
             }
