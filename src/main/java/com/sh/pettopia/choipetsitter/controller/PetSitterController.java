@@ -613,4 +613,11 @@ public class PetSitterController {
         }
         return "redirect:/petsitter/schedule";
     }
+
+    @GetMapping("/reviewdetail")
+    public void review( Model model) {
+
+    }
+
+
 }

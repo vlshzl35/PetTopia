@@ -243,6 +243,8 @@
                                     th:text="돌봄완료요청"></td>
                                 <td th:if="${dto.status.getReservationStatus() eq 'CARE_COMPLETE'}"
                                     th:text="돌봄완료"></td>
+                                <td th:if="${dto.status.getReservationStatus() eq 'CARE_COMPLETE_REVIEW_AVAILABLE'}"
+                                    th:text="돌봄완료"></td>
                                 <td th:if="${dto.status.getReservationStatus() eq 'START_OF_CARE'}"
                                     th:text="돌봄시작"></td>
 

@@ -96,7 +96,12 @@ public class ReservationByPetSitter {
     }
 
     public void completeReservation() {
+        this.reservationStatus = ReservationStatus.CARE_COMPLETE_REVIEW_AVAILABLE;
+    }
+
+    public void completeReview() {
         this.reservationStatus = ReservationStatus.CARE_COMPLETE;
+
     }
 }
 

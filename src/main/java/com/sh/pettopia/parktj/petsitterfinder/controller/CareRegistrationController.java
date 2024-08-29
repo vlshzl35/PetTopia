@@ -6,7 +6,9 @@ import com.sh.pettopia.Hojji.pet.entity.Pet;
 import com.sh.pettopia.Hojji.pet.entity.VaccinationType;
 import com.sh.pettopia.Hojji.pet.service.PetService;
 import com.sh.pettopia.choipetsitter.entity.PetSitter;
+import com.sh.pettopia.choipetsitter.entity.PetSitterReview;
 import com.sh.pettopia.choipetsitter.entity.Reservation;
+import com.sh.pettopia.choipetsitter.service.PetSitterReviewService;
 import com.sh.pettopia.choipetsitter.service.PetSitterService;
 import com.sh.pettopia.choipetsitter.service.ReservationService;
 import com.sh.pettopia.parktj.petsitterfinder.dto.*;
@@ -19,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+//import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,6 +42,7 @@ public class CareRegistrationController {
     private final PetService petService;
     private final PetSitterService petSitterService;
     private final ReservationService reservationService;
+    private final PetSitterReviewService petSitterReviewService;
 
     // 멤버에 id에 맞는 펫 정보 option 태그에 보여주기 위한 코드
     // 08/13 멤버 session에 저장된 정보로 맞는 정보 찾아오기
@@ -132,7 +135,7 @@ public class CareRegistrationController {
         return "redirect:/petsitterfinder/careregistrationlist";
     }
 
-    private final SimpMessagingTemplate messagingTemplate;
+//    private final SimpMessagingTemplate messagingTemplate;
 
     @PostMapping("/reservation")
     public ResponseEntity<String>  reservation(
@@ -209,6 +212,35 @@ public class CareRegistrationController {
         }
 
         return "redirect:/petsitterfinder/reservation?postId="+postId;
+
+
+    }
+
+    @GetMapping("/review/{reservationId}")
+    public String registreview(@PathVariable(value = "reservationId") Long reservationId, Model model) {
+        ReservationResponseDto reservationDto = careRegistrationService.findReservationByReservationId(reservationId);
+        model.addAttribute("reservationResponseDtoList", reservationDto);
+
+        return "petsitterfinder/registreview";
+    }
+
+    @PostMapping("/registreviewToPetSitter")
+    public String registreviewToPetSitter(@RequestParam(value ="reservationId") Long reservationId, @ModelAttribute RegistReviewRequestDto dto , RedirectAttributes redirectAttributes, @AuthenticationPrincipal AuthPrincipal authPrincipal) {
+
+        log.debug("reservationId" + reservationId);
+
+        careRegistrationService.completeReview(reservationId);
+
+        PetSitter petSitter = petSitterService.findOneByPetSitter(dto.getPetSitterId());
+
+        Long currentMemberId = authPrincipal.getMember().getId();
+
+        PetSitterReview petSitterReview = new PetSitterReview().dtoToEntity(dto);
+        petSitterReviewService.save(petSitterReview);
+
+        return "redirect:/mypage/mypage";
+
+
 
 
     }
