@@ -106,6 +106,7 @@ log.info("kakaoPayReadyResponse = {}",kakaoPayReadyResponse);
           데이터베이스 저장 및 비즈니스 로직
           ...
           */
+        log.info("order = {}",order);
         orderRepository.save(order);
 
         return approveResponse;
@@ -122,7 +123,7 @@ log.info("kakaoPayReadyResponse = {}",kakaoPayReadyResponse);
 
     //환불하기
     public KakaoCancelResponse kakaoCancel(String partner_order_id) {
-        Order order=orderRepository.findByPartnerOrderId(partner_order_id); // 결제 건을 가져오고
+        Order order=orderRepository.findOrderByPartnerOrderId(partner_order_id); // 결제 건을 가져오고
         log.info("order = {}",order);
         // 카카오페이 요청
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();

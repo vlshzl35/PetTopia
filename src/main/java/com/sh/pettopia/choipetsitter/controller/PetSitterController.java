@@ -376,7 +376,7 @@ public class PetSitterController {
 
     @GetMapping("/schedule")
     public void schedule(Model model, @AuthenticationPrincipal AuthPrincipal principal) {
-        log.info("GET petsitter/schedule");
+        log.info("GET /petsitter/schedule");
 
         // 시팅 중인 리스트
         List<Sitting> sittingList = sittingService.findAllByOrderByServiceDateAsc();
@@ -395,11 +395,8 @@ public class PetSitterController {
             reservationDtoList.add(reservationDto);
         }
 
-
-
         model.addAttribute("sittinglist", sittingDtoList);
         model.addAttribute("reservationDtoList", reservationDtoList);
-
 
         // 박태준 추가 (돌봐주세요)
         PetSitter petSitter = petSitterService.findOneByPetSitter(principal.getMember().getEmail());
@@ -432,6 +429,7 @@ public class PetSitterController {
     @PostMapping("/memberReservationCancel")
     public String reservationCancel(String partnerOrderId) {
         log.info("POST /petsitter/reservationCancel");
+        log.info("partnerOrderId ={}",partnerOrderId);
         System.out.println("partnerOrderId = " + partnerOrderId);
         payService.kakaoCancel(partnerOrderId); // 결제 취소 + 예약 취소
         
@@ -480,6 +478,20 @@ public class PetSitterController {
 
         log.info("dto = {}" , dto);
         return "redirect:/petsitter/schedule";
+    }
+
+    @PostMapping("/membersitting")
+    public String memberSitting(@ModelAttribute SittingDto dto)
+    {
+        log.info("POST /petsitter/membersitting ");
+        log.info("SittingDto = {}",dto);
+
+        Sitting sitting = sittingService.findByPartnerOrderId(dto.getPartnerOrderId()); // 고유 번호로 sitting 내용을 가져오고
+        sitting.changeSittingStatus(dto.getSittingStatus()); // 어떤 상태인지 저장을 한다, start_sitting, complete_sitting
+        sittingService.save(sitting);
+
+        log.info("dto = {}" , dto);
+        return "redirect:/mypage/mypage";
     }
 
     @GetMapping("/review/{partnerOrderId}")

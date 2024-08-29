@@ -414,7 +414,7 @@
                                                 <span th:if="${completeSittingDto.sittingStatus.getSittingStatus()} == 'COMPLETED_SITTING'"
                                                       th:text="'돌봄 완료'"></span>
                                                 <button type="submit"
-                                                        th:formaction="@{/petsitter/sitting}"
+                                                        th:formaction="@{/petsitter/membersitting}"
                                                         class="btn btn-primary"
                                                         th:if="${completeSittingDto.sittingStatus.getSittingStatus()} == 'WAITING_MEMBER_CHECK'"
                                                         th:text="돌봄대기승인" id="completeButton" value="MEMBER_CHECK"
