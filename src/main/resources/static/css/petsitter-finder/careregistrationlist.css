@@ -210,10 +210,10 @@ p {
         height: 150px !important;
     }
 
-    .findSitterButton {
-        font-size: 1em;
-        padding: 6px 12px;
-    }
+    /*.findSitterButton {*/
+    /*    font-size: 1em;*/
+    /*    padding: 6px 12px;*/
+    /*}*/
 
     .staff {
         margin-left: 0;
@@ -228,17 +228,6 @@ p {
         height: 500px;
     }
 
-    .img-wrap {
-        width: 80%;
-
-    }
-
-    .img-wrap img {
-        /*height: 120px; !* 고정된 높이로 설정 *!*/
-        width: 80%;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
 }
 
 @keyframes shake {
