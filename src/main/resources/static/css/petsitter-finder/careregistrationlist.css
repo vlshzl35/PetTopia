@@ -23,6 +23,10 @@ p {
     max-width: 50%;
 }
 
+.image-box {
+    border: #00bd56 1px solid;
+}
+
 .main-image {
     width: 400px !important;
     height: 400px !important;
@@ -33,6 +37,7 @@ p {
     opacity: 1;
     transform: translateY(0);
     transition: opacity 1s ease-out, transform 1s ease-out;
+    animation: float 1s ease-in-out infinite; /* 위아래로 천천히 움직이는 효과 */
 }
 
 .main-image.show {
@@ -41,31 +46,26 @@ p {
     animation: pulse 2s infinite alternate;
 }
 
-.findSitterButton {
-    display: inline-block;
-    margin-top: 30px;
-    padding: 15px 30px;
-    background-color: white;
-    color: #00bd56;
-    font-size: 1.5em;
-    border-radius: 30px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.findSitterButton:hover {
-    transform: scale(1.1);
-    background-color: whitesmoke;
-    color: #00bd56;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-}
-
 /* 게시글들 사이에 여백 추가 */
 .staff {
     margin-bottom: 30px;
     margin-left: 10px;
     margin-right: 10px;
+    border-radius: 20px;
+}
+
+.staff:hover {
+    overflow: hidden;
+    border-radius: 4px;
+    margin-bottom: 30px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    -moz-transition: none;
+    -o-transition: none;
+    -webkit-transition: none;
+    -ms-transition: none;
+    transition: none;
 }
 
 /* 카드 형태의 게시글들을 더 넓게 배치 */
@@ -80,7 +80,7 @@ p {
     box-sizing: border-box;
     padding-top: 10px;
     border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin: 10px;
 }
@@ -88,17 +88,23 @@ p {
 /* 마우스를 올렸을 때의 효과 */
 .petList:hover {
     transform: translateY(-10px);
+    border: 2px solid #00bd56;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 /* 동적인 효과를 추가한 요소들 */
 .img-wrap {
     overflow: hidden;
-    border-radius: 15px 15px 0 0;
+    border-radius: 15px;
     transition: transform 0.3s ease;
+    width: 100%;
+    height: 300px; /* 고정된 높이로 설정 */
 }
 
 .img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 부모 요소에 맞게 잘리거나 확대되어 꽉 차게 합니다. */
     transition: transform 0.3s ease;
 }
 
@@ -126,6 +132,14 @@ p {
     .header-text {
         max-width: 60%;
     }
+
+    .petList {
+        flex: 1 0 45%; /* 2개의 요소가 한 줄에 들어가도록 설정 */
+    }
+
+    .img-wrap {
+        height: 250px; /* 고정된 높이로 설정 */
+    }
 }
 
 @media (max-width: 992px) {
@@ -142,6 +156,14 @@ p {
         font-size: 1.3em;
         padding: 10px 20px;
     }
+
+    /*.petList {*/
+    /*    flex: 1 0 45%; !* 2개의 요소가 한 줄에 들어가도록 설정 *!*/
+    /*}*/
+
+    /*.img-wrap {*/
+    /*    height: 200px; !* 고정된 높이로 설정 *!*/
+    /*}*/
 }
 
 @media (max-width: 768px) {
@@ -172,8 +194,14 @@ p {
     }
 
     .petList {
-        flex: 0 0 48%; /* 카드가 2개씩 배치되도록 설정 */
+        flex: 1 0 45%; /* 한 줄에 1개씩 배치되도록 설정 */
+        border-radius: 20px;
+        padding: 10px;
     }
+
+    /*.img-wrap {*/
+    /*    height: 150px; !* 고정된 높이로 설정 *!*/
+    /*}*/
 }
 
 @media (max-width: 576px) {
@@ -194,7 +222,22 @@ p {
     }
 
     .petList {
-        flex: 0 0 100%; /* 카드가 1개씩 배치되도록 설정 */
+        flex: 1 1 100%; /* 카드가 1개씩 배치되도록 설정 */
+        border-radius: 30px;
+        padding: 10px;
+        height: 500px;
+    }
+
+    .img-wrap {
+        width: 80%;
+
+    }
+
+    .img-wrap img {
+        /*height: 120px; !* 고정된 높이로 설정 *!*/
+        width: 80%;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 }
 
@@ -214,17 +257,7 @@ p {
 
 /* 이미지에 애니메이션 추가 */
 .main-image {
-    animation:
-            float 1s ease-in-out infinite; /* 위아래로 천천히 움직이는 효과 */
-    width: 400px !important;
-    height: 400px !important;
-    margin-right: 0px;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 1s ease-out, transform 1s ease-out;
+    animation: float 1s ease-in-out infinite; /* 위아래로 천천히 움직이는 효과 */
 }
 
 .main-image.show {
