@@ -3,7 +3,10 @@ package com.sh.pettopia.Hojji.pet.service;
 import com.sh.pettopia.Hojji.pet.dto.PetRegistRequestDto;
 import com.sh.pettopia.Hojji.pet.entity.Pet;
 import com.sh.pettopia.Hojji.pet.repository.PetRepository;
+import com.sh.pettopia.Hojji.user.member.dto.MemberListResponseDto;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
+import com.sh.pettopia.choipetsitter.entity.PetSitter;
+import com.sh.pettopia.choipetsitter.entity.PetSitterAddress;
 import com.sh.pettopia.parktj.petsitterfinder.dto.PetDetailsResponseDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -47,4 +50,5 @@ public class PetService {
         log.debug("PetEntity -Owner 세팅후 = {}", pet);
         return petRepository.save(pet);
     }
+
 }

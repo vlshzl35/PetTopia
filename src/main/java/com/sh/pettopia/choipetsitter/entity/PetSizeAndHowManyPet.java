@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class PetSizeAndHowManyPet {
     private String petSize;
-    private Integer howManyPet;
+    private int howManyPet;
 }

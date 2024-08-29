@@ -1,10 +1,9 @@
-.petsittingmain {
+.petsitting-main {
     margin: 50px 50px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    /*height: 100vh; !* 화면의 전체 높이 사용 *!*/
+    justify-content: center; /* 세로 가운데 정렬 */
+    align-items: center; /* 가로 가운데 정렬 */
 }
 
 .custom-button {
@@ -17,10 +16,11 @@
     background-color: #00bd56;
     color: white;
     border: none;
-    border-radius: 50px; /* 둥근 모서리의 반경 */
+    border-radius: 80px; /* 둥근 모서리의 반경 */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1); /* 그림자 크기 */
     overflow: hidden;
+    text-align: center; /* 버튼 안의 텍스트 가운데 정렬 */
 }
 
 .custom-button a {
@@ -79,6 +79,9 @@
     max-height: 100%;
 }
 
+.container {
+    text-align: center; /* 버튼을 포함한 div의 텍스트 가운데 정렬 */
+}
 
 /* 미디어 쿼리 */
 @media (max-width: 1200px) {
@@ -115,6 +118,4 @@
     .custom-button img {
         max-height: 20px; /* 이미지 크기 줄임 */
     }
-
-
 }

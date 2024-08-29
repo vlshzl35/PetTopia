@@ -78,7 +78,7 @@ log.info("kakaoPayReadyResponse = {}",kakaoPayReadyResponse);
         log.info("partner_order_id = {}",partner_order_id);
 
         MultiValueMap<String, Object> payParams = new LinkedMultiValueMap<>();
-        Reservation reservation=reservationRepository.findByPartnerOrderId(partner_order_id);
+        Reservation reservation=reservationRepository.findReservationByPartnerOrderId(partner_order_id);
         log.info("reservation = {}",reservation);
 
         Order order=new Order().reservationToOrder(reservation);
@@ -106,6 +106,7 @@ log.info("kakaoPayReadyResponse = {}",kakaoPayReadyResponse);
           데이터베이스 저장 및 비즈니스 로직
           ...
           */
+        log.info("order = {}",order);
         orderRepository.save(order);
 
         return approveResponse;
@@ -122,7 +123,7 @@ log.info("kakaoPayReadyResponse = {}",kakaoPayReadyResponse);
 
     //환불하기
     public KakaoCancelResponse kakaoCancel(String partner_order_id) {
-        Order order=orderRepository.findByPartnerOrderId(partner_order_id); // 결제 건을 가져오고
+        Order order=orderRepository.findOrderByPartnerOrderId(partner_order_id); // 결제 건을 가져오고
         log.info("order = {}",order);
         // 카카오페이 요청
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -145,7 +146,7 @@ log.info("kakaoPayReadyResponse = {}",kakaoPayReadyResponse);
 
         order.changePayStatus(false);
         orderRepository.save(order); // 바뀐 상태를 저장
-        Reservation reservation=reservationRepository.findByPartnerOrderId(partner_order_id); // 예약 건 가져오고
+        Reservation reservation=reservationRepository.findReservationByPartnerOrderId(partner_order_id); // 예약 건 가져오고
         reservation.changeReservationStatus(ReservationStatus.cancel); // 예약상태 = 요청취소
         reservationRepository.save(reservation); // 바뀐거 세이브
 

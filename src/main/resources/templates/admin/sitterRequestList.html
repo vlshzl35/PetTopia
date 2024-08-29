@@ -37,14 +37,22 @@
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
   <style>
-    /* 테이블의 padding과 margin을 줄여 요소들을 더 가깝게 배치 */
-    table.table td, table.table th {
-      padding: 8px; /* 기본 padding 값에서 줄여서 간격을 좁게 설정 */
+    /* 테이블 헤더 스타일 */
+    thead th {
+      font-size: 18px; /* 글자 크기 */
+      font-weight: bold; /* 글자 굵기 */
+      text-align: center; /* 가운데 정렬 */
+      background-color: #f1f1f1; /* 배경색 */
+      padding: 12px 10px; /* 여백 */
+      border-bottom: 2px solid #ddd; /* 테두리 */
     }
 
-    /* 버튼 간 간격을 줄이기 위해 margin 값 조정 */
-    .btn {
-      margin: 2px; /* 버튼 간의 간격을 줄이기 위해 margin 값을 최소화 */
+    /* 테이블 바디 스타일 */
+    tbody td {
+      font-size: 16px; /* 글자 크기 */
+      text-align: center; /* 가운데 정렬 */
+      padding: 10px 8px; /* 여백 */
+      border-bottom: 1px solid #ddd; /* 테두리 */
     }
   </style>
 </head>
@@ -57,7 +65,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a href="dashboard.html" class="logo d-flex align-items-center">
 <!--        <img src="/assets/img/logo.png" alt="">-->
-        <span class="d-none d-lg-block">NiceAdmin</span>
+        <span class="d-none d-lg-block">펫토피아</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -221,14 +229,14 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            <img src="/assets/img/dinotaeng.jpg" alt="Profile" class="rounded-circle">
+            <span th:text = "${#authentication.principal.member.name}" class="d-none d-md-block dropdown-toggle ps-2" ></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
-              <span>Web Designer</span>
+              <h6 th:text = "${#authentication.principal.member.name}"></h6>
+              <span>사원 1</span>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -286,7 +294,7 @@
       <li class="nav-item">
         <a class="nav-link " th:href="@{/admin/dashboard}">
           <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
+          <span>HOME</span>
         </a>
       </li>
       <!-- 회원 관리 -->
@@ -352,20 +360,6 @@
           </li>
         </ul>
       </li>
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-error-404.html">
-          <i class="bi bi-dash-circle"></i>
-          <span>Error 404</span>
-        </a>
-      </li><!-- End Error 404 Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-blank.html">
-          <i class="bi bi-file-earmark"></i>
-          <span>Blank</span>
-        </a>
-      </li><!-- End Blank Page Nav -->
     </ul>
   </aside><!-- End Sidebar-->
 
@@ -383,30 +377,25 @@
               </div>
               <!-- 테이블 영역 -->
               <table class="table">
-                <thead>
+                <thead class="table-light">
                   <tr>
-                    <th>No.</th>
+                    <th>No</th>
+                    <th>회원번호</th>
                     <th>이름</th>
                     <th>이메일</th>
                     <th>전화번호</th>
-                    <th>신청서 보기</th>
-                    <th>수락</th>
-                    <th>거절</th>
+                    <th>상태</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr th:each="pendingMember : ${pendingMembers}">
+                  <tr th:each="pendingMember, iterStat : ${pendingMembers}" th:onclick="|window.location.href='@{/sitterRequestForm/{id}(id=${pendingMember.id})}'|">
+                    <td th:text="${iterStat.index +1}"></td>
                     <td th:text="${pendingMember.id}"></td>
                     <td th:text="${pendingMember.name}"></td>
                     <td th:text="${pendingMember.email}"></td>
                     <td th:text="${pendingMember.phone}"></td>
                     <td>
-                      <a th:href="@{/userProfile/{id}(id=${pendingMember.id})}">자세히</a>
-                    </td>
-                    <td>
                       <button class="btn btn-success" th:attr="onclick='updateSitterStatus(' + ${pendingMember.id} + ', \'APPROVED\')'">승인</button>
-                    </td>
-                    <td>
                       <button class="btn btn-danger" th:attr="onclick='updateSitterStatus(' + ${pendingMember.id} + ', \'NONE\')'">거절</button>
                     </td>
                   </tr>
@@ -418,20 +407,14 @@
       </div>
     </section>
   </main><!-- End #main -->
+
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
-    </div>
-    <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      <p><strong>펫토피아 Corp. | 대표번호: 1234-5678</strong></p>
+      <p>© 2024 PettoPia. All Rights Reserved.</p>
     </div>
   </footer><!-- End Footer -->
-
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

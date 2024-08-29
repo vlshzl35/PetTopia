@@ -7,25 +7,101 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>예약 상세보기</title>
     <style>
-        table, th, td {
-            align-self: center;
-            border: 1px solid black;
-            border-collapse: collapse;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 900px;
+        }
+
+        h5 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
             text-align: center;
         }
 
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+
+        th, td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        td {
+            color: #555;
+        }
+
+        .note-section {
+            margin-top: 30px;
+        }
+
+        .note-section h2 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .note-section p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.5;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
-<div>
-    <a class="btn btn-primary" onClick="window.close()">목록보기</a>
-    <br><br>
+<div class="container">
+    <a class="btn" onClick="window.close()">목록보기</a>
     <h5>돌봄 상세</h5>
-<!--    보는 사람 == 펫시터 회원의 회원의 아이디를 보여준다-->
+    <!--    보는 사람 == 펫시터 회원의 회원의 아이디를 보여준다-->
     <div th:object="${reservationinfo}" th:if="${#authentication.principal.member.email == reservationinfo.getPetSitterId}">
         회원 : <span th:text="${reservationinfo.memberId}"></span>
     </div>
-<!--    보는 사람 != 펫시터 그럼 펫시터의 아이디를 보여준다 -->
+    <!--    보는 사람 != 펫시터 그럼 펫시터의 아이디를 보여준다 -->
     <div th:object="${reservationinfo}" th:if="${#authentication.principal.member.email != reservationinfo.getPetSitterId}">
         펫시터 : <span th:text="${reservationinfo.petSitterId}"></span>
     </div>
@@ -58,9 +134,9 @@
             </tr>
             </tbody>
         </table>
-        <div class="table">
+        <div class="note-section">
             <h2>참고 사항</h2>
-            <div style="border: solid 1px black">
+            <div>
                 <p th:text="${reservationinfo.note}"></p>
             </div>
         </div>

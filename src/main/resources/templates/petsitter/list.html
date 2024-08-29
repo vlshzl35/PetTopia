@@ -54,7 +54,7 @@
                                 <div>
                                     <div>
                                         <span>별점 : </span>
-                                        <span id="starRating" th:text="${petSitterDto.starRating != null ? petSitterDto.starRating : 0}">별점:</span>
+                                        <span id="starRating" th:text="${petSitterDto.starRating != null ? petSitterDto.starRating : 0}">별점 :</span>
                                     </div>
                                     <div>
                                         <span>후기 : </span>
@@ -62,6 +62,7 @@
                                     </div>
                                 </div>
                                 <div class="faded">
+<!--                                    여기 부분이 하얗게 나옴-->
                                     <p th:text="${petSitterDto.oneLineIntroduce}"></p>
                                 </div>
                             </div>

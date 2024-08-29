@@ -15,12 +15,15 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
 
-    public Order findByPartnerOrderId(String partnerOrderId) {
-        return orderRepository.findByPartnerOrderId(partnerOrderId);
+    public Order findOrderByPartnerOrderId(String partnerOrderId) {
+        return orderRepository.findOrderByPartnerOrderId(partnerOrderId);
     }
 
     public List<Order> findAll()
     {
         return orderRepository.findAll();
+    }
+    public List<Order> findAllByOrderByPayDate(){
+        return orderRepository.findAllByOrderByPayDate();
     }
 }

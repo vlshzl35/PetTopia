@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{layout/default}">
 <head>
@@ -6,348 +6,190 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>돌봄 정보 등록</title>
 
-    <title>홍보글 작성</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- datepicker 는 jquery 1.7.1 이상 bootstrap 2.0.4 이상 버전이 필요함 -->
-    <!-- jQuery가 먼저 로드 된 후 datepicker가 로드 되어야함.-->
-    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="/css/datepicker/bootstrap-datepicker.css">
-
-
-    <script src="/css/datepicker/bootstrap-datepicker.js"></script>
-
-    <!--한국어  달력 쓰려면 추가 로드-->
-    <script src="/css/datepicker/bootstrap-datepicker.ko.min.js" charset="UTF-8"></script>
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/css/datepicker/bootstrap-datepicker.js"></script>
+    <script src="/css/datepicker/bootstrap-datepicker.ko.min.js" charset="UTF-8"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
-    <style>
+    <link href="/css/petsitter/registerpost.css" rel="stylesheet">
 
-        p {
-            font-size: 14px;
-            letter-spacing: -0.2px;
-            line-height: 20px;
-            color: #393C47;
-            margin-top: 38px
-
-        }
-
-        /*    이미지 파일 css*/
-        .image-slider {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .slides {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-        }
-
-        .images {
-            width: 100%; /* Adjust based on how many images you want visible at once */
-            height: 200px;
-        }
-
-        #sliderNext, #sliderPrev {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-70%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-        }
-
-        .prev {
-            left: 10px;
-        }
-
-        .next {
-            right: 10px;
-        }
-
-        /*    등록하려는 파일 미리보기*/
-        .gallery-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .gallery {
-            display: flex;
-            width: 300px;
-            height: 250px;
-            overflow: hidden;
-            position: relative;
-            border: 2px solid #ddd;
-        }
-
-        .gallery img {
-            width: 300px;
-            height: 250px;
-            object-fit: cover;
-        }
-
-        .arrow {
-            cursor: pointer;
-            font-size: 30px;
-            user-select: none;
-            margin: 0 10px;
-        }
-
-        #fileInput {
-            margin-top: 20px;
-        }
-
-    /*    라이센트 등록 이미지 미리보기*/
-        .License-gallery-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .License-gallery {
-            display: flex;
-            width: 300px;
-            height: 250px;
-            overflow: hidden;
-            position: relative;
-            border: 2px solid #ddd;
-        }
-
-        .License-gallery img {
-            width: 300px;
-            height: 250px;
-            object-fit: cover;
-        }
-
-        .License-arrow {
-            cursor: pointer;
-            font-size: 30px;
-            user-select: none;
-            margin: 0 10px;
-        }
-
-        #License-fileInput {
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
 <main layout:fragment="main" class="page-body">
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('/images/bg_2.jpg');"
-             data-stellar-background-ratio="0.5"> <!--여기에 사용자가 등록한 사진을 넣으면 되겠다-->
-        <div class="overlay"></div>
-        <div class="container">
-            <div class="row no-gutters slider-text align-items-end">
-                <div class="col-md-9 ftco-animate pb-5">
-                    <p class="breadcrumbs mb-2"><span class="mr-2"><a th:href="@{/}">Home <i
-                            class="ion-ios-arrow-forward"></i></a></span>
-                        <span>펫시터
-							<i class="ion-ios-arrow-forward"></i>
-						</span>
-                    </p>
-                    <h1 class="mb-0 bread">돌봐주세요 등록</h1>
+    <div class="sitting-container">
+        <h1>돌봄 정보 등록하기</h1>
+        <form th:action="@{/petsitter/registerpost}" method="post" th:object="${dto}" enctype="multipart/form-data">
+            <div class="form-container">
+                <div class="gallery-container">
+                    <div class="file-section">
+                        <h4>프로필 사진</h4>
+                        <div class="gallery-container">
+                            <div class="arrow" id="prev">&#9664;</div>
+                            <div class="gallery" id="file-gallery"></div>
+                            <div class="arrow" id="next">&#9654;</div>
+                        </div>
+                        <input type="file" id="fileInput" multiple name="files">
+                    </div>
+                    <div class="file-section">
+                        <h4>자격증 및 수료증</h4>
+                        <div class="gallery-container">
+                            <div class="arrow" id="License-prev">&#9664;</div>
+                            <div class="License-gallery" id="License-gallery"></div>
+                            <div class="arrow" id="License-next">&#9654;</div>
+                        </div>
+                        <input type="file" id="License-fileInput" multiple name="License_files">
+                    </div>
                 </div>
-            </div>
-        </div>
-    </section>
-    <div class="container">
-        <form th:action="@{/petsitter/registerpost}" method="post" th:object="${dto}" enctype="multipart/form-data"
-              class="container">
-            <div style="margin: 50px">
-                <div>
-                    <div style="padding: 30px;">
-                        <div style="display: inline-block; width: 100%;">
+                <div class="image-slider">
+                    <div class="slides">
+                        <img th:each="images,stat: ${dto.PostImagesList}" th:if="${not #strings.isEmpty(images)}"
+                             th:src="${images}" onclick="remove_confirm(src)">
+                        <img th:each="images,stat: ${dto.PostImagesList}" th:if="${#strings.isEmpty(images)}"
+                             th:src="@{/images/petsitter/nothingImg.jpg}">
+                    </div>
+                    <button id="sliderPrev" type="button" class="prev">&#10094;</button>
+                    <button id="sliderNext" type="button" class="next">&#10095;</button>
+                </div>
+                <div class="form-group">
+                    <div class="input-section">
+                        <h3>한 줄 소개</h3>
+                        <p>시터님의 게시글의 한 줄로 노출되는 소개글이에요. 보호자님들이 시터님을 선택할 있도록 강점을 잘 표현해주세요 :-)</p>
+                        <!--                        <label for="oneLineIntroduce">-->
+                        <!--                        </label>-->
+                        <input type="text" name="oneLineIntroduce" id="oneLineIntroduce"
+                               th:value="${dto.oneLineIntroduce}">
+                    </div>
+                    <div class="input-section">
+                        <h3>소개글</h3>
+                        <p>보호자님들이 소개글을 확인하고 반려동물 돌봄을 요청해요. 신뢰를 갖고 돌봄을 요청할 수 있도록 반려동물과 함께한 경험, 사랑하는 마음 등을 잘 표현해주세요 :
+                            -) </p>
+                        <textarea name="mainIntroduce" id="mainIntroduce" th:field="*{mainIntroduce}"
+                                  placeholder="소개글을 입력해주세요"></textarea>
+                    </div>
+                </div>
+                <div class="available-services">
+                    <h3>제공 가능한 서비스 설정하기</h3>
+                    <div class="services-container">
+                        <label for="everydayWalk">
+                            <img src='/svg/walk.png' class="available-service-image">
+                            <p class="available-service-text">매일산책</p>
+                            <span>산책 및 실외 배변 가능</span>
+                            <input type="checkbox" name="availableServices" id="everydayWalk"
+                                   value="everydayWalk"
+                                   th:checked="${petService.contains('everydayWalk')}">
 
-                            <div style="display: inline-block; vertical-align: top; width: 49%;">
-                                <h4>홍보사진</h4>
+                        </label>
+                        <label for="oldPetWalk">
+                            <img src='/svg/oldDog.png' class="available-service-image">
+                            <p class="available-service-text">노견 산책케어</p>
+                            <span>8년 이상 노견 가능</span>
+                            <input type="checkbox" name="availableServices" id="oldPetWalk"
+                                   value="olderPetWalk"
+                                   th:checked="${petService.contains('olderPetWalk')}">
+                        </label>
+                        <label for="youngerPetWalk">
+                            <img src='/svg/puppy.png' class="available-service-image">
+                            <p class="available-service-text">퍼피 산책케어</p>
+                            <span>1년 미만 퍼피 가능</span>
+                            <input type="checkbox" name="availableServices" id="youngerPetWalk"
+                                   value="youngerPetWalk"
+                                   th:checked="${petService.contains('youngerPetWalk')}">
+                        </label>
+                        <label for="play">
+                            <img src='/svg/duck.png' class="available-service-image">
+                            <p class="available-service-text">실내 놀이</p>
+                            <span>터그 놀이, 노즈 워크 등</span>
+                            <input type="checkbox" name="availableServices" id="play" value="play"
+                                   th:checked="${petService.contains('play')}">
+                        </label>
+                        <label for="firstAid">
+                            <img src='/svg/pharmacy.png' class="available-service-image">
+                            <p class="available-service-text">응급 처리</p>
+                            <span>응급 상황 시 병원 이동 가능</span>
+                            <input type="checkbox" name="availableServices" id="firstAid"
+                                   value="firstAid"
+                                   th:checked="${petService.contains('firstAid')}">
+                        </label>
+                        <label for="pickup">
+                            <img src='/svg/foot.png' class="available-service-image">
+                            <p class="available-service-text">도보 픽업</p>
+                            <span>비용은 파트너와 협의</span>
+                            <input type="checkbox" name="availableServices" id="pickup"
+                                   value="walkPickup"
+                                   th:checked="${petService.contains('walkPickup')}">
+                        </label>
+                        <label for="brush">
+                            <img src='/svg/brush.png' class="available-service-image">
+                            <p class="available-service-text">모발 관리</p>
+                            <span>눈물 또는 빗질 관리 가능</span>
+                            <input type="checkbox" name="availableServices" id="brush" value="brush"
+                                   th:checked="${petService.contains('brush')}">
+                        </label>
+                        <label for="medicine" >
+                            <img src='/svg/medicine.png' class="available-service-image">
+                            <p class="available-service-text">약물 복용</p>
+                            <span>경구(입) 약물 복용 가능</span>
+                            <input type="checkbox" name="availableServices" id="medicine"
+                                   value="medicine"
+                                   th:checked="${petService.contains('medicine')}">
+                        </label>
+                        <label for="longReservation">
+                            <img src='/svg/calender.png' class="available-service-image">
+                            <p class="available-service-text">장기 예약</p>
+                            <span>14일 이상 예약 가능</span>
+                            <input type="checkbox" name="availableServices" id="longReservation"
+                                   value="longReservation"
+                                   th:checked="${petService.contains('longReservation')}">
+                        </label>
 
-                                <div class="gallery-container">
-                                    <div class="arrow" id="prev">&#9664;</div>
-                                    <div class="gallery" id="file-gallery"></div>
-                                    <div class="arrow" id="next">&#9654;</div>
-                                </div>
-                                <input type="file" id="fileInput" multiple name="files">
-                            </div>
-
-
-                            <div style="display: inline-block; vertical-align: top; width: 49%;">
-                                <h4>자격증 및 수료증</h4>
-
-                                <div class="License-gallery-container">
-                                    <div class="License-arrow" id="License-prev">&#9664;</div>
-                                    <div class="License-gallery" id="License-gallery"></div>
-                                    <div class="License-arrow" id="License-next">&#9654;</div>
-                                </div>
-                                <input type="file" id="License-fileInput" multiple name="License_files">
-                            </div>
+                    </div>
+                </div>
+                <div class="horizontal-container">
+                    <div class="pet-size">
+                        <h3>돌봄 가능한 댕댕이 크기</h3>
+                        <div class="size-section">
+                            <label for="small" class="dogs">
+                                <img src='/svg/cutiDog.svg' class="small-dog-image">
+                                <p>소형견</p>
+                                <input type="checkbox" name="petSize" id="small" value="small"
+                                       th:checked="${petSize.contains('small')}">
+                            </label>
+                            <label for="medium" class="dogs">
+                                <img src='/svg/cutiDog.svg' class="medium-dog-image">
+                                <p>중형견</p>
+                                <input type="checkbox" name="petSize" id="medium" value="medium"
+                                       th:checked="${petSize.contains('medium')}">
+                            </label>
+                            <label for="large" class="dogs">
+                                <img src='/svg/cutiDog.svg' class="large-dog-image">
+                                <p>대형견</p>
+                                <input type="checkbox" name="petSize" id="large" value="large"
+                                       th:checked="${petSize.contains('large')}">
+                            </label>
                         </div>
-
-                        <div class="image-slider">
-                            <div class="slides">
-                                <img th:each="images,stat: ${dto.PostImagesList}"
-                                     th:if="${not #strings.isEmpty(images)}" th:src=" ${images}"
-                                     onclick="remove_confirm(src)"
-                                     style="width: 400px; height: 350px; margin: 10px;">
-                                <img th:each="images,stat: ${dto.PostImagesList}"
-                                     th:if="${ #strings.isEmpty(images)}"
-                                     th:src="@{/images/petsitter/nothingImg.jpg}">
-                            </div>
-                            <button id="sliderPrev" type="button" class="prev">&#10094;</button>
-                            <button id="sliderNext" type="button" class="next">&#10095;</button>
-                        </div>
-
-                        <div>
-                            <div class="form-group">
-                                <div>
-                                    <label for="oneLineIntroduce">
-                                    </label>
-                                    <h3>한 줄 소개</h3>
-                                    <input type="text" name="oneLineIntroduce" id="oneLineIntroduce"
-                                           th:value="${dto.oneLineIntroduce}" style=" width: 100%">
-                                </div>
-                                <h3>소개</h3>
-                                <div class="input-group">
-                                    <label for="mainIntroduce">
-                                    </label>
-                                    <textarea name="mainIntroduce" id="mainIntroduce" th:field="*{mainIntroduce}"
-                                              placeholder="소개글을 입력해주세요" style="flex: 1"></textarea>
-                                </div>
-                            </div>
-                            <div class="container">
-                                <div style="border: 1px solid black">
-                                    <div>
-                                        <label for="everydayWalk">
-                                            <img th:src="@{/images/availableService/everydaywalk.PNG}"
-                                                 alt="everydayWalk">
-                                            <input type="checkbox" name="availableServices" id="everydayWalk"
-                                                   value="everydayWalk"
-                                                   th:checked="${petService.contains('everydayWalk')}">
-                                            <!--                                                   th:checked="${#sets.contains(dto.availableServices, T(com.sh.pettopia.choipetsitter.entity.AvailableService).everydayWalk)}">-->
-                                            <!--                                                   th:checked="${dto.availableServices eq T(com.sh.pettopia.choipetsitter.entity.AvailableService).everydayWalk}">-->
-
-                                        </label>
-                                        <label for="oldPetWalk">
-                                            <img th:src="@{/images/availableService/oldpetwalk.PNG}" alt="노견산책">
-                                            <input type="checkbox" name="availableServices" id="oldPetWalk"
-                                                   value="olderPetWalk"
-                                                   th:checked="${petService.contains('olderPetWalk')}">
-
-                                        </label>
-                                        <label for="youngerPetWalk">
-                                            <img th:src="@{/images/availableService/youngerpetwalk.PNG}" alt="어린견산책">
-                                            <input type="checkbox" name="availableServices" id="youngerPetWalk"
-                                                   value="youngerPetWalk"
-                                                   th:checked="${petService.contains('youngerPetWalk')}">
-
-                                        </label>
-                                    </div>
-                                    <div class="">
-                                        <label for="play">
-                                            <img th:src="@{/images/availableService/play.PNG}" alt="실내놀이">
-                                            <input type="checkbox" name="availableServices" id="play" alt=""
-                                                   value="play"
-                                                   th:checked="${petService.contains('play')}">
-                                        </label>
-                                        <label for="firstAid">
-                                            <img th:src="@{/images/availableService/firstaid.PNG}" alt="응급처치">
-                                            <input type="checkbox" name="availableServices" id="firstAid"
-                                                   value="firstAid"
-                                                   th:checked="${petService.contains('firstAid')}">
-                                        </label>
-                                        <label for="pickup">
-                                            <img th:src="@{/images/availableService/pickup.PNG}" alt="도보픽업">
-                                            <input type="checkbox" name="availableServices" id="pickup"
-                                                   value="walkPickup"
-                                                   th:checked="${petService.contains('walkPickup')}">
-                                        </label>
-                                    </div>
-                                    <div class="">
-                                        <label for="brush">
-                                            <img th:src="@{/images/availableService/brush.PNG}" alt="모발관리">
-                                            <input type="checkbox" name="availableServices" id="brush" value="brush"
-                                                   th:checked="${petService.contains('brush')}">
-                                        </label>
-                                        <label for="medicine">
-                                            <img th:src="@{/images/availableService/medicine.PNG}" alt="약먹이기">
-                                            <input type="checkbox" name="availableServices" id="medicine"
-                                                   value="medicine"
-                                                   th:checked="${petService.contains('medicine')}">
-                                        </label>
-                                        <label for="longReservation">
-                                            <img th:src="@{/images/availableService/longreservation.PNG}" alt="장기예약">
-                                            <input type="checkbox" name="availableServices" id="longReservation"
-                                                   value="longReservation"
-                                                   th:checked="${petService.contains('longReservation')}">
-                                        </label>
-                                    </div>
-
-                                </div>
-                                <div class="" style="border: 1px solid black; display: block;" id="availablePetSize">
-                                    <label for="smallPet">
-                                        <img th:src="@{/images/availablePetSize/smallpet.PNG}" alt="" class="petSize">
-                                        <input type="checkbox" name="availablePetSizes" id="smallPet" value="smallPet"
-                                               th:checked="${petSize.contains('smallPet')}">
-
-                                    </label>
-                                    <label for="middlePet">
-                                        <img th:src="@{/images/availablePetSize/middlepet.PNG}" alt="" class="petSize">
-                                        <input type="checkbox" name="availablePetSizes" id="middlePet" value="middlePet"
-                                               th:checked="${petSize.contains('middlePet')}">
-                                    </label>
-                                    <label for="largePet">
-                                        <img th:src="@{/images/availablePetSize/largepet.PNG}" alt="" class="petSize">
-                                        <input type="checkbox" name="availablePetSizes" id="largePet" value="largePet"
-                                               th:checked="${petSize.contains('largePet')}">
-
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div style="border: #0b0b0b 1px solid; margin: 10px;" class="align-content-end">
-                                <div class="bo_w_tit write_div">
-                                    <div>
-                                        <p>돌봄 불가능한 날짜를 선택해주세요</p>
-
-                                    </div>
-                                    <div>
-                                        <!--여기에 날짜 선택 창을 넣는다-->
-
-                                        <div class="container">
-
-                                            <div class="bo_w_tit write_div">
-
-                                                <label for="impossibleDays">
-
-                                                    <input type="text" id="impossibleDays" class="form-control"
-                                                           name="impossibleDays"
-                                                           th:value="${dto.impossibleDays}">
-
-                                                </label>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </div>
+                    </div>
+                    <div class="date-picker-container">
+                        <h3>돌봄이 불가능한 날짜를 선택해주세요!</h3>
+                        <div class="date-picker">
+                            <input type="text" id="impossibleDays" class="form-control" name="impossibleDays"
+                                   th:value="${not #lists.isEmpty(dto.impossibleDays) ? dto.impossibleDays : ''}">
                         </div>
                     </div>
                 </div>
-                <button type="submit">제출</button>
+
+                <button type="submit" class="submit-button">제출</button>
             </div>
         </form>
     </div>
+
+
     <script>
         function remove_confirm(src) {
             var header = $("meta[name='_csrf_header']").attr('content');
@@ -528,13 +370,25 @@
                 // Event listener for the 'Next' button
                 document.querySelector('.next').addEventListener('click', function () {
                     currentIndex = (currentIndex + 1) % totalImages;
-                    slides.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
+                    slides.style.transform = translateX($
+                    {
+                        -currentIndex * slideWidth
+                    }
+                    px
+                )
+                    ;
                 });
 
                 // Event listener for the 'Prev' button
                 document.querySelector('.prev').addEventListener('click', function () {
                     currentIndex = (currentIndex - 1 + totalImages) % totalImages;
-                    slides.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
+                    slides.style.transform = translateX($
+                    {
+                        -currentIndex * slideWidth
+                    }
+                    px
+                )
+                    ;
                 });
             } else {
                 document.querySelector('.prev').style.display = 'none';
@@ -545,6 +399,6 @@
     <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 </main>
-
 </body>
 </html>
+

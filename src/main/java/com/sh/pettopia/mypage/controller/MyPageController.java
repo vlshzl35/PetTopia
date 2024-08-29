@@ -56,9 +56,10 @@ public class MyPageController {
         Member member = authPrincipal.getMember();
 
         // 내가 예약한 내역이 여러개일 수 있다
-        List<Reservation> reservationList = reservationService.findByMemberId(authPrincipal.getMember().getEmail());
-        List<ReservationDto> reservationDtoList = new ArrayList<>();
-        for (Reservation reservationEntity : reservationList) {
+        List<Reservation> reservationList=reservationService.findByMemberIdAndReservationStatusNotOk(authPrincipal.getMember().getEmail());
+        List<ReservationDto> reservationDtoList=new ArrayList<>();
+        for(Reservation reservationEntity : reservationList)
+        {
             // entity -> dto로 바꾸는 과정
             reservationDtoList.add(new ReservationDto().entityToDto(reservationEntity));
         }
@@ -82,10 +83,11 @@ public class MyPageController {
 
         log.info("completeSittingEntityList = " + completeSittingList);
         log.info("completeSittingDtoList = " + completeSittingDtoList);
-
-        List<Order> orderList = orderService.findAll();
-        List<OrderDto> orderDtoList = new ArrayList<>();
-        for (Order order : orderList) {
+        
+        List<Order> orderList=orderService.findAllByOrderByPayDate();
+        List<OrderDto> orderDtoList=new ArrayList<>();
+        for(Order order:orderList)
+        {
             orderDtoList.add(new OrderDto().entityToDto(order));
         }
         log.info("orderList = {}", orderList);

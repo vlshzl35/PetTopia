@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -35,14 +36,16 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     """)
     List<Member> findAllSitterMembers();
 
-    // 시터권한 요청대기중인 화원 조화
+    // 시터권한 요청대기중인 화원 조회
     @Query("""
-        SELECT 
-            m 
-        FROM 
-            Member m 
-        WHERE 
+        SELECT
+            m
+        FROM
+            Member m
+        WHERE
             m.sitterStatus = :status
     """)
     List<Member> findPendingSitterMembers(SitterStatus status);
+
+    Member findMemberByEmail(String email);
 }

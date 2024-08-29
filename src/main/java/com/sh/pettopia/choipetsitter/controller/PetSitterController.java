@@ -375,8 +375,8 @@ public class PetSitterController {
     }
 
     @GetMapping("/schedule")
-    public void reservationList(Model model, @AuthenticationPrincipal AuthPrincipal principal) {
-        log.info("GET petsitter/schedule");
+    public void schedule(Model model, @AuthenticationPrincipal AuthPrincipal principal) {
+        log.info("GET /petsitter/schedule");
 
         // 시팅 중인 리스트
         List<Sitting> sittingList = sittingService.findAllByOrderByServiceDateAsc();
@@ -388,17 +388,15 @@ public class PetSitterController {
         System.out.println("sittingList = " + sittingList);
 
         // 예약건에 대한 리스트
-        List<Reservation> reservationList = reservationService.findByPetSitterIdAndReservationStatusNotReady(principal.getMember().getEmail());
+        List<Reservation> reservationList = reservationService.findByPetSitterIdAndReservationStatusNotOk(principal.getMember().getEmail());
         List<ReservationDto> reservationDtoList = new ArrayList<>();
         for (Reservation reservation1 : reservationList) {
             ReservationDto reservationDto = new ReservationDto().entityToDto(reservation1);
             reservationDtoList.add(reservationDto);
         }
 
-
         model.addAttribute("sittinglist", sittingDtoList);
         model.addAttribute("reservationDtoList", reservationDtoList);
-
 
         // 박태준 추가 (돌봐주세요)
         PetSitter petSitter = petSitterService.findOneByPetSitter(principal.getMember().getEmail());
@@ -411,25 +409,27 @@ public class PetSitterController {
     public String reservationOk(String partnerOrderId) {
         log.info("POST /petsitter/reservationOk");
 
-        Reservation reservation = reservationService.findByPartnerOrderId(partnerOrderId);
+        Reservation reservation = reservationService.findReservationByPartnerOrderId(partnerOrderId);
         log.info("reservation = {}",reservation);
         ReservationDto reservationDto = new ReservationDto().entityToDto(reservation);
+        reservation.changeReservationStatus(ReservationStatus.OK);
 
         Sitting sitting = new Sitting();
         sitting = sitting.dtoToEntity(reservationDto);
 
         sittingService.save(sitting);
-        reservationService.delete(reservation);
+        reservationService.save(reservation);
 
-        log.info("reservationDto = {}" , reservationDto);
-        log.info("sitting = {}" , sitting);
-        log.info("reservation = {}" , reservation);
-        return "redirect:/petsitter/reservationlist";
+        log.info("POST reservationDto = {}" , reservationDto);
+        log.info("POST sitting = {}" , sitting);
+        log.info("POST reservation = {}" , reservation);
+        return "redirect:/petsitter/schedule";
     }
 
     @PostMapping("/memberReservationCancel")
     public String reservationCancel(String partnerOrderId) {
         log.info("POST /petsitter/reservationCancel");
+        log.info("partnerOrderId ={}",partnerOrderId);
         System.out.println("partnerOrderId = " + partnerOrderId);
         payService.kakaoCancel(partnerOrderId); // 결제 취소 + 예약 취소
         
@@ -440,7 +440,7 @@ public class PetSitterController {
     public String reservationDetail(@PathVariable String partnerOrderId, Model model) {
         log.info("GET /reservationdetail/{}", partnerOrderId);
 
-        Reservation reservation = reservationService.findByPartnerOrderId(partnerOrderId);
+        Reservation reservation = reservationService.findReservationByPartnerOrderId(partnerOrderId);
         ReservationDto reservationInfo = new ReservationDto().entityToDto(reservation);
         System.out.println("reservationInfo = " + reservationInfo);
         model.addAttribute("reservationinfo", reservationInfo);
@@ -454,7 +454,7 @@ public class PetSitterController {
         log.info("GET /petsittersitting/detail/{}", partnerOrderId);
 
         Sitting sitting = sittingService.findByPartnerOrderId(partnerOrderId);
-        Reservation reservation = reservationService.findByPartnerOrderId(partnerOrderId);
+        Reservation reservation = reservationService.findReservationByPartnerOrderId(partnerOrderId);
 
         SittingDto sittingDto = new SittingDto().entityToDto(sitting);
         sittingDto.setTotal_amount(reservation.getTotalPrice());
@@ -470,13 +470,28 @@ public class PetSitterController {
     @PostMapping("/sitting")
     public String sittingStatus(@ModelAttribute SittingDto dto) {
         log.info("POST /petsitter/sitting ");
+        log.info("SittingDto = {}",dto);
 
         Sitting sitting = sittingService.findByPartnerOrderId(dto.getPartnerOrderId()); // 고유 번호로 sitting 내용을 가져오고
         sitting.changeSittingStatus(dto.getSittingStatus()); // 어떤 상태인지 저장을 한다, start_sitting, complete_sitting
         sittingService.save(sitting);
 
         log.info("dto = {}" , dto);
-        return "redirect:/petsitter/sittinglist";
+        return "redirect:/petsitter/schedule";
+    }
+
+    @PostMapping("/membersitting")
+    public String memberSitting(@ModelAttribute SittingDto dto)
+    {
+        log.info("POST /petsitter/membersitting ");
+        log.info("SittingDto = {}",dto);
+
+        Sitting sitting = sittingService.findByPartnerOrderId(dto.getPartnerOrderId()); // 고유 번호로 sitting 내용을 가져오고
+        sitting.changeSittingStatus(dto.getSittingStatus()); // 어떤 상태인지 저장을 한다, start_sitting, complete_sitting
+        sittingService.save(sitting);
+
+        log.info("dto = {}" , dto);
+        return "redirect:/mypage/mypage";
     }
 
     @GetMapping("/review/{partnerOrderId}")
@@ -497,18 +512,18 @@ public class PetSitterController {
         return "petsitter/reviewdetail";
 
     }
-
+    @ResponseBody
     @PostMapping("/registreview")
     public String registReview(
-            @ModelAttribute PetSitterReviewDto dto
+            @ModelAttribute PetSitterReviewDto formData
             , @AuthenticationPrincipal AuthPrincipal principal
             , Model model
             , @RequestPart(value = "imageUrl") List<MultipartFile> imageUrl) {
         log.info("POST /petsitter/registreivew");
 
-        PetSitter petSitter = petSitterService.findOneByPetSitter(dto.getPetSitterId());
+        PetSitter petSitter = petSitterService.findOneByPetSitter(formData.getPetSitterId());
         String memberId = principal.getMember().getEmail();
-        Sitting sitting = sittingService.findByPartnerOrderId(dto.getPartnerOrderId());
+        Sitting sitting = sittingService.findByPartnerOrderId(formData.getPartnerOrderId());
         sitting.changeReviewCheck(true);
 
         List<String> imageUrls = new ArrayList<>();
@@ -519,24 +534,24 @@ public class PetSitterController {
 
         if (!checkFiles.isEmpty()) {
             //파일들의 url을 List로 담아서 Dto->Entity할 때 넣는다
-            List<FileDto> fileDtoList = fileService.sitterUpFile(checkFiles, dto.getPetSitterId(), memberId + "reviewImage");
+            List<FileDto> fileDtoList = fileService.sitterUpFile(checkFiles, formData.getPetSitterId(), memberId + "reviewImage");
 
             for (FileDto fileDtoImageUrl : fileDtoList) {
                 imageUrls.add(fileDtoImageUrl.getUploadFileUrl());
             }
-            dto.setImagesUrls(imageUrls);
+            formData.setImagesUrls(imageUrls);
         }
 
-        PetSitterReview petSitterReview = new PetSitterReview().dtoToEntity(dto);
+        PetSitterReview petSitterReview = new PetSitterReview().dtoToEntity(formData);
 
         petSitterReviewService.save(petSitterReview);
 
 
         System.out.println("imageUrl = " + imageUrl);
-        System.out.println("dto = " + dto);
-
-        return "redirect:/mypage/mypage";
+        System.out.println("dto = " + formData);
+        return "리뷰가 성공적으로 등록이 됐습니다";
     }
+
 
     @PostMapping("/deleteReview")
     private String  deleteReview(String partnerOrderId) {

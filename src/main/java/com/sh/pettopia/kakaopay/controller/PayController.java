@@ -45,7 +45,7 @@ public class PayController {
         log.info("GET /pay/success");
         System.out.println("partner_order_id = " + partner_order_id);
 
-        Order order=orderService.findByPartnerOrderId(partner_order_id);
+        Order order=orderService.findOrderByPartnerOrderId(partner_order_id);
         System.out.println("order = " + order);
 
         KakaoApproveResponse approveResponse = payService.kakaoPayApprove(pgToken,partner_order_id); //kakaoPay 요청양식에 따라 요청객체 만들어 보내는 메서드(밑에서 구현)
@@ -61,7 +61,7 @@ public class PayController {
         log.info("GET /pay/cancel");
         log.info("GET /partnerOrderId = {}",partnerOrderId);
         log.info("");
-        Reservation reservation=reservationService.findByPartnerOrderId(partnerOrderId);
+        Reservation reservation=reservationService.findReservationByPartnerOrderId(partnerOrderId);
         reservationService.delete(reservation);
         String petSitterId=reservation.getMemberId();
 

@@ -1,0 +1,159 @@
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-left: 0px;
+    unicode-bidi: isolate;
+}
+
+.section {
+    background-color: #00bd56;
+    padding: 50px 20px;
+    color: #fff;
+    text-align: center;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.header-container h2 {
+    font-size: 2rem;
+    margin: 0;
+    color: white;
+}
+
+.ocr-image {
+    width: 100px;
+    height: 100px;
+    animation: bounce 2s ease infinite;
+}
+
+.info-text {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #ffffff;
+    border: 1px solid #e1e1e1;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    text-align: center;
+    font-size: 1.2rem;
+    /*color: #00bd56;*/
+}
+
+h5 {
+    color : black !important;
+}
+
+#mapwrap {
+    position: relative;
+    margin-top: 30px;
+    /*overflow: hidden;*/
+
+}
+
+.map {
+    width: 100%;
+    height: 500px;
+    margin-bottom: 50px;
+    border-radius: 15px;
+    border: 2px solid #00bd56; /* 테두리 색상을 추가했습니다 */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); /* 더 강한 그림자 효과 */
+}
+
+.category {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+    display: flex;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category li {
+    list-style: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.category li:hover,
+.category .menu_selected {
+    background-color: #00bd56;
+    color: #fff;
+}
+
+.ico_comm {
+    display: block;
+    margin: 0 auto 5px;
+    width: 24px;
+    height: 24px;
+    background-size: cover;
+}
+
+.ico_hospital {
+    background-image: url('https://cdn-icons-png.flaticon.com/128/2309/2309962.png');
+}
+
+.ico_pharmacy {
+    background-image: url('https://cdn-icons-png.flaticon.com/128/4320/4320344.png');
+}
+
+.ico_hairsalon {
+    background-image: url('https://cdn-icons-png.flaticon.com/128/1057/1057470.png');
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+
+/* 반응형 디자인 추가 */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .ocr-image {
+        width: 80px; /* 모바일에서는 이미지 크기를 조금 줄임 */
+        height: 80px;
+        margin-bottom: 20px;
+    }
+
+    .header-container h2 {
+        font-size: 1.5rem; /* 모바일에서는 글자 크기를 줄임 */
+        margin-bottom: 20px;
+    }
+
+    .category {
+        top: auto;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+@media (max-width: 480px) {
+    .ocr-image {
+        width: 60px; /* 더 작은 화면에서 이미지 크기를 더 줄임 */
+        height: 60px;
+    }
+
+    .header-container h2 {
+        font-size: 1.2rem; /* 더 작은 화면에서는 글자 크기를 더 줄임 */
+    }
+}

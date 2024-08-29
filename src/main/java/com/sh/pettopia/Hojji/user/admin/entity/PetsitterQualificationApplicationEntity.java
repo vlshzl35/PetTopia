@@ -1,12 +1,13 @@
 package com.sh.pettopia.Hojji.user.admin.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_petsitter_qualification_application")
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class PetsitterQualificationApplicationEntity {
     @Id
     private Long id;
@@ -38,4 +40,8 @@ public class PetsitterQualificationApplicationEntity {
     private String certification; // 자격증
     @Column
     private String motivationForApplying; // 지원동기
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime createdAt; // 작성 일자
 }
