@@ -29,6 +29,7 @@ public class PetSitterRegisterDto {
     private String postUrl;
     private Set<String> impossibleDays;
     private PetSitterAddress petSitterAddress;
+    private boolean workStatus;
 
     public void setAvailable(Set<AvailableService > availableServices, Set<AvailablePetSize > availablePetSizes) {
         this.availablePetSizes = availablePetSizes;
@@ -49,6 +50,7 @@ public class PetSitterRegisterDto {
                 .detailAddress(entity.getPetSitterAddress().getDetailAddress())
                 .impossibleDays(entity.getAvailableDates())
                 .oneLineIntroduce(entity.getOneLineIntroduce())
+                .workStatus(entity.isWorkStatus())
                 .build();
     }
 }

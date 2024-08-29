@@ -38,8 +38,8 @@ public class SittingService {
         return sittingRepository.findAllBySittingStatusIsCompleteOrWating(memberId);
     }
 
-    public List<Sitting> findAllBySittingStatusIsReadyOrStart(String memberId)
+    public List<Sitting> findAllBySittingStatusIsReadyOrStartOrWaitingMemberCheck(String memberId)
     {
-        return sittingRepository.findAllBySittingStatusIsReadyOrStart(memberId);
+        return sittingRepository.findAllBySittingStatusIsReadyOrStartOrWaitingMemberCheck(memberId);
     }
 }

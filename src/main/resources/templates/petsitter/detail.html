@@ -370,7 +370,7 @@
                                 <label for="impossibleDays">예약 날짜:</label>
                                 <input type="text" id="impossibleDays" name="reservationDay" required>
                             </div>
-                            <div>
+                            <div style="margin-top: 10px">
                                 <label for="startTime">시작 시간:</label>
                                 <input type="text" id="startTime" placeholder="시간 선택" name="startTime" required readonly>
                             </div>
@@ -418,7 +418,7 @@
                         <h4 id="totalCostDisplay">총 금액 : 0원</h4>
                     </div>
 
-                    <button type="button" class="btn btn-primary" id="btn-kakao" onclick="validateInput()">결제 및 예약</button>
+                    <button  th:if="${#authentication.principal.member.email != dto.getPetSitterId}" type="button" class="btn btn-primary" id="btn-kakao" onclick="validateInput()">결제 및 예약</button>
                 </form>
             </div>
         </div>

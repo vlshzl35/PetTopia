@@ -23,6 +23,7 @@ public class ReservationDto {
     private LocalTime startTime;
     private LocalTime endTime;
     private List<PetSizeAndHowManyPet> petSizeAndHowManyPets;
+    private boolean payStatus;
 
     // 아래 5줄은 카카오 페이 할 떄 필요함
     private String item_name; // ex) 소형견 외...

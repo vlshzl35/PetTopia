@@ -3,6 +3,7 @@ package com.sh.pettopia.choipetsitter.entity;
 import com.sh.pettopia.choipetsitter.dto.PetSitterRegisterDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -61,6 +62,9 @@ public class PetSitter {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @Column(name = "work_status")
+    private boolean workStatus=false;
+
     public PetSitter dtoToEntity(PetSitterRegisterDto dto)
     {
         return PetSitter.builder()
@@ -108,6 +112,10 @@ public class PetSitter {
     public void changeAddress(String postcode,String address,String detailAddress,String extraAddress)
     {
         this.petSitterAddress= new PetSitterAddress(postcode,address,detailAddress,extraAddress);
+    }
+    public void changeWorkStatus(String  status)
+    {
+        this.workStatus = status.equals("startWork");
     }
 
 }

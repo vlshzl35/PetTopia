@@ -23,6 +23,10 @@ public class ReservationService {
         // save라는 메소드 한에 merge가 존재함
        return reservationRepository.save(reservation);
     }
+    public List<Reservation> findReservationByReservationStatusReady(String petSitterId)
+    {
+        return reservationRepository.findReservationByReservationStatusReady(petSitterId);
+    }
 
     public Reservation findReservationByPartnerOrderId(String partnerOrderId)
     {
