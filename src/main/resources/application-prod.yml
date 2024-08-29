@@ -23,6 +23,7 @@ server:
   fail_url: "http://223.130.146.203:8080/pay/fail?partner_order_id="
 
   # OCR 관련 설정
+
 naver:
   clova-ocr:
     document:

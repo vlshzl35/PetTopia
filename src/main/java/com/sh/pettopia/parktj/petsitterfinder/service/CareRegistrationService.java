@@ -4,6 +4,7 @@ import com.sh.pettopia.Hojji.pet.entity.ParasitePrevention;
 import com.sh.pettopia.Hojji.pet.entity.VaccinationType;
 import com.sh.pettopia.choipetsitter.entity.PetSitter;
 import com.sh.pettopia.choipetsitter.repository.PetSitterRepository;
+import com.sh.pettopia.choipetsitter.repository.ReservationRepository;
 import com.sh.pettopia.parktj.petsitterfinder.dto.*;
 import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;
 import com.sh.pettopia.parktj.petsitterfinder.entity.ReservationByPetSitter;
@@ -31,6 +32,8 @@ public class CareRegistrationService {
     private PetSitterRepository petSitterRepository;
     @Autowired
     private ReservationByPetSitterRepository reservationByPetSitterRepository;
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     public void regist(PetDetailsRegistRequestDto registRequestDto) {
         // dto를 CareRegistration 엔티티로 전환해주고 그 값을 DB에 넣는 코드
@@ -217,6 +220,31 @@ public class CareRegistrationService {
             reservation.completeReservation();
             reservationByPetSitterRepository.save(reservation);
         }
+
+    }
+
+    public ReservationResponseDto findReservationByReservationId(Long reservationId) {
+        ReservationByPetSitter reservation = reservationByPetSitterRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalStateException("예약이 발견되지 않았습니다"));
+        if(reservation != null){
+            return ReservationResponseDto.fromReservations(reservation);
+        }else {
+            return null;
+        }
+    }
+
+    public void completeReview(Long reservationId) {
+
+        ReservationByPetSitter reservation = reservationByPetSitterRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalStateException("예약이 발견되지 않았습니다."));
+        if(reservation.getReservationStatus() != ReservationStatus.CARE_COMPLETE_REVIEW_AVAILABLE) {
+            throw new IllegalStateException("리뷰 작성 가능 상태가 아닐 때에는 리뷰를 작성할 수 없습니다.");
+        }else {
+            reservation.completeReview();
+            reservationByPetSitterRepository.save(reservation);
+        }
+
+
 
     }
 }

@@ -1,0 +1,261 @@
+<!doctype html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>리뷰 작성</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    table, th, td {
+      align-self: center;
+      border: 1px solid black;
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    img {
+      width: 250px;
+      height: 250px;
+    }
+
+    .gallery-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .gallery {
+      display: flex;
+      width: 400px;
+      height: 300px;
+      overflow: hidden;
+      position: relative;
+      border: 2px solid #ddd;
+    }
+
+    .gallery img {
+      width: 400px;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .arrow {
+      cursor: pointer;
+      font-size: 30px;
+      user-select: none;
+      margin: 0 10px;
+    }
+
+    #fileInput {
+      margin-top: 20px;
+    }
+
+    /*별점 css*/
+
+    .star-rating {
+      direction: rtl;
+      display: inline-flex;
+      font-size: 2em;
+    }
+
+    .star-rating input {
+      display: none;
+    }
+
+    .star-rating label {
+      color: #ddd;
+      cursor: pointer;
+    }
+
+    .star-rating input:checked ~ label {
+      color: #ffc700;
+    }
+
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+      color: #ffc700;
+    }
+
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="ftco-section">
+    <br><br>
+    <!--    보는 사람 == 펫시터 회원의 회원의 아이디를 보여준다-->
+<!--    <div th:object="${sittingInfo}" th:if="${#authentication.principal.member.email == sittingInfo.getPetSitterId}">-->
+<!--      회원 : <span th:text="${sittingInfo.memberId}"></span>-->
+<!--    </div>-->
+<!--    &lt;!&ndash;    보는 사람 != 펫시터 그럼 펫시터의 아이디를 보여준다 &ndash;&gt;-->
+<!--    <div th:object="${sittingInfo}" th:if="${#authentication.principal.member.email != sittingInfo.getPetSitterId}">-->
+<!--      펫시터 : <span th:text="${sittingInfo.petSitterId}"></span>-->
+<!--    </div>-->
+    <div th:object="${reservationResponseDtoList}">
+      <div style="display: inline">
+        <div>
+          <table cellpadding="10px" class="table">
+            <thead>
+            <tr>
+              <th>요청 날짜</th>
+              <th>예약 날짜</th>
+              <th>시작, 종료</th>
+              <th>펫시터 ID</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each= "reservationDto ,stat :${reservationResponseDtoList}"
+            th:object="${reservationDto}">
+              <td th:text="${#temporals.format(reservationDto.createdDate, 'yyyy-MM-dd/a hh:mm')}"></td>
+<!--              <td th:text="${.serviceDate}" name="serviceDate"></td>-->
+              <td>
+                <span th:text="${reservationDto.startDate}" name="startTime"></span>
+                <span th:text="${reservationDto.endDate}" name="endTime"></span>
+              </td>
+              <td th:text="${reservationDto.petSitterId}"> </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div class="image-box">
+<!--            <img class="image-thumbnail" th:src="${petSitter.mainImageUrl}"-->
+<!--                 alt="Profile Image"/>-->
+          </div>
+<!--          <div>-->
+<!--            <span class="position mb-2"-->
+<!--                  th:text="'펫시터 주소 :'+ ${reservationDto.address}">사용자 주소</span>-->
+<!--          </div>-->
+        </div>
+      </div>
+      <div>
+        <div class="pt-5 mt-5" th:each= "reservationDto ,stat :${reservationResponseDtoList}">
+          <h3>댓글</h3>
+          <form class="input-group mb-3 commentForm" id="comment-regist" method="post"
+                name="petSitterRegistReviewForm" enctype="multipart/form-data"
+                th:action="@{/petsitterfinder/registreviewToPetSitter}">
+            <input type="hidden" name="reservationId" th:value="${reservationDto.reservationId}">
+<!--            <input type="hidden" name="memberId" th:value="${reservationDto.memberId}">-->
+<!--            <input type="hidden" name="partnerOrderId" id="partnerOrderId"-->
+<!--                   th:value="${sittingInfo.getPartnerOrderId()}">-->
+
+            <div class="star-rating">
+              <input type="radio" id="star5" name="rating" value="5" />
+              <label for="star5" title="5 stars">☆</label>
+
+              <input type="radio" id="star4" name="rating" value="4" />
+              <label for="star4" title="4 stars">☆</label>
+
+              <input type="radio" id="star3" name="rating" value="3" />
+              <label for="star3" title="3 stars">☆</label>
+
+              <input type="radio" id="star2" name="rating" value="2" />
+              <label for="star2" title="2 stars">☆</label>
+
+              <input type="radio" id="star1" name="rating" value="1" />
+              <label for="star1" title="1 star">☆</label>
+            </div>
+            <textarea class="" placeholder="댓글을 입력해주세요!" id="comment"
+                      aria-label="Recipient's username"
+                      aria-describedby="button-addon2" name="reviewText" required></textarea>
+            <br>
+
+
+
+            <div>
+
+              <div class="gallery-container">
+                <div class="arrow" id="prev">&#9664;</div>
+                <div class="gallery" id="gallery"></div>
+                <div class="arrow" id="next">&#9654;</div>
+              </div>
+              <input type="file" id="fileInput" multiple name="imageUrl">
+
+            </div>
+            <button class="btn btn-custom" type="button" id="button-addon2" onclick="submitform()">등록
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script>
+    function submitform() {
+      if (confirm('등록을 하시겠습니까??')) {
+        document.petSitterRegistReviewForm.submit();
+      }
+    }
+  </script>
+  <script>
+
+    const stars = document.querySelectorAll('.star');
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        stars.forEach(s => s.classList.remove('checked'));
+        star.classList.add('checked');
+      });
+    });
+
+    $('.star_rating > .star').click(function () {
+      $(this).parent().children('input').removeClass('on');
+      $(this).addClass('on').prevAll('span').addClass('on');
+    })
+  </script>
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const gallery = document.getElementById('gallery');
+    let currentIndex = 0;
+    let imageElements = [];
+
+    fileInput.addEventListener('change', (event) => {
+      const files = event.target.files;
+      gallery.innerHTML = '';  // 갤러리 초기화
+      imageElements = [];
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          gallery.appendChild(img);
+          imageElements.push(img);
+
+          // 처음 이미지만 표시
+          if (imageElements.length > 1) {
+            img.style.display = 'none';
+          }
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      currentIndex = 0; // 인덱스 초기화
+    });
+
+    document.getElementById('next').addEventListener('click', () => {
+      if (currentIndex < imageElements.length - 1) {
+        imageElements[currentIndex].style.display = 'none';
+        currentIndex++;
+        imageElements[currentIndex].style.display = 'block';
+      }
+    });
+
+    document.getElementById('prev').addEventListener('click', () => {
+      if (currentIndex > 0) {
+        imageElements[currentIndex].style.display = 'none';
+        currentIndex--;
+        imageElements[currentIndex].style.display = 'block';
+      }
+    });
+  </script>
+</div>
+</body>
+</html>

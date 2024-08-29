@@ -1,6 +1,7 @@
 package com.sh.pettopia.choipetsitter.entity;
 
 import com.sh.pettopia.choipetsitter.dto.PetSitterReviewDto;
+import com.sh.pettopia.parktj.petsitterfinder.dto.RegistReviewRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Entity(name = "review")
 @Table(name = "tbl_sitter_review")
@@ -19,7 +21,12 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class PetSitterReview {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Long id;
+
     @Column(name = "partner_order_id")
     private String partnerOrderId; // 주문 번호
 
@@ -58,6 +65,19 @@ public class PetSitterReview {
                 .memberId(dto.getMemberId())
                 .starRating(dto.getRating())
                 .petSitterId(dto.getPetSitterId()).build();
+    }
+    //박태준 추가
+    public PetSitterReview dtoToEntity(RegistReviewRequestDto dto)
+    {
+        return PetSitterReview.builder()
+                .partnerOrderId(generatePartnerOrderId())
+                .reviewText(dto.getNote())
+                .createdAt(LocalDateTime.now())
+                .petSitterId(dto.getPetSitterId()).build();
+    }
+    private String generatePartnerOrderId() {
+        // 예시로 UUID를 사용하는 방법 (비즈니스 로직에 따라 수정 필요)
+        return UUID.randomUUID().toString();
     }
 
 
