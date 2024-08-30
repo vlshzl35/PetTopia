@@ -20,4 +20,6 @@ public interface ReservationByPetSitterRepository extends JpaRepository<Reservat
 
 
     List<ReservationByPetSitter> findByPetSitter(PetSitter petSitter);
+
+    List<ReservationByPetSitter> findReservationByMemberId(Long id);
 }

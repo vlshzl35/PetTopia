@@ -27,9 +27,9 @@ public class CommentEntity {
     private String commentContents;
 
 //   Board:Comment =  1 대 N
-    @ManyToOne(fetch = FetchType.LAZY)
+//    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
-    private CareRegistration careRegistration;
+    private Long postId;
 
 
     @CreationTimestamp
@@ -49,7 +49,7 @@ public class CommentEntity {
         commentEntity.setCommentWriter(commentDTO.getCommentWriter());
         commentEntity.setCreatedTime(LocalDate.now());
         commentEntity.setUpdatedTime(LocalDateTime.now());
-        commentEntity.setCareRegistration(careRegistration);
+        commentEntity.setPostId(careRegistration.getPostId());
         commentEntity.setMemberId(commentDTO.getMemberId());
 
         return commentEntity;

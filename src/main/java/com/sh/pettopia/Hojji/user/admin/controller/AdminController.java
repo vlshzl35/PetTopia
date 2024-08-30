@@ -7,6 +7,7 @@ import com.sh.pettopia.choipetsitter.entity.PetSitter;
 import com.sh.pettopia.choipetsitter.service.PetSitterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,16 +71,17 @@ public class AdminController {
         SitterStatus sitterStatus = SitterStatus.valueOf(status);
         MemberListResponseDto MemberDto=memberService.findById(memberId); // 펫시터 등록은 위한 멤버를 불러온다
 
-        // 수락은 APPROVED, 거절은 NONE으로 sitterStatus 변경
-        memberService.updateSitterStatus(memberId, sitterStatus);
-        memberService.grantSitterAuthority(memberId);
-
-        // 수락된 회원에 한해 회원id에 role_sitter 추가
         if (sitterStatus == SitterStatus.APPROVED) {
+            // 시터권한 요청 승인 시, member의 sitterStauts를 PENDING(승인대기중) -> APPROVED(승인됨)
+            memberService.updateSitterStatus(memberId, sitterStatus);
+            // 수락된 회원에 한해 member에 role_sitter 권한 추가
             memberService.grantSitterAuthority(memberId);
-            PetSitter petSitter=petSitterService.saveMemberToEntity(MemberDto);
-            log.info("petsitter = {}",petSitter);
+            // 펫시터 권한을 가진 회원 목록에 추가
+            PetSitter petSitter= petSitterService.saveMemberToEntity(MemberDto);
 
+        } else if(sitterStatus == SitterStatus.NONE){
+            // 시터권한 거절 시, member의 sitterStatus를 PENDING(승인대기중) -> NONE(신청 내역 없음)
+            memberService.updateSitterStatus(memberId, sitterStatus);
         }
 
         return ResponseEntity.ok().build();

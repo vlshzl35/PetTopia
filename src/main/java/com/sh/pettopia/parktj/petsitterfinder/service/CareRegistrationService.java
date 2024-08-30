@@ -247,6 +247,12 @@ public class CareRegistrationService {
 
 
     }
+
+    public List<ReservationResponseDto> findReservationByMemberId(Long id) {
+        List<ReservationByPetSitter> reservation = reservationByPetSitterRepository.findReservationByMemberId(id);
+        return reservation.stream().map(ReservationResponseDto::fromReservations).toList();
+
+    }
 }
 
 /**

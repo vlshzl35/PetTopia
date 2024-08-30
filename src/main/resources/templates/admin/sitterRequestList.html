@@ -394,9 +394,13 @@
                     <td th:text="${pendingMember.name}"></td>
                     <td th:text="${pendingMember.email}"></td>
                     <td th:text="${pendingMember.phone}"></td>
+<!--                    <td>-->
+<!--                      <button class="btn btn-success" th:attr="onclick='updateSitterStatus(' + ${pendingMember.id} + ', \'APPROVED\')'">승인</button>-->
+<!--                      <button class="btn btn-danger" th:attr="onclick='updateSitterStatus(' + ${pendingMember.id} + ', \'NONE\')'">거절</button>-->
+<!--                    </td>-->
                     <td>
-                      <button class="btn btn-success" th:attr="onclick='updateSitterStatus(' + ${pendingMember.id} + ', \'APPROVED\')'">승인</button>
-                      <button class="btn btn-danger" th:attr="onclick='updateSitterStatus(' + ${pendingMember.id} + ', \'NONE\')'">거절</button>
+                      <button class="btn btn-success" th:attr="onclick='event.stopPropagation(); updateSitterStatus(' + ${pendingMember.id} + ', \'APPROVED\')'">승인</button>
+                      <button class="btn btn-danger" th:attr="onclick='event.stopPropagation(); updateSitterStatus(' + ${pendingMember.id} + ', \'NONE\')'">거절</button>
                     </td>
                   </tr>
                 </tbody>
@@ -432,7 +436,6 @@
   <script src="/assets/js/main.js"></script>
   <!-- ajax -->
   <script>
-
     function updateSitterStatus(memberId, status) {
       fetch(`/admin/updateSitterStatus/${memberId}`, {
         method: 'POST',
@@ -441,19 +444,24 @@
         },
         body: JSON.stringify({ status: status })
       })
-              .then(response => {
-                if (response.ok) {
-                  alert('상태가 성공적으로 업데이트되었습니다.');
-                  location.reload(); // 페이지 새로고침
-                } else {
-                  alert('상태 업데이트에 실패했습니다.');
-                }
-              })
-              .catch(error => {
-                console.error('Error:', error);
-                alert('상태 업데이트 중 오류가 발생했습니다.');
-              });
+      .then(response => {
+        if (response.ok) {
+          if (status === 'APPROVED') {
+            alert('요청이 승인되었습니다');
+          } else if (status === 'NONE') {
+            alert('요청이 거절되었습니다');
+          }
+          location.reload(); // 페이지 새로고침
+        } else {
+          return response.text().then(text => { throw new Error(text) });
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('상태 업데이트 중 오류가 발생했습니다.');
+      });
     }
+
   </script>
 </body>
 </html>
