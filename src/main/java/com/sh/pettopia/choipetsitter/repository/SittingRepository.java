@@ -18,7 +18,7 @@ public interface SittingRepository extends JpaRepository<Sitting,Long> {
     List<Sitting> findByMemberId(String memberId);
 
     @Query("SELECT s FROM sitting s WHERE s.memberId = :memberId AND s.sittingStatus IN ('MEMBER_CHECK')")
-    List<Sitting> findAllBySittingStatusIsCompleteOrWating(@Param("memberId") String memberId);
+    List<Sitting> findAllBySittingStatusIsMemberCheck(@Param("memberId") String memberId);
 
     @Query("SELECT s FROM sitting s WHERE s.memberId = :memberId AND s.sittingStatus IN ('StandbySitting', 'START_SITTING', 'WAITING_MEMBER_CHECK')")
     List<Sitting> findAllBySittingStatusIsReadyOrStartOrWaitingMemberCheck(@Param("memberId") String memberId);

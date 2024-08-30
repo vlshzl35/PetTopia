@@ -33,9 +33,9 @@ public class SittingService {
         return sittingRepository.findByMemberId(memberId);
     }
 
-    public List<Sitting> findAllBySittingStatusIsComplete(String memberId)
+    public List<Sitting> findAllBySittingStatusIsMemberCheck(String memberId)
     {
-        return sittingRepository.findAllBySittingStatusIsCompleteOrWating(memberId);
+        return sittingRepository.findAllBySittingStatusIsMemberCheck(memberId);
     }
 
     public List<Sitting> findAllBySittingStatusIsReadyOrStartOrWaitingMemberCheck(String memberId)
