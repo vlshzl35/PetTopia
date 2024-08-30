@@ -1,5 +1,6 @@
 package com.sh.pettopia.parktj.petsitterfinder.entity;
 
+import com.sh.pettopia.Hojji.pet.entity.PetSize;
 import com.sh.pettopia.choipetsitter.entity.PetSitter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -52,6 +53,12 @@ public class ReservationByPetSitter {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "size")
+    private PetSize size;
+
+    @Column(name = "pet_name")
+    private String petName;
+
     public static ReservationByPetSitter toReservationEntity(PetSitter petSitter, CareRegistration careRegistration) {
         ReservationByPetSitter reservationByPetSitter = new ReservationByPetSitter();
         reservationByPetSitter.setPetSitter(petSitter);
@@ -62,6 +69,8 @@ public class ReservationByPetSitter {
         reservationByPetSitter.setStartDate(careRegistration.getRequestStartDate());
         reservationByPetSitter.setEndDate(careRegistration.getRequestEndDate());
         reservationByPetSitter.setAddress(careRegistration.getAddress());
+        reservationByPetSitter.setSize(careRegistration.getPetSize());
+        reservationByPetSitter.setPetName(careRegistration.getPetName());
 
         return reservationByPetSitter;
     }
