@@ -33,7 +33,7 @@
             width: 70%;
             margin: 30px auto;
             background: #fff;
-            padding: 20px;
+            padding: 10px;
             border-radius: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -53,6 +53,14 @@
             background-color: #fff;
             margin-bottom: 24px;
             margin-top: 0px;
+        }
+        .mainIntroduce{
+            padding: 12px;
+            margin: 12px;
+            border-radius: 8px;
+            border: 1px solid #DFE3EA;
+            background-color: #fff;
+            box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.07);
         }
 
         input[type="number"] {
@@ -82,23 +90,27 @@
         }
 
         .serviceList {
-            display: flex;
-            flex-direction: column;
-            margin-top: 20px;
+            margin-left: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            margin-top: 10px;
             box-shadow: none;
         }
 
         .serviceList:hover {
             background-color: white;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3개의 열로 분할 */
+            gap: 10px; /* 각 항목 사이의 간격 */
         }
 
         .serviceList > .service {
-            display: flex;
             flex-direction: column;
             align-items: center;
-            width: 160px;
-            padding: 16px;
+            width: 170px;
+            padding-left:5px;
             margin-bottom: 20px;
+            margin-left: 10px;
             border: 1px solid #DFE3EA;
             border-radius: 8px;
             box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.07);
@@ -242,6 +254,9 @@
             width: 50px;
             height : 50px;
         }
+        h4{
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -265,14 +280,13 @@
                     </div>
                 </div>
 
-                <div class="selectTime">
-                    <h4>저는 이런 펫시터에요!</h4>
+                <h4>저는 이런 펫시터에요!</h4>
+                <div class="mainIntroduce">
                     <p th:text="${dto.getMainIntroduce}"></p>
                 </div>
 
+                <h4>저는 이런 서비스 제공이 가능해요!</h4> <br>
                 <div class="serviceList">
-                        <h4>저는 이런 서비스 제공이 가능해요!</h4> <br>
-
                     <div th:if="${petService.contains('everydayWalk')}" class="service">
                         <img src='/svg/walk.png' alt="매일 산책 이미지">
                         <p>매일산책</p>
@@ -292,7 +306,7 @@
                     </div>
 
                     <div th:if="${petService.contains('play')}" class="service">
-                        <img tsrc='/svg/duck.png' alt="실내놀이">
+                        <img src='/svg/duck.png' alt="실내놀이">
                         <p>실내 놀이</p>
                         <span>터그놀이, 노즈워킹 등</span>
                     </div>

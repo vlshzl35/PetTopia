@@ -57,6 +57,7 @@ public class MyPageController {
 
         // 내가 예약한 내역+결제가 여러개일 수 있다
         List<Order> orderList=orderService.findAllByOrderByPayDate();
+        log.info("orderList = {}",orderList);
         List<Reservation> reservationList=reservationService.findByMemberIdAndReservationStatusNotOk(authPrincipal.getMember().getEmail());
         List<ReservationDto> reservationDtoList=new ArrayList<>();
         for(Reservation reservationEntity : reservationList)
@@ -68,7 +69,9 @@ public class MyPageController {
         {
             for(ReservationDto reservationDto:reservationDtoList)
             {
-                if(reservationDto.getPartnerOrderId() == order.getPartnerOrderId()) {
+                if(reservationDto.getPartnerOrderId().equals(order.getPartnerOrderId())) {
+                    log.info("reservationDto = {}",reservationDto);
+                    log.info("order = {}",order);
                     reservationDto.setPayStatus(order.isPayStatus());
                 }
             }
@@ -85,13 +88,14 @@ public class MyPageController {
         log.info("sittingList = " + sittingList);
 
         // 돌봄 서비스가 완료 및 완료 승인을 대기 하는 리스트가 존재한다
-        List<Sitting> completeSittingList = sittingService.findAllBySittingStatusIsComplete(authPrincipal.getMember().getEmail());
+        List<Sitting> completeSittingList = sittingService.findAllBySittingStatusIsMemberCheck(authPrincipal.getMember().getEmail());
         List<SittingDto> completeSittingDtoList = new ArrayList<>();
         for (Sitting sittingEntity : completeSittingList) {
             completeSittingDtoList.add(new SittingDto().entityToDto(sittingEntity));
         }
 
         log.info("completeSittingEntityList = " + completeSittingList);
+        log.info("completeSittingList = " + completeSittingList);
         log.info("completeSittingDtoList = " + completeSittingDtoList);
 
         model.addAttribute("reservationDtoList", reservationDtoList); // 예약 중인 속성
