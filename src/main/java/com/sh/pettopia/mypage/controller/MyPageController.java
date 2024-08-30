@@ -182,6 +182,7 @@ public class MyPageController {
         dto.setId(memberId);
         log.debug("dto = {}",dto);
         myPageService.regist(dto);
+
         redirectAttributes.addFlashAttribute("message", "신청이 완료되었습니다!");
         return "redirect:/mypage/mypage";
     }
