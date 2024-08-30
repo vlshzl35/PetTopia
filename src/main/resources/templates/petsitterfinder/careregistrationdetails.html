@@ -4,51 +4,109 @@
     <title>주소 검색 및 예약 정보</title>
     <!-- Bootstrap CSS 추가 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     <style>
         .page-body {
             display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            align-items: flex-start;
-            width: 80%;
-            height: 1500px;
-            margin: 10px auto;
+            flex-direction: column;
+            align-items: center;
             padding: 30px;
             background-color: #ffffff;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-
-        .reservation-details {
-            width: 45%;
-            background: #d4edda;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            line-height: 1.6;
+            margin-top: 20px;
+            position: relative; /* Ensure this element can use z-index */
         }
 
         .petProfile {
-            width: 30%;
-            height: 30%;
             text-align: center;
+            margin-bottom: 20px;
         }
 
         .petProfile img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+
+        .petProfile h2 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #28a745;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .petProfile h2 i {
+            margin-left: 10px;
+            font-size: 1.8rem;
+            color: #ff5722;
+        }
+
+        .reservation-details {
             width: 100%;
-            height: 50%;
-            border-radius: 90px;
+            max-width: 800px;
+            background: #f8f9fa;
+            padding: 30px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1; /* Ensure the buttons are clickable */
+        }
+
+        .reservation-details h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #28a745;
+            background-color: #e9f7ef;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+        }
+
+        .reservation-details p {
+            margin-bottom: 10px;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .reservation-details input[type="date"] {
+            border: none;
+            background-color: #ffffff;
+            padding-left: 5px;
         }
 
         .map-spot {
-            position: absolute;
-            width: 40%;
+            width: 100%;
+            max-width: 800px;
             text-align: center;
-            bottom: 20px;
-            right: 20px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        .map-spot h2 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #17a2b8;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .map-spot h2 i {
+            margin-left: 10px;
+            font-size: 1.8rem;
+            color: #007bff;
         }
 
         .map-spot #map {
@@ -59,13 +117,13 @@
         }
 
         .comment-section {
-            width: 55%;
+            width: 100%;
+            max-width: 800px;
             background: #f8f9fa;
-            padding: 30px;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-top: 10px;
-            height: 750px;
+            margin-top: 20px;
         }
 
         .comment {
@@ -86,36 +144,43 @@
             font-size: 1rem;
         }
 
-        /* 헤더 스타일을 명시적으로 설정 */
         .navbar, .navbar-nav, .nav-link, .navbar-brand {
             background-color: #ffffff !important;
             color: #000000 !important;
         }
 
-        .nav-link {
-            color: #000000 !important;
-        }
-
-        .navbar-brand {
-            color: #000000 !important;
-        }
-
-        .navbar .nav-link:hover {
+        .nav-link:hover {
             color: #28a745 !important; /* 예시로 녹색으로 설정 */
         }
 
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
 
+        .btn-container .btn {
+            margin: 0 10px;
+            z-index: 10; /* Make sure buttons are clickable */
+            position: relative;
+        }
     </style>
 </head>
 <body>
 
-<div class="page-body" layout:fragment="main">
+<div class="container page-body" layout:fragment="main">
+
+    <!-- 펫 프로필 영역 -->
+    <section class="petProfile">
+        <h2>우리 강아지에요 <i class="fas fa-paw"></i></h2>
+        <img th:src="${detail.profile}" alt="강아지 사진">
+    </section>
 
     <!-- 예약 정보 표시 영역 -->
     <section class="reservation-details">
         <input type="hidden" id="addressInput" th:value="${detail.address}">
-        <h2><strong>🐶우리 강아지를 돌봐주세요🐶</strong></h2>
-        <p>이름: <span th:text="${detail.petName}" ></span></p>
+        <h2>우리 강아지를 돌봐주세요</h2>
+        <p>이름: <span th:text="${detail.petName}"></span></p>
         <p>강아지 성격: <span th:text="${detail.petSociability}"></span></p>
         <p>강아지 출생일: <span th:text="${detail.petBirth}"></span></p>
         <p>견종: <span th:text="${detail.petBreed}"></span></p>
@@ -123,30 +188,21 @@
         <p>예방 접종: <span th:text="${detail.petVaccinationTypeNames}"></span></p>
         <p>기생충 예방 접종: <span th:text="${detail.petParasitePreventionNames}"></span></p>
         <p>예약 요청 날짜: <input type="date" th:value="${detail.startDate}" readonly></p>
-        <p>예약 종료요청 날짜: <input type="date" th:value="${detail.endDate}" readonly></p>
+        <p>예약 종료 요청 날짜: <input type="date" th:value="${detail.endDate}" readonly></p>
         <p>예약 서비스: <span th:text="${detail.requestService}"></span></p>
         <p>추가적인 요청사항: <span th:text="${detail.additionalInfo}"></span></p>
-        <div class="update-box">
-            <button class="btn btn-primary" th:if="${isWriter}" th:onclick="|location.href = '@{/petsitterfinder/detailupdate(postId=${detail.postId})}'|">수정/삭제</button>
-            <input type="hidden" name ="sitterStatus" id ="sitterStatus" th:value="${memberInfo.sitterStatus}">
-            <button name= "requestBtn" id="requestBtn" class="btn btn-primary">예약요청</button>
-            <button class="btn btn-primary" th:if="${isWriter}" th:onclick="|location.href = '@{/petsitterfinder/reservation(postId=${detail.postId})}'|">예약 목록 보기</button>
-        </div>
-    </section>
 
-    <!-- 펫 프로필 영역 -->
-    <section class="petProfile">
-        <h2>☺️우리 강아지에요☺️</h2>
-        <img th:src="${detail.profile}" alt="강아지 사진" >
+        <div class="btn-container">
+            <button type="button" class="btn btn-primary" th:if="${isWriter}" th:onclick="|location.href = '@{/petsitterfinder/detailupdate(postId=${detail.postId})}'|">수정/삭제</button>
+            <input type="hidden" name="sitterStatus" id="sitterStatus" th:value="${memberInfo.sitterStatus}">
+            <button type="button" name="requestBtn" id="requestBtn" class="btn btn-success">예약 요청</button>
+        </div>
     </section>
 
     <!-- 지도 표시 영역 -->
     <section class="map-spot">
-        <h2>🏠이 근처에 살아요🏠</h2>
+        <h2>이 근처에 살아요 <i class="fas fa-map-marker-alt"></i></h2>
         <div id="map"></div>
-    </section>
-    <section>
-        <ul class="message-item" id="notifications">아아</ul>
     </section>
 
     <!-- 댓글 섹션 -->
@@ -160,102 +216,11 @@
         <input type="hidden" name="memberEmail" id="memberEmail" th:value="${memberInfo.email}">
 
         <button id="comment-write-btn" class="btn btn-success w-100" onclick="commentWrite()">댓글 작성</button>
-        <div id="comment-list" class="mt-4">
-            <!-- 여기에 댓글 목록이 동적으로 삽입됩니다 -->
-        </div>
-        <nav class="position-absolute" aria-label="Page navigation example" style="bottom: 0; left: 120px; width: 400px" >
-            <ul class="pagination justify-content-center">
-                <!-- 페이지네이션 링크는 JavaScript에서 동적으로 생성됨 -->
-            </ul>
+        <div id="comment-list" class="mt-4"></div>
+        <nav class="position-absolute" aria-label="Page navigation example" style="bottom: 0; left: 120px; width: 400px;">
+            <ul class="pagination justify-content-center"></ul>
         </nav>
     </section>
-
-    <script>
-        // 현재 페이지 번호를 저장
-        let currentPage = 1;
-
-        // 댓글 목록을 특정 페이지('page')에서 서버로부터 가져와서 페이지에 표시 (이해안됨)
-        const loadComments = (page = 1) => {
-            const postId = [[${detail.postId}]];
-            $.ajax({
-                type: "get",
-                // 서버의 댓글 목록을 가져오기 위해 postId와 page를 포함한 URL로 요청함
-                url: `/comment/list?postId=${postId}&page=`+page,
-                success: function(res) {
-                    console.log("댓글 목록 로드 성공", res);
-                    let output = "";
-                    // list가 아닌 Page로 객체를 반환했을 때 forEach 바로 사용 못함
-                    // res.forEach -> res.content.forEach로 수정함
-                    res.content.forEach(comment => {
-                        output += `
-                            <div class="comment">
-                                <div class="comment-meta">
-                                    <strong>${comment.commentWriter}</strong> · ${comment.commentCreatedTime}
-                                </div>
-                                <div class="comment-content">
-                                    ${comment.commentContents}
-                                </div>
-                            </div>
-                        `;
-                    });
-                    document.getElementById('comment-list').innerHTML = output;
-                    // 댓글 목록을 업데이트한 후 , 페이지네이션도 업데이트
-                    updatePagination(res);
-                },
-                error: function(err) {
-                    console.log("댓글 목록 로드 실패", err);
-                }
-            });
-        };
-        //(pageData 이해 안됨 = () => {} 이런 형식도 이해안됨 솔직히)
-        // pageData 는 Page<CommentDTO>객체임, 형재 페이지, 총 페이지 수 등의 정보를 담고 있음
-        const updatePagination = (pageData) => {
-            let paginationHtml = '';
-            for (let i = 1; i <= pageData.totalPages; i++) {
-                console.log("이건 또 무얼까나 ㅎㅎ" + pageData.totalPages)
-                console.log("이건 또 무얼까나 ㅎㅎ" + pageData.number) //
-                paginationHtml += `<li class="page-item ${i === pageData.number + 1 ? 'active' : ''}">
-                               <a class="page-link" href="javascript:void(0);" onclick="loadComments(${i})">${i}</a>
-                           </li>`;
-                console.log("이거모임?"+paginationHtml)
-            }
-            // .pagination은 paginationHtml 받아서 기본적인 페이지네이션 구조 제공해줌
-            // class="pagination" 을 가진 ul요소를 선택함
-            document.querySelector('.pagination').innerHTML = paginationHtml;
-        };
-
-        // 페이지 로드 시 댓글 목록을 로드
-        document.addEventListener('DOMContentLoaded', () => loadComments(currentPage));
-
-        // 댓글 작성 함수
-        const commentWrite = () => {
-            const contents = document.getElementById("commentContents").value;
-            const writer = document.getElementById("commentWriter").value;
-            const memberId = document.getElementById("memberId").value;
-            const postId = [[${detail.postId}]];
-            $.ajax({
-                type: "post",
-                url: "/comment/save",
-                data: {
-                    "commentContents": contents,
-                    "commentWriter": writer,
-                    "memberId": memberId,
-                    "postId": postId
-                },
-                success: function(res) {
-                    console.log("요청 성공", res);
-                    loadComments(); // 댓글 작성 후 댓글 목록 다시 로드
-                    document.getElementById('commentContents').value = '';
-                },
-                error: function(err) {
-                    console.log("요청 실패", err);
-                }
-            });
-        };
-
-        // 페이지 로드 시 댓글 목록을 로드
-        document.addEventListener('DOMContentLoaded', loadComments);
-    </script>
 
     <!-- Bootstrap JS 및 의존성 추가 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -305,7 +270,27 @@
         document.addEventListener('DOMContentLoaded', searchAddress);
     </script>
 
-<!--    sitterStatus가 approved되지 않은 회원은 예약 요청 거절됨. -->
+    <!-- WebSocket 및 알림 기능 -->
+<!--    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>-->
+<!--    <script>-->
+<!--        let socket = new SockJS('/websocket');-->
+<!--        let stompClient = Stomp.over(socket);-->
+
+<!--        stompClient.connect({}, function (frame) {-->
+<!--            stompClient.subscribe('/topic/petsitterfinder', function (message) {-->
+<!--                let notification = message.body;-->
+<!--                showNotification(notification);-->
+<!--            });-->
+<!--        });-->
+
+<!--        function showNotification(message) {-->
+<!--            let notificationList = document.getElementById('notifications');-->
+<!--            let notificationItem = document.createElement('li');-->
+<!--            notificationItem.textContent = message;-->
+<!--            notificationList.appendChild(notificationItem);-->
+<!--        }-->
+<!--    </script>-->
     <script>
         const status = document.getElementById('sitterStatus').value;
 
@@ -319,9 +304,9 @@
 
                 const confirmation =  confirm('예약을 요청하시겠습니까?')
                 if(confirmation){
-                // 스크립트에서 쿼리파라미터 요청
-                const postId = [[${detail.postId}]];
-                const memberEmail = '[[${memberInfo.email}]]' // 문자열 받을 때에는 따옴표 무조건 감싸줘야함 안감싸줘서 계속 오류났었네 이런!!
+                    // 스크립트에서 쿼리파라미터 요청
+                    const postId = [[${detail.postId}]];
+                    const memberEmail = '[[${memberInfo.email}]]' // 문자열 받을 때에는 따옴표 무조건 감싸줘야함 안감싸줘서 계속 오류났었네 이런!!
 
                     $.ajax({
                         type: "post",
@@ -347,72 +332,88 @@
 
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
-
-
-<script>
-    /**
-     * STOMP 프로토콜
-     * STOMP(Simple Text Oriented Messaging Protocol)은 메시지 큐 시스템에서 널리 사용되는
-     * 텍스트 기반의 프로토콜임. 주로 웹소켓 위에서 메세지를 주고받기 위해 사용됨
-     *
-     * 웹소켓은 클라이언트와 서버 간의 양방향 통신을 가능하게 하는 프로토콜로, 실시간 메시징 시스템을 구현할 때 자주 사용됨
-     *
-     */
-
-
-
-    /*<![CDATA[*/
-    // '/websocket'은 서버와의 웹소켓 연결을 설정하는 엔드포인트를 의미한다. 즉 서버와의 실시간 연결을 시작하는 출발점
-    // let socket = new SockJS('/websocket');
-    let socket = new SockJS('/websocket');
-    // let socket = new SockJS('https:/223.130.146.203:8080/websocket');
-
-    // let stompClient = Stomp.over(socket);
-
-
-    // SockJs를 통해 설정된 연결을 사용해 STOMP프로토콜로 메시지를 주고받을 수 있도록 stompClient 라는 객체를 반환함
-    let stompClient = Stomp.over(socket)
-
-    stompClient.connect({}, function (frame) {
-        console.log('Connected:' + frame);
-        // 구독 (Subscribe) 기능
-        /**
-         * - stompClient.subscribe() 메서드는 클라이언트가 특정 주제(topic)를 구독하는 기능을 수행함
-         * - 주제(topic)는 메세지가 게시 (publish)될 위치를 의미함, 서버가 해당 주제에 메세지를 전송하면 이를 구독하고 있는 모든 클라이언트가 그 메세지를 "모두" 수신하게 됨
-         *
-         */                                                         // 클라이언트가 메세지를 수신했을 때 호출되는 콜백 함수
-        stompClient.subscribe('/topic/petsitterfinder', function (message) {
-            console.log(message)
-            let notification = message.body;
-            showNotification(notification)
-        });
-    });
-
-    function showNotification(message) {
-        // if (Notification.permission === "granted") {
-        //     console.log("permission granted?" + Notification.permission)
-        //     let notification = new Notification('🔔새로운 예약 알림🔔', {
-        //         body: message,
-        //         requireInteraction: true
-        //
-        //     })
-        // } else ("permission granted? ㄴㄴ?" + Notification.permission)
-
-        let notificationList = document.getElementById('notification');
-        let notificationItem = document.createElement('li');
-        notificationItem.textContent = message;
-        notificationList.appendChild(notificationItem);
-    }
-
-    /*]]>*/
-</script>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
-<!--    <script src="/js/ring/ring.js"></script>-->
+    <script>
+        // 현재 페이지 번호를 저장
+        let currentPage = 1;
+        // 댓글 목록을 특정 페이지('page')에서 서버로부터 가져와서 페이지에 표시 (이해안됨)
+        const loadComments = (page = 1) => {
+            const postId = [[${detail.postId}]];
+            $.ajax({
+                type: "get",
+                // 서버의 댓글 목록을 가져오기 위해 postId와 page를 포함한 URL로 요청함
+                url: `/comment/list?postId=${postId}&page=`+page,
+                success: function(res) {
+                    console.log("댓글 목록 로드 성공", res);
+                    let output = "";
+                    // list가 아닌 Page로 객체를 반환했을 때 forEach 바로 사용 못함
+                    // res.forEach -> res.content.forEach로 수정함
+                    res.content.forEach(comment => {
+                        output += `
+                            <div class="comment">
+                                <div class="comment-meta">
+                                    <strong>${comment.commentWriter}</strong> · ${comment.commentCreatedTime}
+                                </div>
+                                <div class="comment-content">
+                                    ${comment.commentContents}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    document.getElementById('comment-list').innerHTML = output;
+                    // 댓글 목록을 업데이트한 후 , 페이지네이션도 업데이트
+                    updatePagination(res);
+                },
+                error: function(err) {
+                    console.log("댓글 목록 로드 실패", err);
+                }
+            });
+        };
+        //(pageData 이해 안됨 = () => {} 이런 형식도 이해안됨 솔직히)
+        // pageData 는 Page<CommentDTO>객체임, 형재 페이지, 총 페이지 수 등의 정보를 담고 있음
+        const updatePagination = (pageData) => {
+            let paginationHtml = '';
+            for (let i = 1; i <= pageData.totalPages; i++) {
+                console.log("이건 또 무얼까나 ㅎㅎ" + pageData.totalPages)
+                console.log("이건 또 무얼까나 ㅎㅎ" + pageData.number) //
+                paginationHtml += `<li class="page-item ${i === pageData.number + 1 ? 'active' : ''}">
+                               <a class="page-link" href="javascript:void(0);" onclick="loadComments(${i})">${i}</a>
+                           </li>`;
+                console.log("이거모임?"+paginationHtml)
+            }
+            // .pagination은 paginationHtml 받아서 기본적인 페이지네이션 구조 제공해줌
+            // class="pagination" 을 가진 ul요소를 선택함
+            document.querySelector('.pagination').innerHTML = paginationHtml;
+        };
+        // 페이지 로드 시 댓글 목록을 로드
+        document.addEventListener('DOMContentLoaded', () => loadComments(currentPage));
+        // 댓글 작성 함수
+        const commentWrite = () => {
+            const contents = document.getElementById("commentContents").value;
+            const writer = document.getElementById("commentWriter").value;
+            const memberId = document.getElementById("memberId").value;
+            const postId = [[${detail.postId}]];
+            $.ajax({
+                type: "post",
+                url: "/comment/save",
+                data: {
+                    "commentContents": contents,
+                    "commentWriter": writer,
+                    "memberId": memberId,
+                    "postId": postId
+                },
+                success: function(res) {
+                    console.log("요청 성공", res);
+                    loadComments(); // 댓글 작성 후 댓글 목록 다시 로드
+                    document.getElementById('commentContents').value = '';
+                },
+                error: function(err) {
+                    console.log("요청 실패", err);
+                }
+            });
+        };
+        // 페이지 로드 시 댓글 목록을 로드
+        document.addEventListener('DOMContentLoaded', loadComments);
+    </script>
 
 </div>
 </body>
