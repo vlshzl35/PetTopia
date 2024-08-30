@@ -35,9 +35,9 @@ public class PetSitterService {
         return petSitterRepository.findPetSitterByPetSitterId(memberId);
     }
 
-    public List<PetSitter> findAll()
+    public List<PetSitter> findPetSitterByWorkStatusTrue()
     {
-        return petSitterRepository.findAll();
+        return petSitterRepository.findPetSitterByWorkStatusTrue();
     }
 
     // 펫시터 정보 삭제(delete)

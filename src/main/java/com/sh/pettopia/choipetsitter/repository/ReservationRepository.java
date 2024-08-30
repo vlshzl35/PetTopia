@@ -23,4 +23,7 @@ public interface ReservationRepository extends JpaRepository<Reservation,String 
 
     @Query("SELECT s FROM reservation s WHERE s.memberId = :memberId AND s.reservationStatus IN ('ready', 'cancel')")
     List<Reservation> findByMemberIdAndReservationStatusNotOk(@Param("memberId")String memberId);
+
+    @Query("SELECT s FROM reservation s WHERE s.petSitterId = :petSitterId AND s.reservationStatus IN ('ready')")
+    List<Reservation> findReservationByReservationStatusReady(@Param("petSitterId") String petSitterId);
 }

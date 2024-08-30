@@ -23,7 +23,16 @@
 </head>
 <body>
 <main layout:fragment="main" class="page-body">
+    <input type="hidden" name="petSitterId" id="petSitterId" th:value="${dto.petSitterId}">
     <div class="sitting-container">
+        <div>
+            <span style="font-size: 25px; font-weight: bold">상태 : </span>
+            <span style="font-size: 20px;" th:if="${dto.workStatus}" th:text="'돌봄 중'">상태 : </span>
+            <span style="font-size: 20px;" th:if="${!dto.workStatus}" th:text="'쉬는 중...'">상태 : </span>
+            <button  type="button" class="btn btn-primary" th:disabled="${dto.workStatus}"
+                     onclick="WorkStatus(this)" style="float:right;" value="startWork" id="startWork">돌봄 시작</button>
+            <button  type="button" class="btn btn-danger" th:disabled="${!dto.workStatus}" onclick="WorkStatus(this)" style="float:right;" value="stopWork" id="stopWork">돌봄 중지</button>
+        </div>
         <h1>돌봄 정보 등록하기</h1>
         <form th:action="@{/petsitter/registerpost}" method="post" th:object="${dto}" enctype="multipart/form-data">
             <div class="form-container">
@@ -405,6 +414,48 @@
             console.log('Checked Values:', checkedValues);
         });
 
+    </script>
+    <script>
+        function WorkStatus(status){
+            const startWorkBtn=document.getElementById('startWork');
+            const stopWorkBtn=document.getElementById('stopWork');
+            const petSitterId=document.getElementById('petSitterId')
+            if(status.value === 'startWork')
+            {
+                console.log(status.value)
+                $.ajax({
+                    url: '[[@{/petsitter/workstatus}]]',
+                    method: 'post',
+                    data : {
+                        workStatus:status.value,
+                        petSitterId:petSitterId.value
+                    },
+                    success(responseText) {
+                        alert('정상적으로 돌봄 시작이 되었습니다.')
+                        location.reload(); // 바로 새로고침
+                    }
+                })
+            }
+            else
+            {
+                confirm('돌봄 중지를 하면 모든 예약이 취소됩니다.')
+                {
+                    $.ajax({
+                        url: '[[@{/petsitter/workstatus}]]',
+                        method: 'post',
+                        data: {
+                            workStatus: status.value,
+                            petSitterId: petSitterId.value
+                        },
+                        success(responseText) {
+                            alert('정상적으로 돌봄 중지가 되었습니다.')
+                            console.log("responseText : " + responseText);
+                            location.reload(); // 바로 새로고침
+                        }
+                    })
+                }
+            }
+        }
     </script>
     <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
