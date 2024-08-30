@@ -49,7 +49,6 @@ public class PetDetailsRegistRequestDto {
                 .petVaccinationType(this.petVaccinationType)
                 .petParasitePrevention(this.petParasitePrevention)
                 .petSociability(this.petSociability)
-                .status(this.isMissing)
                 .memberId(this.memberId != null ? this.memberId : 1)
                 .breed(this.petBreed)
                 .requestStartDate(this.startDate)

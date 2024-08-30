@@ -177,7 +177,7 @@
                 </tbody>
             </table>
         </div>
-
+<!--태준 돌봐주세요-->
         <div id="Pleasetakecare" style="display:none;">
             <table class="table" style="text-align: center">
                 <thead>
@@ -188,6 +188,7 @@
                     <th>예약 요청 종료 날짜</th>
                     <th>예약 상태</th>
                     <th>상태 변경</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -209,6 +210,8 @@
                         <td th:if="${dto.status.getReservationStatus() eq 'CARE_COMPLETION_REQUEST'}"
                             th:text="돌봄완료요청"></td>
                         <td th:if="${dto.status.getReservationStatus() eq 'CARE_COMPLETE'}"
+                            th:text="돌봄완료"></td>
+                        <td th:if="${dto.status.getReservationStatus() eq 'CARE_COMPLETE_REVIEW_AVAILABLE'}"
                             th:text="돌봄완료"></td>
                         <td th:if="${dto.status.getReservationStatus() eq 'START_OF_CARE'}"
                             th:text="돌봄시작"></td>
