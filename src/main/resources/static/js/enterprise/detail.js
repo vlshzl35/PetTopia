@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         }
         // 여기까지 왔다는 것은 EntName과 BizNum이 모두 일치하지 않는 경우임
-        alert('영수증의 정보가 선택하신 업체와 일치하지 않습니다. 확인 후 다시 시도해 주세요.');
+        alert('해당 업체의 영수증이 아닙니다.');
         return false;
     }
 

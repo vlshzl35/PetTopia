@@ -9,11 +9,45 @@
     <title>리뷰 작성</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        table, th, td {
-            align-self: center;
-            border: 1px solid black;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 900px;
+        }
+        table {
+            width: 100%;
+            margin-bottom: 20px;
             border-collapse: collapse;
+            background-color: #fff;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
             text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        td {
+            color: #555;
         }
 
         img {
@@ -25,13 +59,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .gallery {
             display: flex;
             width: 400px;
-            height: 300px;
+            height: 250px;
             overflow: hidden;
             position: relative;
             border: 2px solid #ddd;
@@ -39,7 +73,7 @@
 
         .gallery img {
             width: 400px;
-            height: 300px;
+            height: 250px;
             object-fit: cover;
         }
 
@@ -51,7 +85,7 @@
         }
 
         #fileInput {
-            margin-top: 20px;
+            margin-top: 3px;
         }
 
         /*별점 css*/
@@ -79,6 +113,12 @@
         .star-rating label:hover ~ label {
             color: #ffc700;
         }
+        h5 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
 
     </style>
 </head>
@@ -86,14 +126,8 @@
 <div class="container">
 
     <div class="ftco-section">
-        <br><br>
-        <!--    보는 사람 == 펫시터 회원의 회원의 아이디를 보여준다-->
-        <div th:object="${sittingInfo}" th:if="${#authentication.principal.member.email == sittingInfo.getPetSitterId}">
-            회원 : <span th:text="${sittingInfo.memberId}"></span>
-        </div>
-        <!--    보는 사람 != 펫시터 그럼 펫시터의 아이디를 보여준다 -->
-        <div th:object="${sittingInfo}" th:if="${#authentication.principal.member.email != sittingInfo.getPetSitterId}">
-            펫시터 : <span th:text="${sittingInfo.petSitterId}"></span>
+        <div>
+        <h5>리뷰</h5>
         </div>
         <div th:object="${sittingInfo}">
             <div style="display: inline">
@@ -126,19 +160,10 @@
                     </table>
                 </div>
                 <div>
-                    <div class="image-box">
-                        <img class="image-thumbnail" th:src="${petSitter.mainImageUrl}"
-                             alt="Profile Image"/>
-                    </div>
-                    <div>
-            <span class="position mb-2"
-                  th:text="'펫시터 주소 :'+ ${petSitter.petSitterAddress.address}">사용자 주소</span>
-                    </div>
                 </div>
             </div>
             <div>
                 <div class="pt-5 mt-5">
-                    <h3>댓글</h3>
                     <form class="input-group mb-3 commentForm" id="comment-regist" method="post"
                           name="petSitterRegistReviewForm" enctype="multipart/form-data"
                           th:action="@{/petsitter/registreview}">
@@ -163,9 +188,11 @@
                             <input type="radio" id="star1" name="rating" value="1"/>
                             <label for="star1" title="1 star">☆</label>
                         </div>
+                        <div>
                         <textarea class="" placeholder="댓글을 입력해주세요!" id="comment"
                                   aria-label="Recipient's username"
-                                  aria-describedby="button-addon2" name="reviewText" required></textarea>
+                                  aria-describedby="button-addon2" name="reviewText" rows="3" style="width: 100%" required></textarea>
+                        </div>
                         <br>
 
 
