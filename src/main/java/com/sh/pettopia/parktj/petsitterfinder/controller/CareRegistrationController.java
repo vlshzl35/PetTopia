@@ -79,6 +79,8 @@ public class CareRegistrationController {
         log.debug("detailDto = {}", detailDto);
         log.debug("memberInfo = {}", authPrincipal.getMember());
 
+
+
         // post를 작성한 작성자의 memberId 와 로그인한 memberId 가 같은지 검증해주는 코드 ( 수정, 삭제 권한)
 
         Long currentMemberId = authPrincipal.getMember().getId();
@@ -138,7 +140,7 @@ public class CareRegistrationController {
 //    private final SimpMessagingTemplate messagingTemplate;
 
     @PostMapping("/reservation")
-    public ResponseEntity<String>  reservation(
+    public ResponseEntity<String> reservation(
             @ModelAttribute ReservationRequestDto reservationRequestDto,
             RedirectAttributes redirectAttributes){
 
@@ -148,26 +150,9 @@ public class CareRegistrationController {
        CareRegistration careRegistration = careRegistrationService.findOneByPostId(reservationRequestDto.getPostId());
         log.debug("petSitter = {}", petSitter);
         // 이미 영속성 컨텍스트에 연결되어 있으므로, 추가적인 전환은 불필요
-        ReservationByPetSitter reservationInfo =ReservationByPetSitter.toReservationEntity(petSitter,careRegistration);
-
+        ReservationByPetSitter reservationInfo = ReservationByPetSitter.toReservationEntity(petSitter,careRegistration);
         String currentPetSitterId = petSitter.getPetSitterId();
         Long currentPostId = careRegistration.getPostId();
-
-        //WebSocket
-//        String notificationMessage = reservationInfo.getPostId() + "번 게시물에 " + petSitter.getPetSitterId() + "펫시터가 해당게시글에 대한 예약을 요청했습니다..";
-//        messagingTemplate.convertAndSend("/topic/petsitterfinder", notificationMessage);
-        // 이 코드는 서버에서 클라이언트에게 실시간으로 메세지를 보내는 역할을 함
-        // - messagingTemplate
-        // : Spring에서 제공하는 객체로 , 메세지를 전송하는 역할을함
-        // 이 템플릿 사용하면, 서버가 특정 경로로 메세지를 보낼 수 있게 도와줌
-        // 쉽게 말해 서버에서 클라이언트에게 이 메세지를 받으세요 라고 전하는 우편 배달부..
-        // - convertAndSend()
-        // : 메세지를 전송하는 기능을 하는 메서드. 경로, 메세지 내용을 보내줌
-        // /topic/petsitterfinder 라는 경로는 특정 그룹의 클라이언트들이 구독하고 있다
-        // - 구독한다는 것은 클라이언트가 "나는 이 주소로 오는 메세지를 받고 싶어" 라고 선언하는 것과 같다
-
-
-//        messagingTemplate.convertAndSend("/topic/petsitterfinder/careregistrationdetails", notificationMessage);
 
         try {
             careRegistrationService.save(reservationInfo, currentPetSitterId, currentPostId);
