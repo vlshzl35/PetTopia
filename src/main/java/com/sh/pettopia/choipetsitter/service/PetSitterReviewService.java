@@ -4,6 +4,7 @@ import com.sh.pettopia.choipetsitter.entity.PetSitterReview;
 import com.sh.pettopia.choipetsitter.repository.PetSitterReviewRepository;
 import com.sh.pettopia.enterprise.entity.Review;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,11 +13,13 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class PetSitterReviewService {
     private final PetSitterReviewRepository petSitterReviewRepository;
 
     public List<PetSitterReview> findPetSitterReviewByPetSitterId(String petSitterId)
     {
+        log.info("PetSitterReviewService / findPetSitterReviewByPetSitterId");
         return petSitterReviewRepository.findPetSitterReviewByPetSitterId(petSitterId);
     }
 

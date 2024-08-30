@@ -23,7 +23,16 @@
 </head>
 <body>
 <main layout:fragment="main" class="page-body">
+    <input type="hidden" name="petSitterId" id="petSitterId" th:value="${dto.petSitterId}">
     <div class="sitting-container">
+        <div>
+            <span style="font-size: 25px; font-weight: bold">상태 : </span>
+            <span style="font-size: 20px;" th:if="${dto.workStatus}" th:text="'돌봄 중'">상태 : </span>
+            <span style="font-size: 20px;" th:if="${!dto.workStatus}" th:text="'쉬는 중...'">상태 : </span>
+            <button  type="button" class="btn btn-primary" th:disabled="${dto.workStatus}"
+                     onclick="WorkStatus(this)" style="float:right;" value="startWork" id="startWork">돌봄 시작</button>
+            <button  type="button" class="btn btn-danger" th:disabled="${!dto.workStatus}" onclick="WorkStatus(this)" style="float:right;" value="stopWork" id="stopWork">돌봄 중지</button>
+        </div>
         <h1>돌봄 정보 등록하기</h1>
         <form th:action="@{/petsitter/registerpost}" method="post" th:object="${dto}" enctype="multipart/form-data">
             <div class="form-container">
@@ -155,23 +164,23 @@
                     <div class="pet-size">
                         <h3>돌봄 가능한 댕댕이 크기</h3>
                         <div class="size-section">
-                            <label for="small" class="dogs">
+                            <label for="smallPet" class="dogs">
                                 <img src='/svg/cutiDog.svg' class="small-dog-image">
                                 <p>소형견</p>
-                                <input type="checkbox" name="petSize" id="small" value="small"
-                                       th:checked="${petSize.contains('small')}">
+                                <input type="checkbox" name="availablePetSizes" id="smallPet" value="smallPet"
+                                       th:checked="${petSize.contains('smallPet')}">
                             </label>
-                            <label for="medium" class="dogs">
+                            <label for="middlePet" class="dogs">
                                 <img src='/svg/cutiDog.svg' class="medium-dog-image">
                                 <p>중형견</p>
-                                <input type="checkbox" name="petSize" id="medium" value="medium"
-                                       th:checked="${petSize.contains('medium')}">
+                                <input type="checkbox" name="availablePetSizes" id="middlePet" value="middlePet"
+                                       th:checked="${petSize.contains('middlePet')}">
                             </label>
-                            <label for="large" class="dogs">
+                            <label for="largePet" class="dogs">
                                 <img src='/svg/cutiDog.svg' class="large-dog-image">
                                 <p>대형견</p>
-                                <input type="checkbox" name="petSize" id="large" value="large"
-                                       th:checked="${petSize.contains('large')}">
+                                <input type="checkbox" name="availablePetSizes" id="largePet" value="largePet"
+                                       th:checked="${petSize.contains('largePet')}">
                             </label>
                         </div>
                     </div>
@@ -395,6 +404,58 @@
                 document.querySelector('.next').style.display = 'none';
             }
         });
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+            let checkedValues = [];
+            document.querySelectorAll('input[name="petSize[]"]:checked').forEach((checkbox) => {
+                checkedValues.push(checkbox.value);
+            });
+            // 서버로 보내기 전에 콘솔로 확인
+            console.log('Checked Values:', checkedValues);
+        });
+
+    </script>
+    <script>
+        function WorkStatus(status){
+            const startWorkBtn=document.getElementById('startWork');
+            const stopWorkBtn=document.getElementById('stopWork');
+            const petSitterId=document.getElementById('petSitterId')
+            if(status.value === 'startWork')
+            {
+                console.log(status.value)
+                $.ajax({
+                    url: '[[@{/petsitter/workstatus}]]',
+                    method: 'post',
+                    data : {
+                        workStatus:status.value,
+                        petSitterId:petSitterId.value
+                    },
+                    success(responseText) {
+                        alert('정상적으로 돌봄 시작이 되었습니다.')
+                        location.reload(); // 바로 새로고침
+                    }
+                })
+            }
+            else
+            {
+                confirm('돌봄 중지를 하면 모든 예약이 취소됩니다.')
+                {
+                    $.ajax({
+                        url: '[[@{/petsitter/workstatus}]]',
+                        method: 'post',
+                        data: {
+                            workStatus: status.value,
+                            petSitterId: petSitterId.value
+                        },
+                        success(responseText) {
+                            alert('정상적으로 돌봄 중지가 되었습니다.')
+                            console.log("responseText : " + responseText);
+                            location.reload(); // 바로 새로고침
+                        }
+                    })
+                }
+            }
+        }
     </script>
     <script src="https://npmcdn.com/flatpickr/dist/flatpickr.min.js"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>

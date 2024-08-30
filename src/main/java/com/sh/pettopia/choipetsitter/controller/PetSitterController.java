@@ -106,7 +106,7 @@ public class PetSitterController {
     public void list(Model model) {
         log.info("GET petsitter/list");
 
-        List<PetSitter> petSitterList = petSitterService.findAll();
+        List<PetSitter> petSitterList = petSitterService.findPetSitterByWorkStatusTrue();
         List<PetSitterListDto> petSitterListDtoList =new ArrayList<>();
 
         for(PetSitter petSitter:petSitterList)
@@ -203,8 +203,9 @@ public class PetSitterController {
         log.info("petSizeList = {}" , petSizeList);
         log.info("petSitter = {}" , petSitter);
 
-            PetSitterRegisterDto dto = new PetSitterRegisterDto().entityToDto(petSitter);
-            dto.setPostImagesList(profileImg);
+        PetSitterRegisterDto dto = new PetSitterRegisterDto().entityToDto(petSitter);
+        log.info("dto = {}" , dto);
+        dto.setPostImagesList(profileImg);
             model.addAttribute("dto", dto);
             model.addAttribute("petSize", petSizeList);
             model.addAttribute("petService", petServiceList);
@@ -494,6 +495,32 @@ public class PetSitterController {
         return "redirect:/mypage/mypage";
     }
 
+    @PostMapping("/workstatus")
+    public String workStatus(String workStatus,String petSitterId){
+        log.info("POST /petsitter/workStatus");
+        log.info("workStatus = {}",workStatus);
+        log.info("petSitterId = {}",petSitterId);
+        PetSitter petSitter=petSitterService.findOneByPetSitter(petSitterId);
+        petSitter.changeWorkStatus(workStatus);
+        log.info("petSitter = {}",petSitter);
+        if(workStatus.equals("stopWork"))
+        {
+            List<Reservation> reservationList=reservationService.findReservationByReservationStatusReady(petSitterId);
+            for(Reservation reservation:reservationList)
+            {
+                reservation.changeReservationStatus(ReservationStatus.cancel);
+                payService.kakaoCancel(reservation.getPartnerOrderId());
+                log.info("reservation = {}",reservation);
+                reservationService.save(reservation);
+            }
+        }
+
+        petSitterService.save(petSitter);
+
+
+        return "redirect:/petsitter/registerpost";
+    }
+
     @GetMapping("/review/{partnerOrderId}")
     public String review(@ModelAttribute SittingDto dto, Model model) {
         log.info("GET /petsitter/review");
@@ -584,7 +611,7 @@ public class PetSitterController {
                  petSitterListDtoList.add(new PetSitterListDto().entityEtoDto(PetSitter));
              }
         } else {
-            petSitterList=petSitterService.findAll();
+            petSitterList=petSitterService.findPetSitterByWorkStatusTrue();
             for(PetSitter PetSitter:petSitterList)
             {
                 petSitterListDtoList.add(new PetSitterListDto().entityEtoDto(PetSitter));

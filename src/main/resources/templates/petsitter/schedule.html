@@ -114,7 +114,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                [[${sittinglist}]]
                 <tr th:each="sitting , stat : ${sittinglist}" th:object="${sitting}">
                     <form id="sittingForm" method="post" th:object="${sitting}">
                         <label>

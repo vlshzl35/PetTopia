@@ -23,6 +23,9 @@ p {
     max-width: 50%;
 }
 
+.image-box {
+    border: #00bd56 1px solid;
+}
 .main-image {
     width: 400px !important;
     height: 400px !important;
@@ -49,6 +52,21 @@ p {
     margin-bottom: 30px;
     margin-left: 10px;
     margin-right: 10px;
+    border-radius: 20px;
+}
+
+.staff:hover{
+    overflow: hidden;
+    border-radius: 4px;
+    margin-bottom: 30px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    -moz-transition: none;
+    -o-transition: none ;
+    -webkit-transition: none;
+    -ms-transition: none;
+    transition: none;
 }
 
 /* 카드 형태의 게시글들을 더 넓게 배치 */
@@ -64,7 +82,7 @@ p {
     box-sizing: border-box;
     padding-top: 10px;
     border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin: 10px;
 }
@@ -72,6 +90,7 @@ p {
 /* 마우스를 올렸을 때의 효과 */
 .petList:hover {
     transform: translateY(-10px);
+    border: 2px solid #00bd56;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
@@ -79,11 +98,16 @@ p {
 /* 동적인 효과를 추가한 요소들 */
 .img-wrap {
     overflow: hidden;
-    border-radius: 15px 15px 0 0;
+    border-radius: 15px;
     transition: transform 0.3s ease;
+    width: 100%;
+    height: 100%; /* 부모 요소에 맞게 이미지 크기를 100%로 설정 */
 }
 
 .img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 부모 요소에 맞게 잘리거나 확대되어 꽉 차게 합니다. */
     transition: transform 0.3s ease;
 }
 
@@ -152,7 +176,7 @@ p {
     }
 
     .petList {
-        flex: 0 0 48%; /* 카드가 2개씩 배치되도록 설정 */
+        flex: 1 0 45%; /* 카드가 2개씩 배치되도록 설정 */
     }
 }
 
@@ -169,8 +193,10 @@ p {
     }
 
     .petList {
-        flex: 0 0 100%; /* 카드가 1개씩 배치되도록 설정 */
-    }
+        flex: 1 1 100%; /* 카드가 1개씩 배치되도록 설정 */
+        border-radius: 30px;
+        padding : 10px;
+        height: 500px;    }
 }
 
 @keyframes shake {
@@ -211,10 +237,8 @@ p {
 .search-section {display: flex;
     justify-content: center;
     align-items: center;
-    /*padding: 2em 0;*/
-    /*background-color: #f7f7f7;*/
     border-radius: 8px;
-    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+    margin-bottom: 15px;
 }
 
 .autocomplete-wrapper {
@@ -268,4 +292,13 @@ p {
     #search-button img {
         height: 18px;
     }
+}
+
+.careList-text, .one-line-info{
+    color : black !important;
+}
+
+.love {
+    color: white;
+
 }

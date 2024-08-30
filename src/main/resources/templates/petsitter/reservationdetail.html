@@ -105,6 +105,7 @@
     <div th:object="${reservationinfo}" th:if="${#authentication.principal.member.email != reservationinfo.getPetSitterId}">
         펫시터 : <span th:text="${reservationinfo.petSitterId}"></span>
     </div>
+    <br><br>
     <div th:object="${reservationinfo}">
         <table cellpadding="10px" class="table">
             <thead>

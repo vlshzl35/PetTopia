@@ -79,9 +79,9 @@
                 <div class="col-md-10">
                     <div class="wrapper">
                         <!-- 버튼 추가 영역 -->
-                        <div class="row mb-1 justify-content-center">
-                            <div class="col-md-3">
-                                <button class="btn btn-primary w-50" onclick="showSection('editProfileSection')">회원정보
+                        <div class="row justify-content-center">
+                            <div class="col">
+                                <button class="btn btn-primary " onclick="showSection('editProfileSection')">회원정보
                                     수정
                                 </button>
                             </div>
@@ -91,26 +91,26 @@
                             </div>
                             <div class="col">
                                 <a th:href="@{/mypage/petsitterRegist}" class="btn btn-primary" role="button">펫시터
-                                    자격신청</a>
+                                                 자격신청</a>
                             </div>
                             <div class="col">
-                                <button class="btn btn-primary" onclick="showSection('Iwilltakecareofyou')">돌봐드립니다
+                                <button class="btn btn-primary" onclick="showSection('Iwilltakecareofyou')">돌봐드려요
                                 </button>
                             </div>
                             <div class="col">
                                 <button class="btn btn-primary " onclick="showSection('Pleasetakecare')">돌봐주세요
                                 </button>
                             </div>
-                            <div class="col">
-                                <button class="btn btn-primary" onclick="showSection('payStatusSection')">결제 내역
-                                </button>
-                            </div>
+<!--                            <div class="col">-->
+<!--                                <button class="btn btn-primary" onclick="showSection('payStatusSection')">결제 내역-->
+<!--                                </button>-->
+<!--                            </div>-->
                         </div>
                         <!-- 버튼 추가 영역 끝 -->
                         <!-- 섹션 추가 영역 -->
 
                         <!--회원정보수정-->
-                        <div id="editProfileSection">
+                        <div id="editProfileSection" style="display:none;">
                             <h3>회원정보 수정</h3>
                             <form id="profileUpdateForm" method="post">
                                 <!-- 사용자에게 보이지 않는 ID를 저장하는 숨겨진 필드 -->
@@ -221,14 +221,15 @@
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th></th>
+                                        <th>신청 정보</th>
                                         <th scope="col">펫시터</th>
                                         <th scope="col">서비스 날짜</th>
                                         <th scope="col">예약 신청 날짜</th>
-                                        <th scope="col">견종, 마리</th>
+                                        <th scope="col">크기, 마리</th>
                                         <th scope="col">시작, 종료</th>
                                         <th>예약변경</th>
                                         <th>예약상태</th>
+                                        <th>결제 상태</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -244,7 +245,7 @@
                                                 <a th:href="@{|/petsitter/reservationdetail/${reservationDto.partnerOrderId}|}"
                                                    onclick="window.open(this.href, '_blank', 'left=2000%,top=800%, width=900, height=700'); return false;">자세히</a>
                                             </td>
-                                            <td th:text="${reservationDto.petSitterId}"></td>
+                                            <td> <a th:href="@{|/petsitter/detail/${reservationDto.petSitterId}|}" th:text="${reservationDto.petSitterId}"></a></td>
                                             <td th:text="${reservationDto.reservationDay}"></td>
                                             <td th:text="${#temporals.format(reservationDto.createdAt, 'yyyy-MM-dd/a hh:mm')}"></td>
 
@@ -284,7 +285,10 @@
                                                 <!--                                                      th:text="예약승인"></span>-->
                                                 <span th:if="${reservationDto.reservationStatus.getReservationStatus()} == 'cancel'"
                                                       th:text="예약취소" class=""></span>
-
+                                            </td>
+                                            <td>
+                                                <span th:if="${reservationDto.payStatus}">결제 완료</span>
+                                                <span th:if="${!reservationDto.payStatus}">환불 완료</span>
                                             </td>
                                         </form>
                                     </tr>
@@ -299,19 +303,18 @@
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th></th>
+                                        <th>신청 정보</th>
                                         <th scope="col">펫시터</th>
                                         <th scope="col">서비스 날짜</th>
                                         <th scope="col">견종, 마리</th>
                                         <th scope="col">시작, 종료</th>
+                                        <th scope="col">완료 승인</th>
                                         <th>돌봄상태</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <form method="post" th:object="${sittingDtoList}">
-                                        <tr th:each="sittingDto ,stat :${sittingDtoList}"
-                                            [[${sittingDto.stat}]]
-                                            th:object="${sittingDto}">
+                                        <tr th:each="sittingDto ,stat :${sittingDtoList}" th:object="${sittingDto}">
+                                            <form method="post">
                                             <label>
                                                 <input type="hidden" th:value="${sittingDto.partnerOrderId}"
                                                        name="partnerOrderId">
@@ -321,7 +324,8 @@
                                                 <a th:href="@{|/petsitter/reservationdetail/${sittingDto.partnerOrderId}|}"
                                                    onclick="window.open(this.href, '_blank', 'left=2000%,top=800%, width=900, height=700'); return false;">자세히</a>
                                             </td>
-                                            <td th:text="${sittingDto.petSitterId}"></td>
+
+                                            <td> <a th:href="@{|/petsitter/detail/${sittingDto.petSitterId}|}" th:text="${sittingDto.petSitterId}"></a></td>
                                             <td th:text="${sittingDto.serviceDate}"></td>
 
                                             <td th:object="${sittingDto.petSizeAndHowManyPets}">
@@ -342,13 +346,24 @@
                                                 <span th:text="${sittingDto.startTime}" name="startTime"></span>
                                                 <span th:text="${sittingDto.endTime}" name="endTime"></span>
                                             </td>
+                                            <td>
+                                                <button type="submit"
+                                                        th:formaction="@{/petsitter/membersitting}"
+                                                        class="btn btn-primary"
+                                                        th:if="${sittingDto.sittingStatus.getSittingStatus()} == 'WAITING_MEMBER_CHECK'"
+                                                        th:text="'돌봄 완료 승인'" id="completeButton" value="MEMBER_CHECK"
+                                                        name="sittingStatus"></button>
+                                            </td>
                                             <td th:if="${sittingDto.sittingStatus.getSittingStatus()}=='StandbySitting'"
                                                 th:text="'돌봄 대기 중'"></td>
                                             <td th:if="${sittingDto.sittingStatus.getSittingStatus()}=='START_SITTING'"
                                                 th:text="'돌봄 중'"></td>
+                                            <td th:if="${sittingDto.sittingStatus.getSittingStatus()}=='WAITING_MEMBER_CHECK'"
+                                                th:text="'완료 승인 대기중'"></td>
 
+                                            </form>
                                         </tr>
-                                    </form>
+
                                     <!-- 다른 진행중인 내역 추가 -->
                                     </tbody>
                                 </table>
@@ -360,7 +375,7 @@
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th></th>
+                                        <th>신청 정보</th>
                                         <th scope="col">펫시터</th>
                                         <th scope="col">서비스 날짜</th>
                                         <th>견종, 마리</th>
@@ -380,10 +395,7 @@
                                                 <a th:href="@{|/petsitter/sittingdetail/${completeSittingDto.partnerOrderId}|}"
                                                    onclick="window.open(this.href, '_blank', 'left=2000%,top=800%, width=800, height=600'); return false;">자세히</a>
                                             </td>
-                                            <td>
-                                            <a th:href="@{|/petsitter/detail/${completeSittingDto.petSitterId}|}" th:text="${completeSittingDto.petSitterId}"></a>
-                                            </td>
-                                            <td th:text="${completeSittingDto.petSitterId}"></td>
+                                            <td> <a th:href="@{|/petsitter/detail/${completeSittingDto.petSitterId}|}" th:text="${completeSittingDto.petSitterId}"></a></td>
                                             <td th:text="${completeSittingDto.serviceDate}"></td>
 
                                             <td th:object="${completeSittingDto.petSizeAndHowManyPets}">
@@ -412,14 +424,8 @@
                                                        th:value="${completeSittingDto.endTime}">
                                                 <input type="hidden" name="createdAt"
                                                        th:value="${completeSittingDto.createdAt}">
-                                                <span th:if="${completeSittingDto.sittingStatus.getSittingStatus()} == 'COMPLETED_SITTING'"
+                                                <span th:if="${completeSittingDto.sittingStatus.getSittingStatus()} == 'MEMBER_CHECK'"
                                                       th:text="'돌봄 완료'"></span>
-                                                <button type="submit"
-                                                        th:formaction="@{/petsitter/membersitting}"
-                                                        class="btn btn-primary"
-                                                        th:if="${completeSittingDto.sittingStatus.getSittingStatus()} == 'WAITING_MEMBER_CHECK'"
-                                                        th:text="돌봄대기승인" id="completeButton" value="MEMBER_CHECK"
-                                                        name="sittingStatus"></button>
                                             </td>
                                             <td>
                                                 <a th:href="@{|/petsitter/review/${completeSittingDto.partnerOrderId}|}"
@@ -662,17 +668,15 @@
 
                             <!-- 완료된 내역 -->
 
-                            <h4>완료된 내역</h4>
                             <table class="table">
                                 <thead>
                                 <tr>
                                     <th></th>
-                                    <th scope="col">예약 요청한 펫시터 이메일</th>
-                                    <th scope="col">예약 번호</th>
-                                    <th scope="col">예약 받은 날짜</th>
-                                    <th scope="col">현재 예약 상태</th>
-                                    <th scope="col">펫시터 한줄 소개</th>
-                                    <th scope="col">요청한 시팅 시작날짜 종료 날짜</th>
+                                    <th scope="col"> 펫시터</th>
+                                    <th scope="col">결제 날짜/시간</th>
+                                    <th scope="col">환불 날짜/시간</th>
+                                    <th scope="col">결제 금액</th>
+                                    <th scope="col">결제 상태</th>
                                 </tr>
                                 </thead>
                                 <tbody>
