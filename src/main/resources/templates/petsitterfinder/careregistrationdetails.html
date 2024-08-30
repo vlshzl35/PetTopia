@@ -271,26 +271,26 @@
     </script>
 
     <!-- WebSocket 및 알림 기능 -->
-    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
-    <script>
-        let socket = new SockJS('/websocket');
-        let stompClient = Stomp.over(socket);
+<!--    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>-->
+<!--    <script>-->
+<!--        let socket = new SockJS('/websocket');-->
+<!--        let stompClient = Stomp.over(socket);-->
 
-        stompClient.connect({}, function (frame) {
-            stompClient.subscribe('/topic/petsitterfinder', function (message) {
-                let notification = message.body;
-                showNotification(notification);
-            });
-        });
+<!--        stompClient.connect({}, function (frame) {-->
+<!--            stompClient.subscribe('/topic/petsitterfinder', function (message) {-->
+<!--                let notification = message.body;-->
+<!--                showNotification(notification);-->
+<!--            });-->
+<!--        });-->
 
-        function showNotification(message) {
-            let notificationList = document.getElementById('notifications');
-            let notificationItem = document.createElement('li');
-            notificationItem.textContent = message;
-            notificationList.appendChild(notificationItem);
-        }
-    </script>
+<!--        function showNotification(message) {-->
+<!--            let notificationList = document.getElementById('notifications');-->
+<!--            let notificationItem = document.createElement('li');-->
+<!--            notificationItem.textContent = message;-->
+<!--            notificationList.appendChild(notificationItem);-->
+<!--        }-->
+<!--    </script>-->
     <script>
         const status = document.getElementById('sitterStatus').value;
 
@@ -330,6 +330,89 @@
             }
         })
 
+    </script>
+
+    <script>
+        // 현재 페이지 번호를 저장
+        let currentPage = 1;
+        // 댓글 목록을 특정 페이지('page')에서 서버로부터 가져와서 페이지에 표시 (이해안됨)
+        const loadComments = (page = 1) => {
+            const postId = [[${detail.postId}]];
+            $.ajax({
+                type: "get",
+                // 서버의 댓글 목록을 가져오기 위해 postId와 page를 포함한 URL로 요청함
+                url: `/comment/list?postId=${postId}&page=`+page,
+                success: function(res) {
+                    console.log("댓글 목록 로드 성공", res);
+                    let output = "";
+                    // list가 아닌 Page로 객체를 반환했을 때 forEach 바로 사용 못함
+                    // res.forEach -> res.content.forEach로 수정함
+                    res.content.forEach(comment => {
+                        output += `
+                            <div class="comment">
+                                <div class="comment-meta">
+                                    <strong>${comment.commentWriter}</strong> · ${comment.commentCreatedTime}
+                                </div>
+                                <div class="comment-content">
+                                    ${comment.commentContents}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    document.getElementById('comment-list').innerHTML = output;
+                    // 댓글 목록을 업데이트한 후 , 페이지네이션도 업데이트
+                    updatePagination(res);
+                },
+                error: function(err) {
+                    console.log("댓글 목록 로드 실패", err);
+                }
+            });
+        };
+        //(pageData 이해 안됨 = () => {} 이런 형식도 이해안됨 솔직히)
+        // pageData 는 Page<CommentDTO>객체임, 형재 페이지, 총 페이지 수 등의 정보를 담고 있음
+        const updatePagination = (pageData) => {
+            let paginationHtml = '';
+            for (let i = 1; i <= pageData.totalPages; i++) {
+                console.log("이건 또 무얼까나 ㅎㅎ" + pageData.totalPages)
+                console.log("이건 또 무얼까나 ㅎㅎ" + pageData.number) //
+                paginationHtml += `<li class="page-item ${i === pageData.number + 1 ? 'active' : ''}">
+                               <a class="page-link" href="javascript:void(0);" onclick="loadComments(${i})">${i}</a>
+                           </li>`;
+                console.log("이거모임?"+paginationHtml)
+            }
+            // .pagination은 paginationHtml 받아서 기본적인 페이지네이션 구조 제공해줌
+            // class="pagination" 을 가진 ul요소를 선택함
+            document.querySelector('.pagination').innerHTML = paginationHtml;
+        };
+        // 페이지 로드 시 댓글 목록을 로드
+        document.addEventListener('DOMContentLoaded', () => loadComments(currentPage));
+        // 댓글 작성 함수
+        const commentWrite = () => {
+            const contents = document.getElementById("commentContents").value;
+            const writer = document.getElementById("commentWriter").value;
+            const memberId = document.getElementById("memberId").value;
+            const postId = [[${detail.postId}]];
+            $.ajax({
+                type: "post",
+                url: "/comment/save",
+                data: {
+                    "commentContents": contents,
+                    "commentWriter": writer,
+                    "memberId": memberId,
+                    "postId": postId
+                },
+                success: function(res) {
+                    console.log("요청 성공", res);
+                    loadComments(); // 댓글 작성 후 댓글 목록 다시 로드
+                    document.getElementById('commentContents').value = '';
+                },
+                error: function(err) {
+                    console.log("요청 실패", err);
+                }
+            });
+        };
+        // 페이지 로드 시 댓글 목록을 로드
+        document.addEventListener('DOMContentLoaded', loadComments);
     </script>
 
 </div>
