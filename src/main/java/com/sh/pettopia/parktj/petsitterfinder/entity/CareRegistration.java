@@ -79,9 +79,6 @@ public class CareRegistration {
     @Column(name = "pet_petSociability", nullable = false)
     private String petSociability;
     // 실종 혹은 실종아님
-    @Column(name = "pet_status", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private PetStatus status;
     // 견종
     @Column(name = "pet_breed", nullable = false)
     private String breed;
