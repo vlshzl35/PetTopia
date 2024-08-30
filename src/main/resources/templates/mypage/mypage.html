@@ -566,7 +566,7 @@
                                     <tr th:each="pleaseCareDto ,stat :${pleaseCare}"
                                         th:if="${pleaseCareDto.status.getReservationStatus() eq 'PENDING' || pleaseCareDto.status.getReservationStatus == 'REQUEST_ACCEPTED'}"
                                         th:object="${pleaseCareDto}">
-                                        <div id="reservationByPetsitter" method="post" th:object="${pleaseCareDto}">
+                                        <form id="reservationByPetsitter" method="post" th:object="${pleaseCareDto}">
                                             <label>
                                                 <input type="hidden" th:value="${pleaseCareDto.memberId}">
                                             </label>
@@ -617,7 +617,7 @@
                                             <td th:if="${pleaseCareDto.status.getReservationStatus() eq 'REQUEST_ACCEPTED'}"
                                                 th:text="예약수락"></td>
                                             </div>
-                                        </div>
+                                        </form>
                                     </tr>
 
                                     <!-- 다른 진행중인 내역 추가 -->
@@ -792,7 +792,7 @@
                                     <td>
                                               <span th:if="${orderDto.payStatus}"
                                                     th:text="'결제완료'"></span>
-                                        <span th:if="${!orderDto.payStatus}"
+                                        <span th:unless="${orderDto.payStatus}"
                                               th:text="'환불완료'"></span>
                                     </td>
                                 </tr>
