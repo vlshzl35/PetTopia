@@ -85,13 +85,14 @@ public class MyPageController {
         log.info("sittingList = " + sittingList);
 
         // 돌봄 서비스가 완료 및 완료 승인을 대기 하는 리스트가 존재한다
-        List<Sitting> completeSittingList = sittingService.findAllBySittingStatusIsComplete(authPrincipal.getMember().getEmail());
+        List<Sitting> completeSittingList = sittingService.findAllBySittingStatusIsMemberCheck(authPrincipal.getMember().getEmail());
         List<SittingDto> completeSittingDtoList = new ArrayList<>();
         for (Sitting sittingEntity : completeSittingList) {
             completeSittingDtoList.add(new SittingDto().entityToDto(sittingEntity));
         }
 
         log.info("completeSittingEntityList = " + completeSittingList);
+        log.info("completeSittingList = " + completeSittingList);
         log.info("completeSittingDtoList = " + completeSittingDtoList);
 
         model.addAttribute("reservationDtoList", reservationDtoList); // 예약 중인 속성
