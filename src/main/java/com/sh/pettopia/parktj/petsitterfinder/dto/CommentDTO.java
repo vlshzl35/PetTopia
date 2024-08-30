@@ -35,7 +35,7 @@ public class CommentDTO {
                 commentEntity.getCommentWriter(),
                 commentEntity.getCommentContents(),
                 commentEntity.getCreatedTime(),
-                commentEntity.getCareRegistration().getPostId(),
+                commentEntity.getPostId(),
                 commentEntity.getMemberId());
 
 
