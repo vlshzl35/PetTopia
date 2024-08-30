@@ -27,6 +27,24 @@ p {
     border: #00bd56 1px solid;
 }
 
+.find-Sitter-Button {
+    background-color: white;
+    color: #00bd56;
+    padding: 15px 30px;
+    font-size: 1.5em;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.find-Sitter-Button:hover {
+    transform: scale(1.2)!important;
+    background-color: whitesmoke;
+    color: #00bd56;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
 .main-image {
     width: 400px !important;
     height: 400px !important;
@@ -152,7 +170,7 @@ p {
         max-width: 70%;
     }
 
-    .findSitterButton {
+    .find-Sitter-Button {
         font-size: 1.3em;
         padding: 10px 20px;
     }
@@ -182,7 +200,7 @@ p {
         margin: 20px 0;
     }
 
-    .findSitterButton {
+    .find-Sitter-Button {
         font-size: 1.2em;
         padding: 8px 16px;
     }
