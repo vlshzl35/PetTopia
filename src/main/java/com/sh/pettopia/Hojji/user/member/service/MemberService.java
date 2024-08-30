@@ -9,6 +9,10 @@ import com.sh.pettopia.Hojji.user.member.dto.PendingSitterMemberDto;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import com.sh.pettopia.Hojji.user.member.entity.SitterStatus;
 import com.sh.pettopia.Hojji.user.member.repository.MemberRepository;
+import com.sh.pettopia.choipetsitter.entity.PetSitter;
+import com.sh.pettopia.choipetsitter.entity.PetSitterAddress;
+import com.sh.pettopia.choipetsitter.repository.PetSitterRepository;
+import com.sh.pettopia.choipetsitter.service.PetSitterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +26,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @Transactional
 public class MemberService {
+
     private final MemberRepository memberRepository;
+    private final PetSitterRepository petSitterRepository;
+
     @Transactional
     public void registMember(MemberRegistRequestDto dto) {
         Member member = dto.toMember();
@@ -93,4 +100,42 @@ public class MemberService {
         member.getAuthorities().add(Authority.ROLE_SITTER); // 시터 권한 추가
         memberRepository.save(member);
     }
+
+//    public void updateSitterStatus(Long memberId, SitterStatus sitterStatus) {
+//        Member member = memberRepository.findById(memberId)
+//                .orElseThrow(() -> new IllegalArgumentException("해당 회원을 찾을 수 없습니다: " + memberId));
+//
+//        member.setSitterStatus(sitterStatus);
+//        memberRepository.save(member);
+//    }
+//
+//    public void grantSitterAuthority(Long memberId) {
+//        Member member = memberRepository.findById(memberId)
+//                .orElseThrow(() -> new IllegalArgumentException("해당 ID를 가진 사용자를 찾을 수 없습니다. ID: " + memberId));
+//        member.getAuthorities().add(Authority.ROLE_SITTER); // 시터 권한 추가
+//        memberRepository.save(member);
+//    }
+//
+//    public PetSitter saveMemberToEntity(MemberListResponseDto memberDto) {
+//        PetSitterAddress petSitterAddress = new PetSitterAddress(null, memberDto.getAddress(), null, null);
+//        PetSitter petSitter = new PetSitter();
+//
+//        petSitter.setPetSitterAddress(petSitterAddress);
+//        petSitter.setPetSitterId(memberDto.getEmail());
+//
+//        PetSitter saved = petSitterRepository.save(petSitter);
+//        log.info("petSitterService/saveMemberToEntity = {}", saved);
+//        return saved;
+//    }
+//
+//    @Transactional(rollbackFor = Exception.class)
+//    public void processSitterUpdate(Long memberId, SitterStatus sitterStatus) {
+//        updateSitterStatus(memberId, sitterStatus);
+//        grantSitterAuthority(memberId);
+//
+//        if (sitterStatus == SitterStatus.APPROVED) {
+//            MemberListResponseDto memberDto = findById(memberId);
+//            saveMemberToEntity(memberDto);
+//        }
+//    }
 }
