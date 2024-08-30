@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/enterprise")
 public class EnterpriseController {
 
-//    private final EnterpriselService enterpriselService;
-
     @GetMapping("/location")
     public void location() {
     }
