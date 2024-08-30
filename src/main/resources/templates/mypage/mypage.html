@@ -35,6 +35,7 @@
             // 모든 섹션을 숨기기
             document.getElementById('editProfileSection').style.display = 'none';
             document.getElementById('petProfileSection').style.display = 'none';
+            document.getElementById('petsitterRegist').style.display = 'none';
             document.getElementById('Iwilltakecareofyou').style.display = 'none';
             document.getElementById('Pleasetakecare').style.display = 'none';
             // document.getElementById('petSitterSection').style.display = 'none';
@@ -49,6 +50,29 @@
         }
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+        .nav-tabs {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            border-bottom: none; /* 아래쪽 경계선을 없앱니다 */
+        }
+
+        .nav-link {
+            white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 */
+            padding: 15px 30px;  /* 버튼 크기를 키워서 가독성 향상 */
+            font-size: 1.2rem;   /* 글자 크기 조정 */
+            border-radius: 5px;  /* 버튼 모서리를 둥글게 */
+        }
+        .my-nav {
+            margin-bottom: 60px; /* nav와 h3 사이의 간격 조정 */
+        }
+
+        .my-section-title {
+            margin-top: 60px;  /* h3과 위 요소들 사이의 간격 조정 */
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="main" class="page-body">
@@ -79,39 +103,46 @@
                 <div class="col-md-10">
                     <div class="wrapper">
                         <!-- 버튼 추가 영역 -->
-                        <div class="row justify-content-center">
-                            <div class="col">
-                                <button class="btn btn-primary " onclick="showSection('editProfileSection')">회원정보
-                                    수정
-                                </button>
+                        <nav class="my-nav">
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <button class="nav-link active" onclick="showSection('editProfileSection')">프로필</button>
+                                <button class="nav-link active" onclick="showSection('petProfileSection')">펫 프로필</button>
+                                <button class="nav-link active" onclick="showSection('petsitterRegist')">펫시터 자격신청</button>
+                                <button class="nav-link active" onclick="showSection('Iwilltakecareofyou')">돌봐드려요</button>
+                                <button class="nav-link active" onclick="showSection('Pleasetakecare')">돌봐주세요</button>
                             </div>
-                            <div class="col">
-                                <button class="btn btn-primary" onclick="showSection('petProfileSection')">펫 프로필
-                                </button>
-                            </div>
-                            <div class="col">
-                                <a th:href="@{/mypage/petsitterRegist}" class="btn btn-primary" role="button">펫시터
-                                                 자격신청</a>
-                            </div>
-                            <div class="col">
-                                <button class="btn btn-primary" onclick="showSection('Iwilltakecareofyou')">돌봐드려요
-                                </button>
-                            </div>
-                            <div class="col">
-                                <button class="btn btn-primary " onclick="showSection('Pleasetakecare')">돌봐주세요
-                                </button>
-                            </div>
-<!--                            <div class="col">-->
-<!--                                <button class="btn btn-primary" onclick="showSection('payStatusSection')">결제 내역-->
-<!--                                </button>-->
-<!--                            </div>-->
-                        </div>
-                        <!-- 버튼 추가 영역 끝 -->
-                        <!-- 섹션 추가 영역 -->
+                        </nav>
 
+                        <!-- 원본 -->
+<!--                        <div class="row justify-content-center">-->
+<!--                            <div class="col-auto mb-3">-->
+<!--                                <button class="btn btn-success btn-lg px-4" onclick="showSection('editProfileSection')">회원정보 수정</button>-->
+<!--                            </div>-->
+<!--                            <div class="col-auto mb-3">-->
+<!--                                <button class="btn btn-success btn-lg px-4" onclick="showSection('petProfileSection')">펫 프로필</button>-->
+<!--                            </div>-->
+<!--                            <div class="col-auto mb-3">-->
+<!--                                <button class="btn btn-success btn-lg px-4" onclick="showSection('petsitterRegist')">펫시터 자격신청</button>-->
+<!--                            </div>-->
+<!--                            <div class="col">&ndash;&gt;-->
+<!--                                <a th:href="@{/mypage/petsitterRegist}" class="btn btn-primary" role="button">펫시터 자격신청</a>-->
+<!--                            </div>-->
+<!--                            <div class="col-auto mb-3">-->
+<!--                                <button class="btn btn-success btn-lg px-4" onclick="showSection('Iwilltakecareofyou')">돌봐드려요</button>-->
+<!--                            </div>-->
+<!--                            <div class="col-auto mb-3">-->
+<!--                                <button class="btn btn-success btn-lg px-4" onclick="showSection('Pleasetakecare')">돌봐주세요</button>-->
+<!--                            </div>-->
+<!--                            <div class="col">-->
+<!--                                <button class="btn btn-primary" onclick="showSection('payStatusSection')">결제 내역</button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <!-- 버튼 추가 영역 끝 -->
+
+                        <!-- 섹션 추가 영역 -->
                         <!--회원정보수정-->
                         <div id="editProfileSection" style="display:none;">
-                            <h3>회원정보 수정</h3>
+                            <h3 class="my-section-title"></h3>
                             <form id="profileUpdateForm" method="post">
                                 <!-- 사용자에게 보이지 않는 ID를 저장하는 숨겨진 필드 -->
                                 <input type="hidden" name="id" th:value="${member.id}">
@@ -143,13 +174,16 @@
                                     <input type="text" class="form-control" name="Birth" id="profileBirth"
                                            th:value="${member.birth}" readonly>
                                 </div>
-                                <button type="submit" class="btn btn-primary">수정하기</button>
+                                <br>
+                                <button type="submit" class="btn btn-primary btn-lg"
+                                        style="background-color: #28a745; border: none; color: white; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">수정하기
+                                </button>
                             </form>
                         </div>
 
                         <!--펫프로필-->
                         <div id="petProfileSection" style="display:none;">
-                            <h3>펫 프로필</h3>
+<!--                            <h3 class="my-section-title">펫 프로필</h3>-->
                             <div>
                                 <h4>등록된 펫</h4>
                                 <table class="table">
@@ -212,7 +246,64 @@
                             });
                         </script>
 
-                        <!--이용 내역 세션  돌봐드립니다-->
+                        <!-- 펫시터 자격신청 -->
+                        <div id="petsitterRegist" style="display:none;">
+<!--                            <h3 class="my-section-title">펫시터 자격 신청</h3>-->
+                            <!-- form 태그에 action과 method 속성 추가 -->
+                            <form th:action="@{/mypage/petsitterRegist}" method="post">
+                                <div class="form-group">
+                                    <label for="name">이름:</label>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="이름을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="birthday">생년월일:</label>
+                                    <input type="date" class="form-control" id="birthday" name="birth" placeholder="생년월일을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ssn">주민등록번호 (형식: 123456-7):</label>
+                                    <input type="text" class="form-control" id="ssn" name="personalIdentificationNum" placeholder="주민등록번호를 입력하세요 (형식: 123456-7)" maxlength="8">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">연락처 (형식: 010-1234-5678):</label>
+                                    <input type="text" class="form-control" id="phone" name="phone" placeholder="연락처를 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="smoking">흡연 여부:</label>
+                                    <select class="form-control" id="smoking" name="smokingStatus">
+                                        <option value="예">예</option>
+                                        <option value="아니오">아니오</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">거주지 주소:</label>
+                                    <input type="text" class="form-control" id="address" name="address" placeholder="거주지 주소를 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="currentJob">현재 하는 일:</label>
+                                    <input type="text" class="form-control" id="currentJob" name="job" placeholder="현재 하는 일을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="petExperience">반려 경험 유무:</label>
+                                    <select class="form-control" id="petExperience" name="petOwnershipExp">
+                                        <option value="예">예</option>
+                                        <option value="아니오">아니오</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="certification">자격증:</label>
+                                    <input type="text" class="form-control" id="certification" name="certification" placeholder="자격증을 입력하세요">
+                                </div>
+                                <!-- 지원동기 추가 -->
+                                <div class="form-group">
+                                    <label for="motivation">지원동기:</label>
+                                    <textarea class="form-control" id="motivation" name="motivationForApplying" placeholder="지원동기를 입력하세요" rows="4"></textarea>
+                                </div>
+                                <br>
+                                <button type="submit" class="btn btn-primary">등록하기</button>
+                            </form>
+                        </div>
+
+                        <!--이용 내역 세션  돌봐드려요-->
                         <div id="Iwilltakecareofyou" style="display:none;">
 
                             <!-- 현재 진행중인 내역 -->
