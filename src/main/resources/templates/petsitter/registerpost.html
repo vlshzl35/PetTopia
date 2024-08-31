@@ -288,15 +288,16 @@
             }
 
         }
-
+    </script>
+    <script>
         function removeLicenseImages(src) {
             var header = $("meta[name='_csrf_header']").attr('content');
             var token = $("meta[name='_csrf']").attr('content');
             console.log("src : " + src);
             const parts = src.split('/');
-            const fileNameWithExtension = parts[parts.length - 1];
+            const licenseImage = parts[parts.length - 1];
 
-            console.log(fileNameWithExtension);
+            console.log(licenseImage);
 
             if (confirm("사진을 제거 하시겠습니까??")) {
 
@@ -307,7 +308,7 @@
                     // contentType: false, // false = content-type 헤더가 multipart/form-data로 전송하게 함
                     processData: true, // false = formData를 string으로 변환하지 않음
                     data: {
-                        fileNameWithExtension: fileNameWithExtension
+                        licenseImage: licenseImage
                     },
                     success(responseText) {
                         alert("이미지가 정상제거 되었습니다");
