@@ -16,6 +16,7 @@ import java.util.Set;
 public class PetSitterRegisterDto {
     private String petSitterId;
     private List<String> PostImagesList;// 펫시터가 올리 게시글 안에 이미지들
+    private List<String> licenseImagesList;// 펫시터가 올리 게시글 안에 이미지들
     private String mainImageUrl; // 펫시터 리스트들에서 들어갈 사진
     private List<String> licenseImages; // 자격증 및 증명 이미지
     private String oneLineIntroduce; // 한 줄 소개
