@@ -138,7 +138,7 @@
                                 data-file="${pet.profile}"></option>
                     </select>
                 </div>
-
+                <input type="hidden" id="memberId" name="memberId" th:value="${memberId}">
 
                 <input type="text" name="profile" id="profile" style="display: none">
 
@@ -338,47 +338,47 @@
 
                 <div class="form-group">
                     <label for="petName">이름:</label>
-                    <input id="petName" name="petName" type="text" class="form-control" readonly>
+                    <input id="petName" name="petName" type="text" class="form-control" readonly required>
                 </div>
 
                 <div class="form-group">
                     <label for="petGender">성별:</label>
-                    <input id="petGenderToDisplay" name="petGenderToDisplay" type="text" class="form-control" readonly>
+                    <input id="petGenderToDisplay" name="petGenderToDisplay" type="text" class="form-control" readonly required>
                     <input id="petGender" name="petGender" type="hidden" class="form-control">
                 </div>
 
                 <div class="form-group">
                     <label for="petBreed">견종:</label>
-                    <input id="petBreed" name="petBreed" type="text" class="form-control" readonly>
+                    <input id="petBreed" name="petBreed" type="text" class="form-control" readonly required>
                 </div>
 
                 <div class="form-group">
                     <label for="petBirth">출생일:</label>
-                    <input id="petBirth" name="petBirth" type="text" class="form-control" readonly>
+                    <input id="petBirth" name="petBirth" type="text" class="form-control" readonly required>
                 </div>
 
                 <div class="form-group">
                     <label for="petSize">사이즈:</label>
-                    <input id="petSizeToDisplay" name="petSizeToDisplay" type="text" class="form-control" readonly>
+                    <input id="petSizeToDisplay" name="petSizeToDisplay" type="text" class="form-control" readonly required>
                     <input id="petSize" name="petSize" type="hidden" class="form-control">
                 </div>
 
                 <div class="form-group">
                     <label for="petSociability">사회성:</label>
-                    <input id="petSociability" name="petSociability" type="text" class="form-control" readonly>
+                    <input id="petSociability" name="petSociability" type="text" class="form-control" readonly required>
                 </div>
 
                 <div class="form-group">
                     <label for="petVaccinationType">예방접종:</label>
                     <input id="petVaccinationTypeToDisplay" name="petVaccinationTypeToDisplay" type="text"
-                           class="form-control" readonly>
+                           class="form-control" readonly required>
                     <input id="petVaccinationType" name="petVaccinationType" type="hidden" class="form-control">
                 </div>
 
                 <div class="form-group">
                     <label for="petParasitePreventionDisplay">기생충 예방:</label>
                     <input id="petParasitePreventionDisplay" name="petParasitePreventionDisplay" type="text"
-                           class="form-control" readonly>
+                           class="form-control" readonly required>
                     <!--                    <label for="petParasitePrevention" type="hidden">기생충 예방:</label>-->
                     <input id="petParasitePrevention" name="petParasitePrevention" class="form-control" type="hidden">
 
@@ -386,7 +386,7 @@
 
                 <div class="form-group">
                     <label for="isNeutered">중성화 여부:</label>
-                    <input id="isNeuteredToDisplay" name="isNeuteredToDisplay" type="text" class="form-control" readonly>
+                    <input id="isNeuteredToDisplay" name="isNeuteredToDisplay" type="text" class="form-control" readonly required>
                     <input id="isNeutered" name="isNeutered" type="hidden" class="form-control">
                 </div>
 
@@ -395,21 +395,21 @@
             <div class="right-column">
                 <div class="form-group">
                     <label for="startDate">시작 날짜:</label>
-                    <input id="startDate" name="startDate" type="date" class="form-control">
+                    <input id="startDate" name="startDate" type="date" class="form-control"required>
                 </div>
 
                 <div class="form-group">
                     <label for="endDate">종료 날짜:</label>
-                    <input id="endDate" name="endDate" type="date" class="form-control">
+                    <input id="endDate" name="endDate" type="date" class="form-control" required>
                 </div>
 
                 <div class="form-group">
                     <label>주소 입력(*도로명 주소만 입력해주세요 (상세 주소 제외) *): </label>
 <!--                    <input id="address" name="address" placeholder="주소를 입력하세요" type="text" class="form-control">-->
                     <input type="text" id="sample6_postcode" placeholder="우편번호" class="form-control">
-                    <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="form-control"><br>
-                    <input type="text" id="sample6_address" name="address" placeholder="주소" class="form-control" readonly><br>
-                    <input type="hidden" id="sample6_extraAddress" name="address" placeholder="참고항목" class="form-control" readonly>
+                    <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="form-control" required><br>
+                    <input type="text" id="sample6_address" name="address" placeholder="주소" class="form-control" readonly required><br>
+                    <input type="hidden" id="sample6_extraAddress" name="address" placeholder="참고항목" class="form-control" readonly >
                     <input type="hidden" id="sample6_detailAddress" name="address" placeholder="상세주소" class="form-control" >
 
                     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

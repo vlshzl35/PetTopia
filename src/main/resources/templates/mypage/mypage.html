@@ -571,7 +571,10 @@
                                                 <input type="hidden" th:value="${pleaseCareDto.memberId}">
                                             </label>
 
-                                            <td th:text="${pleaseCareDto.petSitterId}"></td>
+                                            <td>
+                                                <a th:href="@{|/petsitter/detail/${pleaseCareDto.petSitterId}|}" th:text="${pleaseCareDto.petSitterId}"></a>
+                                            </td>
+<!--                                            <td th:text="${pleaseCareDto.petSitterId}"></td>-->
 <!--                                            <td th:text="${pleaseCareDto.reservationId}"></td>-->
                                             <td th:text="${pleaseCareDto.introduce}"></td>
 
@@ -651,7 +654,9 @@
                                                 <input type="hidden" th:value="${pleaseCareDto.memberId}">
                                             </label>
 
-                                            <td th:text="${pleaseCareDto.petSitterId}"></td>
+                                            <td>
+                                                <a th:href="@{|/petsitter/detail/${pleaseCareDto.petSitterId}|}" th:text="${pleaseCareDto.petSitterId}"></a>
+                                            </td>
                                             <td th:text="${pleaseCareDto.reservationId}"></td>
                                             <td>
                                                 <span th:text="${pleaseCareDto.startDate}" name="startTime"></span> ~
@@ -713,7 +718,9 @@
                                                 <input type="hidden" th:value="${pleaseCareDto.memberId}">
                                             </label>
 
-                                            <td th:text="${pleaseCareDto.petSitterId}"></td>
+                                            <td>
+                                                <a th:href="@{|/petsitter/detail/${pleaseCareDto.petSitterId}|}" th:text="${pleaseCareDto.petSitterId}"></a>
+                                            </td>
                                             <td>
                                                 <span th:text="${pleaseCareDto.startDate}" name="startTime"></span>
                                                 <span th:text="${pleaseCareDto.endDate}" name="endTime"></span>
