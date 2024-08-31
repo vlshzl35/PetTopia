@@ -5,6 +5,8 @@ import com.sh.pettopia.Hojji.pet.entity.ParasitePrevention;
 import com.sh.pettopia.Hojji.pet.entity.Pet;
 import com.sh.pettopia.Hojji.pet.entity.VaccinationType;
 import com.sh.pettopia.Hojji.pet.service.PetService;
+import com.sh.pettopia.Hojji.user.member.entity.Member;
+import com.sh.pettopia.Hojji.user.member.service.MemberService;
 import com.sh.pettopia.choipetsitter.entity.PetSitter;
 import com.sh.pettopia.choipetsitter.entity.PetSitterReview;
 import com.sh.pettopia.choipetsitter.entity.Reservation;
@@ -42,15 +44,18 @@ public class CareRegistrationController {
     private final PetSitterService petSitterService;
     private final ReservationService reservationService;
     private final PetSitterReviewService petSitterReviewService;
+    private final MemberService memberService;
 
     // 멤버에 id에 맞는 펫 정보 option 태그에 보여주기 위한 코드
     // 08/13 멤버 session에 저장된 정보로 맞는 정보 찾아오기
     // @AuthenticationPrincipal 을 통해 현재 로그인한 회원의 memberId로 그 회원에 맞는 펫 정보 가져오기
     @GetMapping("/careregistrationform")
     public void careRegistrationForm(@AuthenticationPrincipal AuthPrincipal authPrincipal, Model model) {
+        memberService.findById(authPrincipal.getMember().getId());
         List<PetDetailsResponseDto> pets = petService.findAllByMemberId(authPrincipal.getMember().getId());
         System.out.println("펫 정보 잘 가져오는지 확인해보겠습니다" + pets.stream().toList());
         model.addAttribute("pets", pets);
+        model.addAttribute("memberId", authPrincipal.getMember().getId());
     }
 
     // json 데이터 타입으로 선택한 petId 받아 정보 비동기처리로 뿌려주는 코드
@@ -210,7 +215,9 @@ public class CareRegistrationController {
     }
 
     @PostMapping("/registreviewToPetSitter")
-    public String registreviewToPetSitter(@RequestParam(value ="reservationId") Long reservationId, @ModelAttribute RegistReviewRequestDto dto , RedirectAttributes redirectAttributes, @AuthenticationPrincipal AuthPrincipal authPrincipal) {
+    public String registreviewToPetSitter(@RequestParam(value ="reservationId") Long reservationId,
+                                          @ModelAttribute RegistReviewRequestDto dto ,
+                                          @AuthenticationPrincipal AuthPrincipal authPrincipal) {
 
         log.debug("reservationId" + reservationId);
 

@@ -102,21 +102,24 @@
             <thead>
             <tr>
               <th>요청 날짜</th>
-              <th>예약 날짜</th>
-              <th>시작, 종료</th>
+              <th>시작 종료 날짜</th>
               <th>펫시터 ID</th>
+              <th>맡기신 댕댕이</th>
+
             </tr>
             </thead>
             <tbody>
             <tr th:each= "reservationDto ,stat :${reservationResponseDtoList}"
             th:object="${reservationDto}">
-              <td th:text="${#temporals.format(reservationDto.createdDate, 'yyyy-MM-dd/a hh:mm')}"></td>
+
+              <td th:text="${reservationDto.createdDate}"></td>
 <!--              <td th:text="${.serviceDate}" name="serviceDate"></td>-->
               <td>
                 <span th:text="${reservationDto.startDate}" name="startTime"></span>
                 <span th:text="${reservationDto.endDate}" name="endTime"></span>
               </td>
               <td th:text="${reservationDto.petSitterId}"> </td>
+              <td th:text="${reservationDto.petName}"></td>
             </tr>
             </tbody>
           </table>

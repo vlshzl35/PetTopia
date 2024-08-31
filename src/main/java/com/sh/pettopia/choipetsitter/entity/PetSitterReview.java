@@ -71,9 +71,10 @@ public class PetSitterReview {
     {
         return PetSitterReview.builder()
                 .partnerOrderId(generatePartnerOrderId())
-                .reviewText(dto.getNote())
+                .reviewText(dto.getReviewText())
                 .createdAt(LocalDateTime.now())
-                .petSitterId(dto.getPetSitterId()).build();
+                .petSitterId(dto.getPetSitterId())
+                .starRating(dto.getRating()).build();
     }
     private String generatePartnerOrderId() {
         // 예시로 UUID를 사용하는 방법 (비즈니스 로직에 따라 수정 필요)
