@@ -97,15 +97,8 @@
                         <!-- 버튼 추가 영역 끝 -->
                         <!-- 섹션 추가 영역 -->
                         <div id="petProfileSection" style="display:none;">
-                            <h3>펫 프로필</h3>
-                            <form method="post" name="detailUpdateFrm">
-                                <input name="postId" type="hidden" value="{postId}">
-                                <div class="form-group">
-                                    <label for="petPhoto">펫 사진:</label>
-                                    <input class="form-control-file" id="petPhoto" type="file">
-                                </div>
-
-
+                            <form th:action="@{/petsitterfinder/detailupdate}" method="post">
+                                <input type="hidden" th:value="${detailForUpdate.postId}" name="postId">
                                 <p style="margin-right: 10px;"><label>펫 서비스 :</label><br>
                                 <div class="radio-group">
 
@@ -126,12 +119,7 @@
                                 </div>
 
                                 <br><br><br>
-                                <div class="form-group">
-                                    <label for="address">주소 :</label>
-                                    <textarea class="form-control" id="address" name="address"
-                                              placeholder="수정하실 주소를 입력해주세요."
-                                              rows="3"></textarea>
-                                </div>
+
                                 <div class="form-group">
                                     <label for="requestStartDate">예약 신청 날짜:</label>
                                     <input class="form-control" id="requestStartDate" name="requestStartDate"
@@ -145,7 +133,7 @@
 
                                 <div class="form-group">
                                     <label for="petWeight">강아지 무게:</label>
-                                    <select class="form-control" id="petWeight" name="petSize" required>
+                                    <select class="form-control" id="petWeight" name="petSize">
                                         <option value="">== 몸무게 ==</option>
                                         <option value="SMALL">소형견 (0~4.9kg)</option>
                                         <option value="MEDIUM">중형견 (5~14.9kg)</option>
@@ -154,8 +142,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="character">사회성 및 당부사항:</label>
-                                    <textarea class="form-control" id="character" name="petSociability"
-                                              placeholder="수정하실 사회성 및 당부사항을 입력해주세요"
+                                    <textarea class="form-control" id="character" name="additionalInfo"
+                                              placeholder="추가적인 요청사항이 있으면 적어주세요!"
                                               rows="3"></textarea>
                                 </div>
                                 <button class="btn btn-save" type="submit" value="수정">수정하기</button>
@@ -184,7 +172,7 @@
     </section>
     <script>
         const deleteDetail = () => {
-            confirm('정보 삭제 할텨?') && document.detailDeleteFrm.submit();
+            confirm('정보 삭제 하시겠습니까?') && document.detailDeleteFrm.submit();
         }
 
 

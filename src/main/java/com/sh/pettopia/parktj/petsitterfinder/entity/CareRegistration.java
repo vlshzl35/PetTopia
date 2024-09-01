@@ -76,7 +76,7 @@ public class CareRegistration {
     @CollectionTable(name = "tbl_pet_vaccination_post", joinColumns = @JoinColumn(name = "postId"))
     private Set<VaccinationType> petVaccinationType;
 
-    @Column(name = "pet_petSociability", nullable = false)
+    @Column(name = "pet_Sociability", nullable = false)
     private String petSociability;
     // 실종 혹은 실종아님
     // 견종
@@ -104,10 +104,11 @@ public class CareRegistration {
 
     public void update(PetDetailsUpdateRequestDto dto) {
         this.postId = dto.getPostId();
-        this.address = dto.getAddress();
         this.requestStartDate = dto.getRequestStartDate();
         this.requestEndDate = dto.getRequestEndDate();
         this.requestService = dto.getRequestService();
+        this.additionalInfo = dto.getAdditionalInfo();
+        this.petSize = dto.getPetSize();
     }
 
     public void toStringVaccinationName(Set<String> strings)
