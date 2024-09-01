@@ -5,7 +5,8 @@ import com.sh.pettopia.Hojji.pet.entity.ParasitePrevention;
 import com.sh.pettopia.Hojji.pet.entity.Pet;
 import com.sh.pettopia.Hojji.pet.entity.VaccinationType;
 import com.sh.pettopia.Hojji.pet.service.PetService;
-import com.sh.pettopia.Hojji.user.Authority;
+import com.sh.pettopia.Hojji.user.member.entity.Authority;
+
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import com.sh.pettopia.Hojji.user.member.service.MemberService;
 import com.sh.pettopia.choipetsitter.entity.PetSitter;
