@@ -1,6 +1,6 @@
 package com.sh.pettopia.Hojji.user.member.dto;
 
-import com.sh.pettopia.Hojji.common.Gender;
+import com.sh.pettopia.Hojji.user.member.entity.Gender;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import com.sh.pettopia.Hojji.user.member.entity.SitterStatus;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Data

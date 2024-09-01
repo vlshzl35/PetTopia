@@ -1,6 +1,5 @@
-package com.sh.pettopia.Hojji.user;
+package com.sh.pettopia.Hojji.user.member.entity;
 
-import com.sh.pettopia.Hojji.common.Gender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

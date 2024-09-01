@@ -2,10 +2,8 @@ package com.sh.pettopia.parktj.petsitterfinder.controller;
 
 
 import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
-import com.sh.pettopia.Hojji.common.paging.PageCriteria;
 import com.sh.pettopia.parktj.petsitterfinder.dto.CommentDTO;
 import com.sh.pettopia.parktj.petsitterfinder.entity.CareRegistration;
-import com.sh.pettopia.parktj.petsitterfinder.entity.CommentEntity;
 import com.sh.pettopia.parktj.petsitterfinder.service.CareRegistrationService;
 import com.sh.pettopia.parktj.petsitterfinder.service.CommentService;
 
@@ -20,11 +18,8 @@ import org.springframework.http.ResponseEntity;
 //import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
 
 
 @Controller

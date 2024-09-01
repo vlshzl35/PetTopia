@@ -1,7 +1,7 @@
 package com.sh.pettopia.Hojji.user.member.repository;
 
-import com.sh.pettopia.Hojji.common.Gender;
-import com.sh.pettopia.Hojji.user.Authority;
+import com.sh.pettopia.Hojji.user.member.entity.Gender;
+import com.sh.pettopia.Hojji.user.member.entity.Authority;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import com.sh.pettopia.Hojji.user.member.entity.SitterStatus;
 import org.junit.jupiter.api.AfterEach;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.cglib.core.Local;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 

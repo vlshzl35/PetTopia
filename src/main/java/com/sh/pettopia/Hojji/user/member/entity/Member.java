@@ -1,7 +1,6 @@
 package com.sh.pettopia.Hojji.user.member.entity;
 
 
-import com.sh.pettopia.Hojji.user.User;
 import com.sh.pettopia.mypage.dto.ProfileUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
