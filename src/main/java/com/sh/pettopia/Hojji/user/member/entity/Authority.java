@@ -1,8 +1,7 @@
-package com.sh.pettopia.Hojji.user;
+package com.sh.pettopia.Hojji.user.member.entity;
 
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public enum Authority {

@@ -1,7 +1,6 @@
 package com.sh.pettopia.Hojji.community.posts.controller;
 
 import com.sh.pettopia.Hojji.auth.principal.AuthPrincipal;
-import com.sh.pettopia.Hojji.common.paging.PageCriteria;
 import com.sh.pettopia.Hojji.community.comment.dto.CommuCommentResponseDto;
 import com.sh.pettopia.Hojji.community.comment.service.CommunityCommentService;
 import com.sh.pettopia.Hojji.community.posts.dto.PostListResponseDto;
@@ -10,6 +9,7 @@ import com.sh.pettopia.Hojji.community.posts.dto.PostRegistRequestDto;
 import com.sh.pettopia.Hojji.community.posts.dto.PostUpdateRequestDto;
 import com.sh.pettopia.Hojji.community.posts.service.PostService;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
+import com.sh.pettopia.common.paging.PageCriteria;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

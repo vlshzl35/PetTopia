@@ -1,12 +1,10 @@
 package com.sh.pettopia.Hojji.user.member.dto;
 
-import com.sh.pettopia.Hojji.common.Gender;
-import com.sh.pettopia.Hojji.user.Authority;
+import com.sh.pettopia.Hojji.user.member.entity.Gender;
+import com.sh.pettopia.Hojji.user.member.entity.Authority;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
-import com.sh.pettopia.Hojji.user.member.entity.SitterStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;

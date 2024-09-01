@@ -1,4 +1,4 @@
-package com.sh.pettopia.Hojji.common.paging;
+package com.sh.pettopia.common.paging;
 
 import lombok.Data;
 
@@ -23,7 +23,5 @@ public class PageCriteria {
         this.pagebarSize = 5;
         this.pagebarStart = (this.page - 1) / pagebarSize * pagebarSize + 1;
         this.pagebarEnd = pagebarStart + pagebarSize - 1;
-
     }
-
 }

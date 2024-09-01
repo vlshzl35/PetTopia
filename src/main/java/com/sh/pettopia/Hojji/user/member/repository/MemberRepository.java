@@ -1,7 +1,10 @@
 package com.sh.pettopia.Hojji.user.member.repository;
 
+import com.sh.pettopia.Hojji.user.member.entity.Authority;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import com.sh.pettopia.Hojji.user.member.entity.SitterStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -48,4 +51,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findPendingSitterMembers(SitterStatus status);
 
     Member findMemberByEmail(String email);
+
+    // 권한가져오기
+    @Query("SELECT m FROM Member m JOIN m.authorities a " +
+            "WHERE m.id IN (SELECT u.id FROM User u JOIN u.authorities au WHERE au = :authority)")
+    Page<Member> findByAuthorityContaining(@Param("authority") Authority authority, Pageable pageable);
 }

@@ -1,12 +1,18 @@
 package com.sh.pettopia.Hojji.user.admin.controller;
 
 import com.sh.pettopia.Hojji.user.member.dto.MemberListResponseDto;
+import com.sh.pettopia.Hojji.user.member.entity.Authority;
 import com.sh.pettopia.Hojji.user.member.entity.SitterStatus;
 import com.sh.pettopia.Hojji.user.member.service.MemberService;
 import com.sh.pettopia.choipetsitter.entity.PetSitter;
 import com.sh.pettopia.choipetsitter.service.PetSitterService;
+import com.sh.pettopia.common.paging.PageCriteria;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,15 +36,48 @@ public class AdminController {
     public void adminDashBoard() {
     }
 
+//    @GetMapping("/memberList")
+//    public String memberList(@ModelAttribute MemberListResponseDto memberResponseDto, Model model){
+//        // 회원 전체 리스트
+//        List<MemberListResponseDto> members = memberService.findAll();
+//        log.debug("회원 전체목록을 불러옵니다. members = {}", members);
+//        model.addAttribute("members", members);
+//
+//
+//
+//        return "admin/memberList";
+//    }
+
     @GetMapping("/memberList")
-    public String memberList(@ModelAttribute MemberListResponseDto memberResponseDto, Model model){
+    public void memberList(@PageableDefault(page = 1, size = 10) Pageable pageable,
+                           @RequestParam(required = false) Authority authority,
+                           @ModelAttribute MemberListResponseDto memberResponseDto, Model model){
+
+        pageable = PageRequest.of(
+                pageable.getPageNumber() -1,
+                pageable.getPageSize());
+
         // 회원 전체 리스트
-        List<MemberListResponseDto> members = memberService.findAll();
+        Page<MemberListResponseDto> members = memberService.findAll(authority,pageable);
         log.debug("회원 전체목록을 불러옵니다. members = {}", members);
         model.addAttribute("members", members);
 
-        return "admin/memberList";
+
+        // 페이징바 영역
+        int page = members.getNumber(); // 0 - based 페이지 번호
+        int limit = members.getSize();
+        int totalCount = (int) members.getTotalElements();
+
+        String url = "memberList"; // 상대주소
+        if (authority != null) {
+            url += "authority?=" + authority;
+        }
+        model.addAttribute("pageCriteria", new PageCriteria(page, limit, totalCount, url));
+        log.debug("pageCriteria = {}", new PageCriteria(page, limit, totalCount, url));
+
+        log.debug("url = {}", url);
     }
+
 
     @GetMapping("/sitterList")
     public String sitterList(@ModelAttribute MemberListResponseDto memberListResponseDto, Model model){
@@ -86,4 +125,6 @@ public class AdminController {
 
         return ResponseEntity.ok().build();
     }
+
+//    public paging ()
 }

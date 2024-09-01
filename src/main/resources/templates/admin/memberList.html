@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Tables / Data - NiceAdmin Bootstrap Template</title>
+  <title>PettoPia | Admin</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -384,7 +384,7 @@
                 </thead>
                 <tbody>
                   <tr th:each="member, iterStat: ${members}" th:onclick="|window.location.href='@{/userProfile/{id}(id=${member.id})}'|">
-                    <td th:text="${iterStat.index + 1}"></td>
+                    <td th:text="${pageCriteria.page * pageCriteria.limit + iterStat.index + 1 - 10}"></td>
 <!--                    <td th:text="${member.id}"></td>-->
                     <td th:text="${member.email}"></td>
                     <td th:text="${member.name}"></td>
@@ -397,6 +397,30 @@
                 </tbody>
               </table>
             </div>
+
+            <!-- 페이징 바 영역 -->
+            <nav class="position-relative" th:if="${pageCriteria != null}" th:object="${pageCriteria}"
+                 aria-label="Page navigation example">
+              <ul class="pagination justify-content-center">
+                <!--/* 이전 영역 */-->
+                <li th:class="|page-item *{pagebarStart == 1 ? 'disabled' : ''}|">
+                  <a class="page-link" th:href="|*{url}*{pagebarStart - 1}|">이전</a>
+                </li>
+                <th:block th:each="pageNo : *{#numbers.sequence(pagebarStart, pagebarEnd)}">
+                  <li th:if="${pageNo <= pageCriteria.maxPage}"
+                      th:class="|page-item ${pageCriteria.page == pageNo ? 'active' : ''}|">
+                    <a class="page-link" th:href="|*{url}${pageNo}|" th:text="${pageNo}"></a>
+                  </li>
+                </th:block>
+
+                <!--/* 다음 영역 */-->
+                <li th:class="|page-item *{pagebarEnd > maxPage ? 'disabled' : ''}|">
+                  <a class="page-link" th:href="|*{url}*{pagebarEnd + 1}|">다음</a>
+                </li>
+              </ul>
+            </nav>
+
+
           </div>
         </div>
       </div>
