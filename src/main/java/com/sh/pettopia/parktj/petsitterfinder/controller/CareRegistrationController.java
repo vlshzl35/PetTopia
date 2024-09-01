@@ -5,6 +5,7 @@ import com.sh.pettopia.Hojji.pet.entity.ParasitePrevention;
 import com.sh.pettopia.Hojji.pet.entity.Pet;
 import com.sh.pettopia.Hojji.pet.entity.VaccinationType;
 import com.sh.pettopia.Hojji.pet.service.PetService;
+import com.sh.pettopia.Hojji.user.Authority;
 import com.sh.pettopia.Hojji.user.member.entity.Member;
 import com.sh.pettopia.Hojji.user.member.service.MemberService;
 import com.sh.pettopia.choipetsitter.entity.PetSitter;
@@ -82,7 +83,11 @@ public class CareRegistrationController {
 //        이 부분 댓글에 멤버 정보 포함시키기 위함임
         model.addAttribute("memberInfo", authPrincipal.getMember());
         log.debug("detailDto = {}", detailDto);
-        log.debug("memberInfo = {}", authPrincipal.getMember());
+
+        boolean isPetSitter =  authPrincipal.getMember().getAuthorities().contains(Authority.ROLE_SITTER);
+        model.addAttribute("isPetSitter", isPetSitter);
+        log.debug("isPetSitter = {}", isPetSitter);
+        model.addAttribute("istPetSitter", isPetSitter);
 
 
 
@@ -94,6 +99,7 @@ public class CareRegistrationController {
         boolean isWriter = currentMemberId.equals(writerMemberId);
         model.addAttribute("isWriter", isWriter);
         log.debug("isWriter = {}", isWriter);
+
     }
 
 
