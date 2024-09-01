@@ -195,7 +195,7 @@
         <div class="btn-container">
             <button type="button" class="btn btn-primary" th:if="${isWriter}" th:onclick="|location.href = '@{/petsitterfinder/detailupdate(postId=${detail.postId})}'|">수정/삭제</button>
             <input type="hidden" name="sitterStatus" id="sitterStatus" th:value="${memberInfo.authorities}">
-            <button  type="button" name="requestBtn" id="requestBtn" class="btn btn-success">예약 요청</button>
+            <button th:if="${memberInfo.authorities.toString()} == '[ROLE_SITTER, ROLE_MEMBER]'"  type="button" name="requestBtn" id="requestBtn" class="btn btn-success">예약 요청</button>
         </div>
     </section>
 
@@ -299,7 +299,7 @@
             const sitterStatus = status
             console.log(sitterStatus)
 
-            if(sitterStatus !== '[ROLE_SITTER]'){
+            if(sitterStatus !== '[ROLE_SITTER, ROLE_MEMBER]'){
                 alert('펫시터 권한이 없는 회원은 예약 요청하실 수 없습니다.')
             }else {
 
