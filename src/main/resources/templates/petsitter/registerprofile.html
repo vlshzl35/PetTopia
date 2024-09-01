@@ -21,7 +21,7 @@
             <div class="image-container">
                 <div id="mainImage">
                     <img th:if="${not #strings.isEmpty(petSitterRegisterDto.mainImageUrl)}" th:src="${petSitterRegisterDto.mainImageUrl}" alt="" onclick="remove_confirm(src)" id="removeMainImage">
-                    <img th:if="${#strings.isEmpty(petSitterRegisterDto.mainImageUrl)}" th:src="@{/images/petsitter/nothingImg.jpg}" alt="" onclick="remove_confirm(src)">
+                    <img th:if="${#strings.isEmpty(petSitterRegisterDto.mainImageUrl)}" th:src="@{/images/petsitter/nothingImg.jpg}" alt="" >
                 </div>
                 <input type="file" onchange="mainImgLoad(this)" name="mainImage">
             </div>
