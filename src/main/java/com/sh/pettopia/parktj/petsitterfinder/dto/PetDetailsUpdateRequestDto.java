@@ -18,11 +18,10 @@ import java.util.Set;
 public class PetDetailsUpdateRequestDto {
 
     private Long postId;
-    private String petSociability;
+    private String additionalInfo;
     private LocalDate requestEndDate;
     private LocalDate requestStartDate;
     private PetSize petSize;
-    private String address;
     private Set<RequestService> requestService;
 
 }

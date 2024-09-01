@@ -127,9 +127,14 @@ public class CareRegistrationController {
 
     // detail 수정하는 코드
     @PostMapping("/detailupdate")
-    public String updateDetailSave(@ModelAttribute PetDetailsUpdateRequestDto dto) {
-        careRegistrationService.update(dto);
-        log.debug("updateDto={}", dto);
+    public String updateDetailSave(@ModelAttribute PetDetailsUpdateRequestDto dto, RedirectAttributes redirectAttributes) {
+        try {
+            careRegistrationService.update(dto);
+            log.debug("updateDto={}", dto);
+        }catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", "수정되지 않은 사항이 있습니다. 수정해주세요");
+        }
+        redirectAttributes.addFlashAttribute("message", "선택하신 수정사항이 완료되었습니다.");
         return "redirect:/petsitterfinder/careregistrationdetails?postId=" + dto.getPostId();
     }
 

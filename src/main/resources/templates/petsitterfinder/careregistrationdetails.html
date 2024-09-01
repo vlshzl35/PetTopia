@@ -195,7 +195,7 @@
         <div class="btn-container">
             <button type="button" class="btn btn-primary" th:if="${isWriter}" th:onclick="|location.href = '@{/petsitterfinder/detailupdate(postId=${detail.postId})}'|">수정/삭제</button>
             <input type="hidden" name="sitterStatus" id="sitterStatus" th:value="${memberInfo.authorities}">
-            <button  th:if="${memberInfo.authorities.toString() eq '[ROLE_SITTER]'}" type="button" name="requestBtn" id="requestBtn" class="btn btn-success">예약 요청</button>
+            <button  type="button" name="requestBtn" id="requestBtn" class="btn btn-success">예약 요청</button>
         </div>
     </section>
 
@@ -293,6 +293,7 @@
 <!--    </script>-->
     <script>
         const status = document.getElementById('sitterStatus').value;
+        console.log(status)
 
         document.getElementById('requestBtn').addEventListener('click', function (){
             const sitterStatus = status
@@ -373,12 +374,10 @@
         const updatePagination = (pageData) => {
             let paginationHtml = '';
             for (let i = 1; i <= pageData.totalPages; i++) {
-                console.log("이건 또 무얼까나 ㅎㅎ" + pageData.totalPages)
-                console.log("이건 또 무얼까나 ㅎㅎ" + pageData.number) //
                 paginationHtml += `<li class="page-item ${i === pageData.number + 1 ? 'active' : ''}">
                                <a class="page-link" href="javascript:void(0);" onclick="loadComments(${i})">${i}</a>
                            </li>`;
-                console.log("이거모임?"+paginationHtml)
+
             }
             // .pagination은 paginationHtml 받아서 기본적인 페이지네이션 구조 제공해줌
             // class="pagination" 을 가진 ul요소를 선택함
@@ -413,6 +412,11 @@
         };
         // 페이지 로드 시 댓글 목록을 로드
         document.addEventListener('DOMContentLoaded', loadComments);
+    </script>
+
+    <script>
+        const message = '[[${message}]]';
+        message && alert(message);
     </script>
 
 </div>
