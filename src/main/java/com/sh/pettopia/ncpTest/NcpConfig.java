@@ -14,10 +14,10 @@ public class NcpConfig {
     private final String endPoint = "https://kr.object.ncloudstorage.com";
     private final String regionName = "kr-standard";
 
-    @Value("${cloud.aws.credentials.access-key}")
+//    @Value("${cloud.aws.credentials.access-key}")
     private String accessKey;
 
-    @Value("${cloud.aws.credentials.secret-key}")
+//    @Value("${cloud.aws.credentials.secret-key}")
     private String secretKey;
 
     @Value("${application.bucket.name}")
@@ -25,7 +25,7 @@ public class NcpConfig {
 
     @Bean
     public AmazonS3Client amazonS3Client() {
-        BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
+        BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials("accessKey", "secretKey");
         return (AmazonS3Client) AmazonS3ClientBuilder
                 .standard()
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endPoint, regionName))

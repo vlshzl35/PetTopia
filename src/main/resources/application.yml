@@ -38,12 +38,12 @@ logging:
     prefix: classpath:/templates/
     suffix: .html
 
-  # NCP 클라우드 설정
-cloud:
-  aws:
-    credentials:
-      access-key: ${NCP_ACCESS_KEY}
-      secret-key: ${NCP_SECRET_KEY}
+#  # NCP 클라우드 설정
+#cloud:
+#  aws:
+#    credentials:
+#      access-key: ${NCP_ACCESS_KEY}
+#      secret-key: ${NCP_SECRET_KEY}
 
 
 application:

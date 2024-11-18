@@ -27,9 +27,6 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
     private final FileService fileService;
 
-    @Value("${profile.value}")
-    private String value;
-
     @GetMapping("/termsOfService")
     public void termsOfService() {
     }

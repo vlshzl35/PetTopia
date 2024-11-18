@@ -18,9 +18,9 @@ spring:
         format_sql: true
 
 server:
-  approval_url: "http://223.130.146.203:8080/pay/success?partner_order_id="
-  cancel_url: "http://223.130.146.203:8080/pay/cancel?partner_order_id="
-  fail_url: "http://223.130.146.203:8080/pay/fail?partner_order_id="
+  approval_url: "http://18.210.99.219:8080/pay/success?partner_order_id="
+  cancel_url: "http://18.210.99.219:8080/pay/cancel?partner_order_id="
+  fail_url: "http://18.210.99.219:8080/pay/fail?partner_order_id="
 
   # OCR 관련 설정
 
